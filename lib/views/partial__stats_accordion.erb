@@ -1,0 +1,73 @@
+<% unless values.nil? %>
+  <h2 class="govuk-heading-l"><%= "#{header} (#{assessment_type})" %></h2>
+
+  <% sections = [
+      { heading: {
+          text: t('service_performance.contents.epcs_upload.tables.titles.all'),
+          prefix: t("service_performance.contents.epcs_upload.tables.hidden.certificates_uploaded_all.#{assessment_type.downcase}"),
+        },
+        content: {
+          html: erb(:partial__stats_table, locals: {
+            assessment_type: assessment_type,
+            country_key: "all",
+            values: values["all"],
+            show_average_rating: show_average_rating,
+            show_average_co2: show_average_co2,
+          })
+        }},
+      { heading: {
+          text:  t('service_performance.contents.epcs_upload.tables.titles.england'),
+          prefix: t("service_performance.contents.epcs_upload.tables.hidden.certificates_uploaded_country.#{assessment_type.downcase}"),
+        },
+        content: {
+          html: erb(:partial__stats_table, locals: {
+            assessment_type: assessment_type,
+            country_key: "england",
+            values: values["England"],
+            show_average_rating: show_average_rating,
+            show_average_co2: show_average_co2,
+          })
+        }},
+      { heading: {
+        text:  t('service_performance.contents.epcs_upload.tables.titles.wales'),
+        prefix: t("service_performance.contents.epcs_upload.tables.hidden.certificates_uploaded_country.#{assessment_type.downcase}"),
+      },
+        content: {
+          html: erb(:partial__stats_table, locals: {
+            assessment_type: assessment_type,
+            country_key: "wales",
+            values: values["Wales"],
+            show_average_rating: show_average_rating,
+            show_average_co2: show_average_co2,
+          })
+        }},
+
+      { heading: {
+          text:  t('service_performance.contents.epcs_upload.tables.titles.northern_ireland'),
+          prefix: t("service_performance.contents.epcs_upload.tables.hidden.certificates_uploaded_country.#{assessment_type.downcase}"),
+        },
+        content: {
+          html: erb(:partial__stats_table, locals: {
+            assessment_type: assessment_type,
+            country_key: "northern_ireland",
+            values: values["Northern Ireland"],
+            show_average_rating: show_average_rating,
+            show_average_co2: show_average_co2,
+          })
+        }},
+
+  ] %>
+
+
+  <%== erb :design_system__accordion, locals: {
+    items: sections,
+    id: "accordion-#{assessment_type.downcase}",
+    hideAllSectionsText: t("service_performance.accordion_controls.hide_all_sections"),
+    hideSectionText: t("service_performance.accordion_controls.hide_section"),
+    hideSectionAriaLabelText: t("service_performance.accordion_controls.hide_section_expanded"),
+    showAllSectionsText: t("service_performance.accordion_controls.show_all_sections"),
+    showSectionText: t("service_performance.accordion_controls.show_section"),
+    showSectionAriaLabelText: t("service_performance.accordion_controls.show_section_expanded"),
+    headingLevel: "3"
+  } %>
+<% end %>

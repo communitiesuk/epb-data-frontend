@@ -1,0 +1,10 @@
+<div class="component__contents govuk-!-display-none-print">
+  <h2 class="govuk-heading-m"><%= title %></h2>
+  <div class="dashed-p">
+    <% sections.reject{|section| section[:hidden]}.each do |section| %>
+      <p class="govuk-body"><a class="govuk-link" href="<%= section[:link] %>"><%=
+        t(section[:text])
+      %></a></p>
+    <% end %>
+  </div>
+</div>

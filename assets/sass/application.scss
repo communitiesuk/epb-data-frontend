@@ -1,0 +1,9 @@
+$govuk-global-styles: true;
+$govuk-assets-path: '';
+
+@import "./node_modules/govuk-frontend/dist/govuk/index";
+@import "./assets/components/analytics";
+@import "./assets/components/expired-text";
+@import "./assets/components/recaptcha";
+@import "./assets/components/print";
+@import "./assets/components/toggle-to-welsh";

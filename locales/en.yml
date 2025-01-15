@@ -1,0 +1,104 @@
+en:
+  validation_errors:
+    captcha_error: "Please verify that you’re a human and try again."
+
+  data_missing:
+
+  service_name: "Energy performance certificates data"
+
+  layout:
+    head:
+      title: "Energy performance certificate data"
+    body:
+      skip: "Skip to main content"
+      govuk: "GOV.UK"
+      cookie_banner:
+        title: "Cookies on "
+        intro_essential: "We use some essential cookies to make this service work."
+        intro_analytics: "We’d also like to use analytics cookies so we can understand how you use the service and make improvements."
+        accept: "Accept analytics cookies"
+        reject: "Reject analytics cookies"
+        view_cookies: "View cookies"
+        change_settings: "change your cookie settings"
+        accepted: "You’ve accepted analytics cookies. You can %{change_settings_link} at any time."
+        rejected: "You’ve rejected analytics cookies. You can %{change_settings_link} at any time."
+        hide_message: "Hide cookie message"
+      phase_banner: "This is a test site. The data is not real and the certificates are not valid."
+      footer:
+        heading: "Support links"
+        accessibility_statement: "Accessibility"
+        cookies: "Cookies"
+        feedback: "Give feedback"
+        license: "All content is available under the <a class=\"govuk-footer__link\" href=\"https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" rel=\"license\">Open Government Licence v3.0</a>, except where otherwise stated"
+        copyright: "<a class=\"govuk-footer__link govuk-footer__copyright-logo\" href=\"https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/\">&copy; Crown copyright</a>"
+        help: "Help"
+
+  contact:
+    help_desk_number: "020 3829 0748"
+
+  error:
+    error: "Error: "
+    500:
+      heading: "Sorry, there is a problem with the service"
+      body: "Try again later."
+    404:
+      heading: "Page not found"
+      intro: "If you typed the web address, check it is correct."
+      body: "If you pasted the web address, check you copied the entire address."
+    410:
+      heading: "This certificate has been cancelled"
+      body: "A new certificate may have replaced it. You can "
+      service_link: "check if there is a new certificate"
+    error_summary_header: "There is a problem"
+    too_many_results:
+      heading: "Too many results for this address"
+      body: "There are too many results. %{link}."
+      cta_search_by_postcode: "Search by postcode instead"
+      royal_mail_link: "You can %{link}."
+      cta_royal_mail: "find a postcode on Royal Mail’s postcode finder"
+
+  accessibility_statement:
+    top_heading: "Accessibility statement"
+
+
+  help_page:
+    tel: "Telephone"
+    opening_times: "Monday to Friday, 9am to 5pm"
+    find_out_more: "Find out more about call charges"
+
+
+  cookies:
+    title: "Cookies on our service"
+    intro: "Cookies are files saved on your phone, tablet or computer when you visit a website. The ´Find an energy certificate´ and ´Get a new energy certificate´ services uses cookies in order to understand how you use the services so we can update and improve them."
+    dont_worry: "The cookies we use don’t identify you personally. You can still use the ´Find an energy certificate´ or ´Get a new energy certificate´ services if you don’t accept cookies that measure website use."
+    measure:
+      title: "Cookies that measure website use"
+      analytics: "We use Google Analytics to collect information about how you use this service. This helps us check it’s meeting your needs and make improvements."
+      list:
+        title: "Google Analytics stores information about:"
+        "1": "how you got to the site"
+        "2": "pages you visit and how long you spend on them"
+        "3": "what you click on"
+    dont_worry_again: "No personal details are stored with this information, so you can’t be identified."
+    form_title: "Cookies on our service"
+    form_yes: "Use cookies that measure my website use"
+    form_no: "Do not use cookies that measure my website use"
+    form_save: "Save settings"
+    banner:
+      title: "Tell us whether you accept cookies"
+      intro: "We use cookies to collect information about how you use this service. This helps us to improve our website and make it work as well as possible."
+      positive: "Accept all cookies"
+      negative: "Set cookie preferences"
+    notification:
+      title: "Success"
+      success: "You’ve set your cookie preferences"
+      go_back: "Go back to"
+
+  service_unavailable:
+    title: "Sorry, the service is unavailable"
+    try_later: "You will be able to use the service later."
+    help_desk:
+      need_support: "%{link} if you need support to find an energy certificate or report."
+      link: "Contact our helpdesk"
+
+
