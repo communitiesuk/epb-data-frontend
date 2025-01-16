@@ -20,6 +20,11 @@ module Controller
       set :show_exceptions, :after_handler
     end
 
+
+    get "/"  do
+      erb :home, layout: :layout
+    end
+
     def initialize(*args)
       super
       setup_locales
@@ -42,10 +47,10 @@ module Controller
       set_locale
       raise MaintenanceMode if request.path != "/healthcheck" && Helper::Toggles.enabled?("ebp-data-frontend-maintenance-mode")
 
-      if redirect_to_service_start_page?
-        cache_control :no_cache, :no_store
-        redirect(static_start_page, 303)
-      end
+      # if redirect_to_service_start_page?
+      #   cache_control :no_cache, :no_store
+      #   redirect(static_start_page, 303)
+      # end
     end
 
     HOST_NAME = "find-energy-certificate-data".freeze
@@ -55,11 +60,11 @@ module Controller
       erb template, layout:, locals:
     end
 
-    not_found do
-      @page_title = "#{t('error.404.heading')} – #{t('layout.body.govuk')}"
-      status 404
-      erb :error_page_404 unless @errors
-    end
+    # not_found do
+    #   @page_title = "#{t('error.404.heading')} – #{t('layout.body.govuk')}"
+    #   status 404
+    #   erb :error_page_404 unless @errors
+    # end
 
     class MaintenanceMode < RuntimeError
       include Errors::DoNotReport
