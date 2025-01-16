@@ -27,24 +27,18 @@ module Helper
       country_name = assessment[:countryName]
       check_array = []
 
-      if main_heating_hash.nil?
-        return false
-      else
-        check_array << main_heating_hash[:description]&.downcase&.include?("boiler")
-      end
+      return false if main_heating_hash.nil?
 
-      if energy_band.nil?
-        return false
-      else
-        check_array << %w[a b c].any? { |rating| energy_band&.include? rating }
-      end
+      check_array << main_heating_hash[:description]&.downcase&.include?("boiler")
 
-      if country_name.nil?
-        return false
-      else
-        not_in_england = !["England", "England and Wales"].include?(country_name)
-        check_array << not_in_england
-      end
+      return false if energy_band.nil?
+
+      check_array << %w[a b c].any? { |rating| energy_band&.include? rating }
+
+      return false if country_name.nil?
+
+      not_in_england = !["England", "England and Wales"].include?(country_name)
+      check_array << not_in_england
 
       (check_array.include?(true) ? true : false)
     end
@@ -56,9 +50,7 @@ module Helper
     def self.hide_bus?(assessment)
       main_heating_hash = (assessment[:propertySummary]&.select { |item| item[:name] == "main_heating" })&.first
 
-      unless main_heating_hash.nil?
-        return main_heating_hash[:description]&.downcase&.include? "heat pump"
-      end
+      return main_heating_hash[:description]&.downcase&.include? "heat pump" unless main_heating_hash.nil?
 
       false
     end

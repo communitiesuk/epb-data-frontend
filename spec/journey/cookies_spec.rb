@@ -20,7 +20,7 @@ describe "Journey::CookiesOnOurService", :journey, type: :feature do
           "9393",
           { err: %i[child out] },
         ],
-        )
+      )
     process_id = process.pid
 
     nil unless process.readline.include?("port=9393")

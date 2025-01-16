@@ -3,7 +3,9 @@ describe Middleware::ContentSecurityPolicy do
 
   let(:app) do
     app = double
-    allow(app).to receive(:call).and_return([200, Rack::Headers.new.merge({ "Content-Type" => "text/html" }), "some content"])
+    allow(app).to receive(:call).and_return([200,
+                                             Rack::Headers.new.merge({ "Content-Type" => "text/html" }),
+                                             "some content"])
     app
   end
 

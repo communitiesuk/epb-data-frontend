@@ -20,7 +20,6 @@ group :test do
   gem "webmock", "~> 3.23"
 end
 
-gem "csv", "~> 3.3"
 gem "epb-auth-tools", "~> 1.1.0"
 gem "erubis", "~> 2.7"
 gem "i18n", "~> 1.14.6"

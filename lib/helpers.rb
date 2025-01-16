@@ -7,7 +7,6 @@ require "uri"
 require "ostruct"
 
 module Helpers
-
   def get_subdomain_host(subdomain)
     current_url = request.url
 
@@ -21,7 +20,6 @@ module Helpers
       "https://#{subdomain}.service.gov.uk"
     end
   end
-
 
   def setup_locales
     I18n.load_path = Dir[File.join(settings.root, "/../../locales", "*.yml")]
@@ -145,53 +143,6 @@ module Helpers
 
   def in_find_service?
     true
-  end
-
-  def redirect_to_service_start_page?
-    return false if ENV["SUPPRESS_REDIRECT_TO_SERVICE_START"] == "true"
-
-    return false if ENV["STAGE"] == "test"
-
-    paths_not_directly_accessible = PARAMS_OF_PATHS_NOT_ACCESSIBLE_DIRECTLY.keys
-    return false unless paths_not_directly_accessible.include?(request.path)
-
-    search_params = params.keys - %w[lang]
-    return false if paths_not_directly_accessible.include?(request.path) && (PARAMS_OF_PATHS_NOT_ACCESSIBLE_DIRECTLY[request.path]&.sort == search_params&.sort)
-
-    referrer_outside_service?
-  end
-
-  def referrer_outside_service?
-    return false if request.referrer.nil? || request.referrer.empty?
-
-    service_urls = [
-      /www.gov.uk/,
-      /epb-data-static-start-pages/,
-    ]
-
-    service_urls.none? { |pattern| pattern.match?(request.referrer) }
-  end
-
-  PARAMS_OF_PATHS_NOT_ACCESSIBLE_DIRECTLY = {
-  }
-
-  def static_start_page?
-    !static_start_page.nil? && !static_start_page.empty?
-  end
-
-  def static_start_page
-    static_start_page_for_service is_finding_service: true,
-                                  lang: I18n.locale.to_s
-  end
-
-  def static_start_page_for_service(is_finding_service: true, lang: nil)
-    lang ||= I18n.locale.to_s
-    case [!is_finding_service, lang == "cy"]
-    when [false, false]
-      ENV["STATIC_START_PAGE_FINDING_EN"]
-    when [false, true]
-      ENV["STATIC_START_PAGE_FINDING_CY"]
-    end
   end
 
   def root_page_url

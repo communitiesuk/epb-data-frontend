@@ -32,15 +32,17 @@ describe "Integration::Rackup" do
 
   describe "GET /find-energy-performance-data.local.gov.uk" do
     before do
-      stub_request(:get, "http://find-energy-performance-data.local.gov.uk:9393/").
-        with(
+      stub_request(:get, "http://find-energy-performance-data.local.gov.uk:9393/")
+        .with(
           headers: {
-            'Accept'=>'*/*',
-            'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            'User-Agent'=>'Ruby'
-          }).
-        to_return(status: 200, body: "Get a new energy certificate", headers: {})
+            "Accept" => "*/*",
+            "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
+            "User-Agent" => "Ruby",
+          },
+        )
+        .to_return(status: 200, body: "Get a new energy certificate", headers: {})
     end
+
     it "renders the find-energy-performance-data page" do
       req = Net::HTTP::Get.new("/")
       response = http_request.request(req)
@@ -48,5 +50,4 @@ describe "Integration::Rackup" do
       expect(response.body).to include("Get a new energy certificate")
     end
   end
-
 end

@@ -151,7 +151,12 @@ RSpec::Matchers.define :match_html do |expected_html, **options|
 
     diff = CompareXML.equivalent?(expected_doc, actual_doc, **options)
     # account for leading spaces in class attributes as these are not significant
-    diff.reject { |difference| %i[diff1 diff2].all? { |diff_ref| difference[diff_ref].include?("class") } && difference[:diff1].gsub(' "', '"') == difference[:diff2].gsub(' "', '"') }.empty?
+    diff.reject { |difference|
+      %i[diff1 diff2].all? do |diff_ref|
+        difference[diff_ref].include?("class")
+      end && difference[:diff1].gsub(' "',
+                                     '"') == difference[:diff2].gsub(' "', '"')
+    }.empty?
   end
 end
 

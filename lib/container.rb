@@ -2,8 +2,7 @@
 
 class Container
   def initialize
-    @objects = {
-    }
+    @objects = {}
   end
 
   def get_object(key)

@@ -1,8 +1,8 @@
 describe "Acceptance::Service start page", type: :feature do
   include RSpecFrontendServiceMixin
-  let(:local_host){
+  let(:local_host) do
     "http://find-energy-performance-data"
-  }
+  end
 
   let(:response) { get local_host }
 
@@ -13,5 +13,4 @@ describe "Acceptance::Service start page", type: :feature do
       end
     end
   end
-
 end

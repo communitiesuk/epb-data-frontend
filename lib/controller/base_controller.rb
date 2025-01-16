@@ -16,12 +16,9 @@ module Controller
     set :public_folder, proc { File.join(root, "/../../public") }
     set :static_cache_control, [:public, { max_age: 60 * 60 * 24 * 7 }] if ENV["ASSETS_VERSION"]
 
-    if ENV["STAGE"] == "test"
-      set :show_exceptions, :after_handler
-    end
+    set :show_exceptions, :after_handler if ENV["STAGE"] == "test"
 
-
-    get "/"  do
+    get "/" do
       erb :home, layout: :layout
     end
 
@@ -45,7 +42,9 @@ module Controller
 
     before do
       set_locale
-      raise MaintenanceMode if request.path != "/healthcheck" && Helper::Toggles.enabled?("ebp-data-frontend-maintenance-mode")
+      if request.path != "/healthcheck" && Helper::Toggles.enabled?("ebp-data-frontend-maintenance-mode")
+        raise MaintenanceMode
+      end
 
       # if redirect_to_service_start_page?
       #   cache_control :no_cache, :no_store
@@ -60,11 +59,11 @@ module Controller
       erb template, layout:, locals:
     end
 
-    # not_found do
-    #   @page_title = "#{t('error.404.heading')} – #{t('layout.body.govuk')}"
-    #   status 404
-    #   erb :error_page_404 unless @errors
-    # end
+    not_found do
+      @page_title = "#{t('error.404.heading')} – #{t('layout.body.govuk')}"
+      status 404
+      erb :error_page_404 unless @errors
+    end
 
     class MaintenanceMode < RuntimeError
       include Errors::DoNotReport
@@ -86,9 +85,7 @@ module Controller
 
       error = { type: exception.class.name, message: }
 
-      if exception.methods.include? :backtrace
-        error[:backtrace] = exception.backtrace
-      end
+      error[:backtrace] = exception.backtrace if exception.methods.include? :backtrace
 
       @logger.error JSON.generate(error)
       @page_title =

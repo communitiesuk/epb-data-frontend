@@ -1,12 +1,16 @@
 describe Middleware::PermissionsPolicy do
   subject(:middleware) { described_class.new(app) }
 
-  let(:policy) { "accelerometer=(), autoplay=(), camera=(), cross-origin-isolated=(), display-capture=*, encrypted-media=*, fullscreen=*, geolocation=(), gyroscope=(), keyboard-map=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(), usb=(), xr-spatial-tracking=()" }
+  let(:policy) do
+    "accelerometer=(), autoplay=(), camera=(), cross-origin-isolated=(), display-capture=*, encrypted-media=*, fullscreen=*, geolocation=(), gyroscope=(), keyboard-map=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(), usb=(), xr-spatial-tracking=()"
+  end
 
   context "when the middleware is used on an HTML response" do
     let(:app) do
       app = double
-      allow(app).to receive(:call).and_return([200, Rack::Headers.new.merge({ "Content-Type" => "text/html" }), "some content"])
+      allow(app).to receive(:call).and_return([200,
+                                               Rack::Headers.new.merge({ "Content-Type" => "text/html" }),
+                                               "some content"])
       app
     end
 
@@ -19,7 +23,9 @@ describe Middleware::PermissionsPolicy do
   context "when the middleware is used on a text javascript response" do
     let(:app) do
       app = double
-      allow(app).to receive(:call).and_return([200, Rack::Headers.new.merge({ "Content-Type" => "text/javascript" }), "some content"])
+      allow(app).to receive(:call).and_return([200,
+                                               Rack::Headers.new.merge({ "Content-Type" => "text/javascript" }),
+                                               "some content"])
       app
     end
 
@@ -32,7 +38,9 @@ describe Middleware::PermissionsPolicy do
   context "when the middleware is used on an application javascript response" do
     let(:app) do
       app = double
-      allow(app).to receive(:call).and_return([200, Rack::Headers.new.merge({ "Content-Type" => "application/javascript" }), "some content"])
+      allow(app).to receive(:call).and_return([200,
+                                               Rack::Headers.new.merge({ "Content-Type" => "application/javascript" }),
+                                               "some content"])
       app
     end
 
@@ -45,7 +53,9 @@ describe Middleware::PermissionsPolicy do
   context "when the middleware is used on a non-HTML response like CSS" do
     let(:app) do
       app = double
-      allow(app).to receive(:call).and_return([200, Rack::Headers.new.merge({ "Content-Type" => "text/css" }), "body { background-color: goldenrod; }"])
+      allow(app).to receive(:call).and_return([200,
+                                               Rack::Headers.new.merge({ "Content-Type" => "text/css" }),
+                                               "body { background-color: goldenrod; }"])
       app
     end
 

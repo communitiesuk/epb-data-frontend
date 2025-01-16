@@ -11,7 +11,8 @@ def build_sass(source, destination)
   # slash-div: https://github.com/alphagov/govuk-frontend/issues/2238
   # import: https://github.com/alphagov/govuk-frontend/issues/1791
   # To add to this list check the deprecations that can be added here https://sass-lang.com/documentation/cli/dart-sass/#silence-deprecation
-  css = SassC::Engine.new(scss, style: :compressed, silence_deprecations: %w[mixed-decls global-builtin slash-div import]).render
+  css = SassC::Engine.new(scss, style: :compressed,
+                                silence_deprecations: %w[mixed-decls global-builtin slash-div import]).render
 
   File.write(destination, css)
 end
@@ -22,16 +23,12 @@ if ENV["ASSETS_VERSION"].nil? && File.exist?(assets_version_file)
 end
 
 def public_target(default)
-  unless ENV["ASSETS_VERSION"]
-    return default
-  end
+  return default unless ENV["ASSETS_VERSION"]
 
   default.gsub "/public", "/public/static/#{ENV['ASSETS_VERSION']}"
 end
 
-unless File.directory?(public_target("./public"))
-  FileUtils.mkdir_p(public_target("./public"))
-end
+FileUtils.mkdir_p(public_target("./public")) unless File.directory?(public_target("./public"))
 
 puts "Building Application SASS files"
 build_sass "./assets/sass/application.scss", public_target("./public/application.css")
@@ -46,12 +43,11 @@ puts "Copying GOVUKFrontend images"
 FileUtils.copy_entry "./node_modules/govuk-frontend/dist/govuk/assets/images", public_target("./public/images")
 
 puts "Copying GOVUKFrontend manifest"
-FileUtils.copy_entry "./node_modules/govuk-frontend/dist/govuk/assets/manifest.json", public_target("./public/manifest.json")
+FileUtils.copy_entry "./node_modules/govuk-frontend/dist/govuk/assets/manifest.json",
+                     public_target("./public/manifest.json")
 
 puts "Compiling and copying JavaScript"
-unless File.directory?(public_target("./public/javascript"))
-  FileUtils.mkdir(public_target("./public/javascript"))
-end
+FileUtils.mkdir(public_target("./public/javascript")) unless File.directory?(public_target("./public/javascript"))
 `./node_modules/.bin/babel #{File.realpath("./assets/javascript")} --ignore #{File.realpath("./assets/javascript/__tests__")} --out-dir #{File.realpath(public_target("./public/javascript"))} --no-comments`
 
 puts "  Copying and renaming GOVUKFrontend js"

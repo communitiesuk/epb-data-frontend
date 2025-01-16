@@ -3,9 +3,9 @@
 describe "Acceptance::Layout", type: :feature do
   include RSpecFrontendServiceMixin
 
-  let(:local_host){
+  let(:local_host) do
     "http://find-energy-performance-data"
-  }
+  end
 
   describe "get .find-energy-certificate-data.epb-frontend" do
     context "when the home page is rendered" do
@@ -22,10 +22,8 @@ describe "Acceptance::Layout", type: :feature do
       end
 
       it "does not allow indexing or following by crawlers" do
-        expect(response.body).to include("<meta name=\"robots\" content=\"noindex, nofollow\">")
+        expect(response.body).to include('<meta name="robots" content="noindex, nofollow">')
       end
     end
   end
-
-
 end

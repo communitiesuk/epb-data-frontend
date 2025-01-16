@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require "zeitwerk"
-require "sentry-ruby"
-require "active_support"
-require "active_support/cache"
-require "active_support/notifications"
-require "securerandom"
+require 'zeitwerk'
+require 'sentry-ruby'
+require 'active_support'
+require 'active_support/cache'
+require 'active_support/notifications'
+require 'securerandom'
 
 unless defined? TestLoader
   loader = Zeitwerk::Loader.new
@@ -15,7 +15,7 @@ end
 
 use Rack::Deflater, include: %w[text/html text/css application/javascript image/svg+xml]
 
-environment = ENV["STAGE"]
+environment = ENV['STAGE']
 
 if ENV['ASSETS_VERSION'].nil? && File.exist?('./ASSETS_VERSION')
   ENV['ASSETS_VERSION'] = File.read('./ASSETS_VERSION').chomp
@@ -61,7 +61,7 @@ unless %w[development test].include? environment
 end
 
 # setting Content-Security-Policy header (@see https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)
-ENV['SCRIPT_NONCE'] = SecureRandom.random_number(16**10).to_s(16).rjust(10, "0") if ENV['SCRIPT_NONCE'].nil?
+ENV['SCRIPT_NONCE'] = SecureRandom.random_number(16**10).to_s(16).rjust(10, '0') if ENV['SCRIPT_NONCE'].nil?
 
 csp_options = {
   script_src: "'nonce-#{ENV['SCRIPT_NONCE']}'",
@@ -71,7 +71,7 @@ csp_options = {
   report_ratio: 0.01,
   frame_ancestors: "'none'",
   form_action: "'self'"
-}.delete_if { |_, value| value.nil? || value=='' }
+}.delete_if { |_, value| value.nil? || value == '' }
 
 use Middleware::ContentSecurityPolicy, **Helper::GoogleCsp.add_options_for_google_analytics(csp_options)
 use Middleware::PermissionsPolicy
