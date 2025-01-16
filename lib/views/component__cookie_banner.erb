@@ -34,8 +34,8 @@
 
           <% link = '<a class="govuk-link" href="' + localised_url('/cookies') + '">' +
             t('layout.body.cookie_banner.change_settings') + '</a>' %>
-          <p class="govuk-body" id="accepted-confirmation" hidden><%== t('layout.body.cookie_banner.accepted', change_settings_link: link) %></p>
-          <p class="govuk-body" id="rejected-confirmation" hidden><%== t('layout.body.cookie_banner.rejected', change_settings_link: link) %></p>
+          <p class="govuk-body" id="accepted-confirmation" hidden><%= t('layout.body.cookie_banner.accepted', change_settings_link: link) %></p>
+          <p class="govuk-body" id="rejected-confirmation" hidden><%= t('layout.body.cookie_banner.rejected', change_settings_link: link) %></p>
         </div>
 
       </div>

@@ -1,8 +1,12 @@
 describe "Acceptance::ServiceUnavailable", type: :feature do
   include RSpecFrontendServiceMixin
 
+  let(:toggle_name) {
+    "ebp-data-frontend-maintenance-mode"
+  }
+
   context "when service unavailable is off" do
-    before { Helper::Toggles.set_feature("ebp-data-frontend-maintenance-mode", false) }
+    before { Helper::Toggles.set_feature(toggle_name, false) }
 
     let(:response) do
       get "http://find-energy-performance-data.local.gov.uk"
@@ -14,9 +18,9 @@ describe "Acceptance::ServiceUnavailable", type: :feature do
   end
 
   context "when service unavailable is on" do
-    before { Helper::Toggles.set_feature("ebp-data-frontend-maintenance-mode", true) }
+    before { Helper::Toggles.set_feature(toggle_name, true) }
 
-    after { Helper::Toggles.set_feature("ebp-data-frontend-maintenance-mode", false) }
+    after { Helper::Toggles.set_feature(toggle_name, false) }
 
     let(:response) do
       get "http://find-energy-performance-data.local.gov.uk"

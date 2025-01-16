@@ -19,7 +19,7 @@ module Controller
     set :show_exceptions, :after_handler if ENV["STAGE"] == "test"
 
     get "/" do
-      erb :home, layout: :layout
+      erb :home
     end
 
     def initialize(*args)
@@ -31,6 +31,7 @@ module Controller
       @logger.level = Logger::INFO
     end
 
+    HOST_NAME = "find-energy-certificate-data".freeze
     Helper::Assets.setup_cache_control(self)
 
     configure :development do
@@ -45,14 +46,7 @@ module Controller
       if request.path != "/healthcheck" && Helper::Toggles.enabled?("ebp-data-frontend-maintenance-mode")
         raise MaintenanceMode
       end
-
-      # if redirect_to_service_start_page?
-      #   cache_control :no_cache, :no_store
-      #   redirect(static_start_page, 303)
-      # end
     end
-
-    HOST_NAME = "find-energy-certificate-data".freeze
 
     def show(template, locals, layout = :layout)
       locals[:errors] = @errors

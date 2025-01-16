@@ -1,7 +1,7 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <% if defined?(is_success) && is_success %>
-    <%== erb :design_system__notification_banner, locals: {
+    <%= erb :design_system__notification_banner, locals: {
       html: "<h3 class=\"govuk-notification-banner__heading\">#{h(t('cookies.notification.success'))}</h3>
              <p class=\"govuk-body\">
                #{t('cookies.notification.go_back')}

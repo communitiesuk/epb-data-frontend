@@ -2,7 +2,6 @@
 
 require "net/http"
 require "epb-auth-tools"
-require "csv"
 require "uri"
 require "ostruct"
 
@@ -138,19 +137,13 @@ module Helpers
   end
 
   def google_property
-    in_find_service? ? ENV["GTM_PROPERTY_FINDING"] : ENV["GTM_PROPERTY_GETTING"]
+   ENV["GTM_PROPERTY_FINDING"]
   end
 
-  def in_find_service?
-    true
-  end
+
 
   def root_page_url
-    if static_start_page?
-      static_start_page
-    else
-      localised_url "/"
-    end
+    localised_url "/"
   end
 
   def get_service_root_page_url
