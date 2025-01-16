@@ -2,10 +2,10 @@ describe "Acceptance::ServiceUnavailable", type: :feature do
   include RSpecFrontendServiceMixin
 
   context "when service unavailable is off" do
-    before { Helper::Toggles.set_feature("frontend-maintenance-mode", false) }
+    before { Helper::Toggles.set_feature("ebp-data-frontend-maintenance-mode", false) }
 
     let(:response) do
-      get "http://find-energy-certificate.epb-frontend"
+      get "http://find-energy-performance-data.local.gov.uk"
     end
 
     it "returns a 200 status on any existing route" do
@@ -14,12 +14,12 @@ describe "Acceptance::ServiceUnavailable", type: :feature do
   end
 
   context "when service unavailable is on" do
-    before { Helper::Toggles.set_feature("frontend-maintenance-mode", true) }
+    before { Helper::Toggles.set_feature("ebp-data-frontend-maintenance-mode", true) }
 
-    after { Helper::Toggles.set_feature("frontend-maintenance-mode", false) }
+    after { Helper::Toggles.set_feature("ebp-data-frontend-maintenance-mode", false) }
 
     let(:response) do
-      get "http://find-energy-certificate.epb-frontend"
+      get "http://find-energy-performance-data.local.gov.uk"
     end
 
     it "returns a 503 status on any existing route" do

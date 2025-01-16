@@ -4,7 +4,7 @@ describe "Partial include analytics", type: :feature do
   include RSpecFrontendServiceMixin
 
   let(:url) do
-    "http://find-energy-certificate.local.gov.uk/find-a-certificate/type-of-property"
+    "http://find-energy-performance-data.local.gov.uk"
   end
 
   before do
@@ -17,7 +17,7 @@ describe "Partial include analytics", type: :feature do
 
   context "when the cookie_consent cookie is null" do
     before do
-      ENV["GTM_PROPERTY_FINDING"] = "GT6666"
+      ENV["GTM_PROPERTY_FINDING"] = "GTM7777"
     end
 
     let(:response) do

@@ -1,10 +1,10 @@
 describe "cookies page", type: :feature do
   include RSpecFrontendServiceMixin
 
-  describe ".get getting-new-energy-certificate/cookies" do
+  describe ".get find-energy-performance-data.local.gov.uk/cookies" do
     context "when cookies page rendered" do
       let(:response) do
-        get "http://getting-new-energy-certificate.local.gov.uk/cookies"
+        get "http://find-energy-performance-data.local.gov.uk/cookies"
       end
 
       it "returns status 200" do
@@ -23,32 +23,10 @@ describe "cookies page", type: :feature do
     end
   end
 
-  describe ".get find-energy-certificate/cookies" do
-    context "when cookies page rendered" do
-      let(:response) do
-        get "http://find-energy-certificate.local.gov.uk/cookies"
-      end
-
-      it "returns status 200" do
-        expect(response.status).to eq(200)
-      end
-
-      it "displays the cookies page heading" do
-        expect(response.body).to include("Cookies on our service")
-      end
-
-      it "displays the cookies contents" do
-        expect(response.body).to include(
-          "Cookies that measure website use",
-        )
-      end
-    end
-  end
-
-  describe ".post find-energy-certificate/cookies" do
+  describe ".post find-energy-performance-data.local.gov.uk/cookies" do
     context "when cookie options are submitted opting out" do
       let(:response) do
-        post "http://find-energy-certificate.local.gov.uk/cookies", { cookies_setting: "false" }
+        post "http://find-energy-performance-data.local.gov.uk/cookies", { cookies_setting: "false" }
       end
 
       it "returns status 302" do
@@ -90,7 +68,7 @@ describe "cookies page", type: :feature do
 
     context "when someone hijacks the cookie_setting values and submits" do
       let(:response) do
-        post "http://find-energy-certificate.local.gov.uk/cookies", { cookies_setting: "potentiallydodgyvalue" }
+        post "http://find-energy-performance-data.local.gov.uk/cookies", { cookies_setting: "potentiallydodgyvalue" }
       end
 
       it "returns status 302" do
