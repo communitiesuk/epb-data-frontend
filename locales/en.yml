@@ -4,11 +4,11 @@ en:
 
   data_missing:
 
-  service_name: "Energy performance certificates data"
+  service_name: "Find energy performance of buildings data"
 
   layout:
     head:
-      title: "Energy performance certificate data"
+      title: "Find energy performance of buildings data"
     body:
       skip: "Skip to main content"
       govuk: "GOV.UK"

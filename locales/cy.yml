@@ -4,11 +4,12 @@ cy:
 
   data_missing:
 
-  service_name: "Data tystysgrifau perfformiad ynni"
+  #TODO: update translation
+  service_name: "Darganfod data perfformiad ynni adeiladau"
 
   layout:
     head:
-      title: "Cofrestr perfformiad ynni adeiladau"
+      title: "Darganfod data perfformiad ynni adeiladau"
     body:
       skip: "Sgipiwch i’r prif gynnwys"
       govuk: "GOV.UK"
