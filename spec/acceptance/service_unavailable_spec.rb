@@ -1,9 +1,9 @@
 describe "Acceptance::ServiceUnavailable", type: :feature do
   include RSpecFrontendServiceMixin
 
-  let(:toggle_name) {
+  let(:toggle_name) do
     "ebp-data-frontend-maintenance-mode"
-  }
+  end
 
   context "when service unavailable is off" do
     before { Helper::Toggles.set_feature(toggle_name, false) }

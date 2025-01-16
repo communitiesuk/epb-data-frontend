@@ -3,6 +3,5 @@ module Controller
     get "/healthcheck" do
       status 200
     end
-
   end
 end

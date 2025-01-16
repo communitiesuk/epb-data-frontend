@@ -137,10 +137,8 @@ module Helpers
   end
 
   def google_property
-   ENV["GTM_PROPERTY_FINDING"]
+    ENV["GTM_PROPERTY_FINDING"]
   end
-
-
 
   def root_page_url
     localised_url "/"
