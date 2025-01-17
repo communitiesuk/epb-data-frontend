@@ -31,7 +31,7 @@ run:
 
 .PHONY: formatmak
 format:
-	@bundle exec rubocop --autocorrect || true && npm run fmt || true
+	@bundle exec rubocop --autocorrect || true
 
 .PHONY: journey
 journey:
