@@ -33,4 +33,7 @@ module Errors
 
   class BotDetected < RuntimeError
   end
+
+  module DoNotReport
+  end
 end
