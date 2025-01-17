@@ -1,0 +1,59 @@
+cy:
+  validation_errors:
+    captcha_error: "Profwch mai rhywun dynol sydd yna a rhoi cynnig arall arni"
+
+  data_missing:
+
+  #TODO: update translation
+  service_name: "Cael data perfformiad ynni adeiladau"
+
+  layout:
+    head:
+      title: "Cael data perfformiad ynni adeiladau"
+    body:
+      skip: "Sgipiwch i’r prif gynnwys"
+      govuk: "GOV.UK"
+      phase_banner: "This is a test site. The data is not real and the certificates are not valid."
+      footer:
+        heading: "Dolenni cymorth"
+        accessibility_statement: "Hygyrchedd"
+        cookies: "Cwcis"
+        feedback: "Rhoi adborth"
+        license: "Mae’r cynnwys i gyd ar gael o dan y <a class=\"govuk-footer__link\" href=\"https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" rel=\"license\">Drwydded Llywodraeth Agored v3.0</a>,  ac eithrio lle nodir fel arall."
+        copyright: "<a class=\"govuk-footer__link govuk-footer__copyright-logo\" href=\"https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/\">&copy; Crown copyright</a>"
+        help: "Help"
+
+  contact:
+    help_desk_number: "020 3829 0748"
+
+  error:
+    error: "Gwall: "
+    "500":
+      heading: "Ymddiheuriadau, mae problem gyda’r gwasanaeth."
+      body: "Rhowch gynnig arall arni yn nes ymlaen"
+    404:
+      heading: "Y tudalen heb ei ganfod"
+      intro: "Os gwnaethoch chi deipio’r cyfeiriad gwe, gwiriwch ei fod yn gywir."
+      body: "Os gwnaethoch chi ludo’r cyfeiriad gwe, gwiriwch ei fod yn gywir."
+    410:
+      heading: "Mae’r dystysgrif hon wedi’i chanslo"
+      body: "Efallai ei bod wedi’i disodli gan dystysgrif newydd. Gallwch "
+      service_link: "wirio a oes tystysgrif newydd"
+    error_summary_header: "Mae yna broblem"
+    too_many_results:
+      heading: "Gormod o ganlyniadau ar gyfer y cyfeiriad hwn"
+      body: "Mae gormod o ganlyniadau. %{link}."
+      cta_search_by_postcode: "Chwiliwch yn ôl y cod post"
+      royal_mail_link: "Gallwch %{link}."
+      cta_royal_mail: "ddod o hyd i god post ar chwiliwr cod post y Post Brenhinol"
+
+  accessibility_statement:
+    top_heading: "Datganiad ar hygyrchedd"
+
+  service_unavailable:
+    title: "Ymddiheuriadau. Nid yw’r gwasanaeth ar gael."
+    try_later: "Byddwch yn gallu defnyddio’r gwasanaeth yn nes ymlaen."
+    help_desk:
+      need_support: "%{link} os oes arnoch chi angen cymorth i ddod o hyd i dystysgrif neu adroddiad ynni."
+      link: "Cysylltwch â'n desg gymorth"
+
