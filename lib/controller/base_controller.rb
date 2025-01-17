@@ -31,7 +31,7 @@ module Controller
       @logger.level = Logger::INFO
     end
 
-    HOST_NAME = "find-energy-certificate-data".freeze
+    HOST_NAME = "get-energy-certificate-data".freeze
     Helper::Assets.setup_cache_control(self)
 
     configure :development do

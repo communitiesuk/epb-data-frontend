@@ -4,25 +4,15 @@ en:
 
   data_missing:
 
-  service_name: "Find energy performance of buildings data"
+  service_name: "Get energy performance of buildings data"
 
   layout:
     head:
-      title: "Find energy performance of buildings data"
+      title: "Get energy performance of buildings data"
     body:
       skip: "Skip to main content"
       govuk: "GOV.UK"
-      cookie_banner:
-        title: "Cookies on "
-        intro_essential: "We use some essential cookies to make this service work."
-        intro_analytics: "We’d also like to use analytics cookies so we can understand how you use the service and make improvements."
-        accept: "Accept analytics cookies"
-        reject: "Reject analytics cookies"
-        view_cookies: "View cookies"
-        change_settings: "change your cookie settings"
-        accepted: "You’ve accepted analytics cookies. You can %{change_settings_link} at any time."
-        rejected: "You’ve rejected analytics cookies. You can %{change_settings_link} at any time."
-        hide_message: "Hide cookie message"
+
       phase_banner: "This is a test site. The data is not real and the certificates are not valid."
       footer:
         heading: "Support links"

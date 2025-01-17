@@ -24,43 +24,43 @@ describe "Helpers.get_subdomain_host" do
   context "when the current URL includes integration" do
     let(:request) do
       req = OpenStruct.new
-      req.url = "https://find-energy-certificate-integration.somehost.com/"
+      req.url = "https://get-energy-certificate-integration.somehost.com/"
       req
     end
 
-    let(:subdomain) { "find-energy-certificate" }
+    let(:subdomain) { "get-energy-certificate" }
 
     before do
       frontend_service_helpers.request = request
     end
 
     it "returns the integration subdomain for digital.communities.gov.uk" do
-      expect(frontend_service_helpers.get_subdomain_host(subdomain)).to eq "https://find-energy-certificate-integration.digital.communities.gov.uk"
+      expect(frontend_service_helpers.get_subdomain_host(subdomain)).to eq "https://get-energy-certificate-integration.digital.communities.gov.uk"
     end
   end
 
   context "when the current URL includes staging" do
     let(:request) do
       req = OpenStruct.new
-      req.url = "https://find-energy-certificate-staging.somehost.com/"
+      req.url = "https://get-energy-certificate-staging.somehost.com/"
       req
     end
 
-    let(:subdomain) { "find-energy-certificate" }
+    let(:subdomain) { "get-energy-certificate" }
 
     before do
       frontend_service_helpers.request = request
     end
 
     it "returns the staging subdomain for digital.communities.gov.uk" do
-      expect(frontend_service_helpers.get_subdomain_host(subdomain)).to eq "https://find-energy-certificate-staging.digital.communities.gov.uk"
+      expect(frontend_service_helpers.get_subdomain_host(subdomain)).to eq "https://get-energy-certificate-staging.digital.communities.gov.uk"
     end
   end
 
   context "when current URL does not include integration or staging" do
     let(:request) do
       req = OpenStruct.new
-      req.url = "https://find-energy-certificate.therealdomain.com/"
+      req.url = "https://get-energy-certificate.therealdomain.com/"
       req
     end
 

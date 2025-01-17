@@ -120,8 +120,7 @@ RSpec.configure do |config|
   WebMock.disable_net_connect!(
     allow_localhost: true,
     allow: %w[
-      find-energy-certificate.local.gov.uk
-      getting-new-energy-certificate.local.gov.uk
+      get-energy-performance-data
     ],
   )
 

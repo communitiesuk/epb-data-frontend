@@ -27,12 +27,12 @@ describe "Integration::Rackup" do
   after(:all) { Process.kill("KILL", process_id) if process_id }
 
   let(:http_request) do
-    Net::HTTP.new("find-energy-performance-data.local.gov.uk", 9_393)
+    Net::HTTP.new("get-energy-performance-data.local.gov.uk", 9_393)
   end
 
-  describe "GET /find-energy-performance-data.local.gov.uk" do
+  describe "GET /get-energy-performance-data.local.gov.uk" do
     before do
-      stub_request(:get, "http://find-energy-performance-data.local.gov.uk:9393/")
+      stub_request(:get, "http://get-energy-performance-data.local.gov.uk:9393/")
         .with(
           headers: {
             "Accept" => "*/*",
@@ -43,7 +43,7 @@ describe "Integration::Rackup" do
         .to_return(status: 200, body: "Get a new energy certificate", headers: {})
     end
 
-    it "renders the find-energy-performance-data page" do
+    it "renders the get-energy-performance-data page" do
       req = Net::HTTP::Get.new("/")
       response = http_request.request(req)
       expect(response.code).to eq("200")
