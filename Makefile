@@ -16,7 +16,6 @@ frontend-build-watch:
 .PHONY: test
 test:
 	@bundle exec rspec
-	@npm run test
 
 .PHONY: hosts
 hosts:

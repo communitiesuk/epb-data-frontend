@@ -4,7 +4,7 @@ describe "Partial include analytics", type: :feature do
   include RSpecFrontendServiceMixin
 
   let(:url) do
-    "http://find-energy-performance-data.local.gov.uk"
+    "http://get-energy-performance-data.local.gov.uk"
   end
 
   before do
