@@ -42,10 +42,14 @@ FileUtils.copy_entry "./assets/images", public_target("./public/images")
 puts "Copying GOVUKFrontend images"
 FileUtils.copy_entry "./node_modules/govuk-frontend/dist/govuk/assets/images", public_target("./public/images")
 
+puts "Compiling and copying JavaScript"
+unless File.directory?(public_target("./public/javascript"))
+  FileUtils.mkdir(public_target("./public/javascript"))
+end
+
 puts "Copying GOVUKFrontend manifest"
 FileUtils.copy_entry "./node_modules/govuk-frontend/dist/govuk/assets/manifest.json",
                      public_target("./public/manifest.json")
-
 
 puts "  Copying and renaming GOVUKFrontend js"
 `npm run copy-without-comments #{File.realpath("./node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.js")} #{File.realpath(public_target("./public/javascript"))}/govuk.js`
