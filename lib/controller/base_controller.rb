@@ -19,7 +19,7 @@ module Controller
     set :show_exceptions, :after_handler if ENV["STAGE"] == "test"
 
     get "/" do
-      erb :home
+      erb :start_page
     end
 
     def initialize(*args)

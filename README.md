@@ -16,8 +16,13 @@ This short guide will use `Git`.
 
 1. Clone the repository: `$ git clone git@github.com:communitiesuk/epb-data-frontend.git`
 2. Change into the cloned repository: `$ cd epb-data-frontend`
-3. Install the Ruby gems: `$ bundle install`
-4. Build the frontend assets: `$ make frontend-build`
+3. Install the Ruby gems:
+    - `$ rvm use`
+    - `$ bundle install`
+4. Install node packages: 
+    - `$ nvm use`
+    - `$ npm install`
+5. Build the frontend assets: `$ make frontend-build`
 
 ## Test
 
