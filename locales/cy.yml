@@ -58,12 +58,12 @@ cy:
       link: "Cysylltwch â'n desg gymorth"
 
   data_access_options_page:
-    title: "Sut hoffech chi gael mynediad i'r data?"
+    title: "How would you like to access the data?"
     download_files:
-      title: "Llwytho ffeiliau i lawr"
-      description: "Llwytho data tystysgrifau i lawr y gellir eu hagor yn Microsoft Excel."
-      button_text: "Llwytho ffeiliau i lawr"
+      title: "Download files"
+      description: "Download certificate data which can be opened in Microsoft Excel."
+      button_text: "Download files"
     use_api:
-      title: "Defnyddio API datblygwr"
-      description: "Defnyddio API i gael mynediad i ddata tystysgrifau."
-      button_text: "Defnyddio API"
+      title: "Use a developer API"
+      description: "Use an API to access certificate data."
+      button_text: "Use API"

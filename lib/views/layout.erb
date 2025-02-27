@@ -71,6 +71,9 @@
         </span>
       </p>
     </div>
+    <% if @back_link_href %>
+      <%= erb :'component__back_link', locals: { href: @back_link_href } %>
+    <% end %>
   <% end %>
 
 

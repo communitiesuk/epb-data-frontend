@@ -25,6 +25,7 @@ module Controller
     get "/data_access_options_page" do
       status 200
       @page_title = t("data_access_options_page.title")
+      @back_link_href = "/"
       erb :data_access_options_page
     end
 
