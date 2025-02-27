@@ -57,3 +57,13 @@ cy:
       need_support: "%{link} os oes arnoch chi angen cymorth i ddod o hyd i dystysgrif neu adroddiad ynni."
       link: "Cysylltwch â'n desg gymorth"
 
+  data_access_options_page:
+    title: "Sut hoffech chi gael mynediad i'r data?"
+    download_files:
+      title: "Llwytho ffeiliau i lawr"
+      description: "Llwytho data tystysgrifau i lawr y gellir eu hagor yn Microsoft Excel."
+      button_text: "Llwytho ffeiliau i lawr"
+    use_api:
+      title: "Defnyddio API datblygwr"
+      description: "Defnyddio API i gael mynediad i ddata tystysgrifau."
+      button_text: "Defnyddio API"

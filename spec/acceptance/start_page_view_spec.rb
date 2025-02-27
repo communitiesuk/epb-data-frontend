@@ -1,4 +1,4 @@
-describe "Acceptance::Service start page", type: :feature do
+describe "Acceptance::ServiceStartPage", type: :feature do
   include RSpecFrontendServiceMixin
   let(:local_host) do
     "http://get-energy-performance-data"
@@ -13,7 +13,7 @@ describe "Acceptance::Service start page", type: :feature do
       end
 
       it "has the correct Start now button" do
-        expect(response.body).to have_link("Start now", href: "/way-to-access-data")
+        expect(response.body).to have_link("Start now", href: "/data_access_options_page")
       end
 
       it "has the correct link to Scottish EPC Register, guidance page and EPC Register" do

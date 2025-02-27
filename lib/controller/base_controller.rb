@@ -22,6 +22,12 @@ module Controller
       erb :start_page
     end
 
+    get "/data_access_options_page" do
+      status 200
+      @page_title = t("data_access_options_page.title")
+      erb :data_access_options_page
+    end
+
     def initialize(*args)
       super
       setup_locales

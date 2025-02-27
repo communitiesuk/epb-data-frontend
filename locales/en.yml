@@ -58,4 +58,14 @@ en:
       need_support: "%{link} if you need support to find an energy certificate or report."
       link: "Contact our helpdesk"
 
+  data_access_options_page:
+    title: "How would you like to access the data?"
+    download_files:
+      title: "Download files"
+      description: "Download certificate data which can be opened in Microsoft Excel."
+      button_text: "Download files"
+    use_api:
+      title: "Use a developer API"
+      description: "Use an API to access certificate data."
+      button_text: "Use API"
 
