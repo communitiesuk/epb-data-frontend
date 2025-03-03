@@ -25,8 +25,15 @@ module Controller
     get "/data_access_options_page" do
       status 200
       @page_title = t("data_access_options_page.title")
-      @back_link_href = "/"
+      @back_link_href = true
       erb :data_access_options_page
+    end
+
+    get "/guidance" do
+      status 200
+      @back_link_href = true
+      @hide_guidance_text = true
+      erb :guidance
     end
 
     def initialize(*args)

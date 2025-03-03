@@ -3,16 +3,18 @@
     Get help
   </h2>
 
-  <p class="govuk-body">
-    <a href="/guidance">Visit the guidance page</a> for information on:
-  </p>
+  <% unless @hide_guidance_text %>
+    <p class="govuk-body">
+      <a href="/guidance">Visit the guidance page</a> for information on:
+    </p>
 
-  <ul class="govuk-list govuk-list--bullet govuk-!-margin-left-5">
-    <li>what the data contains</li>
-    <li>data methodology and limitations</li>
-    <li>using the developer API</li>
-    <li>licensing restrictions</li>
-  </ul>
+    <ul class="govuk-list govuk-list--bullet govuk-!-margin-left-5">
+      <li>what the data contains</li>
+      <li>data methodology and limitations</li>
+      <li>using the developer API</li>
+      <li>licensing restrictions</li>
+    </ul>
+  <% end %>
 
   <p class="govuk-body">
     For enquiries about the data, please contact the Ministry of Housing, Communities and Local Government (MHCLG)
