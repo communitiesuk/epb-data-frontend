@@ -17,7 +17,11 @@ describe "Acceptance::ServiceStartPage", type: :feature do
         expect(response.body).to have_link("Back", href: "/previous_page")
       end
 
-      it "the title to be correct" do
+      it "directs back link to home page if no referer header found" do
+        expect(response.body).to have_link("Back", href: "/")
+      end
+
+      it "has the correct title" do
         expect(response.body).to have_css("h1", text: "Guidance")
       end
 
@@ -47,7 +51,6 @@ describe "Acceptance::ServiceStartPage", type: :feature do
         expect(response.body).to have_link("API guidance", href: "/api-guidance")
         expect(response.body).to have_link("API technical documentation", href: "/api-technical-documentation")
       end
-
 
       it "has the Get Help section" do
         expect(response.body).to have_css("h2", text: "Get help")
