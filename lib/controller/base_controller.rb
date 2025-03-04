@@ -22,11 +22,11 @@ module Controller
       erb :start_page
     end
 
-    get "/data_access_options_page" do
+    get "/data_access_options" do
       status 200
-      @page_title = t("data_access_options_page.title")
+      @page_title = t("data_access_options.title")
       @back_link_href = "/"
-      erb :data_access_options_page
+      erb :data_access_options
     end
 
     get "/guidance" do

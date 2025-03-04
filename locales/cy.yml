@@ -57,7 +57,7 @@ cy:
       need_support: "%{link} os oes arnoch chi angen cymorth i ddod o hyd i dystysgrif neu adroddiad ynni."
       link: "Cysylltwch â'n desg gymorth"
 
-  data_access_options_page:
+  data_access_options:
     title: "How would you like to access the data?"
     download_files:
       title: "Download files"
