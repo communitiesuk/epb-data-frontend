@@ -1,12 +1,12 @@
 describe "Acceptance::DataAccessOptionsPage", type: :feature do
   include RSpecFrontendServiceMixin
   let(:local_host) do
-    "http://get-energy-performance-data/data_access_options"
+    "http://get-energy-performance-data/data-access-options"
   end
 
   let(:response) { get local_host }
 
-  describe "get .get-energy-certificate-data.epb-frontend/data_access_options" do
+  describe "get .get-energy-certificate-data.epb-frontend/data-access-options" do
     context "when the data access options page is rendered" do
       it "returns status 200" do
         expect(response.status).to eq(200)

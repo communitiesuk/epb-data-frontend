@@ -3,7 +3,7 @@ module Controller
     get "/type-of-properties" do
       status 200
       @errors = {}
-      @back_link_href = "/data_access_options"
+      @back_link_href = "/data-access-options"
       erb :type_of_properties
     end
 

@@ -13,7 +13,7 @@ describe "Acceptance::DataAccessOptionsPage", type: :feature do
       end
 
       it "shows a back link" do
-        expect(response.body).to have_link "Back", href: "/data_access_options"
+        expect(response.body).to have_link "Back", href: "/data-access-options"
       end
 
       it "has the correct form title" do

@@ -4,7 +4,7 @@ module Controller
       status 200
     end
 
-    get "/data_access_options" do
+    get "/data-access-options" do
       status 200
       @page_title = t("data_access_options.title")
       @back_link_href = "/"
