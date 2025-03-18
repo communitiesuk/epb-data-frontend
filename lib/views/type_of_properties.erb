@@ -23,7 +23,7 @@
             <div class="govuk-radios" data-module="govuk-radios">
             <div class="govuk-radios__item">
               <input class="govuk-radios__input" id="<%= error_form_ids[0] %>" name="property_type" type="radio" value="<%= error_form_ids[0] %>" aria-describedby="domestic-item-hint">
-              <label class="govuk-label govuk-radios__label" for="<%= error_form_ids[0] %>">
+              <label  id="label-domestic" class="govuk-label govuk-radios__label" for="<%= error_form_ids[0] %>">
                 <%= t("property_type.radio_selects.domestic.text") %>
               </label>
               <div id="domestic-item-hint" class="govuk-hint govuk-radios__hint">
@@ -32,7 +32,7 @@
             </div>
             <div class="govuk-radios__item">
               <input class="govuk-radios__input" id="non-domestic" name="property_type" type="radio" value="non_domestic" aria-describedby="non-domestic-hint">
-              <label class="govuk-label govuk-radios__label" for="non-domestic">
+              <label id="label-commercial" class="govuk-label govuk-radios__label" for="non-domestic">
                 <%= t("property_type.radio_selects.commercial.text") %>
               </label>
               <div id="non-domestic-hint" class="govuk-hint govuk-radios__hint">
@@ -41,7 +41,7 @@
             </div>
             <div class="govuk-radios__item">
               <input class="govuk-radios__input" id="public-buildings" name="property_type" type="radio" value="public_buildings" aria-describedby="public-properties-hint">
-              <label class="govuk-label govuk-radios__label" for="public-buildings">
+              <label id="label-dec" class="govuk-label govuk-radios__label" for="public-buildings">
                 <%= t("property_type.radio_selects.dec.text") %>
               </label>
               <div id="public-buildings-hint" class="govuk-hint govuk-radios__hint">
