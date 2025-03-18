@@ -40,7 +40,7 @@ cy:
       body: "Efallai ei bod wedi’i disodli gan dystysgrif newydd. Gallwch "
       service_link: "wirio a oes tystysgrif newydd"
     error_summary_header: "Mae yna broblem"
-    too_many_results:
+    invalid_property_selection:
       heading: "Gormod o ganlyniadau ar gyfer y cyfeiriad hwn"
       body: "Mae gormod o ganlyniadau. %{link}."
       cta_search_by_postcode: "Chwiliwch yn ôl y cod post"
@@ -67,3 +67,21 @@ cy:
       title: "Use a developer API"
       description: "Use an API to access certificate data."
       button_text: "Use API"
+
+  property_type:
+    title: "What type of certificates do you want data on?"
+    radio_selects:
+      domestic:
+        text: "Energy Performance Certificates (EPCs)"
+        hint: "For domestic properties such as houses or flats"
+      commercial:
+        text: "Commercial Energy Performance Certificates (CEPCs)"
+        hint: "For non-domestic properties such as commercial or industrial buildings"
+      dec:
+        text: "Display Energy Certificates (DECs)"
+        hint: "For public buildings such as schools or hospitals"
+    summary:
+      text: "What buildings have a Display Energy Certificate?"
+      para_1: "Buildings that are occupied by a public authority, are frequently visited by the public and have a floor area above 250m² must have a Display Energy Certificate (DEC)."
+      para_2: "Buildings with a Display Energy Certificate (DEC) may also have a Commercial Energy Performance Certificate (CEPC)."
+    submit: "Parhau"

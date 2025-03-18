@@ -40,8 +40,8 @@ en:
       body: "A new certificate may have replaced it. You can "
       service_link: "check if there is a new certificate"
     error_summary_header: "There is a problem"
-    too_many_results:
-      heading: "Too many results for this address"
+    invalid_property_selection:
+      heading: "Select a type of certificate"
       body: "There are too many results. %{link}."
       cta_search_by_postcode: "Search by postcode instead"
       royal_mail_link: "You can %{link}."
@@ -68,4 +68,22 @@ en:
       title: "Use a developer API"
       description: "Use an API to access certificate data."
       button_text: "Use API"
+
+  property_type:
+    title: "What type of certificates do you want data on?"
+    radio_selects:
+      domestic:
+        text: "Energy Performance Certificates (EPCs)"
+        hint: "For domestic properties such as houses or flats"
+      commercial:
+        text: "Commercial Energy Performance Certificates (CEPCs)"
+        hint: "For non-domestic properties such as commercial or industrial buildings"
+      dec:
+        text: "Display Energy Certificates (DECs)"
+        hint: "For public buildings such as schools or hospitals"
+    summary:
+      text: "What buildings have a Display Energy Certificate?"
+      para_1: "Buildings that are occupied by a public authority, are frequently visited by the public and have a floor area above 250m² must have a Display Energy Certificate (DEC)."
+      para_2: "Buildings with a Display Energy Certificate (DEC) may also have a Commercial Energy Performance Certificate (CEPC)."
+    submit: "Continue"
 

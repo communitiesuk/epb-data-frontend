@@ -12,7 +12,7 @@ module Controller
       if params["property_type"]
         redirect "/filter-properties?property_type=#{params['property_type']}"
       else
-        @errors[:property_type] = "Select a type of certificate"
+        @errors[:property_type] = t("error.invalid_property_selection.heading")
         erb :type_of_properties
       end
     end
