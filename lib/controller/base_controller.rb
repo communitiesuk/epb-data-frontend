@@ -43,10 +43,10 @@ module Controller
       erb :start_page
     end
 
-    get "/filter_properties",
+    get "/filter-properties",
         &filter_properties
 
-    post "/filter_properties",
+    post "/filter-properties",
          &filter_properties
 
     def initialize(*args)

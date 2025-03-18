@@ -17,9 +17,5 @@ module Controller
       @hide_guidance_text = true
       erb :guidance
     end
-
-    get "/filter-properties" do
-      status 200
-    end
   end
 end

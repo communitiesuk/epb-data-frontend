@@ -36,8 +36,8 @@ describe "Journey::SelectPropertyType", :journey, type: :feature do
       click_on "Continue"
     end
 
-    it "shows the correct header" do
-      expect(page).not_to have_content "What type of certificates do you want data on"
+    it "shows the correct header for the filter property page" do
+      expect(page).to have_content "Download all data"
     end
   end
 

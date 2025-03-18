@@ -2,7 +2,7 @@ describe "Acceptance::FilterPropertiesPage", type: :feature do
   include RSpecFrontendServiceMixin
 
   let(:local_host) do
-    "http://get-energy-performance-data/filter_properties"
+    "http://get-energy-performance-data/filter-properties"
   end
 
   let(:response) { get local_host }
@@ -17,7 +17,7 @@ describe "Acceptance::FilterPropertiesPage", type: :feature do
     "ratings[]=A&ratings[]=B"
   end
 
-  describe "get .get-energy-certificate-data.epb-frontend/filter_properties" do
+  describe "get .get-energy-certificate-data.epb-frontend/filter-properties" do
     context "when the data access options page is rendered" do
       it "returns status 200" do
         expect(response.status).to eq(200)
