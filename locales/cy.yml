@@ -86,9 +86,10 @@ cy:
       para_2: "Buildings with a Display Energy Certificate (DEC) may also have a Commercial Energy Performance Certificate (CEPC)."
     submit: "Parhau"
 
-  properties_filter:
+  filter_properties:
     domestic_title: "Energy Performance Certificates"
     non_domestic_title: "Commercial Energy Performance Certificates"
+    dec_title: "Display Energy Certificates"
     download_all_data:
       title: "Download all data"
       will_get_data_for: "You will get data for:"

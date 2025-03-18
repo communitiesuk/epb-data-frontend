@@ -18,36 +18,10 @@ module Controller
 
     set :show_exceptions, :after_handler if ENV["STAGE"] == "test"
 
-    filter_properties =
-      lambda do
-        @errors = {}
-        status 200
-        @back_link_href = request.referer || "/"
-
-        if request.post?
-          unless ViewModels::FilterProperties.is_valid_date(params)
-            status 400
-            @errors[:date] = t("properties_filter.validation_errors.invalid_date")
-          end
-
-          if params["ratings"].nil? || params["ratings"].empty?
-            status 400
-            @errors[:eff_rating] = t("properties_filter.validation_errors.invalid_eff_rating")
-          end
-        end
-        erb :filter_properties_page
-      end
-
     get "/" do
       status 200
       erb :start_page
     end
-
-    get "/filter-properties",
-        &filter_properties
-
-    post "/filter-properties",
-         &filter_properties
 
     def initialize(*args)
       super

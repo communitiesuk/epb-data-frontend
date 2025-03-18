@@ -3,28 +3,28 @@
     <div class="govuk-grid-column-full-from-desktop">
       <div class="govuk-grid-row">
         <h1 class="govuk-heading-xl">
-          <%= ViewModels::FilterProperties.page_title %>
+          <%= ViewModels::FilterProperties.page_title(params) %>
         </h1>
       </div>
     </div>
     <div class="govuk-grid-column-two-thirds">
       <div class="govuk-grid-row govuk-!-padding-top-4 govuk-!-padding-bottom-9">
         <h2 class="govuk-heading-l">
-          <%= t('properties_filter.download_all_data.title') %>
+          <%= t('filter_properties.download_all_data.title') %>
         </h2>
         <div class="govuk-!-margin-top-6 govuk-!-margin-bottom-6">
           <p class="govuk-body">
-            <%= t('properties_filter.download_all_data.will_get_data_for') %>
+            <%= t('filter_properties.download_all_data.will_get_data_for') %>
           </p>
           <ul class="govuk-list govuk-list--bullet">
-            <li><%= t('properties_filter.download_all_data.property_type') %></li>
-            <li><%= t('properties_filter.download_all_data.countries') %></li>
+            <li><%= t('filter_properties.download_all_data.property_type') %></li>
+            <li><%= t('filter_properties.download_all_data.countries') %></li>
             <% previous_month = Date.today << 1 %>
-            <li><%= t('properties_filter.download_all_data.date_range', previous_month: previous_month.strftime("%B %Y")) %></li>
+            <li><%= t('filter_properties.download_all_data.date_range', previous_month: previous_month.strftime("%B %Y")) %></li>
           </ul>
         </div>
         <p class="govuk-body">
-          <%= t('properties_filter.download_all_data.file_size') %>
+          <%= t('filter_properties.download_all_data.file_size') %>
         </p>
         <a
           href="/"
@@ -32,7 +32,7 @@
           draggable="false"
           class="govuk-button"
           data-module="govuk-button" >
-          <%= t('properties_filter.download_all_data.button_text') %>
+          <%= t('filter_properties.download_all_data.button_text') %>
         </a>
       </div>
       <%= erb :component__filter_options %>

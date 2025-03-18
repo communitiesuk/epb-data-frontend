@@ -1,7 +1,17 @@
 module ViewModels
   class FilterProperties
-    def self.page_title
-      I18n.t("properties_filter.domestic_title")
+    def self.page_title(params)
+      property_type = params["property_type"]
+      case property_type
+      when "domestic"
+        I18n.t("filter_properties.domestic_title")
+      when "non_domestic"
+        I18n.t("filter_properties.non_domestic_title")
+      when "public_buildings"
+        I18n.t("filter_properties.dec_title")
+      else
+        I18n.t("filter_properties.domestic_title")
+      end
     end
 
     def self.councils

@@ -1,4 +1,4 @@
-describe "Acceptance::FilterPropertiesPage", type: :feature do
+describe "Acceptance::FilterProperties", type: :feature do
   include RSpecFrontendServiceMixin
 
   let(:local_host) do

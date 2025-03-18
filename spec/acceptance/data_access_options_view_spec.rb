@@ -1,4 +1,4 @@
-describe "Acceptance::DataAccessOptionsPage", type: :feature do
+describe "Acceptance::DataAccessOptions", type: :feature do
   include RSpecFrontendServiceMixin
   let(:local_host) do
     "http://get-energy-performance-data/data-access-options"
