@@ -13,7 +13,7 @@ describe "Acceptance::ServiceStartPage", type: :feature do
       end
 
       it "has the correct Start now button" do
-        expect(response.body).to have_link("Start now", href: "/data_access_options")
+        expect(response.body).to have_link("Start now", href: "/data-access-options")
       end
 
       it "has the correct link to Scottish EPC Register, guidance page and EPC Register" do
