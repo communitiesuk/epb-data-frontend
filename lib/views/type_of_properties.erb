@@ -1,0 +1,71 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <div class="govuk-grid-column-two-thirds">
+      <% error_form_ids = ["domestic"] %>
+      <% unless @errors.empty? %>
+        <%= erb :error_summary, locals: { error_form_ids: error_form_ids }%>
+      <% end %>
+
+      <form method="post">
+        <fieldset class="govuk-fieldset" aria-describedby="signIn-hint">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+            <h1 class="govuk-fieldset__heading govuk-!-padding-bottom-4">
+              What type of certificates do you want data on?
+            </h1>
+          </legend>
+          <div class="govuk-form-group<% if @errors[:property_type] %> govuk-form-group--error<% end %>">
+            <input type="hidden" name="lang" value="<%= I18n.locale.to_s %>" />
+            <% if @errors[:property_type] %>
+              <p class="govuk-error-message">
+                <%= @errors[:property_type] %>
+              </p>
+            <% end %>
+            <div class="govuk-radios" data-module="govuk-radios">
+            <div class="govuk-radios__item">
+              <input class="govuk-radios__input" id="<%= error_form_ids[0] %>" name="property_type" type="radio" value="<%= error_form_ids[0] %>" aria-describedby="domestic-item-hint">
+              <label class="govuk-label govuk-radios__label" for="<%= error_form_ids[0] %>">
+                Energy Performance Certificates (EPCs)
+              </label>
+              <div id="domestic-item-hint" class="govuk-hint govuk-radios__hint">
+                For domestic properties such as houses or flats
+              </div>
+            </div>
+            <div class="govuk-radios__item">
+              <input class="govuk-radios__input" id="non-domestic" name="property_type" type="radio" value="non_domestic" aria-describedby="non-domestic-hint">
+              <label class="govuk-label govuk-radios__label" for="non-domestic">
+                Commercial Energy Performance Certificates (CEPCs)
+              </label>
+              <div id="non-domestic-hint" class="govuk-hint govuk-radios__hint">
+                For non-domestic properties such as commercial or industrial buildings
+              </div>
+            </div>
+            <div class="govuk-radios__item">
+              <input class="govuk-radios__input" id="public-buildings" name="property_type" type="radio" value="public_buildings" aria-describedby="public-properties-hint">
+              <label class="govuk-label govuk-radios__label" for="public-buildings">
+                Display Energy Certificates (DECs)
+              </label>
+              <div id="public-buildings-hint" class="govuk-hint govuk-radios__hint">
+                For public buildings such as schools or hospitals
+              </div>
+            </div>
+          </div>
+          </div>
+            <details class="govuk-details govuk-!-margin-top-6 govuk-!-margin-left-3">
+            <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">
+                              What buildings have a Display Energy Certificate?
+                            </span>
+            </summary>
+            <div class="govuk-details__text">
+              <p class="govuk-body">Buildings that are occupied by a public authority, are frequently visited by the public and have a floor area above 250m² must have a Display Energy Certificate (DEC).</p>
+              <p class="govuk-body">Buildings with a Display Energy Certificate (DEC) may also have a Commercial Energy Performance Certificate (CEPC).</p>
+            </div>
+          </details>
+          <button class="govuk-button" data-module="govuk-button" type="submit">
+            Continue
+          </button>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>
