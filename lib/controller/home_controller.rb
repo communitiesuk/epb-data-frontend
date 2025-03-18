@@ -8,7 +8,7 @@ module Controller
       status 200
       @page_title = t("data_access_options.title")
       @back_link_href = "/"
-      erb :data_access_options
+      erb :data_access_options_page
     end
 
     get "/guidance" do

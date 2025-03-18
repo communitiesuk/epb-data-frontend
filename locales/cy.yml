@@ -85,3 +85,68 @@ cy:
       para_1: "Buildings that are occupied by a public authority, are frequently visited by the public and have a floor area above 250m² must have a Display Energy Certificate (DEC)."
       para_2: "Buildings with a Display Energy Certificate (DEC) may also have a Commercial Energy Performance Certificate (CEPC)."
     submit: "Parhau"
+
+  properties_filter:
+    domestic_title: "Energy Performance Certificates"
+    non_domestic_title: "Commercial Energy Performance Certificates"
+    download_all_data:
+      title: "Download all data"
+      will_get_data_for: "You will get data for:"
+      property_type: "Energy Performance Certificates and recommendations"
+      countries: "England and Wales"
+      date_range: "January 2012 - %{previous_month}"
+      file_size: "A download link will be sent to your email address. The estimated download size is"
+      button_text: "Download all"
+    filter_options:
+      title: "Filter certificates (optional)"
+      description: "Use the filters to select the data you need."
+      filter_by_date:
+        title: "Filter by date"
+        view_results_from: "View results from"
+        to: "to"
+      filter_by_area:
+        title: "Filter by area"
+        select_area_type: "Select area type"
+        type_to_search: "Type to search"
+        local_authority: "Local authority"
+        select_local_authority: "Select local authority"
+        parliamentary_constituency: "Parliamentary constituency"
+        select_parliamentary_constituency: "Select parliamentary constituency"
+        postcode: "Postcode"
+        boundary_changes:
+          title: "About boundary changes"
+          description_1: "Properties are categorised under the most recent boundaries for local authorities or parliamentary constituencies."
+          description_2: "Changes to boundaries mean some energy certificates may have been categorised under a different local authority or parliamentary constituency in the past."
+      filter_by_energy_eff_rating:
+        title: "Filter by energy efficiency rating"
+        what_does_this_mean:
+          title: "What does this mean?"
+          eer_description: "Energy efficiency rating (EER) is a metric based on how much it costs to heat and light a home to an agreed standard. It is calculated as a numerical score that typically ranges between 1 (high cost) and 100 (low cost)."
+          eer_list: "The numerical score can be presented as a letter range between A and G as shown below:"
+      filter_recommendations:
+        title: "Filter recommendations"
+        include_recommendations: "Include certificate recommendations"
+        what_does_this_mean:
+          title: "What does this mean?"
+          description: "Ticking this box will include the recommendations suggested by an assessor for each property with an energy certificate."
+    download_selected:
+      body: "A download link for the data selected will be sent to your email address."
+      button_text: "Download selected"
+    validation_errors:
+      invalid_date: "Select a valid date range"
+      invalid_eff_rating: "Select at least one rating"
+
+  date:
+    months:
+      - Ionawr
+      - Chwefror
+      - Mawrth
+      - Ebrill
+      - Mai
+      - Mehefin
+      - Gorffennaf
+      - Awst
+      - Medi
+      - Hydref
+      - Tachwedd
+      - Rhagfyr

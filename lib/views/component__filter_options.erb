@@ -1,0 +1,281 @@
+<div class="govuk-!-margin-bottom-8">
+  <div class="govuk-grid-row">
+    <h2 class="govuk-heading-l">
+      <%= t('properties_filter.filter_options.title') %>
+    </h2>
+    <p class="govuk-body">
+      <%= t('properties_filter.filter_options.description') %>
+    </p>
+  </div>
+  <div class="govuk-grid-row">
+    <form method="post">
+      <div class="govuk-accordion" data-module="govuk-accordion" id="accordion-default">
+        <div class="govuk-accordion__section">
+          <div class="govuk-accordion__section-header">
+            <h2 class="govuk-accordion__section-heading">
+            <span class="govuk-accordion__section-button" id="accordion-default-heading-1">
+              <%= t('properties_filter.filter_options.filter_by_date.title') %>
+            </span>
+            </h2>
+          </div>
+          <div id="accordion-default-content-1" class="govuk-accordion__section-content">
+            <div class="govuk-form-group <% if @errors[:date] %> govuk-form-group--error<% end %>">
+              <label class="govuk-label" for="from-month">
+                <%= t('properties_filter.filter_options.filter_by_date.view_results_from') %>
+              </label>
+              <% if @errors[:date] %>
+                <p id="date-error" class="govuk-error-message">
+                  <span class="govuk-visually-hidden"><%= t('properties_filter.validation_errors.invalid_date') %></span><%= @errors[:date] %>
+                </p>
+              <% end %>
+              <select class="govuk-select <% if @errors[:date] %> govuk-select--error<% end %>" id="from-month" name="from-month">
+                <% ViewModels::FilterProperties.months.each do |month| %>
+                  <option value="<%= month %>" <%= 'selected' if month == "January" %>>
+                    <%= month %>
+                  </option>
+                <% end %>
+              </select>
+
+              <label for="from-year"></label>
+              <select class="govuk-select <% if @errors[:date] %> govuk-select--error<% end %>" id="from-year" name="from-year">
+                <% ViewModels::FilterProperties.years.each do |year| %>
+                  <option value="<%= year %>" <%= 'selected' if year == ViewModels::FilterProperties.start_year %>>
+                    <%= year %>
+                  </option>
+                <% end %>
+              </select>
+
+              <label class="govuk-label govuk-!-padding-top-2" for="to-month">
+                <%= t('properties_filter.filter_options.filter_by_date.to') %>
+              </label>
+              <select class="govuk-select <% if @errors[:date] %> govuk-select--error<% end %>" id="to-month" name="to-month">
+                <% ViewModels::FilterProperties.months.each do |month| %>
+                  <option value="<%= month %>" <%= 'selected' if month == ViewModels::FilterProperties.previous_month %>>
+                    <%= month %>
+                  </option>
+                <% end %>
+              </select>
+
+              <label for="to-year"></label>
+              <select class="govuk-select <% if @errors[:date] %> govuk-select--error<% end %>" id="to-year" name="to-year">
+                <% ViewModels::FilterProperties.years.each do |year| %>
+                  <option value="<%= year %>" <%= 'selected' if year == ViewModels::FilterProperties.current_year %>>
+                    <%= year %>
+                  </option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="govuk-accordion__section">
+          <div class="govuk-accordion__section-header">
+            <h2 class="govuk-accordion__section-heading">
+            <span class="govuk-accordion__section-button" id="accordion-default-heading-2" inline="this.onSelectToggle(e);">
+              <%= t('properties_filter.filter_options.filter_by_area.title') %>
+            </span>
+            </h2>
+          </div>
+          <div id="accordion-default-content-2" class="govuk-accordion__section-content">
+            <div class="govuk-form-group">
+              <fieldset class="govuk-fieldset" aria-describedby="area-type-hint">
+                <legend class="govuk-fieldset__legend">
+                  <%= t('properties_filter.filter_options.filter_by_area.select_area_type') %>
+                </legend>
+                <div class="govuk-radios govuk-radios--small" data-module="govuk-radios">
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="area" name="area-type" type="radio" value="local-authority" checked data-aria-controls="conditional-area-type">
+                    <label class="govuk-label govuk-radios__label" for="area">
+                      <%= t('properties_filter.filter_options.filter_by_area.local_authority') %>
+                    </label>
+                  </div>
+                  <div class="govuk-radios__conditional" id="conditional-area-type">
+                    <div class="govuk-form-group">
+                      <label class="govuk-label" for="local-authority">
+                        <%= t('properties_filter.filter_options.filter_by_area.select_local_authority') %>
+                      </label>
+                      <p>(<%= t('properties_filter.filter_options.filter_by_area.type_to_search') %>)</p>
+                      <select class="govuk-select" id="local-authority" name="local-authority">
+                        <% ViewModels::FilterProperties.councils.each do |council| %>
+                          <option value="<%= council %>" selected>
+                            <%= council %>
+                          </option>
+                        <% end %>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="area-2" name="area-type" type="radio" value="parliamentary-constituency" data-aria-controls="conditional-area-type-2">
+                    <label class="govuk-label govuk-radios__label" for="area-2">
+                      <%= t('properties_filter.filter_options.filter_by_area.parliamentary_constituency') %>
+                    </label>
+                  </div>
+                  <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-area-type-2">
+                    <div class="govuk-form-group">
+                      <label class="govuk-label" for="parliamentary-constituency">
+                        <%= t('properties_filter.filter_options.filter_by_area.select_parliamentary_constituency') %>
+                      </label>
+                      <p>(<%= t('properties_filter.filter_options.filter_by_area.type_to_search') %>)</p>
+                      <select class="govuk-select" id="parliamentary-constituency" name="parliamentary-constituency">
+                        <% ViewModels::FilterProperties.parliamentary_constituencies.each do |option| %>
+                          <option value="<%= option %>" selected>
+                            <%= option %>
+                          </option>
+                        <% end %>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="area-3" name="area-type" type="radio" value="postcode" data-aria-controls="conditional-area-type-3">
+                    <label class="govuk-label govuk-radios__label" for="area-3">
+                      <%= t('properties_filter.filter_options.filter_by_area.postcode') %>
+                    </label>
+                  </div>
+                  <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-area-type-3">
+                    <div class="govuk-form-group">
+                      <input class="govuk-input govuk-!-width-one-third" id="postcode" name="postcode" type="tel" autocomplete="tel">
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+            <details class="govuk-details">
+              <summary class="govuk-details__summary">
+              <span class="govuk-details__summary-text">
+                <%= t('properties_filter.filter_options.filter_by_area.boundary_changes.title') %>
+              </span>
+              </summary>
+              <div class="govuk-details__text">
+                <p><%= t('properties_filter.filter_options.filter_by_area.boundary_changes.description_1') %></p>
+
+                <p><%= t('properties_filter.filter_options.filter_by_area.boundary_changes.description_2') %></p>
+              </div>
+            </details>
+          </div>
+        </div>
+        <div class="govuk-accordion__section">
+          <div class="govuk-accordion__section-header">
+            <h2 class="govuk-accordion__section-heading">
+                <span class="govuk-accordion__section-button" id="accordion-default-heading-3">
+                  <%= t('properties_filter.filter_options.filter_by_energy_eff_rating.title') %>
+                </span>
+            </h2>
+          </div>
+          <div id="accordion-default-content-3" class="govuk-accordion__section-content">
+            <div class="govuk-form-group <% if @errors[:eff_rating] %> govuk-form-group--error<% end %>">
+              <fieldset class="govuk-fieldset">
+                <% if @errors[:eff_rating] %>
+                  <p id="eff-rating-error" class="govuk-error-message">
+                    <span class="govuk-visually-hidden"><%= t('properties_filter.validation_errors.invalid_eff_rating') %></span><%= @errors[:eff_rating] %>
+                  </p>
+                <% end %>
+                <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                  <div class="govuk-checkboxes__item">
+                    <input class="govuk-checkboxes__input" id="ratings" name="ratings[]" type="checkbox" value="A" checked>
+                    <label class="govuk-label govuk-checkboxes__label " for="ratings">
+                      A rating
+                    </label>
+                  </div>
+                  <div class="govuk-checkboxes__item">
+                    <input class="govuk-checkboxes__input" id="ratings-2" name="ratings[]" type="checkbox" value="B" checked>
+                    <label class="govuk-label govuk-checkboxes__label" for="ratings">
+                      B rating
+                    </label>
+                  </div>
+                  <div class="govuk-checkboxes__item">
+                    <input class="govuk-checkboxes__input" id="ratings-3" name="ratings[]" type="checkbox" value="C" checked>
+                    <label class="govuk-label govuk-checkboxes__label" for="ratings">
+                      C rating
+                    </label>
+                  </div>
+                  <div class="govuk-checkboxes__item">
+                    <input class="govuk-checkboxes__input" id="ratings-4" name="ratings[]" type="checkbox" value="D" checked>
+                    <label class="govuk-label govuk-checkboxes__label" for="ratings">
+                      D rating
+                    </label>
+                  </div>
+                  <div class="govuk-checkboxes__item">
+                    <input class="govuk-checkboxes__input" id="ratings-5" name="ratings[]" type="checkbox" value="E" checked>
+                    <label class="govuk-label govuk-checkboxes__label" for="ratings">
+                      E rating
+                    </label>
+                  </div>
+                  <div class="govuk-checkboxes__item">
+                    <input class="govuk-checkboxes__input" id="ratings-6" name="ratings[]" type="checkbox" value="F" checked>
+                    <label class="govuk-label govuk-checkboxes__label" for="ratings">
+                      F rating
+                    </label>
+                  </div>
+                  <div class="govuk-checkboxes__item">
+                    <input class="govuk-checkboxes__input" id="ratings-7" name="ratings[]" type="checkbox" value="G" checked>
+                    <label class="govuk-label govuk-checkboxes__label" for="ratings">
+                      G rating
+                    </label>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+            <details class="govuk-details">
+              <summary class="govuk-details__summary">
+              <span class="govuk-details__summary-text">
+                <%= t('properties_filter.filter_options.filter_by_energy_eff_rating.what_does_this_mean.title') %>
+              </span>
+              </summary>
+              <div class="govuk-details__text">
+                <p><%= t('properties_filter.filter_options.filter_by_energy_eff_rating.what_does_this_mean.eer_description') %></p>
+
+                <p><%= t('properties_filter.filter_options.filter_by_energy_eff_rating.what_does_this_mean.eer_list') %></p>
+
+                <ul class="govuk-list">
+                  <li>A rating – 92 plus</li>
+                  <li>B rating – 81 to 91</li>
+                  <li>C rating – 69 to 80</li>
+                  <li>D rating – 55 to 68</li>
+                  <li>E rating – 39 to 54</li>
+                  <li>F rating – 21 to 38</li>
+                  <li>G rating – 1 to 20</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+        </div>
+        <div class="govuk-accordion__section">
+          <div class="govuk-accordion__section-header">
+            <h2 class="govuk-accordion__section-heading">
+                <span class="govuk-accordion__section-button" id="accordion-default-heading-4">
+                  <%= t('properties_filter.filter_options.filter_recommendations.title') %>
+                </span>
+            </h2>
+          </div>
+          <div id="accordion-default-content-4" class="govuk-accordion__section-content">
+            <div class="govuk-form-group">
+              <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                <div class="govuk-checkboxes__item">
+                  <input class="govuk-checkboxes__input" id="recommendations" name="recommendations" type="checkbox" value="recommendations">
+                  <label class="govuk-label govuk-checkboxes__label" for="recommendations">
+                    <%= t('properties_filter.filter_options.filter_recommendations.include_recommendations') %>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <details class="govuk-details">
+              <summary class="govuk-details__summary">
+              <span class="govuk-details__summary-text">
+                <%= t('properties_filter.filter_options.filter_recommendations.what_does_this_mean.title') %>
+              </span>
+              </summary>
+              <div class="govuk-details__text">
+                <p><%= t('properties_filter.filter_options.filter_recommendations.what_does_this_mean.description') %></p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+      <p class="govuk-body">
+        <%= t('properties_filter.download_selected.body') %>
+      </p>
+      <button type="submit" class="govuk-button" data-module="govuk-button">
+        <%= t('properties_filter.download_selected.button_text') %>
+      </button>
+    </form>
+  </div>
+</div>
