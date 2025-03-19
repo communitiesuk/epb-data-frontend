@@ -30,7 +30,6 @@ describe "Journey::SelectPropertyType", :journey, type: :feature do
 
   context "when selecting a property type" do
     before do
-      visit getting_domain
       visit "#{getting_domain}/type-of-properties"
       find("#label-domestic").click
       click_on "Continue"
@@ -43,7 +42,6 @@ describe "Journey::SelectPropertyType", :journey, type: :feature do
 
   context "when not selecting a property type" do
     before do
-      visit getting_domain
       visit "#{getting_domain}/type-of-properties"
       click_on "Continue"
     end
