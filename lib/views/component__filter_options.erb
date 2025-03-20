@@ -25,7 +25,7 @@
               </label>
               <% if @errors[:date] %>
                 <p id="date-error" class="govuk-error-message">
-                  <span class="govuk-visually-hidden"><%= t('filter_properties.validation_errors.invalid_date') %></span><%= @errors[:date] %>
+                  <span class="govuk-visually-hidden"><%= t('error.error')%></span><%= @errors[:date] %>
                 </p>
               <% end %>
               <select class="govuk-select <% if @errors[:date] %> govuk-select--error<% end %>" id="from-month" name="from-month">
@@ -76,7 +76,7 @@
             </h2>
           </div>
           <div id="accordion-default-content-2" class="govuk-accordion__section-content">
-            <div class="govuk-form-group">
+            <div class="govuk-form-group <% if @errors[:postcode] %> govuk-form-group--error<% end %>">
               <fieldset class="govuk-fieldset" aria-describedby="area-type-hint">
                 <legend class="govuk-fieldset__legend">
                   <%= t('filter_properties.filter_options.filter_by_area.select_area_type') %>
@@ -132,7 +132,15 @@
                   </div>
                   <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-area-type-3">
                     <div class="govuk-form-group">
-                      <input class="govuk-input govuk-!-width-one-third" id="postcode" name="postcode" type="tel" autocomplete="tel">
+                      <% if @errors[:postcode] %>
+                        <p id="postcode-error" class="govuk-error-message">
+                          <span class="govuk-visually-hidden"><%= t('error.error') %></span><%= @errors[:postcode] %>
+                        </p>
+                      <% end %>
+                      <input class="govuk-input govuk-!-width-one-third <% if @errors[:postcode] %> govuk-input--error<% end %>"
+                             id="postcode"
+                             name="postcode"
+                             type="text">
                     </div>
                   </div>
                 </div>
@@ -165,7 +173,7 @@
               <fieldset class="govuk-fieldset">
                 <% if @errors[:eff_rating] %>
                   <p id="eff-rating-error" class="govuk-error-message">
-                    <span class="govuk-visually-hidden"><%= t('filter_properties.validation_errors.invalid_eff_rating') %></span><%= @errors[:eff_rating] %>
+                    <span class="govuk-visually-hidden"><%= t('error.error') %></span><%= @errors[:eff_rating] %>
                   </p>
                 <% end %>
                 <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">

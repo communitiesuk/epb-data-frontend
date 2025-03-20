@@ -46,6 +46,12 @@ cy:
       cta_search_by_postcode: "Chwiliwch yn ôl y cod post"
       royal_mail_link: "Gallwch %{link}."
       cta_royal_mail: "ddod o hyd i god post ar chwiliwr cod post y Post Brenhinol"
+    invalid_filter_option:
+      date_invalid: "Select a valid date range"
+      eff_rating_invalid: "Select at least one rating"
+      postcode_invalid: "Rhowch god post dilys yn y DU gan ddefnyddio llythrennau a rhifau yn unig yn y ffurf CF10 1EP"
+      postcode_incomplete: "Rhowch god post llawn yn y DU yn y ffurf CF10 1EP"
+      postcode_wrong_format: "Rhowch god post dilys yn y DU yn y ffurf CF10 1EP"
 
   accessibility_statement:
     top_heading: "Datganiad ar hygyrchedd"
@@ -133,9 +139,6 @@ cy:
     download_selected:
       body: "A download link for the data selected will be sent to your email address."
       button_text: "Download selected"
-    validation_errors:
-      invalid_date: "Select a valid date range"
-      invalid_eff_rating: "Select at least one rating"
 
   date:
     months:

@@ -46,6 +46,12 @@ en:
       cta_search_by_postcode: "Search by postcode instead"
       royal_mail_link: "You can %{link}."
       cta_royal_mail: "find a postcode on Royal Mail’s postcode finder"
+    invalid_filter_option:
+      date_invalid: "Select a valid date range"
+      eff_rating_invalid: "Select at least one rating"
+      postcode_invalid: "Enter a valid UK postcode using only letters and numbers in the format LS1 4AP"
+      postcode_incomplete: "Enter a full UK postcode in the format LS1 4AP"
+      postcode_wrong_format: "Enter a valid UK postcode in the format LS1 4AP"
 
   accessibility_statement:
     top_heading: "Accessibility statement"
@@ -134,9 +140,6 @@ en:
     download_selected:
       body: "A download link for the data selected will be sent to your email address."
       button_text: "Download selected"
-    validation_errors:
-      invalid_date: "Select a valid date range"
-      invalid_eff_rating: "Select at least one rating"
 
   date:
     months:

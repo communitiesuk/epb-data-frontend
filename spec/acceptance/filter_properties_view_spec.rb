@@ -7,6 +7,8 @@ describe "Acceptance::FilterProperties", type: :feature do
 
   let(:response) { get local_host }
 
+  let(:valid_response) { post "#{local_host}?#{valid_dates}&#{valid_eff_rating}" }
+
   let(:valid_dates) do
     "from-year=2023&from-month=January&to-year=2025&to-month=February"
   end
@@ -15,6 +17,9 @@ describe "Acceptance::FilterProperties", type: :feature do
   end
   let(:valid_eff_rating) do
     "ratings[]=A&ratings[]=B"
+  end
+  let(:valid_postcode) do
+    "postcode=SW1A%201AA"
   end
 
   describe "get .get-energy-certificate-data.epb-frontend/filter-properties" do
@@ -76,8 +81,6 @@ describe "Acceptance::FilterProperties", type: :feature do
     end
 
     context "when the selected dates are valid" do
-      let(:valid_response) { post "#{local_host}?#{valid_dates}&#{valid_eff_rating}" }
-
       it "returns status 200" do
         expect(valid_response.status).to eq(200)
       end
@@ -103,8 +106,6 @@ describe "Acceptance::FilterProperties", type: :feature do
     end
 
     context "when the efficiency rating selection is valid" do
-      let(:valid_response) { post "#{local_host}?#{valid_dates}&#{valid_eff_rating}" }
-
       it "returns status 200" do
         expect(valid_response.status).to eq(200)
       end
@@ -127,6 +128,46 @@ describe "Acceptance::FilterProperties", type: :feature do
         expect(invalid_response.body).to include(
           '<p id="eff-rating-error" class="govuk-error-message">',
         )
+      end
+    end
+
+    context "when the postcode is valid" do
+      it "returns status 200" do
+        expect(valid_response.status).to eq(200)
+      end
+
+      it "displays an error message" do
+        expect(valid_response.body).not_to include(
+          '<p id="postcode-error" class="govuk-error-message">',
+        )
+      end
+    end
+
+    context "when the postcode is invalid" do
+      let(:invalid_postcodes) do
+        [
+          "#{local_host}?#{valid_dates}&#{valid_eff_rating}&area-type=postcode",
+          "#{local_host}?#{valid_dates}&#{valid_eff_rating}&area-type=postcode&postcode='SW1A 1AAAA'",
+          "#{local_host}?#{valid_dates}&#{valid_eff_rating}&area-type=postcode&postcode='SW1A 1A$'",
+        ]
+      end
+
+      let(:invalid_responses) do
+        invalid_postcodes.map { |invalid_postcode| post invalid_postcode }
+      end
+
+      it "returns status 400" do
+        invalid_responses.each do |invalid_response|
+          expect(invalid_response.status).to eq(400)
+        end
+      end
+
+      it "displays an error message" do
+        invalid_responses.each do |invalid_response|
+          expect(invalid_response.body).to include(
+            '<p id="postcode-error" class="govuk-error-message">',
+          )
+        end
       end
     end
   end

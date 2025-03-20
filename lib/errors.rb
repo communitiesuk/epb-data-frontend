@@ -34,6 +34,15 @@ module Errors
   class BotDetected < RuntimeError
   end
 
+  class PostcodeNotValid < RuntimeError
+  end
+
+  class PostcodeWrongFormat < RuntimeError
+  end
+
+  class PostcodeIncomplete < RuntimeError
+  end
+
   module DoNotReport
   end
 end
