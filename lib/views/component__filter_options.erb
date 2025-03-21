@@ -30,7 +30,7 @@
               <% end %>
               <select class="govuk-select <% if @errors[:date] %> govuk-select--error<% end %>" id="from-month" name="from-month">
                 <% ViewModels::FilterProperties.months.each do |month| %>
-                  <option value="<%= month %>" <%= 'selected' if month == "January" %>>
+                  <option value="<%= month %>" <%= 'selected' if params["from-month"] ? month == params["from-month"] : month == "January" %>>
                     <%= month %>
                   </option>
                 <% end %>
@@ -39,7 +39,7 @@
               <label for="from-year"></label>
               <select class="govuk-select <% if @errors[:date] %> govuk-select--error<% end %>" id="from-year" name="from-year">
                 <% ViewModels::FilterProperties.years.each do |year| %>
-                  <option value="<%= year %>" <%= 'selected' if year == ViewModels::FilterProperties.start_year %>>
+                  <option value="<%= year %>" <%= 'selected' if params["from-year"] ? year == params["from-year"] : year == ViewModels::FilterProperties.start_year %>>
                     <%= year %>
                   </option>
                 <% end %>
@@ -50,7 +50,7 @@
               </label>
               <select class="govuk-select <% if @errors[:date] %> govuk-select--error<% end %>" id="to-month" name="to-month">
                 <% ViewModels::FilterProperties.months.each do |month| %>
-                  <option value="<%= month %>" <%= 'selected' if month == ViewModels::FilterProperties.previous_month %>>
+                  <option value="<%= month %>" <%= 'selected' if params["to-month"] ? month == params["to-month"] : month == ViewModels::FilterProperties.previous_month %>>
                     <%= month %>
                   </option>
                 <% end %>
@@ -59,7 +59,7 @@
               <label for="to-year"></label>
               <select class="govuk-select <% if @errors[:date] %> govuk-select--error<% end %>" id="to-year" name="to-year">
                 <% ViewModels::FilterProperties.years.each do |year| %>
-                  <option value="<%= year %>" <%= 'selected' if year == ViewModels::FilterProperties.current_year %>>
+                  <option value="<%= year %>" <%= 'selected' if params["to-year"] ? year == params["to-year"] : year == ViewModels::FilterProperties.current_year %>>
                     <%= year %>
                   </option>
                 <% end %>

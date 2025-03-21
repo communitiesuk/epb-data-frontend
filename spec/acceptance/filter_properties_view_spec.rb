@@ -13,7 +13,7 @@ describe "Acceptance::FilterProperties", type: :feature do
     "from-year=2023&from-month=January&to-year=2025&to-month=February"
   end
   let(:invalid_dates) do
-    "from-year=2025&from-month=January&to-year=2023&to-month=December"
+    "from-year=2024&from-month=February&to-year=2023&to-month=December"
   end
   let(:valid_eff_rating) do
     "ratings[]=A&ratings[]=B"
@@ -102,6 +102,13 @@ describe "Acceptance::FilterProperties", type: :feature do
         expect(invalid_response.body).to include(
           '<p id="date-error" class="govuk-error-message">',
         )
+      end
+
+      it "keeps the selected dates in the form" do
+        expect(invalid_response.body).to include('<option value="2023" selected>')
+        expect(invalid_response.body).to include('<option value="2024" selected>')
+        expect(invalid_response.body).to include('<option value="February" selected>')
+        expect(invalid_response.body).to include('<option value="December" selected>')
       end
 
       it "shows correct required GDS error summary" do
