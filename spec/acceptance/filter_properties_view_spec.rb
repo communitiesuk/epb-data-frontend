@@ -187,6 +187,9 @@ describe "Acceptance::FilterProperties", type: :feature do
           expect(invalid_response.body).to include(
             '<p id="postcode-error" class="govuk-error-message">',
           )
+          expect(invalid_response.body).to have_css(
+            "#conditional-area-type-3 .govuk-form-group.govuk-form-group--error",
+          )
         end
       end
 

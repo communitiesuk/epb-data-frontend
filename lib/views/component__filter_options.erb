@@ -76,14 +76,14 @@
             </h2>
           </div>
           <div id="accordion-default-content-2" class="govuk-accordion__section-content">
-            <div class="govuk-form-group <% if @errors[:postcode] %> govuk-form-group--error<% end %>">
+            <div class="govuk-form-group">
               <fieldset class="govuk-fieldset" aria-describedby="area-type-hint">
                 <legend class="govuk-fieldset__legend">
                   <%= t('filter_properties.filter_options.filter_by_area.select_area_type') %>
                 </legend>
                 <div class="govuk-radios govuk-radios--small" data-module="govuk-radios">
                   <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" id="area" name="area-type" type="radio" value="local-authority" checked data-aria-controls="conditional-area-type">
+                    <input class="govuk-radios__input" id="area" name="area-type" type="radio" value="local-authority" checked data-aria-controls="conditional-area-type" <% if params['area-type'] == 'local-authority' %>checked="checked"<%  end %>>
                     <label class="govuk-label govuk-radios__label" for="area">
                       <%= t('filter_properties.filter_options.filter_by_area.local_authority') %>
                     </label>
@@ -104,7 +104,7 @@
                     </div>
                   </div>
                   <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" id="area-2" name="area-type" type="radio" value="parliamentary-constituency" data-aria-controls="conditional-area-type-2">
+                    <input class="govuk-radios__input" id="area-2" name="area-type" type="radio" value="parliamentary-constituency" data-aria-controls="conditional-area-type-2" <% if params['area-type'] == 'parliamentary-constituency' %>checked="checked"<%  end %>>
                     <label class="govuk-label govuk-radios__label" for="area-2">
                       <%= t('filter_properties.filter_options.filter_by_area.parliamentary_constituency') %>
                     </label>
@@ -125,13 +125,13 @@
                     </div>
                   </div>
                   <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" id="area-3" name="area-type" type="radio" value="postcode" data-aria-controls="conditional-area-type-3">
+                    <input class="govuk-radios__input" id="area-3" name="area-type" type="radio" value="postcode" data-aria-controls="conditional-area-type-3" <% if params['area-type'] == 'postcode' %>checked="checked"<%  end %>>
                     <label class="govuk-label govuk-radios__label" for="area-3">
                       <%= t('filter_properties.filter_options.filter_by_area.postcode') %>
                     </label>
                   </div>
                   <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-area-type-3">
-                    <div class="govuk-form-group">
+                    <div class="govuk-form-group <% if @errors[:postcode] %>govuk-form-group--error<% end %>">
                       <% if @errors[:postcode] %>
                         <p id="postcode-error" class="govuk-error-message">
                           <span class="govuk-visually-hidden"><%= t('error.error') %></span><%= @errors[:postcode] %>
@@ -140,7 +140,9 @@
                       <input class="govuk-input govuk-!-width-one-third <% if @errors[:postcode] %> govuk-input--error<% end %>"
                              id="postcode"
                              name="postcode"
-                             type="text">
+                             type="text"
+                             <% if params['postcode'] %>value="<%= params['postcode'] %>"<% end %>
+                      >
                     </div>
                   </div>
                 </div>
