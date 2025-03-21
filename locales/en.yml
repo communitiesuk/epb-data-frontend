@@ -48,7 +48,7 @@ en:
       cta_royal_mail: "find a postcode on Royal Mail’s postcode finder"
     invalid_filter_option:
       date_invalid: "Select a valid date range"
-      eff_rating_invalid: "Select at least one rating"
+      eff_rating_invalid: "Select at least one rating option"
       postcode_invalid: "Enter a valid UK postcode using only letters and numbers in the format LS1 4AP"
       postcode_incomplete: "Enter a full UK postcode in the format LS1 4AP"
       postcode_wrong_format: "Enter a valid UK postcode in the format LS1 4AP"

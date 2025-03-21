@@ -103,6 +103,12 @@ describe "Acceptance::FilterProperties", type: :feature do
           '<p id="date-error" class="govuk-error-message">',
         )
       end
+
+      it "shows correct required GDS error summary" do
+        expect(invalid_response.body).to have_css("div.govuk-error-summary h2.govuk-error-summary__title", text: "There is a problem")
+        expect(invalid_response.body).to have_css("div.govuk-error-summary__body ul.govuk-list li:first a", text: "Select a valid date range")
+        expect(invalid_response.body).to have_link("Select a valid date range", href: "#date-error")
+      end
     end
 
     context "when the efficiency rating selection is valid" do
@@ -129,6 +135,12 @@ describe "Acceptance::FilterProperties", type: :feature do
           '<p id="eff-rating-error" class="govuk-error-message">',
         )
       end
+
+      it "shows correct required GDS error summary" do
+        expect(invalid_response.body).to have_css("div.govuk-error-summary h2.govuk-error-summary__title", text: "There is a problem")
+        expect(invalid_response.body).to have_css("div.govuk-error-summary__body ul.govuk-list li:first a", text: "Select at least one rating option")
+        expect(invalid_response.body).to have_link("Select at least one rating option", href: "#eff-rating-error")
+      end
     end
 
     context "when the postcode is valid" do
@@ -147,8 +159,16 @@ describe "Acceptance::FilterProperties", type: :feature do
       let(:invalid_postcodes) do
         [
           "#{local_host}?#{valid_dates}&#{valid_eff_rating}&area-type=postcode",
-          "#{local_host}?#{valid_dates}&#{valid_eff_rating}&area-type=postcode&postcode='SW1A 1AAAA'",
-          "#{local_host}?#{valid_dates}&#{valid_eff_rating}&area-type=postcode&postcode='SW1A 1A$'",
+          "#{local_host}?#{valid_dates}&#{valid_eff_rating}&area-type=postcode&postcode=ABCD12345",
+          "#{local_host}?#{valid_dates}&#{valid_eff_rating}&area-type=postcode&postcode=SW1A 1A$",
+        ]
+      end
+
+      let(:error_messages) do
+        [
+          "Enter a full UK postcode in the format LS1 4AP",
+          "Enter a valid UK postcode in the format LS1 4AP",
+          "Enter a valid UK postcode using only letters and numbers in the format LS1 4AP",
         ]
       end
 
@@ -167,6 +187,14 @@ describe "Acceptance::FilterProperties", type: :feature do
           expect(invalid_response.body).to include(
             '<p id="postcode-error" class="govuk-error-message">',
           )
+        end
+      end
+
+      it "shows correct required GDS error summary" do
+        invalid_responses.each_with_index do |invalid_response, index|
+          expect(invalid_response.body).to have_css("div.govuk-error-summary h2.govuk-error-summary__title", text: "There is a problem")
+          expect(invalid_response.body).to have_css("div.govuk-error-summary__body ul.govuk-list li:first a", text: error_messages[index])
+          expect(invalid_response.body).to have_link(error_messages[index], href: "#postcode-error")
         end
       end
     end

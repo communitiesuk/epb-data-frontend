@@ -48,7 +48,7 @@ cy:
       cta_royal_mail: "ddod o hyd i god post ar chwiliwr cod post y Post Brenhinol"
     invalid_filter_option:
       date_invalid: "Select a valid date range"
-      eff_rating_invalid: "Select at least one rating"
+      eff_rating_invalid: "Select at least one rating option"
       postcode_invalid: "Rhowch god post dilys yn y DU gan ddefnyddio llythrennau a rhifau yn unig yn y ffurf CF10 1EP"
       postcode_incomplete: "Rhowch god post llawn yn y DU yn y ffurf CF10 1EP"
       postcode_wrong_format: "Rhowch god post dilys yn y DU yn y ffurf CF10 1EP"
