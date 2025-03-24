@@ -14,7 +14,11 @@ module Controller
           validate_ratings
         end
 
-        erb :filter_properties
+        if request.post? && @errors.empty?
+          erb :start_page
+        else
+          erb :filter_properties
+        end
       end
 
     get "/filter-properties",

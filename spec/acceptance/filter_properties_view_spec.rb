@@ -32,13 +32,16 @@ describe "Acceptance::FilterProperties", type: :feature do
         expect(response.body).to have_link "Back", href: "/"
       end
 
-      it "the title to be correct" do
-        expect(response.body).to have_selector("h1", text: "Energy Performance Certificates")
-      end
-
       it "the title to be correct for both domestic and non-domestic headers" do
-        expected_title = "Energy Performance Certificates"
-        expect(response.body).to have_selector("h1", text: expected_title)
+        property_types = %w[domestic non_domestic public_buildings]
+        expected_titles = [
+          "Energy Performance Certificates",
+          "Commercial Energy Performance Certificates",
+          "Display Energy Certificates",
+        ]
+        property_types.each_with_index do |property_type, index|
+          expect(ViewModels::FilterProperties.page_title(property_type)).to eq(expected_titles[index])
+        end
       end
 
       it "shows the correct list of years" do
@@ -62,13 +65,13 @@ describe "Acceptance::FilterProperties", type: :feature do
       end
 
       it "shows all efficiency ratings selected by default" do
-        expect(response.body).to have_css("input#ratings[value=A][checked]")
-        expect(response.body).to have_css("input#ratings-2[value=B][checked]")
-        expect(response.body).to have_css("input#ratings-3[value=C][checked]")
-        expect(response.body).to have_css("input#ratings-4[value=D][checked]")
-        expect(response.body).to have_css("input#ratings-5[value=E][checked]")
-        expect(response.body).to have_css("input#ratings-6[value=F][checked]")
-        expect(response.body).to have_css("input#ratings-7[value=G][checked]")
+        expect(response.body).to have_css("input#ratings-A[value=A][checked]")
+        expect(response.body).to have_css("input#ratings-B[value=B][checked]")
+        expect(response.body).to have_css("input#ratings-C[value=C][checked]")
+        expect(response.body).to have_css("input#ratings-D[value=D][checked]")
+        expect(response.body).to have_css("input#ratings-E[value=E][checked]")
+        expect(response.body).to have_css("input#ratings-F[value=F][checked]")
+        expect(response.body).to have_css("input#ratings-G[value=G][checked]")
       end
 
       it "shows the correct list of councils" do
@@ -81,12 +84,12 @@ describe "Acceptance::FilterProperties", type: :feature do
       end
 
       it "shows the correct list of parliamentary constituencies" do
-        expected_councils = [
+        expected_parliamentary_constituencies = [
           "Bristol Central",
           "Cities of London and Westminster",
           "Manchester Central",
         ]
-        expect(ViewModels::FilterProperties.parliamentary_constituencies).to eq(expected_councils)
+        expect(ViewModels::FilterProperties.parliamentary_constituencies).to eq(expected_parliamentary_constituencies)
       end
     end
 
@@ -148,13 +151,13 @@ describe "Acceptance::FilterProperties", type: :feature do
       end
 
       it "keeps the selected efficiency ratings unchecked" do
-        expect(invalid_response.body).to have_css("input#ratings[value=A]")
-        expect(invalid_response.body).to have_css("input#ratings-2[value=B]")
-        expect(invalid_response.body).to have_css("input#ratings-3[value=C]")
-        expect(invalid_response.body).to have_css("input#ratings-4[value=D]")
-        expect(invalid_response.body).to have_css("input#ratings-5[value=E]")
-        expect(invalid_response.body).to have_css("input#ratings-6[value=F]")
-        expect(invalid_response.body).to have_css("input#ratings-7[value=G]")
+        expect(invalid_response.body).to have_css("input#ratings-A[value=A]")
+        expect(invalid_response.body).to have_css("input#ratings-B[value=B]")
+        expect(invalid_response.body).to have_css("input#ratings-C[value=C]")
+        expect(invalid_response.body).to have_css("input#ratings-D[value=D]")
+        expect(invalid_response.body).to have_css("input#ratings-E[value=E]")
+        expect(invalid_response.body).to have_css("input#ratings-F[value=F]")
+        expect(invalid_response.body).to have_css("input#ratings-G[value=G]")
       end
 
       it "displays an error message" do
@@ -215,7 +218,7 @@ describe "Acceptance::FilterProperties", type: :feature do
             '<p id="postcode-error" class="govuk-error-message">',
           )
           expect(invalid_response.body).to have_css(
-            "#conditional-area-type-3 .govuk-form-group.govuk-form-group--error",
+            "#conditional-area-type-postcode .govuk-form-group.govuk-form-group--error",
           )
         end
       end

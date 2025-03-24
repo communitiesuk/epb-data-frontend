@@ -1,7 +1,6 @@
 module ViewModels
   class FilterProperties
-    def self.page_title(params)
-      property_type = params["property_type"]
+    def self.page_title(property_type)
       case property_type
       when "domestic"
         I18n.t("filter_properties.domestic_title")
@@ -10,7 +9,7 @@ module ViewModels
       when "public_buildings"
         I18n.t("filter_properties.dec_title")
       else
-        I18n.t("filter_properties.domestic_title")
+        ""
       end
     end
 

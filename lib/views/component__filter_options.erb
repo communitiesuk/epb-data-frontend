@@ -83,12 +83,12 @@
                 </legend>
                 <div class="govuk-radios govuk-radios--small" data-module="govuk-radios">
                   <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" id="area" name="area-type" type="radio" value="local-authority" checked data-aria-controls="conditional-area-type" <% if params['area-type'] == 'local-authority' %>checked="checked"<%  end %>>
+                    <input class="govuk-radios__input" id="area" name="area-type" type="radio" value="local-authority" checked data-aria-controls="conditional-area-type-la" <% if params['area-type'] == 'local-authority' %>checked="checked"<%  end %>>
                     <label class="govuk-label govuk-radios__label" for="area">
                       <%= t('filter_properties.filter_options.filter_by_area.local_authority') %>
                     </label>
                   </div>
-                  <div class="govuk-radios__conditional" id="conditional-area-type">
+                  <div class="govuk-radios__conditional" id="conditional-area-type-la">
                     <div class="govuk-form-group">
                       <label class="govuk-label" for="local-authority">
                         <%= t('filter_properties.filter_options.filter_by_area.select_local_authority') %>
@@ -104,12 +104,12 @@
                     </div>
                   </div>
                   <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" id="area-2" name="area-type" type="radio" value="parliamentary-constituency" data-aria-controls="conditional-area-type-2" <% if params['area-type'] == 'parliamentary-constituency' %>checked="checked"<%  end %>>
+                    <input class="govuk-radios__input" id="area-2" name="area-type" type="radio" value="parliamentary-constituency" data-aria-controls="conditional-area-type-pc" <% if params['area-type'] == 'parliamentary-constituency' %>checked="checked"<%  end %>>
                     <label class="govuk-label govuk-radios__label" for="area-2">
                       <%= t('filter_properties.filter_options.filter_by_area.parliamentary_constituency') %>
                     </label>
                   </div>
-                  <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-area-type-2">
+                  <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-area-type-pc">
                     <div class="govuk-form-group">
                       <label class="govuk-label" for="parliamentary-constituency">
                         <%= t('filter_properties.filter_options.filter_by_area.select_parliamentary_constituency') %>
@@ -125,12 +125,12 @@
                     </div>
                   </div>
                   <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" id="area-3" name="area-type" type="radio" value="postcode" data-aria-controls="conditional-area-type-3" <% if params['area-type'] == 'postcode' %>checked="checked"<%  end %>>
+                    <input class="govuk-radios__input" id="area-3" name="area-type" type="radio" value="postcode" data-aria-controls="conditional-area-type-postcode" <% if params['area-type'] == 'postcode' %>checked="checked"<%  end %>>
                     <label class="govuk-label govuk-radios__label" for="area-3">
                       <%= t('filter_properties.filter_options.filter_by_area.postcode') %>
                     </label>
                   </div>
-                  <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-area-type-3">
+                  <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-area-type-postcode">
                     <div class="govuk-form-group <% if @errors[:postcode] %>govuk-form-group--error<% end %>">
                       <% if @errors[:postcode] %>
                         <p id="postcode-error" class="govuk-error-message">
@@ -180,43 +180,43 @@
                 <% end %>
                 <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
                   <div class="govuk-checkboxes__item">
-                    <input class="govuk-checkboxes__input" id="ratings" name="ratings[]" type="checkbox" value="A" <% if params['ratings']&.include?('A') %>checked<% end %>>
+                    <input class="govuk-checkboxes__input" id="ratings-A" name="ratings[]" type="checkbox" value="A" <% if params['ratings']&.include?('A') %>checked<% end %>>
                     <label class="govuk-label govuk-checkboxes__label " for="ratings">
                       A rating
                     </label>
                   </div>
                   <div class="govuk-checkboxes__item">
-                    <input class="govuk-checkboxes__input" id="ratings-2" name="ratings[]" type="checkbox" value="B" <% if params['ratings']&.include?('B') %>checked<% end %>>
+                    <input class="govuk-checkboxes__input" id="ratings-B" name="ratings[]" type="checkbox" value="B" <% if params['ratings']&.include?('B') %>checked<% end %>>
                     <label class="govuk-label govuk-checkboxes__label" for="ratings">
                       B rating
                     </label>
                   </div>
                   <div class="govuk-checkboxes__item">
-                    <input class="govuk-checkboxes__input" id="ratings-3" name="ratings[]" type="checkbox" value="C" <% if params['ratings']&.include?('C') %>checked<% end %>>
+                    <input class="govuk-checkboxes__input" id="ratings-C" name="ratings[]" type="checkbox" value="C" <% if params['ratings']&.include?('C') %>checked<% end %>>
                     <label class="govuk-label govuk-checkboxes__label" for="ratings">
                       C rating
                     </label>
                   </div>
                   <div class="govuk-checkboxes__item">
-                    <input class="govuk-checkboxes__input" id="ratings-4" name="ratings[]" type="checkbox" value="D" <% if params['ratings']&.include?('D') %>checked<% end %>>
+                    <input class="govuk-checkboxes__input" id="ratings-D" name="ratings[]" type="checkbox" value="D" <% if params['ratings']&.include?('D') %>checked<% end %>>
                     <label class="govuk-label govuk-checkboxes__label" for="ratings">
                       D rating
                     </label>
                   </div>
                   <div class="govuk-checkboxes__item">
-                    <input class="govuk-checkboxes__input" id="ratings-5" name="ratings[]" type="checkbox" value="E" <% if params['ratings']&.include?('E') %>checked<% end %>>
+                    <input class="govuk-checkboxes__input" id="ratings-E" name="ratings[]" type="checkbox" value="E" <% if params['ratings']&.include?('E') %>checked<% end %>>
                     <label class="govuk-label govuk-checkboxes__label" for="ratings">
                       E rating
                     </label>
                   </div>
                   <div class="govuk-checkboxes__item">
-                    <input class="govuk-checkboxes__input" id="ratings-6" name="ratings[]" type="checkbox" value="F" <% if params['ratings']&.include?('F') %>checked<% end %>>
+                    <input class="govuk-checkboxes__input" id="ratings-F" name="ratings[]" type="checkbox" value="F" <% if params['ratings']&.include?('F') %>checked<% end %>>
                     <label class="govuk-label govuk-checkboxes__label" for="ratings">
                       F rating
                     </label>
                   </div>
                   <div class="govuk-checkboxes__item">
-                    <input class="govuk-checkboxes__input" id="ratings-7" name="ratings[]" type="checkbox" value="G" <% if params['ratings']&.include?('G') %>checked<% end %>>
+                    <input class="govuk-checkboxes__input" id="ratings-G" name="ratings[]" type="checkbox" value="G" <% if params['ratings']&.include?('G') %>checked<% end %>>
                     <label class="govuk-label govuk-checkboxes__label" for="ratings">
                       G rating
                     </label>
