@@ -180,43 +180,43 @@
                 <% end %>
                 <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
                   <div class="govuk-checkboxes__item">
-                    <input class="govuk-checkboxes__input" id="ratings" name="ratings[]" type="checkbox" value="A" checked>
+                    <input class="govuk-checkboxes__input" id="ratings" name="ratings[]" type="checkbox" value="A" <% if params['ratings']&.include?('A') %>checked<% end %>>
                     <label class="govuk-label govuk-checkboxes__label " for="ratings">
                       A rating
                     </label>
                   </div>
                   <div class="govuk-checkboxes__item">
-                    <input class="govuk-checkboxes__input" id="ratings-2" name="ratings[]" type="checkbox" value="B" checked>
+                    <input class="govuk-checkboxes__input" id="ratings-2" name="ratings[]" type="checkbox" value="B" <% if params['ratings']&.include?('B') %>checked<% end %>>
                     <label class="govuk-label govuk-checkboxes__label" for="ratings">
                       B rating
                     </label>
                   </div>
                   <div class="govuk-checkboxes__item">
-                    <input class="govuk-checkboxes__input" id="ratings-3" name="ratings[]" type="checkbox" value="C" checked>
+                    <input class="govuk-checkboxes__input" id="ratings-3" name="ratings[]" type="checkbox" value="C" <% if params['ratings']&.include?('C') %>checked<% end %>>
                     <label class="govuk-label govuk-checkboxes__label" for="ratings">
                       C rating
                     </label>
                   </div>
                   <div class="govuk-checkboxes__item">
-                    <input class="govuk-checkboxes__input" id="ratings-4" name="ratings[]" type="checkbox" value="D" checked>
+                    <input class="govuk-checkboxes__input" id="ratings-4" name="ratings[]" type="checkbox" value="D" <% if params['ratings']&.include?('D') %>checked<% end %>>
                     <label class="govuk-label govuk-checkboxes__label" for="ratings">
                       D rating
                     </label>
                   </div>
                   <div class="govuk-checkboxes__item">
-                    <input class="govuk-checkboxes__input" id="ratings-5" name="ratings[]" type="checkbox" value="E" checked>
+                    <input class="govuk-checkboxes__input" id="ratings-5" name="ratings[]" type="checkbox" value="E" <% if params['ratings']&.include?('E') %>checked<% end %>>
                     <label class="govuk-label govuk-checkboxes__label" for="ratings">
                       E rating
                     </label>
                   </div>
                   <div class="govuk-checkboxes__item">
-                    <input class="govuk-checkboxes__input" id="ratings-6" name="ratings[]" type="checkbox" value="F" checked>
+                    <input class="govuk-checkboxes__input" id="ratings-6" name="ratings[]" type="checkbox" value="F" <% if params['ratings']&.include?('F') %>checked<% end %>>
                     <label class="govuk-label govuk-checkboxes__label" for="ratings">
                       F rating
                     </label>
                   </div>
                   <div class="govuk-checkboxes__item">
-                    <input class="govuk-checkboxes__input" id="ratings-7" name="ratings[]" type="checkbox" value="G" checked>
+                    <input class="govuk-checkboxes__input" id="ratings-7" name="ratings[]" type="checkbox" value="G" <% if params['ratings']&.include?('G') %>checked<% end %>>
                     <label class="govuk-label govuk-checkboxes__label" for="ratings">
                       G rating
                     </label>

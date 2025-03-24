@@ -61,6 +61,16 @@ describe "Acceptance::FilterProperties", type: :feature do
         expect(response.body).to have_css("select#to-month option[selected]", text: ViewModels::FilterProperties.previous_month)
       end
 
+      it "shows all efficiency ratings selected by default" do
+        expect(response.body).to have_css("input#ratings[value=A][checked]")
+        expect(response.body).to have_css("input#ratings-2[value=B][checked]")
+        expect(response.body).to have_css("input#ratings-3[value=C][checked]")
+        expect(response.body).to have_css("input#ratings-4[value=D][checked]")
+        expect(response.body).to have_css("input#ratings-5[value=E][checked]")
+        expect(response.body).to have_css("input#ratings-6[value=F][checked]")
+        expect(response.body).to have_css("input#ratings-7[value=G][checked]")
+      end
+
       it "shows the correct list of councils" do
         expected_councils = [
           "Aberdeen City Council",
@@ -135,6 +145,16 @@ describe "Acceptance::FilterProperties", type: :feature do
 
       it "returns status 400" do
         expect(invalid_response.status).to eq(400)
+      end
+
+      it "keeps the selected efficiency ratings unchecked" do
+        expect(invalid_response.body).to have_css("input#ratings[value=A]")
+        expect(invalid_response.body).to have_css("input#ratings-2[value=B]")
+        expect(invalid_response.body).to have_css("input#ratings-3[value=C]")
+        expect(invalid_response.body).to have_css("input#ratings-4[value=D]")
+        expect(invalid_response.body).to have_css("input#ratings-5[value=E]")
+        expect(invalid_response.body).to have_css("input#ratings-6[value=F]")
+        expect(invalid_response.body).to have_css("input#ratings-7[value=G]")
       end
 
       it "displays an error message" do

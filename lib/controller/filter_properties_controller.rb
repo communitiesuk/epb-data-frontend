@@ -37,6 +37,8 @@ module Controller
             @error_form_ids << "eff-rating-error"
             @errors[:eff_rating] = t("error.invalid_filter_option.eff_rating_invalid")
           end
+        elsif params["ratings"].nil?
+          params["ratings"] = %w[A B C D E F G]
         end
         erb :filter_properties
       end
