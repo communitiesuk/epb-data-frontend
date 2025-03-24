@@ -7,7 +7,7 @@ describe "Acceptance::FilterProperties", type: :feature do
 
   let(:response) { get local_host }
 
-  let(:valid_response) { post "#{local_host}?#{valid_dates}&#{valid_eff_rating}" }
+  let(:valid_response) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}" }
 
   let(:valid_dates) do
     "from-year=2023&from-month=January&to-year=2025&to-month=February"
@@ -32,7 +32,7 @@ describe "Acceptance::FilterProperties", type: :feature do
         expect(response.body).to have_link "Back", href: "/"
       end
 
-      it "the title to be correct for both domestic and non-domestic headers" do
+      it "shows the correct title for domestic, non-domestic and public properties" do
         property_types = %w[domestic non_domestic public_buildings]
         expected_titles = [
           "Energy Performance Certificates",
@@ -42,6 +42,20 @@ describe "Acceptance::FilterProperties", type: :feature do
         property_types.each_with_index do |property_type, index|
           expect(ViewModels::FilterProperties.page_title(property_type)).to eq(expected_titles[index])
         end
+      end
+
+      it "does not show the efficiency rating filter for non-domestic and public properties" do
+        property_types = %w[non_domestic public_buildings]
+
+        property_types.each do |property_type|
+          response = get "#{local_host}?property_type=#{property_type}"
+          expect(response.body).not_to have_css("#eff-rating-section.govuk-accordion__section")
+        end
+      end
+
+      it "shows the efficiency rating filter for domestic properties" do
+        response = get "#{local_host}?property_type=domestic"
+        expect(response.body).to have_css("#eff-rating-section.govuk-accordion__section")
       end
 
       it "shows the correct list of years" do
@@ -64,7 +78,8 @@ describe "Acceptance::FilterProperties", type: :feature do
         expect(response.body).to have_css("select#to-month option[selected]", text: ViewModels::FilterProperties.previous_month)
       end
 
-      it "shows all efficiency ratings selected by default" do
+      it "shows all efficiency ratings selected by default for domestic properties" do
+        response = get "#{local_host}?property_type=domestic"
         expect(response.body).to have_css("input#ratings-A[value=A][checked]")
         expect(response.body).to have_css("input#ratings-B[value=B][checked]")
         expect(response.body).to have_css("input#ratings-C[value=C][checked]")
@@ -105,7 +120,7 @@ describe "Acceptance::FilterProperties", type: :feature do
     end
 
     context "when the selected dates are invalid" do
-      let(:invalid_response) { post "#{local_host}?#{invalid_dates}&#{valid_eff_rating}" }
+      let(:invalid_response) { post "#{local_host}?property_type=domestic&#{invalid_dates}&#{valid_eff_rating}" }
 
       it "returns status 400" do
         expect(invalid_response.status).to eq(400)
@@ -144,7 +159,7 @@ describe "Acceptance::FilterProperties", type: :feature do
     end
 
     context "when the efficiency rating selection is invalid" do
-      let(:invalid_response) { post "#{local_host}?#{valid_dates}" }
+      let(:invalid_response) { post "#{local_host}?property_type=domestic&#{valid_dates}" }
 
       it "returns status 400" do
         expect(invalid_response.status).to eq(400)
