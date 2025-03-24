@@ -124,7 +124,7 @@ describe "Acceptance::FilterProperties", type: :feature do
       it "shows correct required GDS error summary" do
         expect(invalid_response.body).to have_css("div.govuk-error-summary h2.govuk-error-summary__title", text: "There is a problem")
         expect(invalid_response.body).to have_css("div.govuk-error-summary__body ul.govuk-list li:first a", text: "Select a valid date range")
-        expect(invalid_response.body).to have_link("Select a valid date range", href: "#date-error")
+        expect(invalid_response.body).to have_link("Select a valid date range", href: "#date-section")
       end
     end
 
@@ -166,7 +166,7 @@ describe "Acceptance::FilterProperties", type: :feature do
       it "shows correct required GDS error summary" do
         expect(invalid_response.body).to have_css("div.govuk-error-summary h2.govuk-error-summary__title", text: "There is a problem")
         expect(invalid_response.body).to have_css("div.govuk-error-summary__body ul.govuk-list li:first a", text: "Select at least one rating option")
-        expect(invalid_response.body).to have_link("Select at least one rating option", href: "#eff-rating-error")
+        expect(invalid_response.body).to have_link("Select at least one rating option", href: "#eff-rating-section")
       end
     end
 
@@ -224,7 +224,7 @@ describe "Acceptance::FilterProperties", type: :feature do
         invalid_responses.each_with_index do |invalid_response, index|
           expect(invalid_response.body).to have_css("div.govuk-error-summary h2.govuk-error-summary__title", text: "There is a problem")
           expect(invalid_response.body).to have_css("div.govuk-error-summary__body ul.govuk-list li:first a", text: error_messages[index])
-          expect(invalid_response.body).to have_link(error_messages[index], href: "#postcode-error")
+          expect(invalid_response.body).to have_link(error_messages[index], href: "#area-type-section")
         end
       end
     end
