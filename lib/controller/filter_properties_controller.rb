@@ -11,7 +11,7 @@ module Controller
         if request.post?
           validate_date
           validate_postcode
-          validate_ratings
+          validate_ratings if params["property_type"] == "domestic"
         end
 
         if request.post? && @errors.empty?

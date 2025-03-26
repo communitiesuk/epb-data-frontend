@@ -91,6 +91,7 @@ describe "Acceptance::FilterProperties", type: :feature do
 
       it "shows the correct list of councils" do
         expected_councils = [
+          "Select all",
           "Aberdeen City Council",
           "Aberdeenshire Council",
           "Angus Council",
@@ -100,6 +101,7 @@ describe "Acceptance::FilterProperties", type: :feature do
 
       it "shows the correct list of parliamentary constituencies" do
         expected_parliamentary_constituencies = [
+          "Select all",
           "Bristol Central",
           "Cities of London and Westminster",
           "Manchester Central",
@@ -165,7 +167,7 @@ describe "Acceptance::FilterProperties", type: :feature do
         expect(invalid_response.status).to eq(400)
       end
 
-      it "keeps the selected efficiency ratings unchecked" do
+      it "keeps the efficiency ratings unchecked when none is selected" do
         expect(invalid_response.body).to have_css("input#ratings-A[value=A]")
         expect(invalid_response.body).to have_css("input#ratings-B[value=B]")
         expect(invalid_response.body).to have_css("input#ratings-C[value=C]")

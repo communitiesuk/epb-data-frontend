@@ -96,7 +96,7 @@
                       <p>(<%= t('filter_properties.filter_options.filter_by_area.type_to_search') %>)</p>
                       <select class="govuk-select" id="local-authority" name="local-authority">
                         <% ViewModels::FilterProperties.councils.each do |council| %>
-                          <option value="<%= council %>" selected>
+                          <option value="<%= council %>" <%= 'selected' if council == params["local-authority"] %>>
                             <%= council %>
                           </option>
                         <% end %>
@@ -117,7 +117,7 @@
                       <p>(<%= t('filter_properties.filter_options.filter_by_area.type_to_search') %>)</p>
                       <select class="govuk-select" id="parliamentary-constituency" name="parliamentary-constituency">
                         <% ViewModels::FilterProperties.parliamentary_constituencies.each do |option| %>
-                          <option value="<%= option %>" selected>
+                          <option value="<%= option %>" <%= 'selected' if option == params["parliamentary-constituency"] %>>
                             <%= option %>
                           </option>
                         <% end %>

@@ -15,6 +15,7 @@ module ViewModels
 
     def self.councils
       [
+        "Select all",
         "Aberdeen City Council",
         "Aberdeenshire Council",
         "Angus Council",
@@ -23,6 +24,7 @@ module ViewModels
 
     def self.parliamentary_constituencies
       [
+        "Select all",
         "Bristol Central",
         "Cities of London and Westminster",
         "Manchester Central",
