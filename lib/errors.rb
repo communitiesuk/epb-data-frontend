@@ -43,6 +43,9 @@ module Errors
   class PostcodeIncomplete < RuntimeError
   end
 
+  class InvalidPropertyType < RuntimeError
+  end
+
   module DoNotReport
   end
 end

@@ -16,5 +16,7 @@ TogglesStub.enable(nil)
 
 ENV["STAGE"] = "test"
 ENV["EPB_UNLEASH_URI"] = "https://test-toggle-server/api"
+ENV["AWS_TEST_ACCESS_ID"] = "test.aws.id"
+ENV["AWS_TEST_ACCESS_SECRET"] = "test.aws.secret"
 
 run FrontendService.new

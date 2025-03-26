@@ -51,11 +51,15 @@ module ViewModels
       (Date.today << 1).strftime("%B")
     end
 
+    def self.dates_from_inputs(year, month)
+      Date.new(year.to_i, Date::MONTHNAMES.index(month) || 0)
+    end
+
     def self.is_valid_date(params)
       return true if params.empty?
 
-      start_date = Date.new(params["from-year"].to_i, Date::MONTHNAMES.index(params["from-month"]) || 0)
-      end_date = Date.new(params["to-year"].to_i, Date::MONTHNAMES.index(params["to-month"]) || 0)
+      start_date = dates_from_inputs(params["from-year"], params["from-month"])
+      end_date = dates_from_inputs(params["to-year"], params["to-month"])
 
       start_date < end_date
     end

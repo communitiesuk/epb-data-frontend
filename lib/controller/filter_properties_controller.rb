@@ -15,6 +15,7 @@ module Controller
         end
 
         if request.post? && @errors.empty?
+          send_download_request if ENV["STAGE"] != "test"
           erb :start_page
         else
           erb :filter_properties
@@ -28,6 +29,25 @@ module Controller
          &filter_properties
 
   private
+
+    def send_download_request
+      area_value = params[params["area-type"]]
+      date_start = ViewModels::FilterProperties.dates_from_inputs(params["from-year"], params["from-month"])
+      date_end = ViewModels::FilterProperties.dates_from_inputs(params["to-year"], params["to-month"])
+      email_address = ENV["TESTING_EMAIL_ADDRESS"]
+      use_case_args = {
+        property_type: params["property_type"],
+        date_start:,
+        date_end:,
+        area_type: params["area-type"],
+        area_value:,
+        efficiency_ratings: params["ratings"] || nil,
+        include_recommendations: params["recommendations"] || nil,
+        email_address:,
+      }
+      use_case = @container.get_object(:send_download_request_use_case)
+      use_case.execute(**use_case_args)
+    end
 
     def validate_date
       return if ViewModels::FilterProperties.is_valid_date(params)
