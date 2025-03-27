@@ -293,6 +293,7 @@ DEPENDENCIES
   rack-test (~> 2.1.0)
   rackup (~> 2.1)
   rake (~> 13.2.1)
+  rexml (~> 3)
   rspec (~> 3.13)
   rubocop-govuk (~> 5.0)
   rubocop-rspec (~> 3.3)

@@ -30,6 +30,7 @@ gem "rack", "~> 3.1.8"
 gem "rack-contrib", "~> 2.5.0"
 gem "rackup", "~> 2.1"
 gem "rake", "~> 13.2.1"
+gem 'rexml', '~> 3'
 gem "rubocop-govuk", "~> 5.0"
 gem "rubocop-rspec", "~> 3.3"
 gem "sassc-embedded"
