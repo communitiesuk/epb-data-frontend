@@ -48,7 +48,6 @@ describe Gateway::SnsGateway do
                  "Action" => "Publish",
                  "TopicArn" => topic_arn,
                  "Message" => message.to_json,
-                 "MessageStructure" => "json",
                  "Version" => "2010-03-31",
                },
              )
@@ -81,7 +80,6 @@ describe Gateway::SnsGateway do
                  "Action" => "Publish",
                  "TopicArn" => topic_arn,
                  "Message" => message.to_json,
-                 "MessageStructure" => "json",
                  "Version" => "2010-03-31",
                },
              )

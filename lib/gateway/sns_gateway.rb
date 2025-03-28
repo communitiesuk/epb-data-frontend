@@ -10,7 +10,6 @@ module Gateway
       @sns_client.publish(
         topic_arn: topic_arn,
         message: message.to_json,
-        message_structure: "json",
       )
     rescue Aws::SNS::Errors::ServiceError => e
       raise e
