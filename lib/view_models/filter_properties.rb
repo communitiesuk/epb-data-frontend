@@ -48,7 +48,7 @@ module ViewModels
     end
 
     def self.years
-      (2012..2025).map(&:to_s)
+      (2012..Time.now.year).map(&:to_s)
     end
 
     def self.months
@@ -75,7 +75,7 @@ module ViewModels
       Date.new(year.to_i, Date::MONTHNAMES.index(month) || 0)
     end
 
-    def self.is_valid_date(params)
+    def self.is_valid_date?(params)
       return true if params.empty?
 
       start_date = dates_from_inputs(params["from-year"], params["from-month"])

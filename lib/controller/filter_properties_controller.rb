@@ -56,7 +56,7 @@ module Controller
     end
 
     def validate_date
-      return if ViewModels::FilterProperties.is_valid_date(params)
+      return if ViewModels::FilterProperties.is_valid_date?(params)
 
       status 400
       @error_form_ids << "date-section"

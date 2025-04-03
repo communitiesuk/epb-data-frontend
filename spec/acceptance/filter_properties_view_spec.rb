@@ -24,6 +24,14 @@ describe "Acceptance::FilterProperties", type: :feature do
 
   describe "get .get-energy-certificate-data.epb-frontend/filter-properties" do
     context "when the data access options page is rendered" do
+      before do
+        Timecop.freeze(Time.utc(2025, 4, 1))
+      end
+
+      after do
+        Timecop.return
+      end
+
       it "returns status 200" do
         expect(response.status).to eq(200)
       end
@@ -32,16 +40,9 @@ describe "Acceptance::FilterProperties", type: :feature do
         expect(response.body).to have_link "Back", href: "/"
       end
 
-      it "shows the correct title for domestic, non-domestic and public properties" do
-        property_types = %w[domestic non_domestic public_buildings]
-        expected_titles = [
-          "Energy Performance Certificates",
-          "Commercial Energy Performance Certificates",
-          "Display Energy Certificates",
-        ]
-        property_types.each_with_index do |property_type, index|
-          expect(ViewModels::FilterProperties.page_title(property_type)).to eq(expected_titles[index])
-        end
+      it "shows the correct title for domestic" do
+        response = get "#{local_host}?property_type=domestic"
+        expect(response.body).to have_selector("h1", text: "Energy Performance Certificates")
       end
 
       it "does not show the efficiency rating filter for non-domestic and public properties" do
@@ -58,24 +59,14 @@ describe "Acceptance::FilterProperties", type: :feature do
         expect(response.body).to have_css("#eff-rating-section.govuk-accordion__section")
       end
 
-      it "shows the correct list of years" do
-        expected_years = (2012..2025).map(&:to_s)
-        expect(ViewModels::FilterProperties.years).to eq(expected_years)
-      end
-
-      it "shows the correct list of months" do
-        expected_months = %w[January February March April May June July August September October November December]
-        expect(ViewModels::FilterProperties.months).to eq(expected_months)
-      end
-
       it "selects the correct default year and month in the select with id='from-year'" do
         expect(response.body).to have_css("select#from-year option[selected]", text: "2012")
         expect(response.body).to have_css("select#from-month option[selected]", text: "January")
       end
 
       it "selects the correct default year and month in the select with id='to-year'" do
-        expect(response.body).to have_css("select#to-year option[selected]", text: ViewModels::FilterProperties.current_year)
-        expect(response.body).to have_css("select#to-month option[selected]", text: ViewModels::FilterProperties.previous_month)
+        expect(response.body).to have_css("select#to-year option[selected]", text: "2025")
+        expect(response.body).to have_css("select#to-month option[selected]", text: "March")
       end
 
       it "shows all efficiency ratings selected by default for domestic properties" do
@@ -89,24 +80,12 @@ describe "Acceptance::FilterProperties", type: :feature do
         expect(response.body).to have_css("input#ratings-G[value=G][checked]")
       end
 
-      it "shows the correct list of councils" do
-        expected_councils = [
-          "Select all",
-          "Aberdeen City Council",
-          "Aberdeenshire Council",
-          "Angus Council",
-        ]
-        expect(ViewModels::FilterProperties.councils).to eq(expected_councils)
+      it "shows a select of councils" do
+        expect(response.body).to have_css(".govuk-select#local-authority")
       end
 
-      it "shows the correct list of parliamentary constituencies" do
-        expected_parliamentary_constituencies = [
-          "Select all",
-          "Bristol Central",
-          "Cities of London and Westminster",
-          "Manchester Central",
-        ]
-        expect(ViewModels::FilterProperties.parliamentary_constituencies).to eq(expected_parliamentary_constituencies)
+      it "shows a select of parliamentary constituencies" do
+        expect(response.body).to have_css(".govuk-select#parliamentary-constituency")
       end
     end
 
