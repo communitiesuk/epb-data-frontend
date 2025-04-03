@@ -35,7 +35,7 @@ describe "Journey::FilterProperties", :journey, type: :feature do
     end
 
     it "shows the expected destination page content" do
-      expect(page).to have_link("Start now", href: "/data-access-options")
+      expect(page).to have_selector("h2", text: "Download started")
     end
   end
 

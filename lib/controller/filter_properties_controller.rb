@@ -34,6 +34,12 @@ module Controller
       erb :request_received_confirmation
     end
 
+    get "/download-started-confirmation" do
+      status 200
+      @back_link_href = request.referer || "/"
+      erb :download_started_confirmation
+    end
+
   private
 
     def send_download_request

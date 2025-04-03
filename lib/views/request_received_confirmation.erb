@@ -27,16 +27,16 @@
             </p>
             <ul class="govuk-list govuk-list--bullet">
               <li><%= ViewModels::FilterProperties.page_title(params["property_type"]) %> <% if params["recommendations"] %><%= t('request_received.recommendations') %><% end %></li>
-              <li><%= ViewModels::FilterProperties.selected_start_and_end_dates(params) %></li>
-              <li><%= ViewModels::FilterProperties.selected_area_type(params) %></li>
+              <li><%= ViewModels::RequestReceivedConfirmation.selected_start_and_end_dates(params) %></li>
+              <li><%= ViewModels::RequestReceivedConfirmation.selected_area_type(params) %></li>
               <% if params["property_type"] == 'domestic' %>
-                <li><%= t('request_received.energy_eff_rating') %> <%= ViewModels::FilterProperties.selected_eff_ratings(params) %></li>
+                <li><%= t('request_received.energy_eff_rating') %> <%= ViewModels::RequestReceivedConfirmation.selected_eff_ratings(params) %></li>
               <% end %>
             </ul>
           </div>
 
           <p class="govuk-body">
-            <%= t('request_received.number_and_size') %>
+            <%= t('request_received.count_and_size') %>
           </p>
         </div>
       </div>
