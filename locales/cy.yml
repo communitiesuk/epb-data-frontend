@@ -140,6 +140,17 @@ cy:
       body: "A download link for the data selected will be sent to your email address."
       button_text: "Download selected"
 
+  request_received:
+    title: "Request received"
+    header: "What happens next"
+    body: "An email with a download link for a ZIP file will be sent to: <strong>placeholder@email.com</strong>."
+    delivery_time: "This may take up to 15 minutes to be delivered to your inbox."
+    check_spam: "If you cannot see the email in your inbox, check your junk or spam folder."
+    requested_data_for: "You requested data for:"
+    energy_eff_rating: "Energy Efficiency Rating"
+    recommendations: "and recommendations"
+    number_and_size: "Your request contains <strong>placeholder number</strong> certificates. The estimated download size is <strong>placeholder size</strong> MB."
+
   date:
     months:
       - Ionawr

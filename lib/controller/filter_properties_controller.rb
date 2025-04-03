@@ -16,7 +16,7 @@ module Controller
 
         if request.post? && @errors.empty?
           send_download_request if ENV["STAGE"] != "test"
-          erb :start_page
+          erb :request_received_confirmation
         else
           erb :filter_properties
         end
@@ -27,6 +27,12 @@ module Controller
 
     post "/filter-properties",
          &filter_properties
+
+    get "/request-received-confirmation" do
+      status 200
+      @back_link_href = request.referer || "/"
+      erb :request_received_confirmation
+    end
 
   private
 

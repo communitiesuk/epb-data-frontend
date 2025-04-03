@@ -31,6 +31,22 @@ module ViewModels
       ]
     end
 
+    def self.selected_area_type(params)
+      if params["local-authority"] != "Select all"
+        params["local-authority"]
+      elsif params["parliamentary-constituency"] != "Select all"
+        params["parliamentary-constituency"]
+      elsif params["postcode"] != ""
+        params["postcode"]
+      else
+        "England and Wales"
+      end
+    end
+
+    def self.selected_eff_ratings(params)
+      params["ratings"]&.join(", ")
+    end
+
     def self.years
       (2012..2025).map(&:to_s)
     end
@@ -41,6 +57,10 @@ module ViewModels
 
     def self.start_year
       "2012"
+    end
+
+    def self.selected_start_and_end_dates(params)
+      "#{params['from-month']} #{params['from-year']} - #{params['to-month']} #{params['to-year']}"
     end
 
     def self.current_year
