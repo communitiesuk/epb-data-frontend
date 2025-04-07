@@ -4,7 +4,7 @@ module Controller
       lambda do
         @errors = {}
         @error_form_ids = []
-        @back_link_href = request.referer || "/"
+        @back_link_href = "/type-of-properties"
         params["ratings"] ||= %w[A B C D E F G] unless request.post?
         status 200
 
@@ -16,7 +16,8 @@ module Controller
 
         if request.post? && @errors.empty?
           send_download_request if ENV["STAGE"] != "test"
-          erb :request_received_confirmation
+          session[:form_data] = params
+          redirect "/request-received-confirmation?property_type=#{params['property_type']}"
         else
           erb :filter_properties
         end
@@ -30,13 +31,14 @@ module Controller
 
     get "/request-received-confirmation" do
       status 200
-      @back_link_href = request.referer || "/"
-      erb :request_received_confirmation
+      @back_link_href = "/filter-properties?property_type=#{params['property_type']}"
+      params_data = session[:form_data]
+      erb :request_received_confirmation, locals: { params_data: params_data }
     end
 
     get "/download-started-confirmation" do
       status 200
-      @back_link_href = request.referer || "/"
+      @back_link_href = "/filter-properties?property_type=#{params['property_type']}"
       erb :download_started_confirmation
     end
 

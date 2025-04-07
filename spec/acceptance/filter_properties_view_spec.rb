@@ -37,7 +37,7 @@ describe "Acceptance::FilterProperties", type: :feature do
       end
 
       it "shows a back link" do
-        expect(response.body).to have_link "Back", href: "/"
+        expect(response.body).to have_link "Back", href: "/type-of-properties"
       end
 
       it "shows the correct title for domestic" do
@@ -90,8 +90,8 @@ describe "Acceptance::FilterProperties", type: :feature do
     end
 
     context "when the selected dates are valid" do
-      it "returns status 200" do
-        expect(valid_response.status).to eq(200)
+      it "returns status 302" do
+        expect(valid_response.status).to eq(302)
       end
 
       it "does not display an error message" do
@@ -128,8 +128,8 @@ describe "Acceptance::FilterProperties", type: :feature do
     end
 
     context "when the efficiency rating selection is valid" do
-      it "returns status 200" do
-        expect(valid_response.status).to eq(200)
+      it "returns status 302" do
+        expect(valid_response.status).to eq(302)
       end
 
       it "displays an error message" do
@@ -170,8 +170,8 @@ describe "Acceptance::FilterProperties", type: :feature do
     end
 
     context "when the postcode is valid" do
-      it "returns status 200" do
-        expect(valid_response.status).to eq(200)
+      it "returns status 302" do
+        expect(valid_response.status).to eq(302)
       end
 
       it "displays an error message" do

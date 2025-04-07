@@ -7,7 +7,7 @@ describe "Acceptance::DownloadStartedConfirmation", type: :feature do
   let(:response) { get "#{local_host}?property_type=domestic" }
 
   describe "get .get-energy-certificate-data.epb-frontend/download-started-confirmation" do
-    context "when the data access options page is rendered" do
+    context "when the download started confirmation page is rendered" do
       before do
         Timecop.freeze(Time.utc(2025, 4, 15))
       end
@@ -21,7 +21,7 @@ describe "Acceptance::DownloadStartedConfirmation", type: :feature do
       end
 
       it "shows a back link" do
-        expect(response.body).to have_link "Back", href: "/"
+        expect(response.body).to have_link "Back", href: "/filter-properties?property_type=domestic"
       end
 
       it "the title to be correct" do
