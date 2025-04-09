@@ -21,7 +21,7 @@ AUTH_URL = "http://test-auth-server.gov.uk"
 ENV["EPB_AUTH_CLIENT_ID"] = "test.id"
 ENV["EPB_AUTH_CLIENT_SECRET"] = "test.client.secret"
 ENV["EPB_AUTH_SERVER"] = AUTH_URL
-ENV["EPB_API_URL"] = "http://epb-data-warehouse-api"
+ENV["EPB_DATA_WAREHOUSE_API_URL"] = "http://epb-data-warehouse-api"
 ENV["STAGE"] = "test"
 ENV["EPB_UNLEASH_URI"] = "https://test-toggle-server/api"
 
@@ -77,7 +77,7 @@ end
 
 module RSpecUnitMixin
   def get_api_client(api_url = nil)
-    url = api_url.nil? ? ENV["EPB_API_URL"] : api_url
+    url = api_url.nil? ? ENV["EPB_DATA_WAREHOUSE_API_URL"] : api_url
     @get_api_client ||=
       Auth::HttpClient.new ENV["EPB_AUTH_CLIENT_ID"],
                            ENV["EPB_AUTH_CLIENT_SECRET"],

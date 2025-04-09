@@ -22,7 +22,7 @@ private
     Auth::HttpClient.new ENV["EPB_AUTH_CLIENT_ID"],
                          ENV["EPB_AUTH_CLIENT_SECRET"],
                          ENV["EPB_AUTH_SERVER"],
-                         ENV["EPB_API_URL"],
+                         ENV["EPB_DATA_WAREHOUSE_API_URL"],
                          OAuth2::Client,
                          faraday_connection_opts: { request: { timeout: 8 } }
   end
