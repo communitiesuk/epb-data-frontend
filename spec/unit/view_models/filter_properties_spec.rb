@@ -61,12 +61,15 @@ describe ViewModels::FilterProperties do
   describe "#parliamentary_constituencies" do
     it "returns the correct list of parliamentary constituencies" do
       expected_parliamentary_constituencies = [
-        "Select all",
         "Bristol Central",
         "Cities of London and Westminster",
         "Manchester Central",
       ]
-      expect(view_model.parliamentary_constituencies).to eq(expected_parliamentary_constituencies)
+      expect(view_model.parliamentary_constituencies).to include(*expected_parliamentary_constituencies)
+    end
+
+    it "returns 597 rows" do
+      expect(view_model.parliamentary_constituencies.length).to eq 597
     end
   end
 

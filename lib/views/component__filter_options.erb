@@ -119,6 +119,9 @@
                       </label>
                       <p>(<%= t('filter_properties.filter_options.filter_by_area.type_to_search') %>)</p>
                       <select class="govuk-select" id="parliamentary-constituency" name="parliamentary-constituency">
+                        <option value="Select all" <%= 'selected' if params["parliamentary-constituency"] == "Select all" %>>
+                          Select all
+                        </option>
                         <% ViewModels::FilterProperties.parliamentary_constituencies.each do |option| %>
                           <option value="<%= option %>" <%= 'selected' if option == params["parliamentary-constituency"] %>>
                             <%= option %>
