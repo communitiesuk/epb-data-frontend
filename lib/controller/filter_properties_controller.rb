@@ -48,7 +48,7 @@ module Controller
       area_value = params[params["area-type"]]
       date_start = ViewModels::FilterProperties.dates_from_inputs(params["from-year"], params["from-month"])
       date_end = ViewModels::FilterProperties.dates_from_inputs(params["to-year"], params["to-month"])
-      email_address = ENV["TESTING_EMAIL_ADDRESS"]
+      email_address = ENV["NOTIFY_DATA_EMAIL_RECIPIENT"]
       use_case_args = {
         property_type: params["property_type"],
         date_start:,
