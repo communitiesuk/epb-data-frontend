@@ -95,6 +95,9 @@
                       </label>
                       <p>(<%= t('filter_properties.filter_options.filter_by_area.type_to_search') %>)</p>
                       <select class="govuk-select" id="local-authority" name="local-authority">
+                        <option value="Select all" <%= 'selected' if params["local-authority"] == "Select all" %>>
+                          Select all
+                        </option>
                         <% ViewModels::FilterProperties.councils.each do |council| %>
                           <option value="<%= council %>" <%= 'selected' if council == params["local-authority"] %>>
                             <%= council %>

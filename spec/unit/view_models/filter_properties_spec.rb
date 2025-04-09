@@ -46,12 +46,15 @@ describe ViewModels::FilterProperties do
   describe "#councils" do
     it "returns the correct list of councils" do
       expected_councils = [
-        "Select all",
-        "Aberdeen City Council",
-        "Aberdeenshire Council",
-        "Angus Council",
+        "Aberafan Maesteg",
+        "Barnsley",
+        "Nottingham",
       ]
-      expect(view_model.councils).to eq(expected_councils)
+      expect(view_model.councils).to include(*expected_councils)
+    end
+
+    it "returns 350 councills" do
+      expect(view_model.councils.length).to eq 350
     end
   end
 

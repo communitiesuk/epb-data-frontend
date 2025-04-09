@@ -59,7 +59,7 @@ describe "Journey::FilterProperties", :journey, type: :feature do
       visit "#{getting_domain}/filter-properties?property_type=domestic"
       select "May", from: "from-month"
       select "2024", from: "from-year"
-      select "Angus Council", from: "local-authority"
+      select "Bedford", from: "local-authority"
       click_on "Download selected"
     end
 
@@ -67,7 +67,7 @@ describe "Journey::FilterProperties", :journey, type: :feature do
       expect(page).to have_selector("h2", text: "Request received")
       expect(page).to have_selector("li", text: "Energy Performance Certificates")
       expect(page).to have_selector("li", text: "May 2024 - March 2025")
-      expect(page).to have_selector("li", text: "Angus Council")
+      expect(page).to have_selector("li", text: "Bedford")
       expect(page).to have_selector("li", text: "Energy Efficiency Rating A, B, C, D, E, F, G")
     end
   end
