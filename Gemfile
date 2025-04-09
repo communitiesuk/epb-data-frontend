@@ -21,6 +21,7 @@ group :test do
 end
 
 gem "aws-sdk-sns", "~> 1"
+gem "csv"
 gem "epb-auth-tools", "~> 1.1.0"
 gem "erubis", "~> 2.7"
 gem "i18n", "~> 1.14.6"
