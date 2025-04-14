@@ -35,10 +35,6 @@ module Controller
     HOST_NAME = "get-energy-certificate-data".freeze
     Helper::Assets.setup_cache_control(self)
 
-    configure do
-      enable :sessions # Enables session support
-    end
-
     configure :development do
       require "sinatra/reloader"
       register Sinatra::Reloader

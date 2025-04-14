@@ -16,8 +16,8 @@ module Controller
 
         if request.post? && @errors.empty?
           send_download_request if ENV["STAGE"] != "test"
-          session[:form_data] = params
-          redirect "/request-received-confirmation?property_type=#{params['property_type']}"
+          form_data = Rack::Utils.build_nested_query(params)
+          redirect "/request-received-confirmation?#{form_data}"
         else
           erb :filter_properties
         end
@@ -32,9 +32,8 @@ module Controller
     get "/request-received-confirmation" do
       status 200
       @back_link_href = "/filter-properties?property_type=#{params['property_type']}"
-      params_data = session[:form_data]
-      count = ENV["STAGE"] != "test" ? get_download_size(params_data) : 0
-      erb :request_received_confirmation, locals: { params_data:, count: }
+      count = ENV["STAGE"] != "test" ? get_download_size(params) : 0
+      erb :request_received_confirmation, locals: { count: }
     end
 
     get "/download-started-confirmation" do
