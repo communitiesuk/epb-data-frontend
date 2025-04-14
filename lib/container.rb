@@ -6,9 +6,12 @@ class Container
   def initialize
     sns_gateway = Gateway::SnsGateway.new(sns_client)
     send_download_request_use_case = UseCase::SendDownloadRequest.new(sns_gateway:)
+    certificate_count_gateway = Gateway::CertificateCountGateway.new(api_client:)
+    get_download_size_use_case = UseCase::GetDownloadSize.new(certificate_count_gateway:)
     @objects = {
       internal_api_client: api_client,
       send_download_request_use_case:,
+      get_download_size_use_case:,
     }
   end
 

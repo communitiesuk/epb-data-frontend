@@ -33,7 +33,8 @@ module Controller
       status 200
       @back_link_href = "/filter-properties?property_type=#{params['property_type']}"
       params_data = session[:form_data]
-      erb :request_received_confirmation, locals: { params_data: params_data }
+      count = ENV["STAGE"] != "test" ? get_download_size(params_data) : 0
+      erb :request_received_confirmation, locals: { params_data:, count: }
     end
 
     get "/download-started-confirmation" do
@@ -43,6 +44,37 @@ module Controller
     end
 
   private
+
+    def get_download_size(params_data)
+      use_case = @container.get_object(:get_download_size_use_case)
+      date_start = ViewModels::FilterProperties.dates_from_inputs(params_data["from-year"], params_data["from-month"]).to_s
+      date_end = ViewModels::FilterProperties.dates_from_inputs(params_data["to-year"], params_data["to-month"]).to_s
+
+      council = if params_data["local-authority"] == "Select all" || params_data["area-type"] != "local-authority"
+                  nil
+                else
+                  [params_data[params_data["area-type"]]]
+                end
+
+      constituency = if params_data["parliamentary-constituency"] == "Select all" || params_data["area-type"] != "parliamentary-constituency"
+                       nil
+                     else
+                       [params_data[params_data["area-type"]]]
+                     end
+
+      use_case_args = {
+        postcode: params_data["area-type"] == "postcode" ? params_data[params_data["area-type"]] : nil,
+        council:,
+        constituency:,
+        eff_rating: params_data["ratings"],
+        date_start:,
+        date_end:,
+      }
+
+      use_case.execute(**use_case_args)
+    rescue StandardError
+      status 500
+    end
 
     def send_download_request
       area_value = params[params["area-type"]]

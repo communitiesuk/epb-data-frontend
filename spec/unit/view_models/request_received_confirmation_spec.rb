@@ -1,6 +1,22 @@
 describe ViewModels::RequestReceivedConfirmation do
   let(:view_model) { described_class }
 
+  describe "#count_to_size" do
+    context "when count is passed" do
+      it "returns the estimated size" do
+        count = 29_279
+        expect(view_model.count_to_size(count)).to eq 28.70
+      end
+    end
+
+    context "when count is 0" do
+      it "returns the headers size" do
+        count = 0
+        expect(view_model.count_to_size(count)).to eq 0
+      end
+    end
+  end
+
   describe "#selected_area_type" do
     context "when the the defaults are passed" do
       it "returns the England and Wales" do

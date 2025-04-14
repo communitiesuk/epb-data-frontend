@@ -4,6 +4,14 @@ module ViewModels
       "#{params['from-month']} #{params['from-year']} - #{params['to-month']} #{params['to-year']}"
     end
 
+    def self.count_to_size(count)
+      bytes_on_mb = 1_000_000
+      header_bytes = 1888
+      avg_row_bytes = 980.21
+      estimated_total_bytes = header_bytes + (count * avg_row_bytes)
+      (estimated_total_bytes / bytes_on_mb).round(2)
+    end
+
     def self.selected_area_type(params)
       if params["local-authority"] != "Select all"
         params["local-authority"]

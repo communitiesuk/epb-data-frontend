@@ -150,7 +150,7 @@ en:
     requested_data_for: "You requested data for:"
     energy_eff_rating: "Energy Efficiency Rating"
     recommendations: "and recommendations"
-    count_and_size: "Your request contains <strong>placeholder number</strong> certificates. The estimated download size is <strong>placeholder size</strong> MB."
+    count_and_size: "Your request contains <strong>%{count}</strong> certificates. The estimated download size is <strong>%{size}</strong> MB."
 
   download_started:
     title: "Download started"
