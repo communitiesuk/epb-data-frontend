@@ -32,7 +32,7 @@ module Controller
     get "/request-received-confirmation" do
       status 200
       @back_link_href = "/filter-properties?property_type=#{params['property_type']}"
-      count = ENV["STAGE"] != "test" ? get_download_size(params) : 0
+      count = ENV["STAGE"] == "integration" ? get_download_size(params) : 0
       erb :request_received_confirmation, locals: { count: }
     end
 
