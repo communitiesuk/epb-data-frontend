@@ -71,8 +71,6 @@ module Controller
       }
 
       use_case.execute(**use_case_args)
-    rescue StandardError
-      status 500
     end
 
     def send_download_request
