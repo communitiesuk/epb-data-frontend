@@ -21,7 +21,7 @@ describe Gateway::CertificateCountGateway do
     end
 
     it "return an integer" do
-      expect(response).to eq({ count: 25 })
+      expect(response).to eq(25)
     end
   end
 end

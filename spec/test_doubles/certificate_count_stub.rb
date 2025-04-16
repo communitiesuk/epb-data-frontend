@@ -6,7 +6,7 @@ class CertificateCountStub
     query_string += "&postcode=#{postcode}" unless postcode.nil?
     query_string += eff_rating.map { |c| "&eff_rating[]=#{c}" }.join.to_s unless eff_rating.nil?
 
-    body = { count: 25 }
+    body = { data: { count: 25 }, meta: {} }
 
     WebMock
       .stub_request(

@@ -14,7 +14,8 @@ module Gateway
       response =
         Helper::Response.ensure_good { @internal_api_client.get(route) }
 
-      JSON.parse(response.body, symbolize_names: true)
+      response_json = JSON.parse(response.body, symbolize_names: true)
+      response_json[:data][:count]
     end
   end
 end
