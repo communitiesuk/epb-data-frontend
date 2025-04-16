@@ -16,7 +16,7 @@ module Controller
     set :public_folder, proc { File.join(root, "/../../public") }
     set :static_cache_control, [:public, { max_age: 60 * 60 * 24 * 7 }] if ENV["ASSETS_VERSION"]
 
-    set :show_exceptions, :after_handler if ENV["STAGE"] != "prod"
+    set :show_exceptions, :after_handler if ENV["STAGE"] == "test"
 
     get "/" do
       status 200
