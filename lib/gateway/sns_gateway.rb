@@ -2,7 +2,7 @@ require "aws-sdk-sns"
 
 module Gateway
   class SnsGateway
-    def initialize(sns_client = default_sns_client)
+    def initialize(sns_client)
       @sns_client = sns_client
     end
 
@@ -13,15 +13,6 @@ module Gateway
       )
     rescue Aws::SNS::Errors::ServiceError => e
       raise e
-    end
-
-  private
-
-    def default_sns_client
-      Aws::SNS::Client.new(
-        region: "eu-west-2",
-        credentials: Aws::ECSCredentials.new,
-      )
     end
   end
 end
