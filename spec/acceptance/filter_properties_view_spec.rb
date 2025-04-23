@@ -127,55 +127,33 @@ describe "Acceptance::FilterProperties", type: :feature do
       end
     end
 
-    context "when the efficiency rating selection is valid" do
-      it "returns status 302" do
-        expect(valid_response.status).to eq(302)
-      end
+    context "when selecting multiple councils" do
+      let(:multiple_councils) { "local-authority[]=Birmingham&local-authority[]=Adur" }
+      let(:valid_response_with_multiple_councils) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{multiple_councils}" }
 
-      it "displays an error message" do
-        expect(valid_response.body).not_to include(
-          '<p id="eff-rating-error" class="govuk-error-message">',
-        )
+      it "returns status 302" do
+        expect(valid_response_with_multiple_councils.status).to eq(302)
       end
     end
 
-    context "when the efficiency rating selection is invalid" do
-      let(:invalid_response) { post "#{local_host}?property_type=domestic&#{valid_dates}" }
+    context "when selecting multiple constituencies" do
+      let(:multiple_constituencies) { "parliamentary-constituency[]=Ashford&parliamentary-constituency[]=Cardiff" }
+      let(:valid_response_with_multiple_constituencies) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{multiple_constituencies}" }
 
-      it "returns status 400" do
-        expect(invalid_response.status).to eq(400)
-      end
-
-      it "keeps the efficiency ratings unchecked when none is selected" do
-        expect(invalid_response.body).to have_css("input#ratings-A[value=A]")
-        expect(invalid_response.body).to have_css("input#ratings-B[value=B]")
-        expect(invalid_response.body).to have_css("input#ratings-C[value=C]")
-        expect(invalid_response.body).to have_css("input#ratings-D[value=D]")
-        expect(invalid_response.body).to have_css("input#ratings-E[value=E]")
-        expect(invalid_response.body).to have_css("input#ratings-F[value=F]")
-        expect(invalid_response.body).to have_css("input#ratings-G[value=G]")
-      end
-
-      it "displays an error message" do
-        expect(invalid_response.body).to include(
-          '<p id="eff-rating-error" class="govuk-error-message">',
-        )
-      end
-
-      it "shows correct required GDS error summary" do
-        expect(invalid_response.body).to have_css("div.govuk-error-summary h2.govuk-error-summary__title", text: "There is a problem")
-        expect(invalid_response.body).to have_css("div.govuk-error-summary__body ul.govuk-list li:first a", text: "Select at least one rating option")
-        expect(invalid_response.body).to have_link("Select at least one rating option", href: "#eff-rating-section")
+      it "returns status 302" do
+        expect(valid_response_with_multiple_constituencies.status).to eq(302)
       end
     end
 
     context "when the postcode is valid" do
+      let(:valid_response_with_postcode) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{valid_postcode}" }
+
       it "returns status 302" do
-        expect(valid_response.status).to eq(302)
+        expect(valid_response_with_postcode.status).to eq(302)
       end
 
       it "displays an error message" do
-        expect(valid_response.body).not_to include(
+        expect(valid_response_with_postcode.body).not_to include(
           '<p id="postcode-error" class="govuk-error-message">',
         )
       end
@@ -225,6 +203,48 @@ describe "Acceptance::FilterProperties", type: :feature do
           expect(invalid_response.body).to have_css("div.govuk-error-summary__body ul.govuk-list li:first a", text: error_messages[index])
           expect(invalid_response.body).to have_link(error_messages[index], href: "#area-type-section")
         end
+      end
+    end
+
+    context "when the efficiency rating selection is valid" do
+      it "returns status 302" do
+        expect(valid_response.status).to eq(302)
+      end
+
+      it "displays an error message" do
+        expect(valid_response.body).not_to include(
+          '<p id="eff-rating-error" class="govuk-error-message">',
+        )
+      end
+    end
+
+    context "when the efficiency rating selection is invalid" do
+      let(:invalid_response) { post "#{local_host}?property_type=domestic&#{valid_dates}" }
+
+      it "returns status 400" do
+        expect(invalid_response.status).to eq(400)
+      end
+
+      it "keeps the efficiency ratings unchecked when none is selected" do
+        expect(invalid_response.body).to have_css("input#ratings-A[value=A]")
+        expect(invalid_response.body).to have_css("input#ratings-B[value=B]")
+        expect(invalid_response.body).to have_css("input#ratings-C[value=C]")
+        expect(invalid_response.body).to have_css("input#ratings-D[value=D]")
+        expect(invalid_response.body).to have_css("input#ratings-E[value=E]")
+        expect(invalid_response.body).to have_css("input#ratings-F[value=F]")
+        expect(invalid_response.body).to have_css("input#ratings-G[value=G]")
+      end
+
+      it "displays an error message" do
+        expect(invalid_response.body).to include(
+          '<p id="eff-rating-error" class="govuk-error-message">',
+        )
+      end
+
+      it "shows correct required GDS error summary" do
+        expect(invalid_response.body).to have_css("div.govuk-error-summary h2.govuk-error-summary__title", text: "There is a problem")
+        expect(invalid_response.body).to have_css("div.govuk-error-summary__body ul.govuk-list li:first a", text: "Select at least one rating option")
+        expect(invalid_response.body).to have_link("Select at least one rating option", href: "#eff-rating-section")
       end
     end
   end

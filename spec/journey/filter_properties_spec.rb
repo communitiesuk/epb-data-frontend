@@ -59,7 +59,10 @@ describe "Journey::FilterProperties", :journey, type: :feature do
       visit "#{getting_domain}/filter-properties?property_type=domestic"
       select "May", from: "from-month"
       select "2024", from: "from-year"
-      select "Bedford", from: "local-authority"
+      find(".govuk-accordion__show-all").click
+      la_input = find("input#local-authority")
+      la_input.click
+      la_input.send_keys("Adur", :enter)
       click_on "Download selected"
     end
 
@@ -67,7 +70,43 @@ describe "Journey::FilterProperties", :journey, type: :feature do
       expect(page).to have_selector("h2", text: "Request received")
       expect(page).to have_selector("li", text: "Energy Performance Certificates")
       expect(page).to have_selector("li", text: "May 2024 - March 2025")
-      expect(page).to have_selector("li", text: "Bedford")
+      expect(page).to have_selector("li", text: "Adur")
+      expect(page).to have_selector("li", text: "Energy Efficiency Rating A, B, C, D, E, F, G")
+    end
+  end
+
+  context "when downloading selected filtered data for domestic properties using multiselect" do
+    before do
+      visit "#{getting_domain}/filter-properties?property_type=domestic"
+      find(".govuk-accordion__show-all").click
+      select "May", from: "from-month"
+      select "2024", from: "from-year"
+    end
+
+    it "shows the expected page content when selecting multiple councils" do
+      la_input = find("input#local-authority")
+      la_input.click
+      la_input.send_keys("Adur", :enter)
+      la_input.send_keys("Birmingham", :enter)
+      click_on "Download selected"
+      expect(page).to have_selector("h2", text: "Request received")
+      expect(page).to have_selector("li", text: "Energy Performance Certificates")
+      expect(page).to have_selector("li", text: "May 2024 - March 2025")
+      expect(page).to have_selector("li", text: "Adur, Birmingham")
+      expect(page).to have_selector("li", text: "Energy Efficiency Rating A, B, C, D, E, F, G")
+    end
+
+    it "shows the expected page content when selecting multiple constituencies" do
+      find("input#area-2.govuk-radios__input", visible: :all).click
+      la_input = find("input#parliamentary-constituency")
+      la_input.click
+      la_input.send_keys("Ashford", :enter)
+      la_input.send_keys("Barking", :enter)
+      click_on "Download selected"
+      expect(page).to have_selector("h2", text: "Request received")
+      expect(page).to have_selector("li", text: "Energy Performance Certificates")
+      expect(page).to have_selector("li", text: "May 2024 - March 2025")
+      expect(page).to have_selector("li", text: "Ashford, Barking")
       expect(page).to have_selector("li", text: "Energy Efficiency Rating A, B, C, D, E, F, G")
     end
   end

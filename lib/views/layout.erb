@@ -30,6 +30,7 @@
   document.body.classList.remove("no-js");
   document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
 </script>
+<script type="text/javascript" src="<%= assets_path('/javascript/accessible-autocomplete.min.js') %>" nonce="<%= script_nonce %>"></script>
 
 <a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link"><%=t('layout.body.skip')%></a>
 

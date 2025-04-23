@@ -10,6 +10,7 @@ module Controller
 
         if request.post?
           validate_date
+          validate_area
           validate_postcode
           validate_ratings if params["property_type"] == "domestic"
         end
@@ -102,6 +103,11 @@ module Controller
       status 400
       @error_form_ids << "date-section"
       @errors[:date] = t("error.invalid_filter_option.date_invalid")
+    end
+
+    def validate_area
+      params["local-authority"] ? params["local-authority"] : params["local-authority"] = ["Select all"]
+      params["parliamentary-constituency"] ? params["parliamentary-constituency"] : params["parliamentary-constituency"] = ["Select all"]
     end
 
     def validate_postcode

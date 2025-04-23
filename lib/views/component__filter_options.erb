@@ -94,16 +94,18 @@
                         <%= t('filter_properties.filter_options.filter_by_area.select_local_authority') %>
                       </label>
                       <p>(<%= t('filter_properties.filter_options.filter_by_area.type_to_search') %>)</p>
-                      <select class="govuk-select" id="local-authority" name="local-authority">
-                        <option value="Select all" <%= 'selected' if params["local-authority"] == "Select all" %>>
-                          Select all
-                        </option>
-                        <% ViewModels::FilterProperties.councils.each do |council| %>
-                          <option value="<%= council %>" <%= 'selected' if council == params["local-authority"] %>>
-                            <%= council %>
+                      <div class="autocomplete-wrapper govuk-!-width-one-third">
+                        <select class="govuk-select" id="local-authority" name="local-authority[]" multiple>
+                          <option value="Select all">
+                            Select all
                           </option>
-                        <% end %>
-                      </select>
+                          <% ViewModels::FilterProperties.councils.each do |council| %>
+                            <option value="<%= council %>" <%= 'selected' if !params["local-authority"].nil? && params["local-authority"].include?(council) %>>
+                              <%= council %>
+                            </option>
+                          <% end %>
+                        </select>
+                      </div>
                     </div>
                   </div>
                   <div class="govuk-radios__item">
@@ -118,16 +120,18 @@
                         <%= t('filter_properties.filter_options.filter_by_area.select_parliamentary_constituency') %>
                       </label>
                       <p>(<%= t('filter_properties.filter_options.filter_by_area.type_to_search') %>)</p>
-                      <select class="govuk-select" id="parliamentary-constituency" name="parliamentary-constituency">
-                        <option value="Select all" <%= 'selected' if params["parliamentary-constituency"] == "Select all" %>>
-                          Select all
-                        </option>
-                        <% ViewModels::FilterProperties.parliamentary_constituencies.each do |option| %>
-                          <option value="<%= option %>" <%= 'selected' if option == params["parliamentary-constituency"] %>>
-                            <%= option %>
+                      <div class="autocomplete-wrapper govuk-!-width-one-third">
+                        <select class="govuk-select" id="parliamentary-constituency" name="parliamentary-constituency[]" multiple>
+                          <option value="Select all">
+                            Select all
                           </option>
-                        <% end %>
-                      </select>
+                          <% ViewModels::FilterProperties.parliamentary_constituencies.each do |option| %>
+                            <option value="<%= option %>" <%= 'selected' if !params["parliamentary-constituency"].nil? && params["parliamentary-constituency"].include?(option) %>>
+                              <%= option %>
+                            </option>
+                          <% end %>
+                        </select>
+                      </div>
                     </div>
                   </div>
                   <div class="govuk-radios__item">
@@ -297,3 +301,15 @@
     </form>
   </div>
 </div>
+
+<script nonce="<%= script_nonce %>">
+  accessibleAutocomplete.enhanceSelectElement({
+    selectElement: document.querySelector('#local-authority'),
+    showAllValues: false,
+  });
+
+  accessibleAutocomplete.enhanceSelectElement({
+    selectElement: document.querySelector('#parliamentary-constituency'),
+    showAllValues: false,
+  });
+</script>

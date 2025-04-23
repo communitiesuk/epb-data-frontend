@@ -54,5 +54,8 @@ FileUtils.copy_entry "./node_modules/govuk-frontend/dist/govuk/assets/manifest.j
 puts "  Copying and renaming GOVUKFrontend js"
 `npm run copy-without-comments #{File.realpath("./node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.js")} #{File.realpath(public_target("./public/javascript"))}/govuk.js`
 
+puts "Copying javascript"
+FileUtils.copy_entry "./assets/javascript", public_target("./public/javascript")
+
 puts "Copying robots.txt"
 FileUtils.copy_entry "./assets/robots.txt", "./public/robots.txt"
