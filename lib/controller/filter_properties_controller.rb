@@ -49,23 +49,25 @@ module Controller
       date_start = ViewModels::FilterProperties.dates_from_inputs(params_data["from-year"], params_data["from-month"]).to_s
       date_end = ViewModels::FilterProperties.dates_from_inputs(params_data["to-year"], params_data["to-month"]).to_s
 
-      council = if params_data["local-authority"] == "Select all" || params_data["area-type"] != "local-authority"
-                  nil
-                else
+      council = if params_data["local-authority"] != "Select all" || params_data["area-type"] == "local-authority"
                   [params_data[params_data["area-type"]]]
                 end
 
-      constituency = if params_data["parliamentary-constituency"] == "Select all" || params_data["area-type"] != "parliamentary-constituency"
-                       nil
-                     else
+      constituency = if params_data["parliamentary-constituency"] != "Select all" || params_data["area-type"] == "parliamentary-constituency"
                        [params_data[params_data["area-type"]]]
                      end
 
+      postcode = if params_data["area-type"] == "postcode"
+                   params_data[params_data["area-type"]]
+                 end
+
+      eff_rating = params_data["ratings"]
+
       use_case_args = {
-        postcode: params_data["area-type"] == "postcode" ? params_data[params_data["area-type"]] : nil,
+        postcode:,
         council:,
         constituency:,
-        eff_rating: params_data["ratings"],
+        eff_rating:,
         date_start:,
         date_end:,
       }
