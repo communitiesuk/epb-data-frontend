@@ -46,8 +46,8 @@ module Controller
 
     def get_download_size(params_data)
       use_case = @container.get_object(:get_download_size_use_case)
-      date_start = ViewModels::FilterProperties.dates_from_inputs(params_data["from-year"], params_data["from-month"]).to_s
-      date_end = ViewModels::FilterProperties.dates_from_inputs(params_data["to-year"], params_data["to-month"]).to_s
+      date_start = ViewModels::FilterProperties.start_date_from_inputs(params_data["from-year"], params_data["from-month"]).to_s
+      date_end = ViewModels::FilterProperties.end_date_from_inputs(params_data["to-year"], params_data["to-month"]).to_s
 
       council = if params_data["local-authority"] != "Select all" || params_data["area-type"] == "local-authority"
                   [params_data[params_data["area-type"]]]
@@ -79,8 +79,8 @@ module Controller
 
     def send_download_request
       area_value = params[params["area-type"]]
-      date_start = ViewModels::FilterProperties.dates_from_inputs(params["from-year"], params["from-month"])
-      date_end = ViewModels::FilterProperties.dates_from_inputs(params["to-year"], params["to-month"])
+      date_start = ViewModels::FilterProperties.start_date_from_inputs(params["from-year"], params["from-month"])
+      date_end = ViewModels::FilterProperties.end_date_from_inputs(params["to-year"], params["to-month"])
       email_address = ENV["NOTIFY_DATA_EMAIL_RECIPIENT"]
       use_case_args = {
         property_type: params["property_type"],
