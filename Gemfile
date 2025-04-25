@@ -20,6 +20,7 @@ group :test do
   gem "webmock", "~> 3.23"
 end
 
+gem "aws-sdk-s3", "~> 1"
 gem "aws-sdk-sns", "~> 1"
 gem "csv"
 gem "epb-auth-tools", "~> 1.1.0"

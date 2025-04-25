@@ -25,9 +25,11 @@ ENV["EPB_DATA_WAREHOUSE_API_URL"] = "http://epb-data-warehouse-api"
 ENV["STAGE"] = "test"
 ENV["EPB_UNLEASH_URI"] = "https://test-toggle-server/api"
 
-ENV["AWS_TEST_ACCESS_ID"] = "test.aws.id"
-ENV["AWS_TEST_ACCESS_SECRET"] = "test.aws.secret"
+ENV["AWS_ACCESS_KEY_ID"] = "test.aws.id"
+ENV["AWS_SECRET_ACCESS_KEY"] = "test.aws.secret"
+ENV["AWS_REGION"] = "eu-west-2"
 ENV["NOTIFY_DATA_EMAIL_RECIPIENT"] = "epbtest@mctesty.com"
+ENV["AWS_S3_USER_DATA_BUCKET_NAME"] = "user-data"
 I18n.load_path = Dir[File.join(File.dirname(__FILE__), "/../locales", "*.yml")]
 I18n.enforce_available_locales = true
 I18n.available_locales = %w[en cy]
