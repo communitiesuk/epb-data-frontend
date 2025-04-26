@@ -52,6 +52,9 @@ en:
       postcode_invalid: "Enter a valid UK postcode using only letters and numbers in the format LS1 4AP"
       postcode_incomplete: "Enter a full UK postcode in the format LS1 4AP"
       postcode_wrong_format: "Enter a valid UK postcode in the format LS1 4AP"
+    download_file:
+      heading: "Download file"
+      file_not_found: "File not found"
 
   accessibility_statement:
     top_heading: "Accessibility statement"

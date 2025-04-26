@@ -46,6 +46,9 @@ module Errors
   class InvalidPropertyType < RuntimeError
   end
 
+  class FileNotFound < RuntimeError
+  end
+
   module DoNotReport
   end
 end

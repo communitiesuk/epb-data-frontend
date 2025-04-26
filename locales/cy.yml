@@ -52,6 +52,10 @@ cy:
       postcode_invalid: "Rhowch god post dilys yn y DU gan ddefnyddio llythrennau a rhifau yn unig yn y ffurf CF10 1EP"
       postcode_incomplete: "Rhowch god post llawn yn y DU yn y ffurf CF10 1EP"
       postcode_wrong_format: "Rhowch god post dilys yn y DU yn y ffurf CF10 1EP"
+    download_file:
+      heading: "Lawrlwytho ffeil"
+      file_not_found: "Nid yw'r ffeil i'w dod o"
+
 
   accessibility_statement:
     top_heading: "Datganiad ar hygyrchedd"

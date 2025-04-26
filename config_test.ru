@@ -14,6 +14,8 @@ WebMock.enable!
 
 TogglesStub.enable(nil)
 
+OauthStub.token
+
 ENV["STAGE"] = "test"
 ENV["EPB_UNLEASH_URI"] = "https://test-toggle-server/api"
 ENV["AWS_TEST_ACCESS_ID"] = "test.aws.id"
@@ -25,5 +27,5 @@ ENV["EPB_AUTH_CLIENT_ID"] = "test.id"
 ENV["EPB_AUTH_CLIENT_SECRET"] = "test.client.secret"
 ENV["EPB_AUTH_SERVER"] = AUTH_URL
 ENV["EPB_DATA_WAREHOUSE_API_URL"] = "http://epb-data-warehouse-api"
-
+ENV["AWS_S3_USER_DATA_BUCKET_NAME"] = "user-data"
 run FrontendService.new
