@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "aws-sdk-sns"
+require "aws-sdk-s3"
 
 class Container
   def initialize
@@ -15,9 +16,11 @@ class Container
     send_download_request_use_case = UseCase::SendDownloadRequest.new(sns_gateway:)
     certificate_count_gateway = Gateway::CertificateCountGateway.new(internal_api_client)
     get_download_size_use_case = UseCase::GetDownloadSize.new(certificate_count_gateway:)
+    get_presigned_url_use_case = UseCase::GetPresignedUrl.new(gateway: Gateway::S3Gateway.new, bucket_name: ENV["AWS_S3_USER_DATA_BUCKET_NAME"])
     @objects = {
       send_download_request_use_case:,
       get_download_size_use_case:,
+      get_presigned_url_use_case:,
     }
   end
 
@@ -34,5 +37,10 @@ private
       region: "eu-west-2",
       credentials: aws_credentials,
     )
+  end
+
+  def s3_client
+    client = ENV["STAGE"] == "test" ? Aws::S3::Client.new(stub_responses: true) : Aws::S3::Client.new
+    Aws::S3::Presigner.new(client:)
   end
 end

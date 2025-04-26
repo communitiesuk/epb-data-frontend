@@ -1,11 +1,7 @@
 require "aws-sdk-s3"
 
 describe Gateway::S3Gateway do
-  subject(:gateway) { described_class.new(signer_client) }
-
-  let(:signer_client) do
-    Aws::S3::Presigner.new(client: Aws::S3::Client.new(stub_responses: true))
-  end
+  subject(:gateway) { described_class.new }
 
   describe "#get_presigned_url" do
     let(:signed_url) do
@@ -20,4 +16,5 @@ describe Gateway::S3Gateway do
       expect(signed_url).to include("Expires=60")
     end
   end
+
 end
