@@ -11,7 +11,7 @@ module Gateway
     end
 
     def s3_client
-      client = ENV["STAGE"] == "production" ? Aws::S3::Client.new : Aws::S3::Client.new(stub_responses: true)
+      client = ENV["APP_ENV"] == "local" ? Aws::S3::Client.new(stub_responses: true) : Aws::S3::Client.new
       Aws::S3::Presigner.new(client:)
     end
   end

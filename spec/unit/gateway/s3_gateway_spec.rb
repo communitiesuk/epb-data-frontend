@@ -16,5 +16,4 @@ describe Gateway::S3Gateway do
       expect(signed_url).to include("Expires=60")
     end
   end
-
 end

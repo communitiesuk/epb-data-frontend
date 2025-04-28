@@ -30,6 +30,7 @@ ENV["AWS_SECRET_ACCESS_KEY"] = "test.aws.secret"
 ENV["AWS_REGION"] = "eu-west-2"
 ENV["NOTIFY_DATA_EMAIL_RECIPIENT"] = "epbtest@mctesty.com"
 ENV["AWS_S3_USER_DATA_BUCKET_NAME"] = "user-data"
+ENV["APP_ENV"] = "local"
 I18n.load_path = Dir[File.join(File.dirname(__FILE__), "/../locales", "*.yml")]
 I18n.enforce_available_locales = true
 I18n.available_locales = %w[en cy]
