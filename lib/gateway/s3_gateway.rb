@@ -13,7 +13,12 @@ module Gateway
   private
 
     def s3_client
-      client = ENV["APP_ENV"] == "local" ? Aws::S3::Client.new(stub_responses: true) : Aws::S3::Client.new(region: "eu-west-2", credentials: Aws::ECSCredentials.new)
+      client = case ENV["APP_ENV"]
+               when "local", nil
+                 Aws::S3::Client.new(stub_responses: true)
+               else
+                 Aws::S3::Client.new(region: "eu-west-2", credentials: Aws::ECSCredentials.new)
+               end
       Aws::S3::Presigner.new(client:)
     end
   end
