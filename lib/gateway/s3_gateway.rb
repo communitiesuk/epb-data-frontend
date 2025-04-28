@@ -10,8 +10,10 @@ module Gateway
       @signer_client.presigned_url(:get_object, bucket:, key: file_name, expires_in:)
     end
 
+  private
+
     def s3_client
-      client = ENV["APP_ENV"] == "local" ? Aws::S3::Client.new(stub_responses: true) : Aws::S3::Client.new
+      client = ENV["APP_ENV"] == "local" ? Aws::S3::Client.new(stub_responses: true) : Aws::S3::Client.new(region: "eu-west-2", credentials: Aws::ECSCredentials.new)
       Aws::S3::Presigner.new(client:)
     end
   end
