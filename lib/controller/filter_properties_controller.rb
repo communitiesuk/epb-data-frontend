@@ -16,7 +16,7 @@ module Controller
         end
 
         if request.post? && @errors.empty?
-          send_download_request if ENV["STAGE"] != "test"
+          send_download_request if ENV["APP_ENV"] == "production"
           form_data = Rack::Utils.build_nested_query(params)
           redirect "/request-received-confirmation?#{form_data}"
         else
