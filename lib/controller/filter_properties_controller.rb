@@ -35,6 +35,18 @@ module Controller
       @back_link_href = "/filter-properties?property_type=#{params['property_type']}"
       count = ENV["STAGE"] != "test" ? get_download_size(params) : 0
       erb :request_received_confirmation, locals: { count: }
+    rescue StandardError => e
+      case e
+      when Errors::FilteredDataNotFound
+        status 404
+        "#{t('error.error')}#{
+            t('error.data_not_found.heading')
+          } – #{t('error.data_not_found.body')} – #{
+            t('layout.body.govuk')
+          }"
+      else
+        server_error(e)
+      end
     end
 
     get "/download-started-confirmation" do
@@ -74,8 +86,6 @@ module Controller
       }
 
       use_case.execute(**use_case_args)
-    rescue StandardError
-      status 500
     end
 
     def send_download_request

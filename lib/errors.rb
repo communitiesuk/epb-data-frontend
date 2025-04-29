@@ -49,6 +49,9 @@ module Errors
   class FileNotFound < RuntimeError
   end
 
+  class FilteredDataNotFound < RuntimeError
+  end
+
   module DoNotReport
   end
 end

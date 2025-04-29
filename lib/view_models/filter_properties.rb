@@ -98,7 +98,6 @@ module ViewModels
         Brent
         Brentwood
         Bridgend
-        Bridgend
         Brighton and Hove
         "Bristol, City of"
         Broadland

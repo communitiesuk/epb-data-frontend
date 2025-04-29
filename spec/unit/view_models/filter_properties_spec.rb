@@ -53,8 +53,8 @@ describe ViewModels::FilterProperties do
       expect(view_model.councils).to include(*expected_councils)
     end
 
-    it "returns 350 councills" do
-      expect(view_model.councils.length).to eq 350
+    it "returns 349 councills" do
+      expect(view_model.councils.length).to eq 349
     end
   end
 
