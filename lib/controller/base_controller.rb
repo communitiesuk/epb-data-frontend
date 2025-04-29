@@ -23,11 +23,11 @@ module Controller
       erb :start_page
     end
 
-    def initialize(*args)
+    def initialize(*args, container: nil)
       super
       setup_locales
       @toggles = Helper::Toggles
-      @container = Container.new
+      @container = container || Container.new
       @logger = Logger.new($stdout)
       @logger.level = Logger::INFO
     end

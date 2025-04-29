@@ -1,3 +1,5 @@
+require "rack/session/cookie"
+
 describe "Acceptance::RequestReceivedConfirmation", type: :feature do
   include RSpecFrontendServiceMixin
   let(:local_host) do
@@ -10,13 +12,47 @@ describe "Acceptance::RequestReceivedConfirmation", type: :feature do
     "ratings[]=A&ratings[]=B"
   end
 
+  let(:fake_use_case) do
+    instance_double(UseCase::GetDownloadSize)
+  end
+
+  let(:app) do
+    fake_container = instance_double(Container, get_object: fake_use_case)
+
+    Rack::Builder.new do
+      use Rack::Session::Cookie, secret: "test" * 16
+      run Controller::FilterPropertiesController.new(container: fake_container)
+    end
+  end
+
+  around do |example|
+    original_stage = ENV["STAGE"]
+    ENV["STAGE"] = "mock"
+    example.run
+    ENV["STAGE"] = original_stage
+  end
+
   before do
-    post "/filter-properties?property_type=domestic&#{valid_dates}&#{valid_eff_rating}"
+    allow(fake_use_case).to receive(:execute).and_return(123)
+    post "/filter-properties?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&area-type=local-authority&local-authority[]=Select+all"
     follow_redirect!
   end
 
   describe "get .get-energy-certificate-data.epb-frontend/request-received-confirmation" do
     context "when the request received confirmation page is rendered" do
+      it "calls the use case with correct arguments" do
+        expect(fake_use_case).to have_received(:execute).with(
+          hash_including(
+            postcode: nil,
+            council: nil,
+            constituency: nil,
+            eff_rating: %w[A B],
+            date_start: "2023-01-01",
+            date_end: "2025-02-28",
+          ),
+        )
+      end
+
       it "returns status 200" do
         expect(last_response.status).to eq(200)
       end
