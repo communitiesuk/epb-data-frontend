@@ -31,7 +31,7 @@ class Container
 private
 
   def sns_client
-    aws_credentials = ENV["STAGE"] == "test" ? Aws::Credentials.new(ENV["AWS_TEST_ACCESS_ID"], ENV["AWS_TEST_ACCESS_KEY"]) : Aws::ECSCredentials.new
+    aws_credentials = ENV["APP_ENV"] != "production" ? Aws::Credentials.new(ENV["AWS_TEST_ACCESS_ID"], ENV["AWS_TEST_ACCESS_KEY"]) : Aws::ECSCredentials.new
 
     Aws::SNS::Client.new(
       region: "eu-west-2",
