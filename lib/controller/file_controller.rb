@@ -6,7 +6,7 @@ module Controller
       redirect s3_url
     rescue StandardError => e
       case e
-      when Errors::FileNotFoundss
+      when Errors::FileNotFound
         @page_title = "#{t('error.error')}#{
           t('error.download_file.heading')
         } – #{t('error.download_file.file_not_found')} – #{
@@ -14,6 +14,25 @@ module Controller
         }"
         status 404
       else
+        server_error(e)
+      end
+    end
+
+    get "/download/all" do
+      property_type = params["property_type"]
+      s3_url = @container.get_object(:get_presigned_url_use_case).execute(file_name: "#{property_type}/full_load/#{property_type}.zip")
+      redirect s3_url
+    rescue StandardError => e
+      case e
+      when Errors::FileNotFound
+        @page_title = "#{t('error.error')}#{
+          t('error.download_file.heading')
+        } – #{t('error.download_file.file_not_found')} – #{
+          t('layout.body.govuk')
+        }"
+        status 404
+      else
+        puts e.message
         server_error(e)
       end
     end
