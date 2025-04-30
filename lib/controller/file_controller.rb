@@ -6,13 +6,13 @@ module Controller
       redirect s3_url
     rescue StandardError => e
       case e
-      when Errors::FileNotFound
-        status 404
-        "#{t('error.error')}#{
+      when Errors::FileNotFoundss
+        @page_title = "#{t('error.error')}#{
           t('error.download_file.heading')
         } – #{t('error.download_file.file_not_found')} – #{
           t('layout.body.govuk')
         }"
+        status 404
       else
         server_error(e)
       end

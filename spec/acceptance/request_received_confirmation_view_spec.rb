@@ -1,5 +1,3 @@
-require "rack/session/cookie"
-
 describe "Acceptance::RequestReceivedConfirmation", type: :feature do
   include RSpecFrontendServiceMixin
   let(:local_host) do

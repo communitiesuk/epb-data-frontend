@@ -20,5 +20,44 @@ describe "Acceptance::FileDownload", type: :feature do
     it "the response location will be to the pre-signed url" do
       expect(response.headers["location"]).to include("https://user-data.s3.us-stubbed-1.amazonaws.com/#{file_name}?X-Amz-Algorithm=AWS4-HMAC")
     end
+
+    context "when no file is found" do
+      let(:response) do
+        get "#{local_host}?file=none.csv"
+      end
+
+      let(:use_case) do
+        instance_double(UseCase::GetPresignedUrl)
+      end
+
+      let(:app) do
+        container = instance_double(Container, get_object: use_case)
+
+        Rack::Builder.new do
+          use Rack::Session::Cookie, secret: "test" * 16
+          run Controller::FilterPropertiesController.new(container: container)
+        end
+      end
+
+      around do |example|
+        original_stage = ENV["STAGE"]
+        ENV["STAGE"] = "mock"
+        example.run
+        ENV["STAGE"] = original_stage
+      end
+
+      after do
+        ENV.delete("STAGE")
+      end
+
+      before do
+        allow(use_case).to receive(:execute).and_raise(Errors::FileNotFound)
+        get "#{local_host}?file=none.csv"
+      end
+
+      it "raises a 404" do
+        expect(response.status).to eq(404)
+      end
+    end
   end
 end
