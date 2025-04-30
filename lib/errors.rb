@@ -31,6 +31,9 @@ module Errors
   class ResponseNotPresentError < ApiError
   end
 
+  class InternalServerError < ApiError
+  end
+
   class BotDetected < RuntimeError
   end
 
@@ -44,6 +47,9 @@ module Errors
   end
 
   class InvalidPropertyType < RuntimeError
+  end
+
+  class InvalidDateArgument < RuntimeError
   end
 
   class FileNotFound < RuntimeError

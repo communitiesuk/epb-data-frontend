@@ -1,7 +1,13 @@
 module ViewModels
   class RequestReceivedConfirmation < ViewModels::FilterProperties
     def self.selected_start_and_end_dates(params)
-      "#{params['from-month']} #{params['from-year']} - #{params['to-month']} #{params['to-year']}"
+      from_month, from_year = params.values_at("from-month", "from-year")
+      to_month, to_year = params.values_at("to-month", "to-year")
+
+      raise Errors::InvalidDateArgument unless ViewModels::FilterProperties.months.include?(from_month)
+      raise Errors::InvalidDateArgument unless ViewModels::FilterProperties.months.include?(to_month)
+
+      "#{from_month} #{from_year} - #{to_month} #{to_year}"
     end
 
     def self.count_to_size(count)

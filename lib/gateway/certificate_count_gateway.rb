@@ -14,6 +14,10 @@ module Gateway
       response =
         Helper::Response.ensure_good { @internal_api_client.get(route) }
       response_json = JSON.parse(response.body, symbolize_names: true)
+      if response_json[:code] == 500
+        raise Errors::InternalServerError
+      end
+
       response_json[:data][:count]
     end
   end

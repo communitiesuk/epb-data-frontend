@@ -32,7 +32,6 @@ module Controller
         }"
         status 404
       else
-        puts e.message
         server_error(e)
       end
     end

@@ -39,7 +39,8 @@ module Controller
       case e
       when Errors::FilteredDataNotFound
         status 404
-        "#{t('error.error')}#{
+        @page_title =
+          "#{t('error.error')}#{
             t('error.data_not_found.heading')
           } – #{t('error.data_not_found.body')} – #{
             t('layout.body.govuk')

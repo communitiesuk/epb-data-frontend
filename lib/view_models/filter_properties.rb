@@ -44,11 +44,21 @@ module ViewModels
     end
 
     def self.start_date_from_inputs(year, month)
-      Date.new(year.to_i, Date::MONTHNAMES.index(month) || 0)
+      raise Errors::InvalidDateArgument unless ViewModels::FilterProperties.months.include?(month)
+
+      month_index = Date::MONTHNAMES.index(month)
+      raise Errors::InvalidDateArgument if month_index.nil?
+
+      Date.new(year.to_i, month_index)
     end
 
     def self.end_date_from_inputs(year, month)
-      Date.new(year.to_i, Date::MONTHNAMES.index(month) || 0, -1)
+      raise Errors::InvalidDateArgument unless ViewModels::FilterProperties.months.include?(month)
+
+      month_index = Date::MONTHNAMES.index(month)
+      raise Errors::InvalidDateArgument if month_index.nil?
+
+      Date.new(year.to_i, month_index, -1)
     end
 
     def self.is_valid_date?(params)

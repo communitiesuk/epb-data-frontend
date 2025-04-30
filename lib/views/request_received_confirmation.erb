@@ -35,9 +35,11 @@
             </ul>
           </div>
 
-          <p class="govuk-body">
-            <%= t('request_received.count_and_size', count: locals[:count], size: ViewModels::RequestReceivedConfirmation.count_to_size(locals[:count])) %>
-          </p>
+          <% if locals[:count] > 0 %>
+            <p class="govuk-body">
+              <%= t('request_received.count_and_size', count: locals[:count], size: ViewModels::RequestReceivedConfirmation.count_to_size(locals[:count])) %>
+            </p>
+          <% end %>
         </div>
       </div>
       <%= erb :component__get_help %>
