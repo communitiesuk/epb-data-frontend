@@ -53,7 +53,6 @@ describe "Acceptance::FileDownload", type: :feature do
 
       before do
         allow(use_case).to receive(:execute).and_raise(Errors::FileNotFound)
-        # get "#{local_host}?file=none.csv"
       end
 
       it "raises a 404" do
@@ -114,7 +113,6 @@ describe "Acceptance::FileDownload", type: :feature do
 
       before do
         allow(use_case).to receive(:execute).and_raise(Errors::FileNotFound)
-        # get "#{local_host}?file=none.csv"
       end
 
       it "raises a 404" do
