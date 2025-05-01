@@ -5,6 +5,10 @@ describe "Journey::FilterProperties", :journey, type: :feature do
     "http://get-energy-performance-data.epb-frontend:9393"
   end
 
+  let(:previous_month) do
+    Date::MONTHNAMES[Time.now.month - 1]
+  end
+
   process_id = nil
 
   before(:all) do
@@ -48,7 +52,7 @@ describe "Journey::FilterProperties", :journey, type: :feature do
     it "shows the expected page content" do
       expect(page).to have_selector("h2", text: "Request received")
       expect(page).to have_selector("li", text: "Energy Performance Certificates")
-      expect(page).to have_selector("li", text: "January 2012 - March 2025")
+      expect(page).to have_selector("li", text: "January 2012 - #{previous_month} 2025")
       expect(page).to have_selector("li", text: "England and Wales")
       expect(page).to have_selector("li", text: "Energy Efficiency Rating A, B, C, D, E, F, G")
     end
@@ -69,7 +73,7 @@ describe "Journey::FilterProperties", :journey, type: :feature do
     it "shows the expected page content" do
       expect(page).to have_selector("h2", text: "Request received")
       expect(page).to have_selector("li", text: "Energy Performance Certificates")
-      expect(page).to have_selector("li", text: "May 2024 - March 2025")
+      expect(page).to have_selector("li", text: "May 2024 - #{previous_month} 2025")
       expect(page).to have_selector("li", text: "Adur")
       expect(page).to have_selector("li", text: "Energy Efficiency Rating A, B, C, D, E, F, G")
     end
@@ -91,7 +95,7 @@ describe "Journey::FilterProperties", :journey, type: :feature do
       click_on "Download selected"
       expect(page).to have_selector("h2", text: "Request received")
       expect(page).to have_selector("li", text: "Energy Performance Certificates")
-      expect(page).to have_selector("li", text: "May 2024 - March 2025")
+      expect(page).to have_selector("li", text: "May 2024 - #{previous_month} 2025")
       expect(page).to have_selector("li", text: "Adur, Birmingham")
       expect(page).to have_selector("li", text: "Energy Efficiency Rating A, B, C, D, E, F, G")
     end
@@ -105,7 +109,7 @@ describe "Journey::FilterProperties", :journey, type: :feature do
       click_on "Download selected"
       expect(page).to have_selector("h2", text: "Request received")
       expect(page).to have_selector("li", text: "Energy Performance Certificates")
-      expect(page).to have_selector("li", text: "May 2024 - March 2025")
+      expect(page).to have_selector("li", text: "May 2024 - #{previous_month} 2025")
       expect(page).to have_selector("li", text: "Ashford, Barking")
       expect(page).to have_selector("li", text: "Energy Efficiency Rating A, B, C, D, E, F, G")
     end
