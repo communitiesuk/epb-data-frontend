@@ -44,9 +44,7 @@ module Controller
 
     before do
       set_locale
-      if request.path != "/healthcheck" && Helper::Toggles.enabled?("ebp-data-frontend-maintenance-mode")
-        raise MaintenanceMode
-      end
+      raise MaintenanceMode if request.path != "/healthcheck" && Helper::Toggles.enabled?("ebp-data-frontend-maintenance-mode")
     end
 
     def show(template, locals, layout = :layout)

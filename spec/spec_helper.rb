@@ -121,6 +121,7 @@ RSpec.configure do |config|
   )
 
   config.before { OauthStub.token }
+  config.after { Capybara.reset_sessions! }
 end
 
 RSpec::Matchers.define(:redirect_to) do |path|

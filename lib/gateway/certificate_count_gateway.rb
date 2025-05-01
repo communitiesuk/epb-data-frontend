@@ -13,7 +13,6 @@ module Gateway
       route = "/api/domestic/count?#{query_string}"
       response =
         Helper::Response.ensure_good { @internal_api_client.get(route) }
-
       response_json = JSON.parse(response.body, symbolize_names: true)
       response_json[:data][:count]
     end

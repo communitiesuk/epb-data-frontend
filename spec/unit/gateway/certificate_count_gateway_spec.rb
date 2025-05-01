@@ -17,7 +17,7 @@ describe Gateway::CertificateCountGateway do
     let(:response) { gateway.fetch(**args) }
 
     before do
-      CertificateCountStub.fetch(**args)
+      CertificateCountStub.fetch(date_start: args[:date_start], date_end: args[:date_end], council: args[:council], eff_rating: args[:eff_rating])
     end
 
     it "return an integer" do
