@@ -34,8 +34,8 @@ describe "Journey::FilterProperties", :journey, type: :feature do
       click_on "Download all"
     end
 
-    it "shows the expected destination page content" do
-      expect(page).to have_selector("h2", text: "Download started")
+    it "the response location will be to the pre-signed url" do
+      expect(page).to have_current_path(%r{^/domestic/full_load/domestic\.zip\?X-Amz-Algorithm=AWS4-HMAC-SHA256&.*})
     end
   end
 
