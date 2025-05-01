@@ -1,8 +1,8 @@
 module UseCase
   class SendDownloadRequest
-    def initialize(sns_gateway:)
+    def initialize(sns_gateway:, topic_arn:)
       @sns_gateway = sns_gateway
-      @topic_arn = ENV["SEND_DOWNLOAD_TOPIC_ARN"]
+      @topic_arn = topic_arn
     end
 
     def execute(property_type:, date_start:, date_end:, area_type:, area_value:, efficiency_ratings:, include_recommendations:, email_address:)

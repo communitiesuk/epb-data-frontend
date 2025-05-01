@@ -22,12 +22,24 @@ CertificateCountStub.fetch(date_start: "2012-01-01", date_end: default_end_date)
 CertificateCountStub.fetch(date_start: "2024-05-01", date_end: "2025-03-31", council: %w[Adur], return_count: 10)
 CertificateCountStub.fetch(date_start: "2024-05-01", date_end: default_end_date, council: %w[Adur Birmingham])
 CertificateCountStub.fetch(date_start: "2024-05-01", date_end: default_end_date, constituency: %w[Ashford Barking])
+sns_message =
+  {
+    "email_address" => "test@example.com",
+    "property_type" => "domestic",
+    "date_start" => "01-01-2021",
+    "date_end" => "01-01-2022",
+    "area" => {
+      "councils" => %w[Aberdeen Angus],
+    },
+    "efficiency_ratings" => %w[A B C],
+  }
+SnsClientStub.fetch(message: sns_message)
 
 ENV["STAGE"] = "test"
 ENV["EPB_UNLEASH_URI"] = "https://test-toggle-server/api"
 ENV["AWS_TEST_ACCESS_ID"] = "test.aws.id"
 ENV["AWS_TEST_ACCESS_SECRET"] = "test.aws.secret"
-
+ENV["SEND_DOWNLOAD_TOPIC_ARN"] = "arn:aws:sns:us-east-1:123456789012:testTopic"
 AUTH_URL = "http://test-auth-server.gov.uk"
 ENV["EPB_AUTH_CLIENT_ID"] = "test.id"
 ENV["EPB_AUTH_CLIENT_SECRET"] = "test.client.secret"

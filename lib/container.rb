@@ -12,8 +12,8 @@ class Container
                                                OAuth2::Client,
                                                faraday_connection_opts: { request: { timeout: 8 } }
 
-    sns_gateway = Gateway::SnsGateway.new(sns_client)
-    send_download_request_use_case = UseCase::SendDownloadRequest.new(sns_gateway:)
+    sns_gateway = Gateway::SnsGateway.new
+    send_download_request_use_case = UseCase::SendDownloadRequest.new(sns_gateway:, topic_arn: ENV["SEND_DOWNLOAD_TOPIC_ARN"])
     certificate_count_gateway = Gateway::CertificateCountGateway.new(internal_api_client)
     get_download_size_use_case = UseCase::GetDownloadSize.new(certificate_count_gateway:)
     get_presigned_url_use_case = UseCase::GetPresignedUrl.new(gateway: Gateway::S3Gateway.new, bucket_name: ENV["AWS_S3_USER_DATA_BUCKET_NAME"])
@@ -26,16 +26,5 @@ class Container
 
   def get_object(key)
     @objects[key]
-  end
-
-private
-
-  def sns_client
-    aws_credentials = ENV["APP_ENV"] != "production" ? Aws::Credentials.new(ENV["AWS_TEST_ACCESS_ID"], ENV["AWS_TEST_ACCESS_KEY"]) : Aws::ECSCredentials.new
-
-    Aws::SNS::Client.new(
-      region: "eu-west-2",
-      credentials: aws_credentials,
-    )
   end
 end

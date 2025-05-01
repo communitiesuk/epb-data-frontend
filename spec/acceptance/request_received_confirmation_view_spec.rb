@@ -10,12 +10,17 @@ describe "Acceptance::RequestReceivedConfirmation", type: :feature do
     "ratings[]=A&ratings[]=B"
   end
 
-  let(:fake_use_case) do
+  let(:download_size_use_case) do
     instance_double(UseCase::GetDownloadSize)
   end
 
+  let(:send_sns_use_case) do
+    instance_double(UseCase::SendDownloadRequest)
+  end
+
   let(:app) do
-    fake_container = instance_double(Container, get_object: fake_use_case)
+    fake_container = instance_double(Container, get_object: download_size_use_case)
+    allow(fake_container).to receive(:get_object).with(:send_download_request_use_case).and_return(send_sns_use_case)
 
     Rack::Builder.new do
       use Rack::Session::Cookie, secret: "test" * 16
@@ -31,15 +36,16 @@ describe "Acceptance::RequestReceivedConfirmation", type: :feature do
   end
 
   before do
-    allow(fake_use_case).to receive(:execute).and_return(123)
+    allow(download_size_use_case).to receive(:execute).and_return(123)
+    allow(send_sns_use_case).to receive(:execute)
     post "/filter-properties?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&area-type=local-authority&local-authority[]=Select+all"
     follow_redirect!
   end
 
   describe "get .get-energy-certificate-data.epb-frontend/request-received-confirmation" do
     context "when the request received confirmation page is rendered" do
-      it "calls the use case with correct arguments" do
-        expect(fake_use_case).to have_received(:execute).with(
+      it "calls the, download use case with correct arguments" do
+        expect(download_size_use_case).to have_received(:execute).with(
           hash_including(
             postcode: nil,
             council: nil,
@@ -49,6 +55,14 @@ describe "Acceptance::RequestReceivedConfirmation", type: :feature do
             date_end: "2025-02-28",
           ),
         )
+      end
+
+      it "calls the sns use_case with correct arguments" do
+        expect(send_sns_use_case).to have_received(:execute).with hash_including(area_type: "local-authority",
+                                                                                 email_address: "epbtest@mctesty.com",
+                                                                                 include_recommendations: nil,
+                                                                                 property_type: "domestic",
+                                                                                 efficiency_ratings: %w[A B])
       end
 
       it "returns status 200" do

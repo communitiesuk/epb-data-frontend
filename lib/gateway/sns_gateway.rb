@@ -2,7 +2,7 @@ require "aws-sdk-sns"
 
 module Gateway
   class SnsGateway
-    def initialize(sns_client)
+    def initialize
       @sns_client = sns_client
     end
 
@@ -11,8 +11,17 @@ module Gateway
         topic_arn: topic_arn,
         message: message.to_json,
       )
-    rescue Aws::SNS::Errors::ServiceError => e
-      raise e
+    end
+
+  private
+
+    def sns_client
+      case ENV["APP_ENV"]
+      when "local", nil
+        Aws::SNS::Client.new(stub_responses: true)
+      else
+        Aws::SNS::Client.new(region: "eu-west-2", credentials: Aws::ECSCredentials.new)
+      end
     end
   end
 end

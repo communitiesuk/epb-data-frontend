@@ -1,11 +1,10 @@
-require_relative "../../../lib/errors"
 describe UseCase::SendDownloadRequest do
   let(:sns_gateway) do
     instance_double(Gateway::SnsGateway)
   end
 
   let(:use_case) do
-    described_class.new(sns_gateway:)
+    described_class.new(sns_gateway:, topic_arn: ENV["SEND_DOWNLOAD_TOPIC_ARN"])
   end
 
   describe "#execute" do

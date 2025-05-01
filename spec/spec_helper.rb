@@ -32,6 +32,7 @@ ENV["AWS_REGION"] = "eu-west-2"
 ENV["NOTIFY_DATA_EMAIL_RECIPIENT"] = "epbtest@mctesty.com"
 ENV["AWS_S3_USER_DATA_BUCKET_NAME"] = "user-data"
 ENV["APP_ENV"] = "local"
+ENV["SEND_DOWNLOAD_TOPIC_ARN"] = "arn:aws:sns:us-east-1:123456789012:testTopic"
 I18n.load_path = Dir[File.join(File.dirname(__FILE__), "/../locales", "*.yml")]
 I18n.enforce_available_locales = true
 I18n.available_locales = %w[en cy]
