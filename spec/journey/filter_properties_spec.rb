@@ -35,7 +35,7 @@ describe "Journey::FilterProperties", :journey, type: :feature do
     end
 
     it "the response location will be to the pre-signed url" do
-      expect(page).to have_current_path(%r{^/domestic/full_load/domestic\.zip\?X-Amz-Algorithm=AWS4-HMAC-SHA256&.*})
+      expect(page).to have_current_path(%r{^/domestic/full-load/domestic\.zip\?X-Amz-Algorithm=AWS4-HMAC-SHA256&.*})
     end
   end
 

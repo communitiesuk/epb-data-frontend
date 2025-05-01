@@ -20,7 +20,7 @@ module Controller
 
     get "/download/all" do
       property_type = params["property_type"]
-      s3_url = @container.get_object(:get_presigned_url_use_case).execute(file_name: "#{property_type}/full_load/#{property_type}.zip")
+      s3_url = @container.get_object(:get_presigned_url_use_case).execute(file_name: "#{property_type}/full-load/#{property_type}.zip")
       redirect s3_url
     rescue StandardError => e
       case e

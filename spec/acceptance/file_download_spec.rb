@@ -79,7 +79,7 @@ describe "Acceptance::FileDownload", type: :feature do
     end
 
     it "the response location will be to the pre-signed url" do
-      expect(response.headers["location"]).to include("https://user-data.s3.us-stubbed-1.amazonaws.com/#{property_type}/full_load/#{property_type}.zip?X-Amz-Algorithm=AWS4-HMAC")
+      expect(response.headers["location"]).to include("https://user-data.s3.us-stubbed-1.amazonaws.com/#{property_type}/full-load/#{property_type}.zip?X-Amz-Algorithm=AWS4-HMAC")
     end
 
     context "when no file is found" do
