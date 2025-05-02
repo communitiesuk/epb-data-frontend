@@ -89,6 +89,42 @@ describe ViewModels::FilterProperties do
     end
   end
 
+  describe "#start_date_from_inputs" do
+    context "when the month from input is valid" do
+      it "does not raise any errors" do
+        params = { "from-year" => "2012", "from-month" => "January" }
+
+        expect { view_model.start_date_from_inputs(params["from-year"], params["from-month"]) }.not_to raise_error
+      end
+    end
+
+    context "when the month from input is invalid" do
+      it "raises an error" do
+        params = { "from-year" => "2012", "from-month" => "Jaary" }
+
+        expect { view_model.start_date_from_inputs(params["from-year"], params["from-month"]) }.to raise_error(Errors::InvalidDateArgument)
+      end
+    end
+  end
+
+  describe "#end_date_from_inputs" do
+    context "when the month from input is valid" do
+      it "does not raise any errors" do
+        params = { "to-year" => "2016", "to-month" => "May" }
+
+        expect { view_model.end_date_from_inputs(params["to-year"], params["to-month"]) }.not_to raise_error
+      end
+    end
+
+    context "when the month from input is invalid" do
+      it "raises an error" do
+        params = { "to-year" => "2016", "to-month" => "M" }
+
+        expect { view_model.end_date_from_inputs(params["to-year"], params["to-month"]) }.to raise_error(Errors::InvalidDateArgument)
+      end
+    end
+  end
+
   describe "#is_valid_date?" do
     before do
       Timecop.freeze(Time.utc(2025, 6, 15))

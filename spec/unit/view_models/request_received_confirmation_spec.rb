@@ -46,4 +46,32 @@ describe ViewModels::RequestReceivedConfirmation do
       end
     end
   end
+
+  describe "#selected_start_and_end_dates" do
+    context "when the months from inputs are valid" do
+      params = { "from-year" => "2012", "from-month" => "January", "to-year" => "2024", "to-month" => "December" }
+
+      it "returns a correct date" do
+        expect(view_model.selected_start_and_end_dates(params)).to eq("January 2012 - December 2024")
+      end
+
+      it "does not raise any errors" do
+        expect { view_model.selected_start_and_end_dates(params) }.not_to raise_error
+      end
+    end
+
+    context "when the month from input is invalid" do
+      params = { "from-year" => "2012", "from-month" => "Janry", "to-year" => "2024", "to-month" => "December" }
+      it "raises an error" do
+        expect { view_model.selected_start_and_end_dates(params) }.to raise_error(Errors::InvalidDateArgument)
+      end
+    end
+
+    context "when the month from input is nil" do
+      params = { "from-year" => "2012", "from-month" => "", "to-year" => "2024", "to-month" => "December" }
+      it "raises an error" do
+        expect { view_model.selected_start_and_end_dates(params) }.to raise_error(Errors::InvalidDateArgument)
+      end
+    end
+  end
 end
