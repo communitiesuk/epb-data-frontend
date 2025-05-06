@@ -121,7 +121,7 @@ cy:
       filter_by_area:
         title: "Filter by area"
         select_area_type: "Select area type"
-        type_to_search: "Type to search"
+        leave_blank: "Leave blank to get results for all of England and Wales"
         local_authority: "Local authority"
         select_local_authority: "Select local authority"
         parliamentary_constituency: "Parliamentary constituency"
