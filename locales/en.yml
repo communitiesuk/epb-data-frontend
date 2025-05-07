@@ -55,9 +55,7 @@ en:
     download_file:
       heading: "Download file"
       file_not_found: "File not found"
-    data_not_found:
-      heading: "Data not found"
-      body: "The data you requested is not available. Try different filters."
+    data_not_found: "No certificates were found. Try different filters."
 
   accessibility_statement:
     top_heading: "Accessibility statement"
