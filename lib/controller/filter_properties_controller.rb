@@ -47,8 +47,9 @@ module Controller
       count = params["download_count"].to_i
       puts "Count: #{count}"
       erb :request_received_confirmation, locals: { count: }
-    rescue e
+    rescue StandardError => e
       puts "Error: #{e.message}"
+      puts e.backtrace
     end
 
     get "/download-started-confirmation" do
