@@ -26,6 +26,7 @@ module Controller
           rescue Errors::FilteredDataNotFound
             status 400
             @errors[:data_not_found] = t("error.data_not_found")
+            @error_form_ids << "filter-properties-header"
             erb :filter_properties
           end
         else
