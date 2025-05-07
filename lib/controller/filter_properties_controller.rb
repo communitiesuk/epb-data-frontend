@@ -16,9 +16,18 @@ module Controller
         end
 
         if request.post? && @errors.empty?
-          send_download_request
-          form_data = Rack::Utils.build_nested_query(params)
-          redirect "/request-received-confirmation?#{form_data}"
+          begin
+            count = get_download_size(params)
+            params["download_count"] = count
+
+            send_download_request
+            form_data = Rack::Utils.build_nested_query(params)
+            redirect "/request-received-confirmation?#{form_data}"
+          rescue Errors::FilteredDataNotFound
+            status 400
+            @errors[:data_not_found] = t("error.data_not_found")
+            erb :filter_properties
+          end
         else
           erb :filter_properties
         end
@@ -33,21 +42,10 @@ module Controller
     get "/request-received-confirmation" do
       status 200
       @back_link_href = "/filter-properties?property_type=#{params['property_type']}"
-      count = get_download_size(params)
+      count = params["download_count"].to_i
       erb :request_received_confirmation, locals: { count: }
     rescue StandardError => e
-      case e
-      when Errors::FilteredDataNotFound
-        status 404
-        @page_title =
-          "#{t('error.error')}#{
-            t('error.data_not_found.heading')
-          } – #{t('error.data_not_found.body')} – #{
-            t('layout.body.govuk')
-          }"
-      else
-        server_error(e)
-      end
+      server_error(e)
     end
 
     get "/download-started-confirmation" do

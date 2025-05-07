@@ -22,6 +22,36 @@ describe "Acceptance::FilterProperties", type: :feature do
     "postcode=SW1A%201AA"
   end
 
+  let(:download_size_use_case) do
+    instance_double(UseCase::GetDownloadSize)
+  end
+
+  let(:send_sns_use_case) do
+    instance_double(UseCase::SendDownloadRequest)
+  end
+
+  let(:app) do
+    fake_container = instance_double(Container, get_object: download_size_use_case)
+    allow(fake_container).to receive(:get_object).with(:send_download_request_use_case).and_return(send_sns_use_case)
+
+    Rack::Builder.new do
+      use Rack::Session::Cookie, secret: "test" * 16
+      run Controller::FilterPropertiesController.new(container: fake_container)
+    end
+  end
+
+  around do |example|
+    original_stage = ENV["STAGE"]
+    ENV["STAGE"] = "mock"
+    example.run
+    ENV["STAGE"] = original_stage
+  end
+
+  before do
+    allow(download_size_use_case).to receive(:execute).and_return(123)
+    allow(send_sns_use_case).to receive(:execute)
+  end
+
   describe "get .get-energy-certificate-data.epb-frontend/filter-properties" do
     context "when the data access options page is rendered" do
       before do

@@ -19,14 +19,16 @@ module ViewModels
     end
 
     def self.selected_area_type(params)
-      if params["local-authority"] != ["Select all"]
-        params["local-authority"].join(", ")
-      elsif params["parliamentary-constituency"] != ["Select all"]
-        params["parliamentary-constituency"].join(", ")
-      elsif params["postcode"] != "" && !params["postcode"].nil?
-        params["postcode"].upcase
+      default_area = "England and Wales"
+      case params["area-type"]
+      when "local-authority"
+        params["local-authority"] != ["Select all"] ? params["local-authority"].join(", ") : default_area
+      when "parliamentary-constituency"
+        params["parliamentary-constituency"] != ["Select all"] ? params["parliamentary-constituency"].join(", ") : default_area
+      when "postcode"
+        params["postcode"] != "" ? params["postcode"].upcase : default_area
       else
-        "England and Wales"
+        default_area
       end
     end
 

@@ -55,9 +55,7 @@ cy:
     download_file:
       heading: "Lawrlwytho ffeil"
       file_not_found: "Nid yw'r ffeil i'w dod o"
-    data_not_found:
-      heading: "Data heb ei ganfod"
-      body: "Nid yw’r data a ofynnoch ar gael. Rhowch gynnig ar hidlwyr gwahanol."
+    data_not_found: "Heb ganfod unrhyw dystysgrifau. Rhowch gynnig ar hidlwyr gwahanol."
 
 
   accessibility_statement:
