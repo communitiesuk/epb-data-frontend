@@ -19,6 +19,8 @@ module Gateway
       end
 
       response_json[:data][:count]
+    rescue StandardError
+      raise Errors::InternalServerError
     end
   end
 end
