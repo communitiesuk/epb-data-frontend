@@ -34,6 +34,7 @@ describe "Acceptance::RequestReceivedConfirmation", type: :feature do
         expect(last_response.body).to have_css(".govuk-body", text: "Energy Performance Certificates")
         expect(last_response.body).to have_css(".govuk-body", text: "January 2023 - February 2025")
         expect(last_response.body).to have_css(".govuk-body", text: "Energy Efficiency Rating A, B")
+        expect(last_response.body).to have_css(".govuk-body", text: "Your request contains 123 certificates.")
       end
     end
   end

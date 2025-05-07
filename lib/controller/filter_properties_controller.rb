@@ -27,8 +27,6 @@ module Controller
             status 400
             @errors[:data_not_found] = t("error.data_not_found")
             erb :filter_properties
-          else
-            erb :filter_properties
           end
         else
           erb :filter_properties
@@ -45,11 +43,9 @@ module Controller
       status 200
       @back_link_href = "/filter-properties?property_type=#{params['property_type']}"
       count = params["download_count"].to_i
-      puts "Count: #{count}"
       erb :request_received_confirmation, locals: { count: }
     rescue StandardError => e
-      puts "Error: #{e.message}"
-      puts e.backtrace
+      server_error(e)
     end
 
     get "/download-started-confirmation" do
