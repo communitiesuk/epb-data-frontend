@@ -47,11 +47,6 @@ describe "Acceptance::FilterProperties", type: :feature do
     ENV["STAGE"] = original_stage
   end
 
-  before do
-    allow(download_size_use_case).to receive(:execute).and_return(123)
-    allow(send_sns_use_case).to receive(:execute)
-  end
-
   describe "get .get-energy-certificate-data.epb-frontend/filter-properties" do
     context "when the data access options page is rendered" do
       before do
@@ -120,6 +115,11 @@ describe "Acceptance::FilterProperties", type: :feature do
     end
 
     context "when the selected dates are valid" do
+      before do
+        allow(download_size_use_case).to receive(:execute).and_return(123)
+        allow(send_sns_use_case).to receive(:execute)
+      end
+
       it "returns status 302" do
         expect(valid_response.status).to eq(302)
       end
@@ -161,6 +161,11 @@ describe "Acceptance::FilterProperties", type: :feature do
       let(:multiple_councils) { "local-authority[]=Birmingham&local-authority[]=Adur" }
       let(:valid_response_with_multiple_councils) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{multiple_councils}" }
 
+      before do
+        allow(download_size_use_case).to receive(:execute).and_return(123)
+        allow(send_sns_use_case).to receive(:execute)
+      end
+
       it "returns status 302" do
         expect(valid_response_with_multiple_councils.status).to eq(302)
       end
@@ -170,6 +175,11 @@ describe "Acceptance::FilterProperties", type: :feature do
       let(:multiple_constituencies) { "parliamentary-constituency[]=Ashford&parliamentary-constituency[]=Cardiff" }
       let(:valid_response_with_multiple_constituencies) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{multiple_constituencies}" }
 
+      before do
+        allow(download_size_use_case).to receive(:execute).and_return(123)
+        allow(send_sns_use_case).to receive(:execute)
+      end
+
       it "returns status 302" do
         expect(valid_response_with_multiple_constituencies.status).to eq(302)
       end
@@ -177,6 +187,11 @@ describe "Acceptance::FilterProperties", type: :feature do
 
     context "when the postcode is valid" do
       let(:valid_response_with_postcode) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{valid_postcode}" }
+
+      before do
+        allow(download_size_use_case).to receive(:execute).and_return(123)
+        allow(send_sns_use_case).to receive(:execute)
+      end
 
       it "returns status 302" do
         expect(valid_response_with_postcode.status).to eq(302)
@@ -237,6 +252,11 @@ describe "Acceptance::FilterProperties", type: :feature do
     end
 
     context "when the efficiency rating selection is valid" do
+      before do
+        allow(download_size_use_case).to receive(:execute).and_return(123)
+        allow(send_sns_use_case).to receive(:execute)
+      end
+
       it "returns status 302" do
         expect(valid_response.status).to eq(302)
       end
@@ -275,6 +295,22 @@ describe "Acceptance::FilterProperties", type: :feature do
         expect(invalid_response.body).to have_css("div.govuk-error-summary h2.govuk-error-summary__title", text: "There is a problem")
         expect(invalid_response.body).to have_css("div.govuk-error-summary__body ul.govuk-list li:first a", text: "Select at least one rating option")
         expect(invalid_response.body).to have_link("Select at least one rating option", href: "#eff-rating-section")
+      end
+    end
+
+    context "when no data is found for the selected filters" do
+      before do
+        allow(download_size_use_case).to receive(:execute).and_raise(Errors::FilteredDataNotFound)
+      end
+
+      it "returns status 400" do
+        expect(valid_response.status).to eq(400)
+      end
+
+      it "shows correct required GDS error summary" do
+        expect(valid_response.body).to have_css("div.govuk-error-summary h2.govuk-error-summary__title", text: "There is a problem")
+        expect(valid_response.body).to have_css("div.govuk-error-summary__body ul.govuk-list li:first a", text: "No certificates were found. Try different filters.")
+        expect(valid_response.body).to have_link("No certificates were found. Try different filters.", href: "#filter-properties-header")
       end
     end
   end
