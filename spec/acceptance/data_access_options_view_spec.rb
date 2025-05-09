@@ -16,7 +16,7 @@ describe "Acceptance::DataAccessOptions", type: :feature do
         expect(response.body).to have_link "Back", href: "/"
       end
 
-      it "the title to be correct" do
+      it "shows the correct title" do
         expect(response.body).to have_selector("h1", text: "How would you like to access the data?")
       end
 

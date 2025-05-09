@@ -74,7 +74,7 @@ describe "Acceptance::FileDownload", type: :feature do
       get "#{local_host}?property_type=#{property_type}"
     end
 
-    it "returns status the redirect status" do
+    it "returns 302" do
       expect(response.status).to eq(302)
     end
 
