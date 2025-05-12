@@ -5,7 +5,6 @@ describe "Acceptance::TypeOfProperties", type: :feature do
   end
 
   let(:response) { get local_host }
-  let(:submit_response) { post local_host, { property_type: "domestic" } }
 
   describe "get .get-energy-certificate-data.epb-frontend/type-of-properties" do
     context "when the type of properties page is rendered" do
@@ -67,34 +66,6 @@ describe "Acceptance::TypeOfProperties", type: :feature do
           expect(response.body).to have_css("div.govuk-error-summary__body ul.govuk-list li:first a", text: "Select a type of certificate")
           expect(response.body).to have_link("Select a type of certificate", href: "#property-type-error")
         end
-      end
-    end
-
-    context "when the epb-frontend-data-restrict-user-access feature toggle is on" do
-      before do
-        Helper::Toggles.set_feature("epb-frontend-data-restrict-user-access", true)
-      end
-
-      it "returns 302" do
-        expect(submit_response.status).to eq(302)
-      end
-
-      it "the response location will be filter properties page" do
-        expect(submit_response.headers["location"]).to include("/login?property_type=domestic")
-      end
-    end
-
-    context "when the epb-frontend-data-restrict-user-access feature toggle is off" do
-      before do
-        Helper::Toggles.set_feature("epb-frontend-data-restrict-user-access", false)
-      end
-
-      it "returns 302" do
-        expect(submit_response.status).to eq(302)
-      end
-
-      it "the response location will be filter properties page" do
-        expect(submit_response.headers["location"]).to include("/filter-properties?property_type=domestic")
       end
     end
   end

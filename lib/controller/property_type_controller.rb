@@ -11,11 +11,7 @@ module Controller
       @errors = {}
       @error_form_ids = []
       if params["property_type"]
-        if !Helper::Toggles.enabled?("epb-frontend-data-restrict-user-access")
-          redirect "/filter-properties?property_type=#{params['property_type']}"
-        else
-          redirect "/login?property_type=#{params['property_type']}"
-        end
+        redirect "/filter-properties?property_type=#{params['property_type']}"
       else
         @error_form_ids << "property-type-error"
         @errors[:property_type] = t("error.invalid_property_selection.heading")

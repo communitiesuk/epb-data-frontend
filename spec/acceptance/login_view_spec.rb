@@ -1,19 +1,19 @@
 describe "Acceptance::Login", type: :feature do
   include RSpecFrontendServiceMixin
   let(:local_host) do
-    "http://get-energy-performance-data/login?property_type=domestic"
+    "http://get-energy-performance-data/login"
   end
 
   let(:response) { get local_host }
 
-  describe "get .get-energy-certificate-data.epb-frontend/login?property_type=domestic" do
+  describe "get .get-energy-certificate-data.epb-frontend/login" do
     context "when the request received login page is rendered" do
       it "returns status 200" do
         expect(response.status).to eq(200)
       end
 
       it "shows a back link" do
-        expect(response.body).to have_link "Back", href: "/type-of-properties"
+        expect(response.body).to have_link "Back", href: "/data-access-options"
       end
 
       it "shows the correct title and body text" do

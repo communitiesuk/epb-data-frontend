@@ -11,6 +11,14 @@ module Controller
       erb :data_access_options
     end
 
+    post "/data-access-options" do
+      if Helper::Toggles.enabled?("epb-frontend-data-restrict-user-access")
+        redirect "/login"
+      else
+        redirect "/type-of-properties"
+      end
+    end
+
     get "/guidance" do
       status 200
       @back_link_href = request.referer || "/"
