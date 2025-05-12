@@ -5,7 +5,7 @@ describe "Acceptance::DataAccessOptions", type: :feature do
   end
 
   let(:response) { get local_host }
-  let(:submit_response) { post local_host }
+  let(:download_files_response) { get "#{local_host}/login" }
 
   describe "get .get-energy-certificate-data.epb-frontend/data-access-options" do
     context "when the data access options page is rendered" do
@@ -24,7 +24,7 @@ describe "Acceptance::DataAccessOptions", type: :feature do
       it "has the correct content for download files option" do
         expect(response.body).to have_selector("h2.govuk-heading-m", text: "Download files")
         expect(response.body).to have_selector("p.govuk-body", text: "Download certificate data which can be opened in Microsoft Excel.")
-        expect(response.body).to have_link("Download files", href: "/type-of-properties")
+        expect(response.body).to have_link("Download files", href: "/data-access-options/login")
       end
 
       it "has the correct content for use api option" do
@@ -40,11 +40,11 @@ describe "Acceptance::DataAccessOptions", type: :feature do
       end
 
       it "returns 302" do
-        expect(submit_response.status).to eq(302)
+        expect(download_files_response.status).to eq(302)
       end
 
       it "the response location will be filter properties page" do
-        expect(submit_response.headers["location"]).to include("/login")
+        expect(download_files_response.headers["location"]).to include("/login")
       end
     end
 
@@ -54,11 +54,11 @@ describe "Acceptance::DataAccessOptions", type: :feature do
       end
 
       it "returns 302" do
-        expect(submit_response.status).to eq(302)
+        expect(download_files_response.status).to eq(302)
       end
 
       it "the response location will be filter properties page" do
-        expect(submit_response.headers["location"]).to include("/type-of-properties")
+        expect(download_files_response.headers["location"]).to include("/type-of-properties")
       end
     end
   end

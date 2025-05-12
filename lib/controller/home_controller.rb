@@ -11,7 +11,7 @@ module Controller
       erb :data_access_options
     end
 
-    post "/data-access-options" do
+    get "/data-access-options/login" do
       if Helper::Toggles.enabled?("epb-frontend-data-restrict-user-access")
         redirect "/login"
       else
