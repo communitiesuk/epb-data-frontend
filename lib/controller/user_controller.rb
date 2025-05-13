@@ -14,14 +14,14 @@ module Controller
       frontend_url = "#{request.scheme}://#{request.host_with_port}"
 
       query_string = "authorize?response_type=code"\
-        "&scope=openid,email"\
+        "&scope=openid email"\
         "&client_id=#{client_id}" \
         "&state=STATE"\
         "&redirect_uri=#{frontend_url}/type-of-properties"\
         "&nonce=aEwkamaos5B"\
         '&vtr=["Cl.CM.P2"]'\
         "&ui_locales=en"\
-        "&claims=#{Rack::Utils.escape('{"userinfo":{"https://vocab.account.gov.uk/v1/coreIdentityJWT": null}')}"\
+        "&claims=#{Rack::Utils.escape('{"userinfo":{"https://vocab.account.gov.uk/v1/coreIdentityJWT": null}}')}"\
 
       redirect "#{host_url}/#{query_string}"
     end

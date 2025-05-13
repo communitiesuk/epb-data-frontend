@@ -43,12 +43,16 @@ describe "Acceptance::Login", type: :feature do
         expect(uri.host).to eq(ENV["ONELOGIN_HOST_URL"].gsub("https://", ""))
         expect(uri.path).to eq("/authorize")
         expect(query_params["response_type"]).to eq("code")
-        expect(query_params["scope"]).to eq("openid,email")
+        expect(query_params["scope"]).to eq("openid email")
         expect(query_params["client_id"]).to eq(ENV["ONELOGIN_CLIENT_ID"])
         expect(query_params["redirect_uri"]).to include("/type-of-properties")
         expect(query_params["nonce"]).to eq("aEwkamaos5B")
         expect(query_params["ui_locales"]).to eq("en")
-        expect(query_params["claims"]).to eq("{\"userinfo\":{\"https://vocab.account.gov.uk/v1/coreIdentityJWT\": null}")
+        expect(query_params["claims"]).to eq("{\"userinfo\":{\"https://vocab.account.gov.uk/v1/coreIdentityJWT\": null}}")
+        expect { JSON.parse(query_params["claims"]) }.not_to raise_error
+        parsed_claims = JSON.parse(query_params["claims"])
+        expect(parsed_claims).to include("userinfo")
+        expect(parsed_claims["userinfo"]).to include("https://vocab.account.gov.uk/v1/coreIdentityJWT")
       end
     end
   end
