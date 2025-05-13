@@ -13,12 +13,15 @@ module Controller
       host_url = ENV["ONELOGIN_HOST_URL"]
       frontend_url = "#{request.scheme}://#{request.host_with_port}"
 
+      nonce = request.cookies["nonce"] || SecureRandom.hex(16)
+      response.set_cookie("nonce", value: nonce, path: request.path)
+
       query_string = "authorize?response_type=code"\
         "&scope=openid email"\
         "&client_id=#{client_id}" \
         "&state=STATE"\
         "&redirect_uri=#{frontend_url}/type-of-properties"\
-        "&nonce=aEwkamaos5B"\
+        "&nonce=#{nonce}"\
         '&vtr=["Cl.CM.P2"]'\
         "&ui_locales=en"\
         "&claims=#{Rack::Utils.escape('{"userinfo":{"https://vocab.account.gov.uk/v1/coreIdentityJWT": null}}')}"\
