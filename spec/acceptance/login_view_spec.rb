@@ -1,10 +1,10 @@
 describe "Acceptance::Login", type: :feature do
   include RSpecFrontendServiceMixin
-  let(:local_host) do
+  let(:login_url) do
     "http://get-energy-performance-data/login"
   end
 
-  let(:response) { get local_host }
+  let(:response) { get login_url }
 
   describe "get .get-energy-certificate-data.epb-frontend/login" do
     context "when the request received login page is rendered" do
@@ -22,7 +22,33 @@ describe "Acceptance::Login", type: :feature do
       end
 
       it "has the correct Start now button" do
-        expect(response.body).to have_link("Start now", href: "#")
+        expect(response.body).to have_link("Start now", href: "/login/authorize")
+      end
+    end
+  end
+
+  describe "get .get-energy-certificate-data.epb-frontend/login/authorize" do
+    before do
+      get "#{login_url}/authorize"
+    end
+
+    context "when the request is received" do
+      it "returns status 302" do
+        expect(last_response.status).to eq(302)
+      end
+
+      it "redirects to the OneLogin authorization URL with correct parameters" do
+        uri = URI(last_response.headers["Location"])
+        query_params = Rack::Utils.parse_query(uri.query)
+        expect(uri.host).to eq(ENV["ONELOGIN_HOST_URL"].gsub("https://", ""))
+        expect(uri.path).to eq("/authorize")
+        expect(query_params["response_type"]).to eq("code")
+        expect(query_params["scope"]).to eq("openid,email")
+        expect(query_params["client_id"]).to eq(ENV["ONELOGIN_CLIENT_ID"])
+        expect(query_params["redirect_uri"]).to include("/type-of-properties")
+        expect(query_params["nonce"]).to eq("aEwkamaos5B")
+        expect(query_params["ui_locales"]).to eq("en")
+        expect(query_params["claims"]).to eq("{\"userinfo\":{\"https://vocab.account.gov.uk/v1/coreIdentityJWT\": null}")
       end
     end
   end

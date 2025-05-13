@@ -46,5 +46,7 @@ ENV["EPB_AUTH_CLIENT_SECRET"] = "test.client.secret"
 ENV["EPB_AUTH_SERVER"] = AUTH_URL
 ENV["EPB_DATA_WAREHOUSE_API_URL"] = "http://epb-data-warehouse-api"
 ENV["AWS_S3_USER_DATA_BUCKET_NAME"] = "user-data"
+ENV["ONELOGIN_HOST_URL"] = "https://oidc.integration.account.gov.uk"
+ENV["ONELOGIN_CLIENT_ID"] = "test.onelogin.client.id"
 
 run FrontendService.new
