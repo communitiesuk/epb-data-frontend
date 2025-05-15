@@ -28,5 +28,20 @@ module Controller
 
       redirect "#{host_url}/#{query_string}"
     end
+
+    get "/jwks" do
+      status 200
+      response.content_type = "application/json"
+      onelogin_keys = JSON.parse(ENV["ONELOGIN_TLS_KEYS"])
+      public_key_pem = onelogin_keys["public_key"]
+      public_key = OpenSSL::PKey::RSA.new(public_key_pem)
+
+      jwk = JWT::JWK.new(public_key)
+      jwks_hash = jwk.export
+      jwks_hash[:kid] = onelogin_keys["kid"]
+      jwks_hash[:use] = "sig"
+
+      jwks_hash.to_json
+    end
   end
 end

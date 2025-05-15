@@ -48,5 +48,17 @@ ENV["EPB_DATA_WAREHOUSE_API_URL"] = "http://epb-data-warehouse-api"
 ENV["AWS_S3_USER_DATA_BUCKET_NAME"] = "user-data"
 ENV["ONELOGIN_HOST_URL"] = "https://oidc.integration.account.gov.uk"
 ENV["ONELOGIN_CLIENT_ID"] = "test.onelogin.client.id"
+ENV["ONELOGIN_TLS_KEYS"] = {
+  kid: "355a5c3d-7a21-4e1e-8ab9-aa14c33d83fb",
+  public_key: "-----BEGIN PUBLIC KEY-----\n" \
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArGvxQU80uOxKzlmbCHNO\n" \
+    "kjcgTF415lSHTmbr3x8jFEHvXu+NzXD0qHMIIQ217foYJAwT/RdTpaaeOW7sXdIq\n" \
+    "gAUhQwCNhSyuTx0sIMM0G0YXHOmLXAiRzwApLBxKYYU4i66T6ACP7Io0pDEqHu0s\n" \
+    "FrfdnfV+3JaaRlWkGXpKarwMtMAhzSdE5UGgxJ08d7qLJ/g8lbQZxcrVmyLragmY\n" \
+    "HEfzgAYyv8WFKEj2n0rcFzntcjZXy9EZOxlFqMn27Vr/lz+Yye2zio4+j/d8S8Q6\n" \
+    "V1oddVHwMAB8rG+CaTJg+63Z61dtStYMxIl2CFBld4UpWTkWrGdmHnKkYZeZRnrm\n" \
+    "7QIDAQAB\n" \
+    "-----END PUBLIC KEY-----",
+}.to_json
 
 run FrontendService.new
