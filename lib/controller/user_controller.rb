@@ -36,7 +36,7 @@ module Controller
       query_string = "authorize?response_type=code"\
         "&scope=openid email"\
         "&client_id=#{client_id}" \
-        "&request=#{signed_request}"\
+        "&request=#{URI.encode_www_form_component(signed_request)}"
 
       redirect "#{host_url}/#{query_string}"
     end
