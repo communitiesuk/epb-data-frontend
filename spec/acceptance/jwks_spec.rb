@@ -8,25 +8,6 @@ describe "Acceptance::Jwks", type: :feature do
 
   describe "get .get-energy-certificate-data.epb-frontend/jwks" do
     context "when the request received" do
-      before do
-        ENV["ONELOGIN_TLS_KEYS"] = {
-          kid: "test-key-id",
-          public_key: "-----BEGIN PUBLIC KEY-----\n" \
-            "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArGvxQU80uOxKzlmbCHNO\n" \
-            "kjcgTF415lSHTmbr3x8jFEHvXu+NzXD0qHMIIQ217foYJAwT/RdTpaaeOW7sXdIq\n" \
-            "gAUhQwCNhSyuTx0sIMM0G0YXHOmLXAiRzwApLBxKYYU4i66T6ACP7Io0pDEqHu0s\n" \
-            "FrfdnfV+3JaaRlWkGXpKarwMtMAhzSdE5UGgxJ08d7qLJ/g8lbQZxcrVmyLragmY\n" \
-            "HEfzgAYyv8WFKEj2n0rcFzntcjZXy9EZOxlFqMn27Vr/lz+Yye2zio4+j/d8S8Q6\n" \
-            "V1oddVHwMAB8rG+CaTJg+63Z61dtStYMxIl2CFBld4UpWTkWrGdmHnKkYZeZRnrm\n" \
-            "7QIDAQAB\n" \
-            "-----END PUBLIC KEY-----",
-        }.to_json
-      end
-
-      after do
-        ENV.delete("ONELOGIN_TLS_KEYS")
-      end
-
       it "returns status 200" do
         expect(response.status).to eq(200)
       end
@@ -43,7 +24,7 @@ describe "Acceptance::Jwks", type: :feature do
       it "returns the expected data" do
         response_hash = JSON.parse(response.body)
         expect(response_hash["kty"]).to eq("RSA")
-        expect(response_hash["kid"]).to eq("test-key-id")
+        expect(response_hash["kid"]).to eq("355a5c3d-7a21-4e1e-8ab9-aa14c33d83fb")
         expect(response_hash["use"]).to eq("sig")
         expect(response_hash["e"]).to eq("AQAB")
       end

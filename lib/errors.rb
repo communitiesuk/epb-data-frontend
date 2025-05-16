@@ -58,6 +58,16 @@ module Errors
   class FilteredDataNotFound < RuntimeError
   end
 
+  class MissingEnvVariable < RuntimeError
+    def initialize(env_variable)
+      @env_variable = env_variable
+      super("Environment variable '#{env_variable}' is missing.")
+    end
+  end
+
+  class OneloginSigningError < RuntimeError
+  end
+
   module DoNotReport
   end
 end

@@ -1,4 +1,3 @@
-require_relative "../../../lib/errors"
 describe UseCase::GetDownloadSize do
   let(:certificate_count_gateway) do
     instance_double(Gateway::CertificateCountGateway)

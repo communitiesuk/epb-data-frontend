@@ -6,6 +6,27 @@ describe "Acceptance::Login", type: :feature do
 
   let(:response) { get login_url }
 
+  let(:use_case) do
+    instance_double(UseCase::SignOneloginRequest)
+  end
+
+  let(:app) do
+    fake_container = instance_double(Container)
+    allow(fake_container).to receive(:get_object).with(:sign_onelogin_request_use_case).and_return(use_case)
+
+    Rack::Builder.new do
+      use Rack::Session::Cookie, secret: "test" * 16
+      run Controller::UserController.new(container: fake_container)
+    end
+  end
+
+  around do |example|
+    original_stage = ENV["STAGE"]
+    ENV["STAGE"] = "mock"
+    example.run
+    ENV["STAGE"] = original_stage
+  end
+
   describe "get .get-energy-certificate-data.epb-frontend/login" do
     context "when the request received login page is rendered" do
       it "returns status 200" do
@@ -29,6 +50,7 @@ describe "Acceptance::Login", type: :feature do
 
   describe "get .get-energy-certificate-data.epb-frontend/login/authorize" do
     before do
+      allow(use_case).to receive(:execute).and_return("test_signed_request")
       get "#{login_url}/authorize"
     end
 
@@ -49,23 +71,22 @@ describe "Acceptance::Login", type: :feature do
         expect(query_params["response_type"]).to eq("code")
         expect(query_params["scope"]).to eq("openid email")
         expect(query_params["client_id"]).to eq(ENV["ONELOGIN_CLIENT_ID"])
-        expect(query_params["redirect_uri"]).to include("/type-of-properties")
-        expect(query_params["ui_locales"]).to eq("en")
-        expect(query_params["nonce"]).not_to be_nil
+        expect(query_params["request"]).to eq("test_signed_request")
       end
 
-      it "redirects to the OneLogin authorization URL with valid claims" do
-        uri = URI(last_response.headers["Location"])
-        query_params = Rack::Utils.parse_query(uri.query)
-        expect(query_params["claims"]).to eq("{\"userinfo\":{\"https://vocab.account.gov.uk/v1/coreIdentityJWT\": null}}")
-        expect { JSON.parse(query_params["claims"]) }.not_to raise_error
-        parsed_claims = JSON.parse(query_params["claims"])
-        expect(parsed_claims).to include("userinfo")
-        expect(parsed_claims["userinfo"]).to include("https://vocab.account.gov.uk/v1/coreIdentityJWT")
-      end
-
-      it "does not return nil for nonce cookie" do
+      it "does not return nil for nonce and state cookies" do
         expect(last_response.cookies["nonce"].first).not_to be_nil
+        expect(last_response.cookies["state"].first).not_to be_nil
+      end
+
+      it "calls the use case with the correct arguments" do
+        expect(use_case).to have_received(:execute).with(
+          aud: "#{ENV['ONELOGIN_HOST_URL']}/authorize",
+          client_id: ENV["ONELOGIN_CLIENT_ID"],
+          redirect_uri: "#{last_request.scheme}://#{last_request.host_with_port}/type-of-properties",
+          state: last_response.cookies["state"].first,
+          nonce: last_response.cookies["nonce"].first,
+        )
       end
     end
   end
