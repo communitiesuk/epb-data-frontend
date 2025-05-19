@@ -83,7 +83,7 @@ describe "Acceptance::Login", type: :feature do
         expect(use_case).to have_received(:execute).with(
           aud: "#{ENV['ONELOGIN_HOST_URL']}/authorize",
           client_id: ENV["ONELOGIN_CLIENT_ID"],
-          redirect_uri: "#{last_request.scheme}://#{last_request.host_with_port}/authorise",
+          redirect_uri: "#{last_request.scheme}://#{last_request.host_with_port}/user/authorise",
           state: last_response.cookies["state"].first,
           nonce: last_response.cookies["nonce"].first,
         )

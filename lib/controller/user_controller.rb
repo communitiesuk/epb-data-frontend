@@ -13,7 +13,7 @@ module Controller
       host_url = ENV["ONELOGIN_HOST_URL"]
       frontend_url = "#{request.scheme}://#{request.host_with_port}"
       aud = "#{host_url}/authorize"
-      redirect_uri = "#{frontend_url}/authorise"
+      redirect_uri = "#{frontend_url}/user/authorise"
 
       nonce = request.cookies["nonce"] || SecureRandom.hex(16)
       state = request.cookies["state"] || SecureRandom.hex(16)
