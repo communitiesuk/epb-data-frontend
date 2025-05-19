@@ -26,7 +26,7 @@ module Helper
       tls_keys = ENV["ONELOGIN_TLS_KEYS"]
       private_key = extract_private_key(tls_keys)
 
-      JWT.encode(request.to_json, private_key, "RS256")
+      JWT.encode(request, private_key, "RS256")
     rescue Errors::MissingEnvVariable
       raise
     rescue StandardError => e

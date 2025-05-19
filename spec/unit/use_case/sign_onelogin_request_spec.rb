@@ -15,14 +15,13 @@ describe UseCase::SignOneloginRequest do
     context "when the request is valid" do
       it "returns the signed request" do
         result = use_case.execute(**use_case_args)
-        expected_result = "eyJhbGciOiJSUzI1NiJ9.IntcImF1ZFwiOlwidGVzdF9hdWRcIixcImlzc1wiOlwidGVzdF9jbGllbnRfaWRcIixcInJlc3BvbnNlX3R5cG" \
-          "VcIjpcImNvZGVcIixcImNsaWVudF9pZFwiOlwidGVzdF9jbGllbnRfaWRcIixcInJlZGlyZWN0X3VyaVwiOlwiaHR0cHM6Ly9leGFtcGxlLmNvbS9yZWRpcmVjdF" \
-          "wiLFwic2NvcGVcIjpcIm9wZW5pZCBlbWFpbFwiLFwic3RhdGVcIjpcInRlc3Rfc3RhdGVcIixcIm5vbmNlXCI6XCJ0ZXN0X25vbmNlXCIsXCJ2dHJcIjpcIltcXF" \
-          "wiQ2wuQ00uUDJcXFwiXVwiLFwidWlfbG9jYWxlc1wiOlwiZW5cIixcImNsYWltc1wiOntcInVzZXJpbmZvXCI6e1wiaHR0cHM6Ly92b2NhYi5hY2NvdW50Lmdvdi" \
-          "51ay92MS9jb3JlSWRlbnRpdHlKV1RcIjpudWxsfX19Ig.M3-RZvHz-o2Oi3VG49DzO0WQRqEGEUFT2i0LYU3-bh0g2HJqbzricjIhPpZ_17vG2GqXcKrfm04eKV-" \
-          "AlRJbs8CY0AEMlNjyHptwAhFNxnvngDoXA4LwOYvvwfRx55TU2lYBGoxp48EB0hFRiY6VijG4yXif89wBnKX8eBiV5gFFsl9LTdW43H8Hilhd4AY1z342K4sdAjk" \
-          "9NylXIgqNtmy3uq2Jcjl8zKWtYUkbIwzZDlxLvc54hxV_2SXL5OhuMtAln2ARR_8yMK6jBKPak5yRJxMeQBdyeXUm-rvMYHKccofYxSzRRICL-eNteU0HkEJwbp9" \
-          "2l6zQXb_ejFqeJg"
+        expected_result = "eyJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJ0ZXN0X2F1ZCIsImlzcyI6InRlc3RfY2xpZW50X2lkIiwicmVzcG9uc2VfdHlwZSI6ImNvZGUiLCJj" \
+          "bGllbnRfaWQiOiJ0ZXN0X2NsaWVudF9pZCIsInJlZGlyZWN0X3VyaSI6Imh0dHBzOi8vZXhhbXBsZS5jb20vcmVkaXJlY3QiLCJzY29wZSI6Im9wZW" \
+          "5pZCBlbWFpbCIsInN0YXRlIjoidGVzdF9zdGF0ZSIsIm5vbmNlIjoidGVzdF9ub25jZSIsInZ0ciI6IltcIkNsLkNNLlAyXCJdIiwidWlfbG9jYWxl" \
+          "cyI6ImVuIiwiY2xhaW1zIjp7InVzZXJpbmZvIjp7Imh0dHBzOi8vdm9jYWIuYWNjb3VudC5nb3YudWsvdjEvY29yZUlkZW50aXR5SldUIjpudWxsf" \
+          "X19.lwlwgFjefn1RLTarxh6pMcBDLF0dIjn5KKRAxDeN5OI1OWBRjRzlftx3WChP9JADmpKDlGx9EA66XkMceQJ9a6zPARXQps6qhQkrmh4cVNZoPz" \
+          "mvoYXVFr0bCqhM0nt1uhp9WHnKGk-z9OWWkNzF_BUW-aYZ859dR1k5I-iAK9K41FuvkY87bD2SnBKtwQ8qZodU_VktjSNU38biMqw3wlRpK02NICiH" \
+          "1XrnKDNDEc8EGQ-6-frlRGdZurDq5rz8-F12UfIhkQ9QBiIAyktr41ce8bUBhM7SJD4ET-G-d1wTppBJRrTumLvwaumH8o0mCYUuMx6TWRQwEQgCwIZfWA"
         expect(result).to eq(expected_result.force_encoding("ASCII-8BIT"))
       end
     end
