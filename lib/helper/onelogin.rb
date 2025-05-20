@@ -10,13 +10,8 @@ module Helper
         scope: "openid email",
         state: state,
         nonce: nonce,
-        vtr: '["Cl.CM.P2"]',
+        vtr: '["Cl.Cm"]',
         ui_locales: "en",
-        claims: {
-          "userinfo": {
-            "https://vocab.account.gov.uk/v1/coreIdentityJWT": nil,
-          },
-        },
       }
     end
 

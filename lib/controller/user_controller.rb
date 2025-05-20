@@ -33,12 +33,13 @@ module Controller
 
       signed_request = use_case.execute(**use_case_args)
 
-      query_string = "authorize?response_type=code"\
-        "&scope=openid email"\
-        "&client_id=#{client_id}" \
-        "&request=#{URI.encode_www_form_component(signed_request)}"
-
-      redirect "#{host_url}/#{query_string}"
+      query_string = URI.encode_www_form({
+        client_id: client_id,
+        scope: "openid email",
+        response_type: "code",
+        request: signed_request,
+      })
+      redirect "#{host_url}/authorize?#{query_string}"
     end
 
     get "/jwks" do
