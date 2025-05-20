@@ -25,8 +25,9 @@ module Helper
 
       tls_keys = ENV["ONELOGIN_TLS_KEYS"]
       private_key = extract_private_key(tls_keys)
+      kid = extract_kid(tls_keys)
 
-      JWT.encode(request, private_key, "RS256")
+      JWT.encode(request, private_key, "RS256", { kid: kid })
     rescue Errors::MissingEnvVariable
       raise
     rescue StandardError => e
@@ -37,6 +38,11 @@ module Helper
       onelogin_keys = JSON.parse(tls_keys)
       private_key_pem = onelogin_keys["private_key"]
       OpenSSL::PKey::RSA.new(private_key_pem)
+    end
+
+    private_class_method def self.extract_kid(tls_keys)
+      onelogin_keys = JSON.parse(tls_keys)
+      onelogin_keys["kid"]
     end
   end
 end

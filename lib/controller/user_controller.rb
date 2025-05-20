@@ -53,7 +53,7 @@ module Controller
       jwks_hash[:kid] = onelogin_keys["kid"]
       jwks_hash[:use] = "sig"
 
-      jwks_hash.to_json
+      { keys: [jwks_hash] }.to_json
     rescue StandardError => e
       server_error(e)
     end
