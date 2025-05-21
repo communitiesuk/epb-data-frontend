@@ -4,6 +4,10 @@ describe "Acceptance::Login", type: :feature do
     "http://get-energy-performance-data/login"
   end
 
+  let(:auth_url) do
+    "http://get-energy-performance-data/login/callback"
+  end
+
   let(:response) { get login_url }
 
   let(:use_case) do
@@ -83,10 +87,37 @@ describe "Acceptance::Login", type: :feature do
         expect(use_case).to have_received(:execute).with(
           aud: "#{ENV['ONELOGIN_HOST_URL']}/authorize",
           client_id: ENV["ONELOGIN_CLIENT_ID"],
-          redirect_uri: "#{last_request.scheme}://#{last_request.host_with_port}/user/authorise",
+          redirect_uri: "#{last_request.scheme}://#{last_request.host_with_port}/login/callback",
           state: last_response.cookies["state"].first,
           nonce: last_response.cookies["nonce"].first,
         )
+      end
+    end
+  end
+
+  describe "get .get-energy-certificate-data.epb-frontend/login/callback" do
+    before do
+      allow(Helper::Onelogin).to receive(:check_one_login_errors).and_return(true)
+      get auth_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
+    end
+
+    context "when the request is received" do
+      it "returns status 302" do
+        expect(last_response.status).to eq(302)
+      end
+
+      it "calls the check_one_login_errors method" do
+        expect(Helper::Onelogin).to have_received(:check_one_login_errors).with({ code: "test_code", state: "test_state" })
+      end
+
+      it "redirects to the type of properties page" do
+        expect(last_response).to redirect_to("/type-of-properties")
+      end
+
+      it "cleans the auth cookies" do
+        follow_redirect!
+        expect(last_response.cookies["nonce"]).to be_nil
+        expect(last_response.cookies["state"]).to be_nil
       end
     end
   end

@@ -29,6 +29,25 @@ module Helper
       raise Errors::OneloginSigningError, "Failed to sign request: #{e.message}"
     end
 
+    def self.validate_state_cookie(received_state, stored_state)
+      if received_state != stored_state
+        raise Errors::StateMismatch, "State mismatch. Expected #{stored_state}, got #{received_state}"
+      end
+    end
+
+    def self.check_one_login_errors(params)
+      if params[:error]
+        case params[:error]
+        when "access_denied"
+          raise Errors::AccessDeniedError, "OneLogin callback: Access denied. Description: #{params[:error_description]}"
+        when "login_required"
+          raise Errors::LoginRequiredError, "OneLogin callback: Login required. Description: #{params[:error_description]}"
+        else
+          raise Errors::AuthenticationError, "OneLogin callback: Error received: #{params[:error]}. Description: #{params[:error_description]}"
+        end
+      end
+    end
+
     private_class_method def self.extract_private_key(tls_keys)
       onelogin_keys = JSON.parse(tls_keys)
       private_key_pem = onelogin_keys["private_key"]

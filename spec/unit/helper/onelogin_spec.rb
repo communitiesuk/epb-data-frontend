@@ -46,4 +46,43 @@ describe Helper::Onelogin, type: :helper do
       expect { described_class.sign_request(request) }.to raise_error(Errors::OneloginSigningError, /Failed to sign request: Test error/)
     end
   end
+
+  describe "#check_one_login_errors" do
+    context "when access_denied error is present" do
+      it "raises AccessDenied error" do
+        params = { error: "access_denied", error_description: "Test description" }
+        expect { helper.check_one_login_errors(params) }.to raise_error(Errors::AccessDeniedError, /OneLogin callback: Access denied. Description: Test description/)
+      end
+    end
+
+    context "when login_required error is present" do
+      it "raises LoginRequiredError error" do
+        params = { error: "login_required", error_description: "Test description" }
+        expect { helper.check_one_login_errors(params) }.to raise_error(Errors::LoginRequiredError, /OneLogin callback: Login required. Description: Test description/)
+      end
+    end
+
+    context "when any other OneLogin error is present" do
+      it "raises AuthenticationError error" do
+        params = { error: "invalid_request", error_description: "Test description" }
+        expect { helper.check_one_login_errors(params) }.to raise_error(Errors::AuthenticationError, /OneLogin callback: Error received: invalid_request. Description: Test description/)
+      end
+    end
+  end
+
+  describe "#validate_state_cookie" do
+    state = "test_state"
+    different_state = "different_state"
+    context "when state matches" do
+      it "does not raise an error" do
+        expect { described_class.validate_state_cookie(state, state) }.not_to raise_error
+      end
+    end
+
+    context "when state does not match" do
+      it "raises an error" do
+        expect { described_class.validate_state_cookie(different_state, state) }.to raise_error(Errors::StateMismatch, /State mismatch. Expected #{state}, got #{different_state}/)
+      end
+    end
+  end
 end

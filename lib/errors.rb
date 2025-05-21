@@ -68,6 +68,22 @@ module Errors
   class OneloginSigningError < RuntimeError
   end
 
+  class AuthenticationError < RuntimeError
+    def initialize(message)
+      @message = message
+      super(message)
+    end
+  end
+
+  class StateMismatch < AuthenticationError
+  end
+
+  class AccessDeniedError < AuthenticationError
+  end
+
+  class LoginRequiredError < AuthenticationError
+  end
+
   module DoNotReport
   end
 end

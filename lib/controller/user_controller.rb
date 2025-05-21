@@ -13,7 +13,7 @@ module Controller
       host_url = ENV["ONELOGIN_HOST_URL"]
       frontend_url = "#{request.scheme}://#{request.host_with_port}"
       aud = "#{host_url}/authorize"
-      redirect_uri = "#{frontend_url}/user/authorise"
+      redirect_uri = "#{frontend_url}/login/callback"
 
       nonce = request.cookies["nonce"] || SecureRandom.hex(16)
       state = request.cookies["state"] || SecureRandom.hex(16)
@@ -42,6 +42,35 @@ module Controller
       redirect "#{host_url}/authorize?#{query_string}"
     end
 
+    get "/login/callback" do
+      received_state = params[:state]
+      stored_state = request.cookies["state"]
+
+      Helper::Onelogin.validate_state_cookie(received_state, stored_state)
+      Helper::Onelogin.check_one_login_errors(params)
+
+      # Leave this line as the last one until the auth token is implemented above
+      clean_auth_cookies
+      redirect "/type-of-properties"
+    rescue StandardError => e
+      case e
+      when Errors::StateMismatch
+        status 401
+        logger.warn e.message
+      when Errors::AccessDeniedError
+        logger.warn e.message
+        redirect "/login/authorize"
+      when Errors::LoginRequiredError
+        logger.warn e.message
+        redirect "/login"
+      when Errors::AuthenticationError
+        logger.warn e.message
+        server_error(e)
+      else
+        server_error(e)
+      end
+    end
+
     get "/jwks" do
       status 200
       response.content_type = "application/json"
@@ -57,6 +86,11 @@ module Controller
       { keys: [jwks_hash] }.to_json
     rescue StandardError => e
       server_error(e)
+    end
+
+    def clean_auth_cookies
+      response.delete_cookie("state", path: request.path)
+      response.delete_cookie("nonce", path: request.path)
     end
   end
 end
