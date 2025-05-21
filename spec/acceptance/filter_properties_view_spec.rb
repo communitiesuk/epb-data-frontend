@@ -166,7 +166,7 @@ describe "Acceptance::FilterProperties", type: :feature do
 
       it "redirects to the /download/all endpoint" do
         expect(valid_response_with_default_filters.status).to eq(302)
-        expect(valid_response_with_default_filters.headers["Location"]).to eq("http://get-energy-performance-data/download/all")
+        expect(valid_response_with_default_filters.headers["Location"]).to eq("http://get-energy-performance-data/download/all?property_type=domestic")
       end
     end
 

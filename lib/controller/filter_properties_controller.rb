@@ -17,7 +17,7 @@ module Controller
 
         if request.post? && @errors.empty?
           begin
-            redirect "/download/all" if default_filters?
+            redirect "/download/all?property_type=#{params['property_type']}" if default_filters?
 
             count = get_download_size(params)
             params["download_count"] = count
