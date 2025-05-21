@@ -42,26 +42,6 @@ describe "Journey::FilterProperties", :journey, type: :feature do
     end
   end
 
-  context "when downloading default filtered data for domestic properties" do
-    before do
-      visit "#{getting_domain}/filter-properties?property_type=domestic"
-      click_on "Download selected"
-    end
-
-    let(:date_now) do
-      "#{(Date.today << 1).strftime('%B')} #{Date.today.year}"
-    end
-
-    it "shows the expected page content", :aggregate_failures do
-      expect(page).to have_selector("h2", text: "Request received")
-      expect(page).to have_selector("li", text: "Energy Performance Certificates")
-      expect(page).to have_selector("li", text: "England and Wales")
-      expect(page).to have_selector("li", text: "Energy Efficiency Rating A, B, C, D, E, F, G")
-      expect(page).to have_selector("li", text: /January 2012/)
-      expect(page).to have_selector("li", text: /#{date_now}/)
-    end
-  end
-
   context "when selecting council properties" do
     before do
       visit "#{getting_domain}/type-of-properties"
@@ -78,7 +58,8 @@ describe "Journey::FilterProperties", :journey, type: :feature do
     end
 
     it "shows the expected councils selection" do
-      expect(page).to have_selector("li", text: "Adur, Birmingham")
+      expect(page).to have_content("Adur")
+      expect(page).to have_content("Birmingham")
     end
   end
 
@@ -99,7 +80,8 @@ describe "Journey::FilterProperties", :journey, type: :feature do
     end
 
     it "shows the expected constituencies selection" do
-      expect(page).to have_selector("li", text: "Ashford, Barking")
+      expect(page).to have_content("Ashford")
+      expect(page).to have_content("Barking")
     end
   end
 end

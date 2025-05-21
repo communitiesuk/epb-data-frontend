@@ -157,6 +157,19 @@ describe "Acceptance::FilterProperties", type: :feature do
       end
     end
 
+    context "when selecting default filters" do
+      let(:default_dates) { "from-month=January&from-year=2012&to-month=#{(Date.today << 1).strftime('%B')}&to-year=#{Date.today.year}" }
+      let(:default_area) { "postcode=&local-authority[]=Select+all&parliamentary-constituency[]=Select+all" }
+      let(:default_eff_rating) { "ratings[]=A&ratings[]=B&ratings[]=C&ratings[]=D&ratings[]=E&ratings[]=F&ratings[]=G" }
+      let(:default_filters) { "#{default_dates}&#{default_area}&#{default_eff_rating}" }
+      let(:valid_response_with_default_filters) { post "#{local_host}?property_type=domestic&#{default_filters}" }
+
+      it "redirects to the /download/all endpoint" do
+        expect(valid_response_with_default_filters.status).to eq(302)
+        expect(valid_response_with_default_filters.headers["Location"]).to eq("http://get-energy-performance-data/download/all")
+      end
+    end
+
     context "when selecting multiple councils" do
       let(:multiple_councils) { "local-authority[]=Birmingham&local-authority[]=Adur" }
       let(:valid_response_with_multiple_councils) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{multiple_councils}" }

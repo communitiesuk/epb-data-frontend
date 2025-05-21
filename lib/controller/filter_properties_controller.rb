@@ -17,6 +17,8 @@ module Controller
 
         if request.post? && @errors.empty?
           begin
+            redirect "/download/all" if default_filters?
+
             count = get_download_size(params)
             params["download_count"] = count
 
@@ -105,6 +107,21 @@ module Controller
       }
       use_case = @container.get_object(:send_download_request_use_case)
       use_case.execute(**use_case_args)
+    end
+
+    def default_filters?
+      default_filters = {
+        "from-month" => "January",
+        "from-year" => "2012",
+        "to-month" => ViewModels::FilterProperties.previous_month,
+        "to-year" => ViewModels::FilterProperties.current_year,
+        "postcode" => "",
+        "local-authority" => ["Select all"],
+        "parliamentary-constituency" => ["Select all"],
+        "ratings" => %w[A B C D E F G],
+      }
+
+      default_filters.all? { |key, value| params[key] == value }
     end
 
     def validate_date
