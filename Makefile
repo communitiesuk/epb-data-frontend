@@ -36,3 +36,8 @@ format:
 .PHONY: journey
 journey:
 	@bundle exec rspec --tag journey
+
+
+.PHONY: one-login
+one-login:
+	@scripts/one_login_simulator.sh
