@@ -26,9 +26,32 @@ describe Helper::Onelogin, type: :helper do
     end
   end
 
-  describe "#sign_request" do
+  describe "#get_jwt_assertion" do
+    before do
+      Timecop.freeze(Time.utc(2026, 6, 1))
+    end
+
+    after do
+      Timecop.return
+    end
+
+    it "returns a valid jwt assertion body" do
+      jti = "test_jti"
+      result = helper.get_jwt_assertion_body(client_id, aud, jti)
+      expect(result).to include(
+        aud: aud,
+        iss: client_id,
+        sub: client_id,
+        jti: jti,
+        exp: 1_780_272_300,
+        iat: 1_780_272_000,
+      )
+    end
+  end
+
+  describe "#sign_jwt" do
     it "signs the request successfully" do
-      signature = described_class.sign_request(request)
+      signature = described_class.sign_jwt(request)
       expect(signature).not_to be_nil
     end
 
@@ -36,14 +59,14 @@ describe Helper::Onelogin, type: :helper do
       env_var = ENV["ONELOGIN_TLS_KEYS"]
       ENV.delete("ONELOGIN_TLS_KEYS")
 
-      expect { helper.sign_request(request) }.to raise_error(Errors::MissingEnvVariable)
+      expect { helper.sign_jwt(request) }.to raise_error(Errors::MissingEnvVariable)
 
       ENV["ONELOGIN_TLS_KEYS"] = env_var
     end
 
     it "raises an error if signing fails" do
       allow(OpenSSL::PKey::RSA).to receive(:new).and_raise(StandardError, "Test error")
-      expect { described_class.sign_request(request) }.to raise_error(Errors::OneloginSigningError, /Failed to sign request: Test error/)
+      expect { described_class.sign_jwt(request) }.to raise_error(Errors::OneloginSigningError, /Failed to sign request: Test error/)
     end
   end
 

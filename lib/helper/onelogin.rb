@@ -15,14 +15,25 @@ module Helper
       }
     end
 
-    def self.sign_request(request)
+    def self.get_jwt_assertion_body(client_id, aud, jti)
+      {
+        aud: aud,
+        iss: client_id,
+        sub: client_id,
+        exp: Time.now.to_i + (5 * 60),
+        jti: jti,
+        iat: Time.now.to_i,
+      }
+    end
+
+    def self.sign_jwt(jwt_body)
       raise Errors::MissingEnvVariable, "ONELOGIN_TLS_KEYS" if ENV["ONELOGIN_TLS_KEYS"].nil? || ENV["ONELOGIN_TLS_KEYS"].empty?
 
       tls_keys = ENV["ONELOGIN_TLS_KEYS"]
       private_key = extract_private_key(tls_keys)
       kid = extract_kid(tls_keys)
 
-      JWT.encode(request, private_key, "RS256", { kid: kid })
+      JWT.encode(jwt_body, private_key, "RS256", { kid: kid })
     rescue Errors::MissingEnvVariable
       raise
     rescue StandardError => e
