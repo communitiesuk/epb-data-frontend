@@ -18,8 +18,8 @@ module Controller
       nonce = request.cookies["nonce"] || SecureRandom.hex(16)
       state = request.cookies["state"] || SecureRandom.hex(16)
 
-      response.set_cookie("nonce", value: nonce, path: request.path, expires: Time.now + 3600)
-      response.set_cookie("state", value: state, path: request.path, expires: Time.now + 3600)
+      response.set_cookie("nonce", value: nonce, path: "/login", expires: Time.now + 3600)
+      response.set_cookie("state", value: state, path: "/login", expires: Time.now + 3600)
 
       use_case = @container.get_object(:sign_onelogin_request_use_case)
 
