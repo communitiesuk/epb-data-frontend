@@ -3,6 +3,7 @@ module Gateway
     def initialize
       @host_url = ENV["ONELOGIN_HOST_URL"]
       @token_endpoint = "#{@host_url}/token"
+      @user_info_endpoint = "#{@host_url}/userinfo"
     end
 
     def exchange_code_for_token(code:, redirect_uri:, jwt_assertion:)
@@ -38,6 +39,33 @@ module Gateway
       response.body
     rescue Faraday::Error => e
       raise Errors::NetworkError, "Network error during token exchange: #{e.message}"
+    end
+
+    def get_user_email(access_token:)
+      conn = Faraday.new(url: @user_info_endpoint) do |builder|
+        builder.request :url_encoded
+        builder.response :json
+        builder.adapter Faraday.default_adapter
+      end
+
+      response = conn.get do |req|
+        req.headers["Authorization"] = "Bearer #{access_token}"
+      end
+
+      unless response.status == 200
+        raise Errors::AuthenticationError, "Failed to fetch user email: #{response.body['error']}. #{response.body['error_description']}"
+      end
+
+      unless response.body["email_verified"] == true
+        raise Errors::UserEmailNotVerified, "Email not verified for user: #{response.body['email']}"
+      end
+
+      {
+        email: response.body["email"],
+        email_verified: response.body["email_verified"],
+      }
+    rescue Faraday::Error => e
+      raise Errors::NetworkError, "Network error during user email fetch: #{e.message}"
     end
   end
 end

@@ -90,6 +90,9 @@ module Errors
   class TokenExchangeError < ApiError
   end
 
+  class UserEmailNotVerified < RuntimeError
+  end
+
   class NetworkError < ApiError
   end
 
