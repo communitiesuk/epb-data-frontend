@@ -1,5 +1,5 @@
 module Gateway
-  class OneloginTokenGateway
+  class OneloginGateway
     def initialize
       @host_url = ENV["ONELOGIN_HOST_URL"]
       @token_endpoint = "#{@host_url}/token"

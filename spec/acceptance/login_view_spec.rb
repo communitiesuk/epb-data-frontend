@@ -11,7 +11,7 @@ describe "Acceptance::Login", type: :feature do
   let(:response) { get login_url }
 
   let(:onelogin_gateway) do
-    instance_double(Gateway::OneloginTokenGateway)
+    instance_double(Gateway::OneloginGateway)
   end
 
   let(:sign_onelogin_request_test_use_case) do

@@ -1,8 +1,8 @@
 describe UseCase::RequestOneloginToken do
-  subject(:use_case) { described_class.new(onelogin_token_gateway:) }
+  subject(:use_case) { described_class.new(onelogin_gateway:) }
 
-  let(:onelogin_token_gateway) do
-    instance_double(Gateway::OneloginTokenGateway)
+  let(:onelogin_gateway) do
+    instance_double(Gateway::OneloginGateway)
   end
 
   let(:client_id) do
@@ -43,12 +43,12 @@ describe UseCase::RequestOneloginToken do
   describe "#execute" do
     context "when executed" do
       before do
-        allow(onelogin_token_gateway).to receive(:exchange_code_for_token)
+        allow(onelogin_gateway).to receive(:exchange_code_for_token)
       end
 
       it "calls the gateway with the correct arguments" do
         use_case.execute(code:, redirect_uri:)
-        expect(onelogin_token_gateway).to have_received(:exchange_code_for_token).with(code:, redirect_uri:, jwt_assertion: anything).exactly(1).times
+        expect(onelogin_gateway).to have_received(:exchange_code_for_token).with(code:, redirect_uri:, jwt_assertion: anything).exactly(1).times
       end
     end
   end

@@ -1,4 +1,4 @@
-describe Gateway::OneloginTokenGateway do
+describe Gateway::OneloginGateway do
   include RSpecUnitMixin
   subject(:gateway) { described_class.new }
 
