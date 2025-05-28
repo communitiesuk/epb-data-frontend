@@ -49,7 +49,7 @@ module Controller
       expires_in = token_response_hash["expires_in"].to_i
       expiration_time = Time.now + expires_in
 
-      response.set_cookie(:logged_in, {
+      response.set_cookie(:user_token, {
         value: token_response_hash,
         expires: expiration_time,
         path: "/",
