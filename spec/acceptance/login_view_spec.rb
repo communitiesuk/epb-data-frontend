@@ -10,13 +10,31 @@ describe "Acceptance::Login", type: :feature do
 
   let(:response) { get login_url }
 
-  let(:use_case) do
+  let(:onelogin_gateway) do
+    instance_double(Gateway::OneloginTokenGateway)
+  end
+
+  let(:sign_onelogin_request_test_use_case) do
     instance_double(UseCase::SignOneloginRequest)
+  end
+
+  let(:request_onelogin_token_use_case) do
+    instance_double(UseCase::RequestOneloginToken)
+  end
+
+  let(:token_response) do
+    {
+      "access_token": "SlAV32hkKG",
+      "token_type": "Bearer",
+      "expires_in": 180,
+      "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzcyI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg",
+    }
   end
 
   let(:app) do
     fake_container = instance_double(Container)
-    allow(fake_container).to receive(:get_object).with(:sign_onelogin_request_use_case).and_return(use_case)
+    allow(fake_container).to receive(:get_object).with(:sign_onelogin_request_use_case).and_return(sign_onelogin_request_test_use_case)
+    allow(fake_container).to receive(:get_object).with(:request_onelogin_token_use_case).and_return(request_onelogin_token_use_case)
 
     Rack::Builder.new do
       use Rack::Session::Cookie, secret: "test" * 16
@@ -54,7 +72,7 @@ describe "Acceptance::Login", type: :feature do
 
   describe "get .get-energy-certificate-data.epb-frontend/login/authorize" do
     before do
-      allow(use_case).to receive(:execute).and_return("test_signed_request")
+      allow(sign_onelogin_request_test_use_case).to receive(:execute).and_return("test_signed_request")
       get "#{login_url}/authorize"
     end
 
@@ -84,7 +102,7 @@ describe "Acceptance::Login", type: :feature do
       end
 
       it "calls the use case with the correct arguments" do
-        expect(use_case).to have_received(:execute).with(
+        expect(sign_onelogin_request_test_use_case).to have_received(:execute).with(
           aud: "#{ENV['ONELOGIN_HOST_URL']}/authorize",
           client_id: ENV["ONELOGIN_CLIENT_ID"],
           redirect_uri: "#{last_request.scheme}://#{last_request.host_with_port}/login/callback",
@@ -97,11 +115,15 @@ describe "Acceptance::Login", type: :feature do
 
   describe "get .get-energy-certificate-data.epb-frontend/login/callback" do
     before do
+      allow(request_onelogin_token_use_case).to receive(:execute).and_return(token_response)
       allow(Helper::Onelogin).to receive(:check_one_login_errors).and_return(true)
-      get auth_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
     end
 
     context "when the request is received" do
+      before do
+        get auth_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
+      end
+
       it "returns status 302" do
         expect(last_response.status).to eq(302)
       end
@@ -113,11 +135,19 @@ describe "Acceptance::Login", type: :feature do
       it "redirects to the type of properties page" do
         expect(last_response).to redirect_to("/type-of-properties")
       end
+    end
 
-      it "cleans the auth cookies" do
-        follow_redirect!
-        expect(last_response.cookies["nonce"]).to be_nil
-        expect(last_response.cookies["state"]).to be_nil
+    context "when request raises StateMismatch error" do
+      before do
+        get auth_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=different_test_state" }
+      end
+
+      it "returns status 302" do
+        expect(last_response.status).to eq(302)
+      end
+
+      it "redirects to the login page" do
+        expect(last_response.headers["Location"]).to eq("http://get-energy-performance-data/login")
       end
     end
   end

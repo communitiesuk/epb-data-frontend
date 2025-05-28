@@ -43,30 +43,29 @@ module Controller
     end
 
     get "/login/callback" do
-      received_state = params[:state]
-      stored_state = request.cookies["state"]
+      validate_one_login_callback
+      token_response_hash = exchange_code_for_token
 
-      Helper::Onelogin.validate_state_cookie(received_state, stored_state)
-      Helper::Onelogin.check_one_login_errors(params)
+      expires_in = token_response_hash["expires_in"].to_i
+      expiration_time = Time.now + expires_in
 
-      # Leave this line as the last one until the auth token is implemented above
-      clean_auth_cookies
+      response.set_cookie(:logged_in, {
+        value: token_response_hash,
+        expires: expiration_time,
+        path: "/",
+      })
+
       redirect "/type-of-properties"
     rescue StandardError => e
       case e
-      when Errors::StateMismatch
-        status 401
-        logger.warn e.message
-      when Errors::AccessDeniedError
-        logger.warn e.message
-        redirect "/login/authorize"
-      when Errors::LoginRequiredError
-        logger.warn e.message
+      when Errors::StateMismatch, Errors::AccessDeniedError, Errors::LoginRequiredError, Errors::InvalidGrantError
         redirect "/login"
-      when Errors::AuthenticationError
         logger.warn e.message
+      when Errors::TokenExchangeError, Errors::AuthenticationError, Errors::NetworkError
+        logger.warn "Authentication error: #{e.message}"
         server_error(e)
       else
+        logger.error "Unexpected error during login callback: #{e.message}"
         server_error(e)
       end
     end
@@ -88,9 +87,28 @@ module Controller
       server_error(e)
     end
 
-    def clean_auth_cookies
+    def validate_one_login_callback
+      received_state = params[:state]
+      stored_state = request.cookies["state"]
+
+      Helper::Onelogin.validate_state_cookie(received_state, stored_state)
+      Helper::Onelogin.check_one_login_errors(params)
+
       response.delete_cookie("state", path: request.path)
       response.delete_cookie("nonce", path: request.path)
+    end
+
+    def exchange_code_for_token
+      frontend_url = "#{request.scheme}://#{request.host_with_port}"
+      redirect_uri = "#{frontend_url}/login/callback"
+      authorisation_code = params[:code]
+
+      use_case_args = {
+        code: authorisation_code,
+        redirect_uri: redirect_uri,
+      }
+      use_case = @container.get_object(:request_onelogin_token_use_case)
+      use_case.execute(**use_case_args)
     end
   end
 end
