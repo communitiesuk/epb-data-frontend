@@ -84,6 +84,15 @@ module Errors
   class LoginRequiredError < AuthenticationError
   end
 
+  class InvalidGrantError < AuthenticationError
+  end
+
+  class TokenExchangeError < ApiError
+  end
+
+  class NetworkError < ApiError
+  end
+
   module DoNotReport
   end
 end
