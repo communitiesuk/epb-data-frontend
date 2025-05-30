@@ -141,7 +141,7 @@ module Controller
       return unless params["area-type"] == "postcode"
 
       begin
-        Helper::PostcodeValidator.validate(params.fetch("postcode", ""))
+        postcode_check = Helper::PostcodeValidator.validate(params.fetch("postcode", ""))
       rescue Errors::PostcodeIncomplete
         status 400
         @error_form_ids << "area-type-section"
@@ -154,6 +154,8 @@ module Controller
         status 400
         @error_form_ids << "area-type-section"
         @errors[:postcode] = t("error.invalid_filter_option.postcode_invalid")
+      else
+        params["postcode"] = postcode_check
       end
     end
 
