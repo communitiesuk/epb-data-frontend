@@ -12,7 +12,7 @@
             <%= t('request_received.header') %>
           </h2>
           <p class="govuk-body">
-            <%= t('request_received.body') %>
+            <%= t('request_received.body', email: locals[:email]) %>
           </p>
           <p class="govuk-body">
             <%= t('request_received.delivery_time') %>

@@ -2,6 +2,13 @@ describe Gateway::OneloginGateway do
   include RSpecUnitMixin
   subject(:gateway) { described_class.new }
 
+  around do |example|
+    old_env = ENV["APP_ENV"]
+    ENV["APP_ENV"] = "mock"
+    example.run
+    ENV["APP_ENV"] = old_env
+  end
+
   describe "#exchange_code_for_token" do
     let(:url) { "https://oidc.integration.account.gov.uk/token" }
     let(:args) do

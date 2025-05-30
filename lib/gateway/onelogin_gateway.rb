@@ -42,11 +42,7 @@ module Gateway
     end
 
     def get_user_email(access_token:)
-      conn = Faraday.new(url: @user_info_endpoint) do |builder|
-        builder.request :url_encoded
-        builder.response :json
-        builder.adapter Faraday.default_adapter
-      end
+      conn = faraday_connection
 
       response = conn.get do |req|
         req.headers["Authorization"] = "Bearer #{access_token}"
@@ -66,6 +62,27 @@ module Gateway
       }
     rescue Faraday::Error => e
       raise Errors::NetworkError, "Network error during user email fetch: #{e.message}"
+    end
+
+    def faraday_connection
+      Faraday.new(url: @user_info_endpoint) do |builder|
+        builder.request :url_encoded
+        builder.response :json
+
+        if ENV["APP_ENV"] == "local" || ENV["APP_ENV"].nil?
+          stubs = Faraday::Adapter::Test::Stubs.new
+          stubs.get("/userinfo") do
+            [
+              200,
+              { 'Content-Type': "application/json" },
+              '{"email": "stubbed@email.com", "email_verified": true}',
+            ]
+          end
+          builder.adapter(:test, stubs)
+        else
+          builder.adapter Faraday.default_adapter
+        end
+      end
     end
   end
 end

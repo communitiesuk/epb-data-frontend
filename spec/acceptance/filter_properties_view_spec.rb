@@ -7,7 +7,15 @@ describe "Acceptance::FilterProperties", type: :feature do
 
   let(:response) { get local_host }
 
-  let(:valid_response) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}" }
+  let(:user_token) do
+    "%7B%22access_token%22%3A%22test_access_token%22%2C%22id_token%22%3A%22test_id_token%22%2C%22token_type%22%3A%22Bearer%22%2C%22expires_in%22%3A180%7D"
+  end
+
+  let(:cookie) do
+    { "HTTP_COOKIE" => "user_token=#{user_token}" }
+  end
+
+  let(:valid_response) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}", {}, cookie }
 
   let(:valid_dates) do
     "from-year=2023&from-month=January&to-year=2025&to-month=February"
@@ -21,8 +29,11 @@ describe "Acceptance::FilterProperties", type: :feature do
   let(:valid_postcode) do
     "postcode=SW1A%201AA"
   end
+  let(:email_response) do
+    { "email": "test@email.com", "email_verified": true }
+  end
 
-  let(:download_size_use_case) do
+  let(:get_download_size_use_case) do
     instance_double(UseCase::GetDownloadSize)
   end
 
@@ -30,8 +41,14 @@ describe "Acceptance::FilterProperties", type: :feature do
     instance_double(UseCase::SendDownloadRequest)
   end
 
+  let(:get_onelogin_user_email) do
+    instance_double(UseCase::GetOneloginUserEmail)
+  end
+
   let(:app) do
-    fake_container = instance_double(Container, get_object: download_size_use_case)
+    fake_container = instance_double(Container)
+    allow(fake_container).to receive(:get_object).with(:get_download_size_use_case).and_return(get_download_size_use_case)
+    allow(fake_container).to receive(:get_object).with(:get_onelogin_user_email).and_return(get_onelogin_user_email)
     allow(fake_container).to receive(:get_object).with(:send_download_request_use_case).and_return(send_sns_use_case)
 
     Rack::Builder.new do
@@ -116,12 +133,14 @@ describe "Acceptance::FilterProperties", type: :feature do
 
     context "when the selected dates are valid" do
       before do
-        allow(download_size_use_case).to receive(:execute).and_return(123)
+        allow(get_download_size_use_case).to receive(:execute).and_return(123)
         allow(send_sns_use_case).to receive(:execute)
+        allow(get_onelogin_user_email).to receive(:execute).and_return(email_response)
       end
 
-      it "returns status 302" do
+      it "redirects to the request-received-confirmation with the right params" do
         expect(valid_response.status).to eq(302)
+        expect(valid_response.headers["Location"]).to eq("http://get-energy-performance-data/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&local-authority%5B%5D=Select+all&parliamentary-constituency%5B%5D=Select+all&download_count=123&email=test%40email.com")
       end
 
       it "does not display an error message" do
@@ -172,42 +191,48 @@ describe "Acceptance::FilterProperties", type: :feature do
 
     context "when selecting multiple councils" do
       let(:multiple_councils) { "local-authority[]=Birmingham&local-authority[]=Adur" }
-      let(:valid_response_with_multiple_councils) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{multiple_councils}" }
+      let(:valid_response_with_multiple_councils) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{multiple_councils}", {}, cookie }
 
       before do
-        allow(download_size_use_case).to receive(:execute).and_return(123)
+        allow(get_download_size_use_case).to receive(:execute).and_return(123)
         allow(send_sns_use_case).to receive(:execute)
+        allow(get_onelogin_user_email).to receive(:execute).and_return(email_response)
       end
 
-      it "returns status 302" do
+      it "redirects to the request-received-confirmation with the right params" do
         expect(valid_response_with_multiple_councils.status).to eq(302)
+        expect(valid_response_with_multiple_councils.headers["Location"]).to eq("http://get-energy-performance-data/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&local-authority%5B%5D=Birmingham&local-authority%5B%5D=Adur&parliamentary-constituency%5B%5D=Select+all&download_count=123&email=test%40email.com")
       end
     end
 
     context "when selecting multiple constituencies" do
       let(:multiple_constituencies) { "parliamentary-constituency[]=Ashford&parliamentary-constituency[]=Cardiff" }
-      let(:valid_response_with_multiple_constituencies) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{multiple_constituencies}" }
+      let(:valid_response_with_multiple_constituencies) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{multiple_constituencies}", {}, cookie }
 
       before do
-        allow(download_size_use_case).to receive(:execute).and_return(123)
+        allow(get_download_size_use_case).to receive(:execute).and_return(123)
         allow(send_sns_use_case).to receive(:execute)
+        allow(get_onelogin_user_email).to receive(:execute).and_return(email_response)
       end
 
-      it "returns status 302" do
+      it "redirects to the request-received-confirmation with the right params" do
         expect(valid_response_with_multiple_constituencies.status).to eq(302)
+        expect(valid_response_with_multiple_constituencies.headers["Location"]).to eq("http://get-energy-performance-data/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&parliamentary-constituency%5B%5D=Ashford&parliamentary-constituency%5B%5D=Cardiff&local-authority%5B%5D=Select+all&download_count=123&email=test%40email.com")
       end
     end
 
     context "when the postcode is valid" do
-      let(:valid_response_with_postcode) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{valid_postcode}" }
+      let(:valid_response_with_postcode) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{valid_postcode}", {}, cookie }
 
       before do
-        allow(download_size_use_case).to receive(:execute).and_return(123)
+        allow(get_download_size_use_case).to receive(:execute).and_return(123)
         allow(send_sns_use_case).to receive(:execute)
+        allow(get_onelogin_user_email).to receive(:execute).and_return(email_response)
       end
 
-      it "returns status 302" do
+      it "redirects to the request-received-confirmation with the right params" do
         expect(valid_response_with_postcode.status).to eq(302)
+        expect(valid_response_with_postcode.headers["Location"]).to eq("http://get-energy-performance-data/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&postcode=SW1A+1AA&local-authority%5B%5D=Select+all&parliamentary-constituency%5B%5D=Select+all&download_count=123&email=test%40email.com")
       end
 
       it "displays an error message" do
@@ -266,12 +291,14 @@ describe "Acceptance::FilterProperties", type: :feature do
 
     context "when the efficiency rating selection is valid" do
       before do
-        allow(download_size_use_case).to receive(:execute).and_return(123)
+        allow(get_download_size_use_case).to receive(:execute).and_return(123)
+        allow(get_onelogin_user_email).to receive(:execute).and_return(email_response)
         allow(send_sns_use_case).to receive(:execute)
       end
 
-      it "returns status 302" do
+      it "redirects to the request-received-confirmation with the right params" do
         expect(valid_response.status).to eq(302)
+        expect(valid_response.headers["Location"]).to eq("http://get-energy-performance-data/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&local-authority%5B%5D=Select+all&parliamentary-constituency%5B%5D=Select+all&download_count=123&email=test%40email.com")
       end
 
       it "displays an error message" do
@@ -313,7 +340,7 @@ describe "Acceptance::FilterProperties", type: :feature do
 
     context "when no data is found for the selected filters" do
       before do
-        allow(download_size_use_case).to receive(:execute).and_raise(Errors::FilteredDataNotFound)
+        allow(get_download_size_use_case).to receive(:execute).and_raise(Errors::FilteredDataNotFound)
       end
 
       it "returns status 400" do
