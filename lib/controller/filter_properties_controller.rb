@@ -20,16 +20,29 @@ module Controller
             redirect "/download/all?property_type=#{params['property_type']}" if default_filters?
 
             count = get_download_size(params)
-            params["download_count"] = count
+            email = fetch_user_email
 
-            send_download_request
+            params["download_count"] = count
+            params["email"] = email if email
+
+            send_download_request(email)
             form_data = Rack::Utils.build_nested_query(params)
             redirect "/request-received-confirmation?#{form_data}"
-          rescue Errors::FilteredDataNotFound
-            status 400
-            @errors[:data_not_found] = t("error.data_not_found")
-            @error_form_ids << "filter-properties-header"
-            erb :filter_properties
+          rescue StandardError => e
+            case e
+            when Errors::FilteredDataNotFound
+              status 400
+              @errors[:data_not_found] = t("error.data_not_found")
+              @error_form_ids << "filter-properties-header"
+              erb :filter_properties
+            when Errors::UserEmailNotVerified, Errors::AuthenticationError, Errors::NetworkError
+              logger.warn "Authentication error: #{e.message}"
+              response.delete_cookie("user_token")
+              redirect "/login"
+            else
+              logger.error "Unexpected error during filter_properties post: #{e.message}"
+              server_error(e)
+            end
           end
         else
           erb :filter_properties
@@ -46,7 +59,8 @@ module Controller
       status 200
       @back_link_href = "/filter-properties?property_type=#{params['property_type']}"
       count = params["download_count"].to_i
-      erb :request_received_confirmation, locals: { count: }
+      email = params["email"]
+      erb :request_received_confirmation, locals: { count:, email: }
     rescue StandardError => e
       server_error(e)
     end
@@ -90,11 +104,33 @@ module Controller
       use_case.execute(**use_case_args)
     end
 
-    def send_download_request
+    def fetch_user_email
+      if Helper::Toggles.enabled?("epb-frontend-data-restrict-user-access")
+        user_token = request.cookies["user_token"]
+        if !user_token.nil?
+          user_token = JSON.parse(user_token)
+          access_token = user_token["access_token"]
+          if access_token.nil?
+            raise Errors::AuthenticationError, "Missing access_token in 'user_token' cookie"
+          end
+
+          use_case = @container.get_object(:get_onelogin_user_email)
+          use_case.execute(access_token:)[:email]
+        else
+          raise Errors::AuthenticationError, "Missing 'user_token' cookie"
+        end
+      else
+        # If the toggle is not enabled, return a placeholder email
+        "placeholder@email.com"
+      end
+    rescue JSON::ParserError
+      raise Errors::AuthenticationError, "Invalid 'user_token' cookie."
+    end
+
+    def send_download_request(email_address)
       area_value = params[params["area-type"]]
       date_start = ViewModels::FilterProperties.start_date_from_inputs(params["from-year"], params["from-month"])
       date_end = ViewModels::FilterProperties.end_date_from_inputs(params["to-year"], params["to-month"])
-      email_address = ENV["NOTIFY_DATA_EMAIL_RECIPIENT"]
       use_case_args = {
         property_type: params["property_type"],
         date_start:,

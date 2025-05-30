@@ -8,27 +8,35 @@ describe "Journey::FilterProperties", :journey, type: :feature do
     "http://get-energy-performance-data.epb-frontend:9393"
   end
 
+  let(:user_token) do
+    "%7B%22access_token%22%3A%22test_access_token%22%2C%22id_token%22%3A%22test_id_token%22%2C%22token_type%22%3A%22Bearer%22%2C%22expires_in%22%3A180%7D"
+  end
+
   process_id = nil
 
   before(:all) do
-    process =
-      IO.popen(
-        [
-          "rackup",
-          "config_test.ru",
-          "-q",
-          "-o",
-          "127.0.0.1",
-          "-p",
-          "9393",
-          { err: %i[child out] },
-        ],
+    output = if ENV["SHOW_SERVER_LOGS"] == "true"
+               { out: $stdout, err: $stderr }
+             else
+               { out: File::NULL, err: File::NULL }
+             end
+
+    process_id =
+      spawn(
+        "rackup",
+        "config_test.ru",
+        "-q",
+        "-o", "127.0.0.1",
+        "-p", "9393",
+        **output
       )
-    process_id = process.pid
 
     # Wait until the Puma server has started up before commencing tests
     loop do
-      break if process.readline.include?("Listening on http://127.0.0.1:9393")
+      TCPSocket.new("127.0.0.1", 9393).close
+      break
+    rescue Errno::ECONNREFUSED
+      sleep 0.1
     end
   end
 
@@ -48,6 +56,7 @@ describe "Journey::FilterProperties", :journey, type: :feature do
   context "when selecting council properties" do
     before do
       visit "#{getting_domain}/type-of-properties"
+      page.driver.browser.manage.add_cookie(name: "user_token", value: user_token, path: "/")
       find("#label-domestic").click
       click_on "Continue"
       find(".govuk-accordion__show-all").click
@@ -69,16 +78,17 @@ describe "Journey::FilterProperties", :journey, type: :feature do
   context "when selecting constituencies" do
     before do
       visit "#{getting_domain}/type-of-properties"
+      page.driver.browser.manage.add_cookie(name: "user_token", value: user_token, path: "/")
       find("#label-domestic").click
       click_on "Continue"
       find(".govuk-accordion__show-all").click
       select "May", from: "from-month"
       select "2024", from: "from-year"
       find("input#area-2.govuk-radios__input", visible: :all).click
-      la_input = find("input#parliamentary-constituency")
-      la_input.click
-      la_input.send_keys("Ashford", :enter)
-      la_input.send_keys("Barking", :enter)
+      pc_input = find("input#parliamentary-constituency")
+      pc_input.click
+      pc_input.send_keys("Ashford", :enter)
+      pc_input.send_keys("Barking", :enter)
       click_on "Download selected"
     end
 

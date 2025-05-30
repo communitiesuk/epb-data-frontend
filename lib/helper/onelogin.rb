@@ -33,7 +33,7 @@ module Helper
       private_key = extract_private_key(tls_keys)
       kid = extract_kid(tls_keys)
 
-      JWT.encode(jwt_body, private_key, "RS256", { kid: kid }).force_encoding("ASCII-8BIT")
+      JWT.encode(jwt_body, private_key, "RS256", { kid: kid })
     rescue Errors::MissingEnvVariable
       raise
     rescue StandardError => e

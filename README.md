@@ -98,6 +98,6 @@ The site uses GOV.UK One Login to manage user access
 To test this on your local host you will need to run One Login Simulator, this will mimic the authorization process and allow user to continue  
 
 1. The run the One Login Simulator `$ make one-login`
-2. To see the configuration of the One Login Simulator curl `$ localhost:3333/config`
+2. To see the configuration of the One Login Simulator `$ curl localhost:3333/config`
 
 This means the simulator is set to authorize request from made http://127.0.0.1/9292 and send callback response to same server
