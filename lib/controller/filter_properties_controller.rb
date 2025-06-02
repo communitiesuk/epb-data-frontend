@@ -104,27 +104,28 @@ module Controller
       use_case.execute(**use_case_args)
     end
 
+    def validate_user_token
+      user_token = request.cookies["user_token"]
+      raise Errors::AuthenticationError, "Missing 'user_token' cookie" if user_token.nil?
+
+      user_token = JSON.parse(user_token)
+      access_token = user_token["access_token"]
+      raise Errors::AuthenticationError, "Missing access_token in 'user_token' cookie" if access_token.nil?
+
+      access_token
+    rescue JSON::ParserError
+      raise Errors::AuthenticationError, "Invalid 'user_token' cookie."
+    end
+
     def fetch_user_email
       if Helper::Toggles.enabled?("epb-frontend-data-restrict-user-access")
-        user_token = request.cookies["user_token"]
-        if !user_token.nil?
-          user_token = JSON.parse(user_token)
-          access_token = user_token["access_token"]
-          if access_token.nil?
-            raise Errors::AuthenticationError, "Missing access_token in 'user_token' cookie"
-          end
-
-          use_case = @container.get_object(:get_onelogin_user_email)
-          use_case.execute(access_token:)[:email]
-        else
-          raise Errors::AuthenticationError, "Missing 'user_token' cookie"
-        end
+        access_token = validate_user_token
+        use_case = @container.get_object(:get_onelogin_user_email)
+        use_case.execute(access_token:)[:email]
       else
         # If the toggle is not enabled, return a placeholder email
         "placeholder@email.com"
       end
-    rescue JSON::ParserError
-      raise Errors::AuthenticationError, "Invalid 'user_token' cookie."
     end
 
     def send_download_request(email_address)
