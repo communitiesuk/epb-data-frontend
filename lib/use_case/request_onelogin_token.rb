@@ -8,7 +8,7 @@ module UseCase
       client_id = ENV["ONELOGIN_CLIENT_ID"]
       one_login_host = ENV["ONELOGIN_HOST_URL"]
       jwt_assertion = generate_client_jwt_assertion(client_id, one_login_host)
-      @onelogin_gateway.exchange_code_for_token(code:, redirect_uri:, jwt_assertion:)
+      @onelogin_gateway.get_token(code:, redirect_uri:, jwt_assertion:)
     end
 
   private

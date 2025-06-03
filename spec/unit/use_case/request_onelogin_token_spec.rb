@@ -43,12 +43,12 @@ describe UseCase::RequestOneloginToken do
   describe "#execute" do
     context "when executed" do
       before do
-        allow(onelogin_gateway).to receive(:exchange_code_for_token)
+        allow(onelogin_gateway).to receive(:get_token)
       end
 
       it "calls the gateway with the correct arguments" do
         use_case.execute(code:, redirect_uri:)
-        expect(onelogin_gateway).to have_received(:exchange_code_for_token).with(code:, redirect_uri:, jwt_assertion: anything).exactly(1).times
+        expect(onelogin_gateway).to have_received(:get_token).with(code:, redirect_uri:, jwt_assertion: anything).exactly(1).times
       end
     end
   end

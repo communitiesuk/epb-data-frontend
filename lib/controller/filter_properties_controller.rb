@@ -20,7 +20,7 @@ module Controller
             redirect "/download/all?property_type=#{params['property_type']}" if default_filters?
 
             count = get_download_size(params)
-            email = fetch_user_email
+            email = Helper::Onelogin.fetch_user_email(request: request, use_case: @container.get_object(:get_onelogin_user_email))
 
             params["download_count"] = count
             params["email"] = email if email
@@ -102,30 +102,6 @@ module Controller
       }
 
       use_case.execute(**use_case_args)
-    end
-
-    def validate_user_token
-      user_token = request.cookies["user_token"]
-      raise Errors::AuthenticationError, "Missing 'user_token' cookie" if user_token.nil?
-
-      user_token = JSON.parse(user_token)
-      access_token = user_token["access_token"]
-      raise Errors::AuthenticationError, "Missing access_token in 'user_token' cookie" if access_token.nil?
-
-      access_token
-    rescue JSON::ParserError
-      raise Errors::AuthenticationError, "Invalid 'user_token' cookie."
-    end
-
-    def fetch_user_email
-      if Helper::Toggles.enabled?("epb-frontend-data-restrict-user-access")
-        access_token = validate_user_token
-        use_case = @container.get_object(:get_onelogin_user_email)
-        use_case.execute(access_token:)[:email]
-      else
-        # If the toggle is not enabled, return a placeholder email
-        "placeholder@email.com"
-      end
     end
 
     def send_download_request(email_address)

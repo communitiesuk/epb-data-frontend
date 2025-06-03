@@ -9,7 +9,7 @@ describe Gateway::OneloginGateway do
     ENV["APP_ENV"] = old_env
   end
 
-  describe "#exchange_code_for_token" do
+  describe "#get_token" do
     let(:url) { "https://oidc.integration.account.gov.uk/token" }
     let(:args) do
       {
@@ -19,7 +19,7 @@ describe Gateway::OneloginGateway do
       }
     end
 
-    let(:response) { gateway.exchange_code_for_token(**args) }
+    let(:response) { gateway.get_token(**args) }
 
     context "when the response is successful" do
       before do
@@ -61,7 +61,7 @@ describe Gateway::OneloginGateway do
 
       it "raises a NetworkError" do
         expect {
-          gateway.exchange_code_for_token(**args)
+          gateway.get_token(**args)
         }.to raise_error(Errors::NetworkError, /Network error during token exchange/)
       end
     end
@@ -76,7 +76,7 @@ describe Gateway::OneloginGateway do
           )
 
         expect {
-          gateway.exchange_code_for_token(**args)
+          gateway.get_token(**args)
         }.to raise_error(Errors::InvalidGrantError, /Invalid grant: Invalid authorization code/)
       end
 
@@ -89,7 +89,7 @@ describe Gateway::OneloginGateway do
           )
 
         expect {
-          gateway.exchange_code_for_token(**args)
+          gateway.get_token(**args)
         }.to raise_error(Errors::TokenExchangeError, /OneLogin token exchange failed: some_error - An error occurred/)
       end
     end

@@ -6,7 +6,7 @@ module Gateway
       @user_info_endpoint = "#{@host_url}/userinfo"
     end
 
-    def exchange_code_for_token(code:, redirect_uri:, jwt_assertion:)
+    def get_token(code:, redirect_uri:, jwt_assertion:)
       token_url = URI(@token_endpoint)
 
       conn = Faraday.new(url: token_url) do |builder|
@@ -68,20 +68,7 @@ module Gateway
       Faraday.new(url: @user_info_endpoint) do |builder|
         builder.request :url_encoded
         builder.response :json
-
-        if ENV["APP_ENV"] == "local" || ENV["APP_ENV"].nil?
-          stubs = Faraday::Adapter::Test::Stubs.new
-          stubs.get("/userinfo") do
-            [
-              200,
-              { 'Content-Type': "application/json" },
-              '{"email": "stubbed@email.com", "email_verified": true}',
-            ]
-          end
-          builder.adapter(:test, stubs)
-        else
-          builder.adapter Faraday.default_adapter
-        end
+        builder.adapter Faraday.default_adapter
       end
     end
   end
