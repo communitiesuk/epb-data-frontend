@@ -23,6 +23,7 @@ CertificateCountStub.fetch(date_start: "2024-05-01", date_end: "2025-03-31", cou
 CertificateCountStub.fetch(date_start: "2024-05-01", date_end: default_end_date, council: %w[Adur Birmingham])
 CertificateCountStub.fetch(date_start: "2024-05-01", date_end: default_end_date, constituency: %w[Ashford Barking])
 CertificateCountStub.fetch(date_start: "2012-01-01", date_end: default_end_date, postcode: "LS1 4AP", return_count: 135)
+CertificateCountStub.fetch_any
 
 sns_message =
   {
