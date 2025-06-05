@@ -45,6 +45,7 @@ module Controller
       use Rack::Session::Cookie,
           key: "epb_data.session",
           secret: ENV["SESSION_SECRET"],
+          expire_after: 60 * 60, # 1 hour
           secure: !is_development,
           same_site: is_development ? :lax : :strict,
           httponly: true
