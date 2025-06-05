@@ -52,5 +52,6 @@ ENV["AWS_S3_USER_DATA_BUCKET_NAME"] = "user-data"
 ENV["ONELOGIN_HOST_URL"] = "http://localhost:3333"
 ENV["ONELOGIN_CLIENT_ID"] = "HGIOgho9HIRhgoepdIOPFdIUWgewi0jw"
 ENV["ONELOGIN_TLS_KEYS"] = OneLoginStub.tls_keys
+ENV["SESSION_SECRET"] = "test_session_secret" * 4
 
 run FrontendService.new

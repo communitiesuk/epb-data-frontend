@@ -45,15 +45,7 @@ module Controller
     get "/login/callback" do
       validate_one_login_callback
       token_response_hash = exchange_code_for_token
-
-      expires_in = token_response_hash["expires_in"].to_i
-      expiration_time = Time.now + expires_in
-
-      response.set_cookie(:user_token, {
-        value: token_response_hash.to_json,
-        expires: expiration_time,
-        path: "/",
-      })
+      store_user_email_in_session(token_response_hash)
 
       redirect "/type-of-properties"
     rescue StandardError => e
@@ -109,6 +101,14 @@ module Controller
       }
       use_case = @container.get_object(:request_onelogin_token_use_case)
       use_case.execute(**use_case_args)
+    end
+
+    def store_user_email_in_session(token_response_hash)
+      access_token = token_response_hash["access_token"]
+      use_case = @container.get_object(:get_onelogin_user_email_use_case)
+      email_address = Helper::Onelogin.fetch_user_email(access_token:, use_case:)
+
+      Helper::Session.set_session_value(session, :email_address, email_address)
     end
   end
 end

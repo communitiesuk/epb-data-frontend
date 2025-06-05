@@ -7,15 +7,7 @@ describe "Acceptance::FilterProperties", type: :feature do
 
   let(:response) { get local_host }
 
-  let(:user_token) do
-    "%7B%22access_token%22%3A%22test_access_token%22%2C%22id_token%22%3A%22test_id_token%22%2C%22token_type%22%3A%22Bearer%22%2C%22expires_in%22%3A180%7D"
-  end
-
-  let(:cookie) do
-    { "HTTP_COOKIE" => "user_token=#{user_token}" }
-  end
-
-  let(:valid_response) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}", {}, cookie }
+  let(:valid_response) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}" }
 
   let(:valid_dates) do
     "from-year=2023&from-month=January&to-year=2025&to-month=February"
@@ -29,9 +21,6 @@ describe "Acceptance::FilterProperties", type: :feature do
   let(:valid_postcode) do
     "postcode=SW1A%201AA"
   end
-  let(:email_response) do
-    { "email": "test@email.com", "email_verified": true }
-  end
 
   let(:get_download_size_use_case) do
     instance_double(UseCase::GetDownloadSize)
@@ -41,14 +30,9 @@ describe "Acceptance::FilterProperties", type: :feature do
     instance_double(UseCase::SendDownloadRequest)
   end
 
-  let(:get_onelogin_user_email) do
-    instance_double(UseCase::GetOneloginUserEmail)
-  end
-
   let(:app) do
     fake_container = instance_double(Container)
     allow(fake_container).to receive(:get_object).with(:get_download_size_use_case).and_return(get_download_size_use_case)
-    allow(fake_container).to receive(:get_object).with(:get_onelogin_user_email).and_return(get_onelogin_user_email)
     allow(fake_container).to receive(:get_object).with(:send_download_request_use_case).and_return(send_sns_use_case)
 
     Rack::Builder.new do
@@ -135,7 +119,6 @@ describe "Acceptance::FilterProperties", type: :feature do
       before do
         allow(get_download_size_use_case).to receive(:execute).and_return(123)
         allow(send_sns_use_case).to receive(:execute)
-        allow(get_onelogin_user_email).to receive(:execute).and_return(email_response)
       end
 
       it "redirects to the request-received-confirmation with the right params" do
@@ -191,12 +174,11 @@ describe "Acceptance::FilterProperties", type: :feature do
 
     context "when selecting multiple councils" do
       let(:multiple_councils) { "local-authority[]=Birmingham&local-authority[]=Adur" }
-      let(:valid_response_with_multiple_councils) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{multiple_councils}", {}, cookie }
+      let(:valid_response_with_multiple_councils) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{multiple_councils}" }
 
       before do
         allow(get_download_size_use_case).to receive(:execute).and_return(123)
         allow(send_sns_use_case).to receive(:execute)
-        allow(get_onelogin_user_email).to receive(:execute).and_return(email_response)
       end
 
       it "redirects to the request-received-confirmation with the right params" do
@@ -207,12 +189,11 @@ describe "Acceptance::FilterProperties", type: :feature do
 
     context "when selecting multiple constituencies" do
       let(:multiple_constituencies) { "parliamentary-constituency[]=Ashford&parliamentary-constituency[]=Cardiff" }
-      let(:valid_response_with_multiple_constituencies) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{multiple_constituencies}", {}, cookie }
+      let(:valid_response_with_multiple_constituencies) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{multiple_constituencies}" }
 
       before do
         allow(get_download_size_use_case).to receive(:execute).and_return(123)
         allow(send_sns_use_case).to receive(:execute)
-        allow(get_onelogin_user_email).to receive(:execute).and_return(email_response)
       end
 
       it "redirects to the request-received-confirmation with the right params" do
@@ -222,12 +203,11 @@ describe "Acceptance::FilterProperties", type: :feature do
     end
 
     context "when the postcode is valid" do
-      let(:valid_response_with_postcode) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{valid_postcode}", {}, cookie }
+      let(:valid_response_with_postcode) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{valid_postcode}" }
 
       before do
         allow(get_download_size_use_case).to receive(:execute).and_return(123)
         allow(send_sns_use_case).to receive(:execute)
-        allow(get_onelogin_user_email).to receive(:execute).and_return(email_response)
       end
 
       it "redirects to the request-received-confirmation with the right params" do
@@ -292,7 +272,6 @@ describe "Acceptance::FilterProperties", type: :feature do
     context "when the efficiency rating selection is valid" do
       before do
         allow(get_download_size_use_case).to receive(:execute).and_return(123)
-        allow(get_onelogin_user_email).to receive(:execute).and_return(email_response)
         allow(send_sns_use_case).to receive(:execute)
       end
 
@@ -351,53 +330,6 @@ describe "Acceptance::FilterProperties", type: :feature do
         expect(valid_response.body).to have_css("div.govuk-error-summary h2.govuk-error-summary__title", text: "There is a problem")
         expect(valid_response.body).to have_css("div.govuk-error-summary__body ul.govuk-list li:first a", text: "No certificates were found. Try different filters.")
         expect(valid_response.body).to have_link("No certificates were found. Try different filters.", href: "#filter-properties-header")
-      end
-    end
-
-    context "when the epb-frontend-data-restrict-user-access feature toggle is enabled" do
-      before do
-        Helper::Toggles.set_feature("epb-frontend-data-restrict-user-access", true)
-        allow(get_download_size_use_case).to receive(:execute).and_return(123)
-        allow(send_sns_use_case).to receive(:execute)
-        allow(get_onelogin_user_email).to receive(:execute).and_return(email_response)
-      end
-
-      it "returns the encoded email when the user_token cookie is valid" do
-        response = post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{valid_postcode}", {}, cookie
-        expect(response.headers["Location"]).to include("email=test%40email.com")
-      end
-
-      it "redirects to the /login if user_token is missing" do
-        response = post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{valid_postcode}"
-        expect(response.status).to eq(302)
-        expect(response.headers["Location"]).to eq("http://get-energy-performance-data/login")
-      end
-
-      it "redirects to the /login if access_token is missing" do
-        response = post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{valid_postcode}", {}, { "HTTP_COOKIE" => "user_token=%22%7B%7D%22" }
-        expect(response.status).to eq(302)
-        expect(response.headers["Location"]).to eq("http://get-energy-performance-data/login")
-      end
-
-      it "redirects to the /login if user_token is invalid json" do
-        response = post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{valid_postcode}", {}, { "HTTP_COOKIE" => "user_token=invalid_json" }
-        expect(response.status).to eq(302)
-        expect(response.headers["Location"]).to eq("http://get-energy-performance-data/login")
-      end
-    end
-
-    context "when the epb-frontend-data-restrict-user-access feature toggle is disabled" do
-      let(:response) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{valid_postcode}", {}, cookie }
-
-      before do
-        Helper::Toggles.set_feature("epb-frontend-data-restrict-user-access", false)
-        allow(get_download_size_use_case).to receive(:execute).and_return(123)
-        allow(send_sns_use_case).to receive(:execute)
-        allow(get_onelogin_user_email).to receive(:execute).and_return(email_response)
-      end
-
-      it "returns a placeholder email" do
-        expect(response.headers["Location"]).to include("email=placeholder%40email.com")
       end
     end
   end

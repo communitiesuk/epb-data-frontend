@@ -59,27 +59,8 @@ module Helper
       end
     end
 
-    def self.validate_user_token(request)
-      user_token = request.cookies["user_token"]
-      raise Errors::AuthenticationError, "Missing 'user_token' cookie" if user_token.nil?
-
-      user_token = JSON.parse(user_token)
-      access_token = user_token["access_token"]
-      raise Errors::AuthenticationError, "Missing access_token in 'user_token' cookie" if access_token.nil?
-
-      access_token
-    rescue JSON::ParserError
-      raise Errors::AuthenticationError, "Invalid 'user_token' cookie."
-    end
-
-    def self.fetch_user_email(request:, use_case:)
-      if Helper::Toggles.enabled?("epb-frontend-data-restrict-user-access")
-        access_token = validate_user_token request
-        use_case.execute(access_token:)[:email]
-      else
-        # If the toggle is not enabled, return a placeholder email
-        "placeholder@email.com"
-      end
+    def self.fetch_user_email(access_token:, use_case:)
+      use_case.execute(access_token:)[:email]
     end
 
     private_class_method def self.extract_private_key(tls_keys)

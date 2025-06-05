@@ -20,7 +20,12 @@ module Controller
             redirect "/download/all?property_type=#{params['property_type']}" if default_filters?
 
             count = get_download_size(params)
-            email = Helper::Onelogin.fetch_user_email(request: request, use_case: @container.get_object(:get_onelogin_user_email))
+            if Helper::Toggles.enabled?("epb-frontend-data-restrict-user-access")
+              email = Helper::Session.get_session_value(session, :email_address)
+              raise Errors::AuthenticationError, "Failed to get user email from session" unless email
+            else
+              email = "placeholder@email.com"
+            end
 
             params["download_count"] = count
             params["email"] = email if email
@@ -37,7 +42,6 @@ module Controller
               erb :filter_properties
             when Errors::UserEmailNotVerified, Errors::AuthenticationError, Errors::NetworkError
               logger.warn "Authentication error: #{e.message}"
-              response.delete_cookie("user_token")
               redirect "/login"
             else
               logger.error "Unexpected error during filter_properties post: #{e.message}"

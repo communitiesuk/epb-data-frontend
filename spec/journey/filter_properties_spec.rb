@@ -8,10 +8,6 @@ describe "Journey::FilterProperties", :journey, type: :feature do
     "http://get-energy-performance-data.epb-frontend:9393"
   end
 
-  let(:user_token) do
-    "%7B%22access_token%22%3A%22test_access_token%22%2C%22id_token%22%3A%22test_id_token%22%2C%22token_type%22%3A%22Bearer%22%2C%22expires_in%22%3A180%7D"
-  end
-
   process_id = nil
 
   before(:all) do
@@ -56,7 +52,6 @@ describe "Journey::FilterProperties", :journey, type: :feature do
   context "when selecting council properties" do
     before do
       visit "#{getting_domain}/type-of-properties"
-      page.driver.browser.manage.add_cookie(name: "user_token", value: user_token, path: "/")
       find("#label-domestic").click
       click_on "Continue"
       find(".govuk-accordion__show-all").click
@@ -78,7 +73,6 @@ describe "Journey::FilterProperties", :journey, type: :feature do
   context "when selecting constituencies" do
     before do
       visit "#{getting_domain}/type-of-properties"
-      page.driver.browser.manage.add_cookie(name: "user_token", value: user_token, path: "/")
       find("#label-domestic").click
       click_on "Continue"
       find(".govuk-accordion__show-all").click
