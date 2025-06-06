@@ -22,7 +22,6 @@ module Controller
             count = get_download_size(params)
             if Helper::Toggles.enabled?("epb-frontend-data-restrict-user-access")
               email = Helper::Session.get_session_value(session, :email_address)
-              Sentry.capture_exception(session) unless email
               raise Errors::AuthenticationError, "Failed to get user email from session" unless email
             else
               email = "placeholder@email.com"
