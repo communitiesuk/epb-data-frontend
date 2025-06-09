@@ -60,7 +60,14 @@ module Controller
 
     before do
       set_locale
+
+      restricted_paths = %w[/type-of-properties /filter-properties /data-access-options/login /download /download/all]
+      if restricted_paths.include?(request.path) && Helper::Toggles.enabled?("epb-frontend-data-restrict-user-access")
+        Helper::Session.is_user_authenticated?(session)
+      end
       raise MaintenanceMode if request.path != "/healthcheck" && Helper::Toggles.enabled?("ebp-data-frontend-maintenance-mode")
+    rescue Errors::AuthenticationError
+      redirect "/login"
     end
 
     def show(template, locals, layout = :layout)

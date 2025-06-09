@@ -15,5 +15,14 @@ module Helper
     def self.clear_session(session)
       session.clear
     end
+
+    def self.is_user_authenticated?(session)
+      raise Errors::AuthenticationError, "Session is not available" if session.nil?
+
+      email = get_session_value(session, :email_address)
+      raise Errors::AuthenticationError, "User email is not set in session" if email.nil? || email.empty?
+
+      true
+    end
   end
 end

@@ -12,11 +12,8 @@ module Controller
     end
 
     get "/data-access-options/login" do
-      if Helper::Toggles.enabled?("epb-frontend-data-restrict-user-access")
-        redirect "/login"
-      else
-        redirect "/type-of-properties"
-      end
+      # Additional auth check logic is stored in the base controller
+      redirect "/type-of-properties"
     end
 
     get "/guidance" do

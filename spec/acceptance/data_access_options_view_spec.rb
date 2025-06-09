@@ -33,32 +33,42 @@ describe "Acceptance::DataAccessOptions", type: :feature do
         expect(response.body).to have_link("Use API", href: "/use-api")
       end
     end
+  end
 
-    context "when the epb-frontend-data-restrict-user-access feature toggle is on" do
-      before do
-        Helper::Toggles.set_feature("epb-frontend-data-restrict-user-access", true)
+  describe "get .get-energy-certificate-data.epb-frontend/data-access-options/login" do
+    context "when 'the epb-frontend-data-restrict-user-access feature' toggle is on" do
+      before { Helper::Toggles.set_feature("epb-frontend-data-restrict-user-access", true) }
+      after { Helper::Toggles.set_feature("epb-frontend-data-restrict-user-access", false) }
+
+      context "when user is authenticated" do
+        before { allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true) }
+
+        it "returns 302" do
+          expect(download_files_response.status).to eq(302)
+        end
+
+        it "redirects to type of properties page" do
+          expect(download_files_response.location).to include("/type-of-properties")
+        end
       end
 
-      it "returns 302" do
-        expect(download_files_response.status).to eq(302)
-      end
+      context "when user is not authenticated" do
+        before { allow(Helper::Session).to receive(:is_user_authenticated?).and_raise(Errors::AuthenticationError, "User is not authenticated") }
 
-      it "the response location will be filter properties page" do
-        expect(download_files_response.headers["location"]).to include("/login")
+        it "redirects to login page" do
+          expect(download_files_response).to be_redirect
+          expect(download_files_response.location).to include("/login")
+        end
       end
     end
 
-    context "when the epb-frontend-data-restrict-user-access feature toggle is off" do
-      before do
-        Helper::Toggles.set_feature("epb-frontend-data-restrict-user-access", false)
-      end
-
+    context "when the 'epb-frontend-data-restrict-user-access' feature toggle is off" do
       it "returns 302" do
         expect(download_files_response.status).to eq(302)
       end
 
       it "the response location will be filter properties page" do
-        expect(download_files_response.headers["location"]).to include("/type-of-properties")
+        expect(download_files_response.location).to include("/type-of-properties")
       end
     end
   end

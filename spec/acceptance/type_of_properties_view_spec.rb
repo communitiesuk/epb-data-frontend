@@ -44,27 +44,49 @@ describe "Acceptance::TypeOfProperties", type: :feature do
       it "has a continue button" do
         expect(response.body).to have_button("Continue")
       end
+    end
 
-      context "when submitting with a property type" do
-        let(:response) do
-          post "http://get-energy-performance-data/type-of-properties", { property_type: "domestic" }
-        end
+    context "when submitting with a property type" do
+      let(:response) do
+        post "http://get-energy-performance-data/type-of-properties", { property_type: "domestic" }
+      end
 
-        it "routes to the correct page with the correct query params" do
-          expect(response).to be_redirect
-          expect(response.location).to include("/filter-properties?property_type=domestic")
+      it "routes to the correct page with the correct query params" do
+        expect(response).to be_redirect
+        expect(response.location).to include("/filter-properties?property_type=domestic")
+      end
+    end
+
+    context "when submitting without deciding a property type" do
+      let(:response) do
+        post "http://get-energy-performance-data/type-of-properties"
+      end
+
+      it "contains the required GDS error summary" do
+        expect(response.body).to have_css("div.govuk-error-summary h2.govuk-error-summary__title", text: "There is a problem")
+        expect(response.body).to have_css("div.govuk-error-summary__body ul.govuk-list li:first a", text: "Select a type of certificate")
+        expect(response.body).to have_link("Select a type of certificate", href: "#property-type-error")
+      end
+    end
+
+    context "when the 'epb-frontend-data-restrict-user-access' feature toggle is on" do
+      before { Helper::Toggles.set_feature("epb-frontend-data-restrict-user-access", true) }
+      after { Helper::Toggles.set_feature("epb-frontend-data-restrict-user-access", false) }
+
+      context "when the user is authenticated" do
+        before { allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true) }
+
+        it "allows access to the type of properties page" do
+          expect(response.body).to include("What type of certificates do you want data on?")
         end
       end
 
-      context "when submitting without deciding a property type" do
-        let(:response) do
-          post "http://get-energy-performance-data/type-of-properties"
-        end
+      context "when the user is not authenticated" do
+        before { allow(Helper::Session).to receive(:is_user_authenticated?).and_raise(Errors::AuthenticationError, "User is not authenticated") }
 
-        it "contains the required GDS error summary" do
-          expect(response.body).to have_css("div.govuk-error-summary h2.govuk-error-summary__title", text: "There is a problem")
-          expect(response.body).to have_css("div.govuk-error-summary__body ul.govuk-list li:first a", text: "Select a type of certificate")
-          expect(response.body).to have_link("Select a type of certificate", href: "#property-type-error")
+        it "redirects to the login page" do
+          expect(response).to be_redirect
+          expect(response.location).to include("/login")
         end
       end
     end

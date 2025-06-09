@@ -1,5 +1,5 @@
 describe Helper::Session do
-  let(:session) { {} }
+  let(:session) { { "email_address": "test@email.com" } }
   let(:key) { :test_key }
 
   context "when setting a session value" do
@@ -40,6 +40,26 @@ describe Helper::Session do
       session[key] = "value"
       described_class.clear_session(session)
       expect(session).to be_empty
+    end
+  end
+
+  describe "#is_user_authenticated?" do
+    context "when session is not nil" do
+      it "returns true if email is set" do
+        result = described_class.is_user_authenticated?(session)
+        expect(result).to be(true)
+      end
+
+      it "raises an AuthenticationError if email is not set" do
+        session[:email_address] = nil
+        expect { described_class.is_user_authenticated?(session) }.to raise_error(Errors::AuthenticationError, "User email is not set in session")
+      end
+    end
+
+    context "when session is nil" do
+      it "raises an AuthenticationError" do
+        expect { described_class.is_user_authenticated?(nil) }.to raise_error(Errors::AuthenticationError, "Session is not available")
+      end
     end
   end
 end

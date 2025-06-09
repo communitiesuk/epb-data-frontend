@@ -5,6 +5,13 @@ module Controller
       @errors = {}
       @back_link_href = "/data-access-options"
       erb :type_of_properties
+    rescue StandardError => e
+      case e
+      when Errors::AuthenticationError
+        redirect "/login"
+      else
+        server_error(e)
+      end
     end
 
     post "/type-of-properties" do
