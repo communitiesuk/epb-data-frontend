@@ -10,7 +10,7 @@ class Container
                                             ENV["EPB_AUTH_SERVER"],
                                             ENV["EPB_DATA_WAREHOUSE_API_URL"],
                                             OAuth2::Client,
-                                            faraday_connection_opts: { request: { timeout: 20 } }
+                                            faraday_connection_opts: { request: { timeout: 60 } }
 
     sns_gateway = Gateway::SnsGateway.new
     send_download_request_use_case = UseCase::SendDownloadRequest.new(sns_gateway:, topic_arn: ENV["SEND_DOWNLOAD_TOPIC_ARN"])
