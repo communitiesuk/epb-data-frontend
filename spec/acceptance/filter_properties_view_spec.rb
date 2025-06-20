@@ -113,6 +113,10 @@ describe "Acceptance::FilterProperties", type: :feature do
       it "shows a select of parliamentary constituencies" do
         expect(response.body).to have_css(".govuk-select#parliamentary-constituency")
       end
+
+      it "shows information about the download" do
+        expect(response.body).to have_css(".govuk-body", text: "The download will begin immediately once requested. The estimated download size is x.x GB.")
+      end
     end
 
     context "when the selected dates are valid" do
