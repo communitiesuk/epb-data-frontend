@@ -181,8 +181,10 @@ module Controller
 
     def get_email_from_session(session)
       if Helper::Toggles.enabled?("epb-frontend-data-restrict-user-access")
-        Helper::Session.get_session_value(session, :email_address)
+        email = Helper::Session.get_session_value(session, :email_address)
         raise Errors::AuthenticationError, "Failed to get user email from session" unless email
+
+        email
       else
         "placeholder@email.com"
       end
