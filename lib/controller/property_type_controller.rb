@@ -8,6 +8,7 @@ module Controller
     rescue StandardError => e
       case e
       when Errors::AuthenticationError
+        logger.warn "Authentication error on type of properties controller: #{e.message}"
         redirect "/login"
       else
         server_error(e)

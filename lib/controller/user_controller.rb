@@ -47,6 +47,8 @@ module Controller
       token_response_hash = exchange_code_for_token
       store_user_email_in_session(token_response_hash)
 
+      logger.info "User logged in successfully with email: #{session[:email_address]} and will be redirected to type of properties page."
+
       redirect "/type-of-properties"
     rescue StandardError => e
       case e
