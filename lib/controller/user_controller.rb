@@ -47,7 +47,7 @@ module Controller
       token_response_hash = exchange_code_for_token
       store_user_email_in_session(token_response_hash)
 
-      logger.info "User logged in successfully with email: #{session[:email_address]} and will be redirected to type of properties page."
+      @logger.info "User logged in successfully with email: #{session[:email_address]} and will be redirected to type of properties page."
 
       redirect "/type-of-properties"
     rescue StandardError => e
@@ -63,10 +63,10 @@ module Controller
         @logger.error JSON.generate(error)
         redirect "/login"
       when Errors::TokenExchangeError, Errors::AuthenticationError, Errors::NetworkError
-        logger.warn "Authentication error: #{e.message}"
+        @logger.warn "Authentication error: #{e.message}"
         server_error(e)
       else
-        logger.error "Unexpected error during login callback: #{e.message}"
+        @logger.error "Unexpected error during login callback: #{e.message}"
         server_error(e)
       end
     end
@@ -116,6 +116,7 @@ module Controller
       access_token = token_response_hash["access_token"]
       use_case = @container.get_object(:get_onelogin_user_email_use_case)
       email_address = Helper::Onelogin.fetch_user_email(access_token:, use_case:)
+      @logger.error "User email address fetched: #{email_address}"
 
       Helper::Session.set_session_value(session, :email_address, email_address)
     end
