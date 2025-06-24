@@ -9,6 +9,14 @@ module Controller
       case e
       when Errors::AuthenticationError
         logger.warn "Authentication error on type of properties controller: #{e.message}"
+        message =
+          e.methods.include?(:message) ? e.message : e
+
+        error = { type: e.class.name, message: }
+
+        error[:backtrace] = e.backtrace if e.methods.include? :backtrace
+
+        @logger.error JSON.generate(e)
         redirect "/login"
       else
         server_error(e)
