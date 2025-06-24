@@ -53,8 +53,15 @@ module Controller
     rescue StandardError => e
       case e
       when Errors::StateMismatch, Errors::AccessDeniedError, Errors::LoginRequiredError, Errors::InvalidGrantError
+        message =
+          e.methods.include?(:message) ? e.message : e
+
+        error = { type: e.class.name, message: }
+
+        error[:backtrace] = e.backtrace if e.methods.include? :backtrace
+
+        @logger.error JSON.generate(e)
         redirect "/login"
-        logger.warn e.message
       when Errors::TokenExchangeError, Errors::AuthenticationError, Errors::NetworkError
         logger.warn "Authentication error: #{e.message}"
         server_error(e)
