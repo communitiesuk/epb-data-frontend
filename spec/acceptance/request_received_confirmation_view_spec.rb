@@ -10,12 +10,49 @@ describe "Acceptance::RequestReceivedConfirmation", type: :feature do
     "ratings[]=A&ratings[]=B"
   end
 
-  before do
-    get "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&download_count=123"
-  end
-
   describe "get .get-energy-certificate-data.epb-frontend/request-received-confirmation" do
+    context "when the referer is missing" do
+      before do
+        get "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&download_count=123"
+      end
+
+      it "returns 403 Forbidden" do
+        get "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&download_count=123"
+        expect(last_response.status).to eq(403)
+        expect(last_response.body).to include("Access Forbidden")
+      end
+    end
+
+    context "when the referer path is invalid" do
+      before do
+        header "Referer", "http://get-energy-performance-data/other-path"
+        get "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&download_count=123"
+      end
+
+      it "returns 403 Forbidden" do
+        expect(last_response.status).to eq(403)
+        expect(last_response.body).to include("Access Forbidden")
+      end
+    end
+
+    context "when the referer host is invalid" do
+      before do
+        header "Referer", "http://localhost/filter-properties"
+        get "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&download_count=123"
+      end
+
+      it "returns 403 Forbidden" do
+        expect(last_response.status).to eq(403)
+        expect(last_response.body).to include("Access Forbidden")
+      end
+    end
+
     context "when the request received confirmation page is rendered" do
+      before do
+        header "Referer", "http://get-energy-performance-data/filter-properties"
+        get "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&download_count=123"
+      end
+
       it "returns status 200" do
         expect(last_response.status).to eq(200)
       end

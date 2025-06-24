@@ -31,6 +31,9 @@ cy:
     "500":
       heading: "Ymddiheuriadau, mae problem gyda’r gwasanaeth."
       body: "Rhowch gynnig arall arni yn nes ymlaen"
+    403:
+      heading: "Mynediad Gwaharddedig"
+      body: "Nid oes gennych ganiatâd i gyrchu'r dudalen hon."
     404:
       heading: "Y tudalen heb ei ganfod"
       intro: "Os gwnaethoch chi deipio’r cyfeiriad gwe, gwiriwch ei fod yn gywir."

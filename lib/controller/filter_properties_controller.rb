@@ -55,6 +55,8 @@ module Controller
          &filter_properties
 
     get "/request-received-confirmation" do
+      check_referral
+
       status 200
       @back_link_href = "/filter-properties?property_type=#{params['property_type']}"
       count = params["download_count"].to_i
@@ -71,6 +73,24 @@ module Controller
     end
 
   private
+
+    def check_referral
+      referrer_url = request.referrer
+      access_forbidden unless referrer_url
+
+      uri = URI(referrer_url)
+
+      same_origin = uri.scheme == request.scheme &&
+        uri.host == request.host &&
+        uri.port == request.port
+
+      access_forbidden unless same_origin && uri.path == "/filter-properties"
+    end
+
+    def access_forbidden
+      logger.warn "Invalid referrer detected. Access Forbidden"
+      halt 403, erb(:error_page_403)
+    end
 
     def get_download_size(params_data)
       use_case = @container.get_object(:get_download_size_use_case)

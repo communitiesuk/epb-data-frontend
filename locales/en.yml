@@ -31,6 +31,9 @@ en:
     500:
       heading: "Sorry, there is a problem with the service"
       body: "Try again later."
+    403:
+      heading: "Access Forbidden"
+      body: "You don't have permissions to access this page."
     404:
       heading: "Page not found"
       intro: "If you typed the web address, check it is correct."
