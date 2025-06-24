@@ -9,7 +9,7 @@ module Controller
       case e
       when Errors::AuthenticationError
         logger.warn "Authentication error on type of properties controller: #{e.message}"
-        redirect "/login"
+        redirect "/"
       else
         server_error(e)
       end
