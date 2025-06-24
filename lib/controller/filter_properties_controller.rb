@@ -16,9 +16,9 @@ module Controller
         end
 
         if request.post? && @errors.empty?
+
           begin
             redirect "/download/all?property_type=#{params['property_type']}" if default_filters?
-
             count = get_download_size(params)
             email = get_email_from_session(session)
 
