@@ -92,6 +92,11 @@ module Controller
       erb :service_unavailable
     end
 
+    def send_to_sentry(exception)
+      was_timeout = exception.is_a?(Errors::RequestTimeoutError)
+      Sentry.capture_exception(exception) if defined?(Sentry) && !was_timeout
+    end
+
     def server_error(exception)
       was_timeout = exception.is_a?(Errors::RequestTimeoutError)
       Sentry.capture_exception(exception) if defined?(Sentry) && !was_timeout

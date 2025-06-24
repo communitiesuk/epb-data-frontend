@@ -9,6 +9,7 @@ module Controller
       case e
       when Errors::AuthenticationError
         logger.warn "Authentication error on type of properties controller: #{e.message}"
+        send_to_sentry(e)
         message =
           e.methods.include?(:message) ? e.message : e
 
