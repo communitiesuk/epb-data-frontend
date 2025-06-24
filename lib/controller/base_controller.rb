@@ -66,7 +66,16 @@ module Controller
         Helper::Session.is_user_authenticated?(session)
       end
       raise MaintenanceMode if request.path != "/healthcheck" && Helper::Toggles.enabled?("ebp-data-frontend-maintenance-mode")
-    rescue Errors::AuthenticationError
+    rescue Errors::AuthenticationError => e
+      send_to_sentry(e)
+      message =
+        e.methods.include?(:message) ? e.message : e
+
+      error = { type: e.class.name, message: }
+
+      error[:backtrace] = e.backtrace if e.methods.include? :backtrace
+
+      @logger.error JSON.generate(error)
       redirect "/login"
     end
 
