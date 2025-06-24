@@ -60,7 +60,7 @@ module Controller
 
         error[:backtrace] = e.backtrace if e.methods.include? :backtrace
 
-        @logger.error JSON.generate(e)
+        @logger.error JSON.generate(error)
         redirect "/login"
       when Errors::TokenExchangeError, Errors::AuthenticationError, Errors::NetworkError
         logger.warn "Authentication error: #{e.message}"
