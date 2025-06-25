@@ -135,7 +135,12 @@ describe "Acceptance::Login", type: :feature do
 
     context "when the request is received" do
       before do
+        Timecop.freeze(Time.new(2025, 6, 25, 12, 0, 0))
         get auth_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
+      end
+
+      after do
+        Timecop.return
       end
 
       it "returns status 302" do
@@ -151,7 +156,9 @@ describe "Acceptance::Login", type: :feature do
       end
 
       it "redirects to the type of properties page" do
-        expect(last_response).to redirect_to("/type-of-properties")
+        redirect_uri = URI(last_response.location)
+        expect(redirect_uri.path).to eq("/type-of-properties")
+        expect(redirect_uri.query).to eq("nocache=1750849200")
       end
     end
 

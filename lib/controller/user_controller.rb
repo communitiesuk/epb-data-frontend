@@ -49,7 +49,8 @@ module Controller
 
       @logger.info "User logged in successfully with email: #{session[:email_address]} and will be redirected to type of properties page."
 
-      redirect "/type-of-properties"
+      nocache_query = Time.now.to_i
+      redirect "/type-of-properties?nocache=#{nocache_query}"
     rescue StandardError => e
       case e
       when Errors::StateMismatch, Errors::AccessDeniedError, Errors::LoginRequiredError, Errors::InvalidGrantError
