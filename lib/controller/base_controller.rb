@@ -47,7 +47,7 @@ module Controller
           secret: ENV["SESSION_SECRET"],
           expire_after: 60 * 60, # 1 hour
           secure: !is_development,
-          same_site: is_development ? :lax : :strict,
+          same_site: is_development ? :lax : :none,
           httponly: true
     end
 
