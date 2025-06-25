@@ -11,11 +11,6 @@ module Controller
       erb :data_access_options
     end
 
-    get "/data-access-options/login" do
-      # Additional auth check logic is stored in the base controller
-      redirect "/type-of-properties"
-    end
-
     get "/guidance" do
       status 200
       @back_link_href = request.referer || "/"

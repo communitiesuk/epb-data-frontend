@@ -61,7 +61,7 @@ module Controller
     before do
       set_locale
 
-      restricted_paths = %w[/type-of-properties /filter-properties /data-access-options/login /download/all]
+      restricted_paths = %w[/type-of-properties /filter-properties /download/all]
       if restricted_paths.include?(request.path) && Helper::Toggles.enabled?("epb-frontend-data-restrict-user-access")
         Helper::Session.is_user_authenticated?(session)
       end
