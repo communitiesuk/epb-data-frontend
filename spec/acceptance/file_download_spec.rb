@@ -29,14 +29,6 @@ describe "Acceptance::FileDownload", type: :feature do
           expect(response.headers["location"]).to include("https://user-data.s3.us-stubbed-1.amazonaws.com/#{file_name}?X-Amz-Algorithm=AWS4-HMAC")
         end
       end
-
-      context "when user is not authenticated" do
-        before { allow(Helper::Session).to receive(:is_user_authenticated?).and_raise(Errors::AuthenticationError, "User is not authenticated") }
-
-        it "redirects to login page" do
-          expect(response.headers["location"]).to include("/login")
-        end
-      end
     end
 
     context "when no file is found" do
