@@ -34,11 +34,11 @@ module Controller
 
       Helper::Session.set_session_value(session, :referer, params["referer"])
 
-      nonce = request.cookies["nonce"] || SecureRandom.hex(16)
-      state = request.cookies["state"] || SecureRandom.hex(16)
+      nonce = Helper::Session.get_session_value(session, :nonce) || SecureRandom.hex(16)
+      state = Helper::Session.get_session_value(session, :state) || SecureRandom.hex(16)
 
-      response.set_cookie("nonce", value: nonce, path: "/login", expires: Time.now + 3600)
-      response.set_cookie("state", value: state, path: "/login", expires: Time.now + 3600)
+      Helper::Session.set_session_value(session, :nonce, nonce)
+      Helper::Session.set_session_value(session, :state, state)
 
       use_case = @container.get_object(:sign_onelogin_request_use_case)
 
@@ -63,7 +63,7 @@ module Controller
 
     get "/login/callback" do
       redirect_path = Helper::Session.get_session_value(session, :referer)
-      nonce = request.cookies["nonce"]
+      nonce = Helper::Session.get_session_value(session, :nonce)
 
       raise Errors::AuthenticationError, "No referer found in session" if redirect_path.nil? || redirect_path.empty?
 
@@ -143,13 +143,13 @@ module Controller
 
     def validate_one_login_callback
       received_state = params[:state]
-      stored_state = request.cookies["state"]
+      stored_state = session[:state]
 
       Helper::Onelogin.validate_state_cookie(received_state, stored_state)
       Helper::Onelogin.check_one_login_errors(params)
 
-      response.delete_cookie("state", path: request.path)
-      response.delete_cookie("nonce", path: request.path)
+      session.delete(:state)
+      session.delete(:nonce)
     end
 
     def exchange_code_for_token(callback_path:)

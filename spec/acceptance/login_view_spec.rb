@@ -126,9 +126,9 @@ describe "Acceptance::Login", type: :feature do
         expect(query_params["request"]).to eq("test_signed_request")
       end
 
-      it "does not return nil for nonce and state cookies" do
-        expect(last_response.cookies["nonce"].first).not_to be_nil
-        expect(last_response.cookies["state"].first).not_to be_nil
+      it "does not return nil for nonce and state in session" do
+        expect(last_request.session[:nonce]).not_to be_nil
+        expect(last_request.session[:state]).not_to be_nil
       end
 
       it "calls the use case with the correct arguments" do
@@ -136,8 +136,8 @@ describe "Acceptance::Login", type: :feature do
           aud: "#{ENV['ONELOGIN_HOST_URL']}/authorize",
           client_id: ENV["ONELOGIN_CLIENT_ID"],
           redirect_uri: "#{last_request.scheme}://#{last_request.host_with_port}/login/callback",
-          state: last_response.cookies["state"].first,
-          nonce: last_response.cookies["nonce"].first,
+          state: last_request.session[:state],
+          nonce: last_request.session[:nonce],
         )
       end
     end
@@ -156,7 +156,6 @@ describe "Acceptance::Login", type: :feature do
     context "when the request is received" do
       before do
         Timecop.freeze(Time.utc(2025, 6, 25, 12, 0, 0))
-        allow(Helper::Session).to receive(:get_session_value).with(anything, :referer).and_return("test-redirect-path")
       end
 
       after do
@@ -165,7 +164,7 @@ describe "Acceptance::Login", type: :feature do
 
       context "when id token is valid" do
         before do
-          get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
+          get callback_url, { code: "test_code", state: "test_state" }, { "rack.session" => { nonce: "test_nonce", state: "test_state", referer: "test-redirect-path" } }
         end
 
         it "calls the request_onelogin_token_use_case with the right arguments" do
@@ -200,7 +199,7 @@ describe "Acceptance::Login", type: :feature do
       context "when id token is invalid" do
         before do
           allow(validate_id_token_use_case).to receive(:execute).and_return(false)
-          get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
+          get callback_url, { code: "test_code", state: "test_state" }, { "rack.session" => { nonce: "test_nonce", state: "test_state" } }
         end
 
         it "raises 500" do
@@ -210,8 +209,7 @@ describe "Acceptance::Login", type: :feature do
 
       context "when the referer session value is set to 'type-of-properties'" do
         before do
-          allow(Helper::Session).to receive(:get_session_value).with(anything, :referer).and_return("type-of-properties")
-          get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
+          get callback_url, { code: "test_code", state: "test_state" }, { "rack.session" => { nonce: "test_nonce", state: "test_state", referer: "type-of-properties" } }
         end
 
         it "redirects to the type of properties page" do
@@ -223,8 +221,7 @@ describe "Acceptance::Login", type: :feature do
 
       context "when the referer session value is set to 'api/my-account'" do
         before do
-          allow(Helper::Session).to receive(:get_session_value).with(anything, :referer).and_return("api/my-account")
-          get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
+          get callback_url, { code: "test_code", state: "test_state" }, { "rack.session" => { nonce: "test_nonce", state: "test_state", referer: "api/my-account" } }
         end
 
         it "redirects to the my account page" do
@@ -236,8 +233,7 @@ describe "Acceptance::Login", type: :feature do
 
       context "when the referer session value is set to 'opt-out'" do
         before do
-          allow(Helper::Session).to receive(:get_session_value).with(anything, :referer).and_return("opt-out")
-          get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
+          get callback_url, { code: "test_code", state: "test_state" }, { "rack.session" => { nonce: "test_nonce", state: "test_state", referer: "opt-out" } }
         end
 
         it "redirects to the opt-out/name page" do
@@ -249,8 +245,7 @@ describe "Acceptance::Login", type: :feature do
 
       context "when the referer session value is set to 'guidance/energy-certificate-data-apis'" do
         before do
-          allow(Helper::Session).to receive(:get_session_value).with(anything, :referer).and_return("guidance/energy-certificate-data-apis")
-          get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
+          get callback_url, { code: "test_code", state: "test_state" }, { "rack.session" => { nonce: "test_nonce", state: "test_state", referer: "guidance/energy-certificate-data-apis" } }
         end
 
         it "redirects to the guidance/energy-certificate-data-apis page" do
@@ -264,8 +259,7 @@ describe "Acceptance::Login", type: :feature do
     context "when request raises StateMismatch error" do
       context "when the referer session value is set to 'opt-out/name'" do
         before do
-          allow(Helper::Session).to receive(:get_session_value).with(anything, :referer).and_return("opt-out")
-          get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=different_test_state" }
+          get callback_url, { code: "test_code", state: "test_state" }, { "rack.session" => { nonce: "test_nonce", state: "different_test_state", referer: "opt-out" } }
         end
 
         it "redirects to the one login page with the correct referer" do
@@ -276,8 +270,7 @@ describe "Acceptance::Login", type: :feature do
 
       context "when the referer session value is set to 'api/my-account'" do
         before do
-          allow(Helper::Session).to receive(:get_session_value).with(anything, :referer).and_return("api/my-account")
-          get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=different_test_state" }
+          get callback_url, { code: "test_code", state: "test_state" }, { "rack.session" => { nonce: "test_nonce", state: "different_test_state", referer: "api/my-account" } }
         end
 
         it "redirects to the OneLogin login page with the correct referer" do
@@ -288,8 +281,7 @@ describe "Acceptance::Login", type: :feature do
 
       context "when the referer session value is set to 'type-of-properties'" do
         before do
-          allow(Helper::Session).to receive(:get_session_value).with(anything, :referer).and_return("type-of-properties")
-          get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=different_test_state" }
+          get callback_url, { code: "test_code", state: "test_state" }, { "rack.session" => { nonce: "test_nonce", state: "different_test_state", referer: "type-of-properties" } }
         end
 
         it "redirects to the OneLogin login page with the correct referer" do
@@ -300,8 +292,7 @@ describe "Acceptance::Login", type: :feature do
 
       context "when the referer session value is set to 'guidance/energy-certificate-data-apis'" do
         before do
-          allow(Helper::Session).to receive(:get_session_value).with(anything, :referer).and_return("guidance/energy-certificate-data-apis")
-          get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=different_test_state" }
+          get callback_url, { code: "test_code", state: "test_state" }, { "rack.session" => { nonce: "test_nonce", state: "different_test_state", referer: "guidance/energy-certificate-data-apis" } }
         end
 
         it "redirects to the OneLogin login page with the correct referer" do
@@ -313,8 +304,7 @@ describe "Acceptance::Login", type: :feature do
 
     context "when the redirect_path is missing in session" do
       before do
-        allow(Helper::Session).to receive(:get_session_value).with(anything, :referer).and_return(nil)
-        get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
+        get callback_url, { code: "test_code", state: "test_state" }, { "rack.session" => { nonce: "test_nonce", state: "test_state" } }
       end
 
       it "raises an authentication error" do
