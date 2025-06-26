@@ -108,9 +108,9 @@ describe "Acceptance::Login", type: :feature do
         expect(query_params["request"]).to eq("test_signed_request")
       end
 
-      it "does not return nil for nonce and state cookies" do
-        expect(last_response.cookies["nonce"].first).not_to be_nil
-        expect(last_response.cookies["state"].first).not_to be_nil
+      it "does not return nil for nonce and state in session" do
+        expect(last_request.session[:nonce]).not_to be_nil
+        expect(last_request.session[:state]).not_to be_nil
       end
 
       it "calls the use case with the correct arguments" do
@@ -118,8 +118,8 @@ describe "Acceptance::Login", type: :feature do
           aud: "#{ENV['ONELOGIN_HOST_URL']}/authorize",
           client_id: ENV["ONELOGIN_CLIENT_ID"],
           redirect_uri: "#{last_request.scheme}://#{last_request.host_with_port}/login/callback",
-          state: last_response.cookies["state"].first,
-          nonce: last_response.cookies["nonce"].first,
+          state: last_request.session[:state],
+          nonce: last_request.session[:nonce],
         )
       end
     end
@@ -136,7 +136,7 @@ describe "Acceptance::Login", type: :feature do
     context "when the request is received" do
       before do
         Timecop.freeze(Time.utc(2025, 6, 25, 12, 0, 0))
-        get auth_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
+        get auth_url, { code: "test_code", state: "test_state" }, { "rack.session" => { nonce: "test_nonce", state: "test_state" } }
       end
 
       after do

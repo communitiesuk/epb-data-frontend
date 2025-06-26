@@ -15,11 +15,11 @@ module Controller
       aud = "#{host_url}/authorize"
       redirect_uri = "#{frontend_url}/login/callback"
 
-      nonce = request.cookies["nonce"] || SecureRandom.hex(16)
-      state = request.cookies["state"] || SecureRandom.hex(16)
+      session[:nonce] ||= SecureRandom.hex(16)
+      session[:state] ||= SecureRandom.hex(16)
 
-      response.set_cookie("nonce", value: nonce, path: "/login", expires: Time.now + 3600)
-      response.set_cookie("state", value: state, path: "/login", expires: Time.now + 3600)
+      nonce = session[:nonce]
+      state = session[:state]
 
       use_case = @container.get_object(:sign_onelogin_request_use_case)
 
@@ -91,13 +91,13 @@ module Controller
 
     def validate_one_login_callback
       received_state = params[:state]
-      stored_state = request.cookies["state"]
+      stored_state = session[:state]
 
       Helper::Onelogin.validate_state_cookie(received_state, stored_state)
       Helper::Onelogin.check_one_login_errors(params)
 
-      response.delete_cookie("state", path: request.path)
-      response.delete_cookie("nonce", path: request.path)
+      session.delete(:state)
+      session.delete(:nonce)
     end
 
     def exchange_code_for_token
