@@ -5,44 +5,50 @@
         <h1 class="govuk-heading-xl">
           <%= t('data_access_options.title') %>
         </h1>
-        <div style="display: flex; flex-wrap: wrap;" class="govuk-grid-row govuk-!-margin-bottom-6">
-          <div style="width: 50%; float: left; box-sizing: border-box; padding: 0 15px;" class="govuk-!-margin-bottom-6">
-            <div style="padding: 1.25rem; background-color: #f4f8fb; height: 100%; display: flex; flex-direction: column; box-sizing: border-box;" data-nosnippet role="region" aria-label="Download files">
-                <h2 class="govuk-heading-m">
-                  <%= t('data_access_options.download_files.title') %>
-                </h2>
-                <p class="govuk-body govuk-!-margin-bottom-6">
-                  <%= t('data_access_options.download_files.description') %>
-                </p>
+        <div class="govuk-grid-column-one-half govuk-!-padding-0 govuk-!-padding-bottom-4">
+          <div class="govuk-cookie-banner govuk-!-margin-right-5" data-nosnippet role="region" aria-label="Download files">
+            <div class="govuk-cookie-banner__message govuk-width-container govuk-!-padding-left-4 govuk-width-container govuk-!-padding-right-4">
+              <h2 class="govuk-cookie-banner__heading govuk-heading-m">
+                <%= t('data_access_options.download_files.title') %>
+              </h2>
+              <div class="govuk-cookie-banner__content">
+                <p class="govuk-body"><%= t('data_access_options.download_files.description') %></p>
+              </div>
+              <div class="govuk-button-group">
                 <a
-                  class="govuk-button govuk-!-margin-bottom-1"
-                  style="margin-top: auto; width: fit-content;"
                   href="/type-of-properties"
                   role="button"
                   draggable="false"
+                  class="govuk-button"
                   data-module="govuk-button" >
                   <%= t('data_access_options.download_files.button_text') %>
                 </a>
+              </div>
             </div>
           </div>
+        </div>
 
-          <div style="width: 50%; float: left; box-sizing: border-box; padding: 0 15px;" class="govuk-!-margin-bottom-6">
-            <div style="padding: 1.25rem; background-color: #f4f8fb; height: 100%; display: flex; flex-direction: column; box-sizing: border-box;" data-nosnippet role="region" aria-label="Use a developer API">
-              <h2 class="govuk-heading-m">
+        <div class="govuk-grid-column-one-half govuk-!-padding-0">
+          <div class="govuk-cookie-banner govuk-!-margin-right-3" data-nosnippet role="region" aria-label="Use a developer API">
+            <div class="govuk-cookie-banner__message govuk-width-container govuk-width-container govuk-!-padding-left-4 govuk-width-container govuk-!-padding-right-4">
+              <h2 class="govuk-cookie-banner__heading govuk-heading-m">
                 <%= t('data_access_options.use_api.title') %>
               </h2>
-              <p class="govuk-body govuk-!-margin-bottom-6">
-                <%= t('data_access_options.use_api.description') %>
-              </p>
-              <a
-                class="govuk-button govuk-!-margin-bottom-1"
-                style="margin-top: auto; width: fit-content;"
-                href="/use-api"
-                role="button"
-                draggable="false"
-                data-module="govuk-button" >
-                <%= t('data_access_options.use_api.button_text') %>
-              </a>
+              <div class="govuk-cookie-banner__content">
+                <p class="govuk-body">
+                  <%= t('data_access_options.use_api.description') %>
+                </p>
+              </div>
+              <div class="govuk-button-group">
+                <a
+                  href="/use-api"
+                  role="button"
+                  draggable="false"
+                  class="govuk-button"
+                  data-module="govuk-button" >
+                  <%= t('data_access_options.use_api.button_text') %>
+                </a>
+              </div>
             </div>
           </div>
         </div>
