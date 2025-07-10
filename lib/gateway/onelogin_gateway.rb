@@ -7,13 +7,7 @@ module Gateway
     end
 
     def get_token(code:, redirect_uri:, jwt_assertion:)
-      token_url = URI(@token_endpoint)
-
-      conn = Faraday.new(url: token_url) do |builder|
-        builder.request :url_encoded
-        builder.response :json
-        builder.adapter Faraday.default_adapter
-      end
+      conn = faraday_connection(url: URI(@token_endpoint))
 
       token_request_body = {
         grant_type: "authorization_code",
@@ -42,7 +36,7 @@ module Gateway
     end
 
     def get_user_email(access_token:)
-      conn = faraday_connection
+      conn = faraday_connection(url: @user_info_endpoint)
 
       response = conn.get do |req|
         req.headers["Authorization"] = "Bearer #{access_token}"
@@ -64,8 +58,10 @@ module Gateway
       raise Errors::NetworkError, "Network error during user email fetch: #{e.message}"
     end
 
-    def faraday_connection
-      Faraday.new(url: @user_info_endpoint) do |builder|
+  private
+
+    def faraday_connection(url:)
+      Faraday.new(url:) do |builder|
         builder.request :url_encoded
         builder.response :json
         builder.adapter Faraday.default_adapter

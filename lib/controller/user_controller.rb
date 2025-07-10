@@ -89,6 +89,24 @@ module Controller
       server_error(e)
     end
 
+    get "/signed-out" do
+      status 200
+      erb :signed_out
+    end
+
+    get "/sign-out" do
+      host_url = "#{ENV['ONELOGIN_HOST_URL']}/logout"
+      frontend_url = "#{request.scheme}://#{request.host_with_port}"
+      redirect_uri = "#{frontend_url}/signed-out"
+
+      query_string = URI.encode_www_form({
+        id_token_hint: Helper::Session.get_session_value(session, :id_token),
+        post_logout_redirect_uri: redirect_uri,
+      })
+      Helper::Session.clear_session(session)
+      redirect "#{host_url}?#{query_string}"
+    end
+
     def validate_one_login_callback
       received_state = params[:state]
       stored_state = request.cookies["state"]
@@ -115,11 +133,13 @@ module Controller
 
     def store_user_email_in_session(token_response_hash)
       access_token = token_response_hash["access_token"]
+      id_token = token_response_hash["id_token"]
       use_case = @container.get_object(:get_onelogin_user_email_use_case)
       email_address = Helper::Onelogin.fetch_user_email(access_token:, use_case:)
       @logger.error "User email address fetched: #{email_address}"
 
       Helper::Session.set_session_value(session, :email_address, email_address)
+      Helper::Session.set_session_value(session, :id_token, id_token)
     end
   end
 end

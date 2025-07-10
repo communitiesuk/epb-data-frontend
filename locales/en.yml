@@ -12,8 +12,8 @@ en:
     body:
       skip: "Skip to main content"
       govuk: "GOV.UK"
-
       phase_banner: "This is a test site. The data is not real and the certificates are not valid."
+      sign_out: "Sign out"
       footer:
         heading: "Support links"
         accessibility_statement: "Accessibility"
@@ -22,6 +22,8 @@ en:
         license: "All content is available under the <a class=\"govuk-footer__link\" href=\"https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" rel=\"license\">Open Government Licence v3.0</a>, except where otherwise stated"
         copyright: "<a class=\"govuk-footer__link govuk-footer__copyright-logo\" href=\"https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/\">&copy; Crown copyright</a>"
         help: "Help"
+
+
 
   contact:
     help_desk_number: "020 3829 0748"
@@ -62,7 +64,6 @@ en:
 
   accessibility_statement:
     top_heading: "Accessibility statement"
-
 
   service_unavailable:
     title: "Sorry, the service is unavailable"
@@ -167,6 +168,10 @@ en:
     england_and_wales: "England and Wales"
     energy_eff_ratings: "Energy Efficiency Rating A, B, C, D, E, F, G"
     count_and_size: "Your request contains <strong>placeholder number</strong> certificates. The estimated download size is <strong>placeholder size</strong> MB."
+
+  signed_out:
+    title: "You have signed out"
+    link: "To go back, sign in to our service using"
 
   date:
     months:

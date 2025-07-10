@@ -24,5 +24,14 @@ module Helper
 
       true
     end
+
+    def self.is_logged_in?(session)
+      return false if session.nil?
+
+      email = get_session_value(session, :email_address)
+      return false if email.nil? || email.empty?
+
+      true
+    end
   end
 end
