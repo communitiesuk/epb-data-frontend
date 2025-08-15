@@ -9,7 +9,7 @@ describe "Acceptance::ServiceStartPage", type: :feature do
   describe "get .get-energy-certificate-data.epb-frontend/" do
     context "when the start page is rendered" do
       it "the title to be correct" do
-        expect(response.body).to have_css("h1", text: "Get energy certificate data")
+        expect(response.body).to have_css("h1", text: "Get energy performance of buildings data")
       end
 
       it "has the correct Start now button" do

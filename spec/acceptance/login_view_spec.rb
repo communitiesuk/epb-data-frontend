@@ -72,7 +72,7 @@ describe "Acceptance::Login", type: :feature do
       end
 
       it "shows the correct title and body text" do
-        expect(response.body).to have_selector("h1", text: "Get energy certificate data")
+        expect(response.body).to have_selector("h1", text: "Get energy performance of buildings data")
         expect(response.body).to have_selector("p.govuk-body", text: "You'll need a GOV.UK One Login to use this service. If you do not have a GOV.UK One Login, you can create one.")
       end
 
