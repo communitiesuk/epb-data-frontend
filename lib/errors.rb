@@ -96,6 +96,9 @@ module Errors
   class NetworkError < ApiError
   end
 
+  class MultipleUsersWithSameSubError < ApiError
+  end
+
   module DoNotReport
   end
 end
