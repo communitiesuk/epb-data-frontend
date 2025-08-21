@@ -107,6 +107,12 @@ module Controller
       redirect "#{host_url}?#{query_string}"
     end
 
+    get "/manage-profile" do
+      status 200
+      @back_link_href = request.referer || "/"
+      erb :manage_profile
+    end
+
     def validate_one_login_callback
       received_state = params[:state]
       stored_state = request.cookies["state"]
