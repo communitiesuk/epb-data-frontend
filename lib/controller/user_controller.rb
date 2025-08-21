@@ -43,33 +43,11 @@ module Controller
     end
 
     get "/login/callback" do
-      validate_one_login_callback
-      token_response_hash = exchange_code_for_token
-      store_user_email_in_session(token_response_hash)
+      one_login_callback(redirect_path: "type-of-properties")
+    end
 
-      @logger.info "User logged in successfully with email: #{session[:email_address]} and will be redirected to type of properties page."
-
-      nocache_query = Time.now.to_i
-      redirect "/type-of-properties?nocache=#{nocache_query}"
-    rescue StandardError => e
-      case e
-      when Errors::StateMismatch, Errors::AccessDeniedError, Errors::LoginRequiredError, Errors::InvalidGrantError
-        message =
-          e.methods.include?(:message) ? e.message : e
-
-        error = { type: e.class.name, message: }
-
-        error[:backtrace] = e.backtrace if e.methods.include? :backtrace
-
-        @logger.error JSON.generate(error)
-        redirect "/login"
-      when Errors::TokenExchangeError, Errors::AuthenticationError, Errors::NetworkError
-        @logger.warn "Authentication error: #{e.message}"
-        server_error(e)
-      else
-        @logger.error "Unexpected error during login callback: #{e.message}"
-        server_error(e)
-      end
+    get "/login/callback/admin" do
+      one_login_callback(redirect_path: "manage-profile")
     end
 
     get "/jwks" do
