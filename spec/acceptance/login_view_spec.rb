@@ -22,8 +22,16 @@ describe "Acceptance::Login", type: :feature do
     instance_double(UseCase::RequestOneloginToken)
   end
 
-  let(:get_onelogin_user_email_use_case) do
-    instance_double(UseCase::GetOneloginUserEmail)
+  let(:get_onelogin_user_info_use_case) do
+    instance_double(UseCase::GetOneloginUserInfo)
+  end
+
+  let(:get_user_id_use_case) do
+    instance_double(UseCase::GetUserId)
+  end
+
+  let(:get_user_creds_gateway) do
+    instance_double(Gateway::UserCredentialsGateway)
   end
 
   let(:token_response) do
@@ -46,7 +54,8 @@ describe "Acceptance::Login", type: :feature do
     fake_container = instance_double(Container)
     allow(fake_container).to receive(:get_object).with(:sign_onelogin_request_use_case).and_return(sign_onelogin_request_test_use_case)
     allow(fake_container).to receive(:get_object).with(:request_onelogin_token_use_case).and_return(request_onelogin_token_use_case)
-    allow(fake_container).to receive(:get_object).with(:get_onelogin_user_email_use_case).and_return(get_onelogin_user_email_use_case)
+    allow(fake_container).to receive(:get_object).with(:get_onelogin_user_info_use_case).and_return(get_onelogin_user_info_use_case)
+    allow(fake_container).to receive(:get_object).with(:get_user_id_use_case).and_return(get_user_id_use_case)
 
     Rack::Builder.new do
       use Rack::Session::Cookie, secret: "test" * 16
@@ -128,9 +137,10 @@ describe "Acceptance::Login", type: :feature do
   describe "get .get-energy-certificate-data.epb-frontend/login/callback" do
     before do
       allow(request_onelogin_token_use_case).to receive(:execute).and_return(token_response)
-      allow(get_onelogin_user_email_use_case).to receive(:execute).and_return(email_response)
+      allow(get_onelogin_user_info_use_case).to receive(:execute).and_return(email_response)
       allow(Helper::Onelogin).to receive(:check_one_login_errors).and_return(true)
       allow(Helper::Session).to receive(:set_session_value)
+      allow(get_user_id_use_case).to receive(:execute).and_return(token_response)
     end
 
     context "when the request is received" do
@@ -154,6 +164,7 @@ describe "Acceptance::Login", type: :feature do
       it "calls set_session_value for the email address" do
         expect(Helper::Session).to have_received(:set_session_value).with(anything, :email_address, "test@email.com")
       end
+
 
       it "redirects to the type of properties page" do
         redirect_uri = URI(last_response.location)

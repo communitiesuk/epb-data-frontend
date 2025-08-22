@@ -95,12 +95,12 @@ describe Gateway::OneloginGateway do
     end
   end
 
-  describe "#get_user_email" do
+  describe "#get_user_info" do
     let(:url) { "https://oidc.integration.account.gov.uk/userinfo" }
 
     let(:access_token) { "test_access_token" }
 
-    let(:response) { gateway.get_user_email(access_token:) }
+    let(:response) { gateway.get_user_info(access_token:) }
 
     context "when the response is successful" do
       before do
@@ -138,7 +138,7 @@ describe Gateway::OneloginGateway do
           )
 
         expect {
-          gateway.get_user_email(access_token:)
+          gateway.get_user_info(access_token:)
         }.to raise_error(Errors::AuthenticationError, /Failed to fetch user email: invalid_token. The Access Token expired/)
       end
 
@@ -147,7 +147,7 @@ describe Gateway::OneloginGateway do
           .to_timeout
 
         expect {
-          gateway.get_user_email(access_token:)
+          gateway.get_user_info(access_token:)
         }.to raise_error(Errors::NetworkError, /Network error during user email fetch: execution expired/)
       end
     end
@@ -174,7 +174,7 @@ describe Gateway::OneloginGateway do
 
       it "raises a UserEmailNotVerified error" do
         expect {
-          gateway.get_user_email(access_token:)
+          gateway.get_user_info(access_token:)
         }.to raise_error(Errors::UserEmailNotVerified, /Email not verified for user: test@example.com/)
       end
     end

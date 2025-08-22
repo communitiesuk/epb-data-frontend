@@ -35,7 +35,7 @@ module Gateway
       raise Errors::NetworkError, "Network error during token exchange: #{e.message}"
     end
 
-    def get_user_email(access_token:)
+    def get_user_info(access_token:)
       conn = faraday_connection(url: @user_info_endpoint)
 
       response = conn.get do |req|

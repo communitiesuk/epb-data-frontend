@@ -21,7 +21,7 @@ class Container
     onelogin_gateway = Gateway::OneloginGateway.new
     user_credentials_gateway = Gateway::UserCredentialsGateway.new
     request_onelogin_token_use_case = UseCase::RequestOneloginToken.new(onelogin_gateway:)
-    get_onelogin_user_email_use_case = UseCase::GetOneloginUserEmail.new(onelogin_gateway:)
+    get_onelogin_user_info_use_case = UseCase::GetOneloginUserInfo.new(onelogin_gateway:)
     get_user_id_use_case = UseCase::GetUserId.new(user_credentials_gateway:)
     @objects = {
       send_download_request_use_case:,
@@ -29,7 +29,7 @@ class Container
       get_presigned_url_use_case:,
       sign_onelogin_request_use_case:,
       request_onelogin_token_use_case:,
-      get_onelogin_user_email_use_case:,
+      get_onelogin_user_info_use_case:,
       get_user_id_use_case:,
     }
   end

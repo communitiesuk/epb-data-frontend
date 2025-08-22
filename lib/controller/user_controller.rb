@@ -118,7 +118,7 @@ module Controller
     def store_user_email_in_session(token_response_hash)
       access_token = token_response_hash["access_token"]
       id_token = token_response_hash["id_token"]
-      use_case = @container.get_object(:get_onelogin_user_email_use_case)
+      use_case = @container.get_object(:get_onelogin_user_info_use_case)
       email_address = Helper::Onelogin.fetch_user_email(access_token:, use_case:)
       @logger.error "User email address fetched: #{email_address}"
 
