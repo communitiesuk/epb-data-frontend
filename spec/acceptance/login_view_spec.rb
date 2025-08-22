@@ -43,10 +43,11 @@ describe "Acceptance::Login", type: :feature do
     }
   end
 
-  let(:email_response) do
+  let(:user_info_response) do
     {
       email: "test@email.com",
       email_verified: true,
+      sub: "urn:fdc:gov.uk:2022:56P4CMsGh_02YOlWpd8PAOI-2sVlB2nsNU7mcLZYhYw=",
     }
   end
 
@@ -137,10 +138,10 @@ describe "Acceptance::Login", type: :feature do
   describe "get .get-energy-certificate-data.epb-frontend/login/callback" do
     before do
       allow(request_onelogin_token_use_case).to receive(:execute).and_return(token_response)
-      allow(get_onelogin_user_info_use_case).to receive(:execute).and_return(email_response)
+      allow(get_onelogin_user_info_use_case).to receive(:execute).and_return(user_info_response)
       allow(Helper::Onelogin).to receive(:check_one_login_errors).and_return(true)
       allow(Helper::Session).to receive(:set_session_value)
-      allow(get_user_id_use_case).to receive(:execute).and_return(token_response)
+      allow(get_user_id_use_case).to receive(:execute).and_return("e40c46c3-4636-4a8a-abd7-be72e1a525f6")
     end
 
     context "when the request is received" do
@@ -165,6 +166,13 @@ describe "Acceptance::Login", type: :feature do
         expect(Helper::Session).to have_received(:set_session_value).with(anything, :email_address, "test@email.com")
       end
 
+      it "calls the get user id use case" do
+        expect(get_user_id_use_case).to have_received(:execute).with("urn:fdc:gov.uk:2022:56P4CMsGh_02YOlWpd8PAOI-2sVlB2nsNU7mcLZYhYw=")
+      end
+
+      it "sets the user id into the session" do
+        expect(Helper::Session).to have_received(:set_session_value).with(anything, :user_id, "e40c46c3-4636-4a8a-abd7-be72e1a525f6")
+      end
 
       it "redirects to the type of properties page" do
         redirect_uri = URI(last_response.location)

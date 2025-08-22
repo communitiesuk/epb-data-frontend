@@ -123,32 +123,5 @@ module Controller
       status(was_timeout ? 504 : 500)
       erb :error_page_500
     end
-
-    def one_login_callback(redirect_path:)
-      validate_one_login_callback
-      token_response_hash = exchange_code_for_token
-      store_user_email_in_session(token_response_hash)
-      @logger.info "User logged in successfully with email: #{session[:email_address]} and will be redirected to type of properties page."
-      redirect "/#{redirect_path}?nocache=#{Time.now.to_i}"
-    rescue StandardError => e
-      case e
-      when Errors::StateMismatch, Errors::AccessDeniedError, Errors::LoginRequiredError, Errors::InvalidGrantError
-        message =
-          e.methods.include?(:message) ? e.message : e
-
-        error = { type: e.class.name, message: }
-
-        error[:backtrace] = e.backtrace if e.methods.include? :backtrace
-
-        @logger.error JSON.generate(error)
-        redirect "/login"
-      when Errors::TokenExchangeError, Errors::AuthenticationError, Errors::NetworkError
-        @logger.warn "Authentication error: #{e.message}"
-        server_error(e)
-      else
-        @logger.error "Unexpected error during login callback: #{e.message}"
-        server_error(e)
-      end
-    end
   end
 end

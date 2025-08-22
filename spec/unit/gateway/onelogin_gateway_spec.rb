@@ -123,7 +123,7 @@ describe Gateway::OneloginGateway do
       end
 
       it "returns the user email and email_verified values" do
-        expected_user_hash = { email: "test@example.com", email_verified: true }
+        expected_user_hash = { email: "test@example.com", email_verified: true, sub: "urn:fdc:gov.uk:2022:56P4CMsGh_02YOlWpd8PAOI-2sVlB2nsNU7mcLZYhYw=" }
         expect(response).to eq(expected_user_hash)
       end
     end

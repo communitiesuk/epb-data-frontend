@@ -115,15 +115,45 @@ module Controller
       use_case.execute(**use_case_args)
     end
 
-    def store_user_email_in_session(token_response_hash)
+    def one_login_callback(redirect_path:)
+      validate_one_login_callback
+      token_response_hash = exchange_code_for_token
+      set_user_one_login_info(token_response_hash)
+      @logger.info "User logged in successfully with email: #{session[:email_address]} and will be redirected to type of properties page."
+      redirect "/#{redirect_path}?nocache=#{Time.now.to_i}"
+    rescue StandardError => e
+      case e
+      when Errors::StateMismatch, Errors::AccessDeniedError, Errors::LoginRequiredError, Errors::InvalidGrantError
+        message =
+          e.methods.include?(:message) ? e.message : e
+
+        error = { type: e.class.name, message: }
+
+        error[:backtrace] = e.backtrace if e.methods.include? :backtrace
+
+        @logger.error JSON.generate(error)
+        redirect "/login"
+      when Errors::TokenExchangeError, Errors::AuthenticationError, Errors::NetworkError
+        @logger.warn "Authentication error: #{e.message}"
+        server_error(e)
+      else
+        @logger.error "Unexpected error during login callback: #{e.message}"
+        server_error(e)
+      end
+    end
+
+    def set_user_one_login_info(token_response_hash)
       access_token = token_response_hash["access_token"]
       id_token = token_response_hash["id_token"]
       use_case = @container.get_object(:get_onelogin_user_info_use_case)
-      email_address = Helper::Onelogin.fetch_user_email(access_token:, use_case:)
-      @logger.error "User email address fetched: #{email_address}"
+      user_info = Helper::Onelogin.fetch_user_info(access_token:, use_case:)
+      user_id = @container.get_object(:get_user_id_use_case).execute(user_info[:sub])
 
-      Helper::Session.set_session_value(session, :email_address, email_address)
+      @logger.error "User email address fetched: #}"
+
+      Helper::Session.set_session_value(session, :email_address, user_info[:email])
       Helper::Session.set_session_value(session, :id_token, id_token)
+      Helper::Session.set_session_value(session, :user_id, user_id)
     end
   end
 end

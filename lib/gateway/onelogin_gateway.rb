@@ -53,6 +53,7 @@ module Gateway
       {
         email: response.body["email"],
         email_verified: response.body["email_verified"],
+        sub: response.body["sub"],
       }
     rescue Faraday::Error => e
       raise Errors::NetworkError, "Network error during user email fetch: #{e.message}"

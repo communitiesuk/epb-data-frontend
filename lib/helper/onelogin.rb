@@ -59,8 +59,8 @@ module Helper
       end
     end
 
-    def self.fetch_user_email(access_token:, use_case:)
-      use_case.execute(access_token:)[:email]
+    def self.fetch_user_info(access_token:, use_case:)
+      use_case.execute(access_token:)
     end
 
     private_class_method def self.extract_private_key(tls_keys)
