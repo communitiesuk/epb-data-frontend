@@ -52,7 +52,7 @@ module Controller
     end
 
     get "/login/callback/admin" do
-      one_login_callback(redirect_path: "my-account")
+      one_login_callback(redirect_path: "api/my-account")
     end
 
     get "/jwks" do
@@ -107,9 +107,10 @@ module Controller
       response.delete_cookie("nonce", path: request.path)
     end
 
-    def exchange_code_for_token
+    def exchange_code_for_token(callback_path:)
       frontend_url = "#{request.scheme}://#{request.host_with_port}"
-      redirect_uri = "#{frontend_url}/login/callback"
+      redirect_uri = "#{frontend_url}#{callback_path}"
+
       authorisation_code = params[:code]
 
       use_case_args = {
@@ -122,7 +123,7 @@ module Controller
 
     def one_login_callback(redirect_path:)
       validate_one_login_callback
-      token_response_hash = exchange_code_for_token
+      token_response_hash = exchange_code_for_token(callback_path: request.path)
       set_user_one_login_info(token_response_hash)
       redirect "/#{redirect_path}?nocache=#{Time.now.to_i}"
     rescue StandardError => e
@@ -153,8 +154,6 @@ module Controller
       use_case = @container.get_object(:get_onelogin_user_info_use_case)
       user_info = Helper::Onelogin.fetch_user_info(access_token:, use_case:)
       user_id = @container.get_object(:get_user_id_use_case).execute(user_info[:sub])
-
-      @logger.error "User email address fetched: #}"
 
       Helper::Session.set_session_value(session, :email_address, user_info[:email])
       Helper::Session.set_session_value(session, :id_token, id_token)

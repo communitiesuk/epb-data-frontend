@@ -33,7 +33,7 @@ module Controller
       @toggles = Helper::Toggles
       @container = container || Container.new
       @logger = Logger.new($stdout)
-      @logger.level = Logger::FATAL
+      @logger.level = Logger::WARN
     end
 
     HOST_NAME = "get-energy-certificate-data".freeze

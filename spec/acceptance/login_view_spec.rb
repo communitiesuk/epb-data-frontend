@@ -4,8 +4,12 @@ describe "Acceptance::Login", type: :feature do
     "http://get-energy-performance-data/login"
   end
 
-  let(:auth_url) do
+  let(:callback_url) do
     "http://get-energy-performance-data/login/callback"
+  end
+
+  let(:callback_admin_url) do
+    "#{callback_url}/admin"
   end
 
   let(:response) { get login_url }
@@ -171,11 +175,15 @@ describe "Acceptance::Login", type: :feature do
     context "when the request is received" do
       before do
         Timecop.freeze(Time.utc(2025, 6, 25, 12, 0, 0))
-        get auth_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
+        get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
       end
 
       after do
         Timecop.return
+      end
+
+      it "calls the request_onelogin_token_use_case with the right arguments" do
+        expect(request_onelogin_token_use_case).to have_received(:execute).with({ code: "test_code", redirect_uri: "http://get-energy-performance-data/login/callback" })
       end
 
       it "returns status 302" do
@@ -207,7 +215,7 @@ describe "Acceptance::Login", type: :feature do
 
     context "when request raises StateMismatch error" do
       before do
-        get auth_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=different_test_state" }
+        get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=different_test_state" }
       end
 
       it "returns status 302" do
@@ -216,6 +224,55 @@ describe "Acceptance::Login", type: :feature do
 
       it "redirects to the login page" do
         expect(last_response.headers["Location"]).to eq("http://get-energy-performance-data/login")
+      end
+    end
+  end
+
+  describe "get .get-energy-certificate-data.epb-frontend/login/callback/admin" do
+    before do
+      allow(request_onelogin_token_use_case).to receive(:execute).and_return(token_response)
+      allow(get_onelogin_user_info_use_case).to receive(:execute).and_return(user_info_response)
+      allow(Helper::Onelogin).to receive(:check_one_login_errors).and_return(true)
+      allow(Helper::Session).to receive(:set_session_value)
+      allow(get_user_id_use_case).to receive(:execute).and_return("e40c46c3-4636-4a8a-abd7-be72e1a525f6")
+    end
+
+    context "when the request is received" do
+      before do
+        Timecop.freeze(Time.utc(2025, 6, 25, 12, 0, 0))
+        get callback_admin_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
+      end
+
+      after do
+        Timecop.return
+      end
+
+      it "calls the request_onelogin_token_use_case with the right arguments" do
+        expect(request_onelogin_token_use_case).to have_received(:execute).with({ code: "test_code", redirect_uri: "http://get-energy-performance-data/login/callback/admin" })
+      end
+
+      it "returns status 302" do
+        expect(last_response.status).to eq(302)
+      end
+
+      it "redirects to the my-account page" do
+        redirect_uri = URI(last_response.location)
+        expect(redirect_uri.path).to eq("/api/my-account")
+        expect(redirect_uri.query).to eq("nocache=1750852800")
+      end
+    end
+
+    context "when request raises StateMismatch error" do
+      before do
+        get callback_admin_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=different_test_state" }
+      end
+
+      it "returns status 302" do
+        expect(last_response.status).to eq(302)
+      end
+
+      it "redirects to the login page" do
+        expect(last_response.headers["Location"]).to eq("http://get-energy-performance-data/login?referer=api/my-account")
       end
     end
   end
