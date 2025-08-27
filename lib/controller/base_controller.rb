@@ -61,7 +61,7 @@ module Controller
     before do
       set_locale
 
-      restricted_paths = %w[/type-of-properties /manage-profile /filter-properties /download /download/all]
+      restricted_paths = %w[/type-of-properties /api/my-account /filter-properties /download /download/all]
       if restricted_paths.include?(request.path) && Helper::Toggles.enabled?("epb-frontend-data-restrict-user-access")
         Helper::Session.is_user_authenticated?(session)
       end
@@ -69,8 +69,8 @@ module Controller
     rescue Errors::AuthenticationError
       redirect_url = "/login"
 
-      if request.path == "/manage-profile"
-        redirect_url += "?referer=manage-profile"
+      if request.path == "/api/my-account"
+        redirect_url += "?referer=api/my-account"
       end
 
       redirect redirect_url

@@ -91,10 +91,10 @@ describe "Acceptance::Login", type: :feature do
       end
     end
 
-    context "when the request received includes referer=manage-profile" do
+    context "when the request received includes referer=api/my-account" do
       it "has the correct Start now button" do
-        get "#{login_url}?referer=manage-profile"
-        expect(last_response.body).to have_link("Start now", href: "/login/authorize?referer=manage-profile")
+        get "#{login_url}?referer=api/my-account"
+        expect(last_response.body).to have_link("Start now", href: "/login/authorize?referer=api/my-account")
       end
     end
   end
@@ -144,7 +144,7 @@ describe "Acceptance::Login", type: :feature do
     context "when the request is received with referer parameter" do
       before do
         allow(sign_onelogin_request_test_use_case).to receive(:execute).and_return("test_signed_request")
-        get "#{login_url}/authorize?referer=manage-profile"
+        get "#{login_url}/authorize?referer=api/my-account"
       end
 
       it "calls the use case with the correct arguments" do

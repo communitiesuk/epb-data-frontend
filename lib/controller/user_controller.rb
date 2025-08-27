@@ -3,7 +3,7 @@ module Controller
     get "/login" do
       status 200
       @back_link_href = "/data-access-options"
-      authorize_url = params["referer"] == "manage-profile" ? "/login/authorize?referer=manage-profile" : "/login/authorize"
+      authorize_url = params["referer"] == "api/my-account" ? "/login/authorize?referer=api/my-account" : "/login/authorize"
       erb :login, locals: { authorize_url: }
     rescue StandardError => e
       server_error(e)
@@ -16,7 +16,7 @@ module Controller
       aud = "#{host_url}/authorize"
       redirect_uri = "#{frontend_url}/login/callback"
 
-      if params["referer"] == "manage-profile"
+      if params["referer"] == "api/my-account"
         redirect_uri += "/admin"
       end
 
@@ -137,7 +137,7 @@ module Controller
 
         @logger.error JSON.generate(error)
 
-        redirect redirect_path == "manage-profile" ? "/login?referer=manage_profile" : "/login"
+        redirect redirect_path == "api/my-account" ? "/login?referer=api/my-account" : "/login"
       when Errors::TokenExchangeError, Errors::AuthenticationError, Errors::NetworkError
         @logger.warn "Authentication error: #{e.message}"
         server_error(e)
