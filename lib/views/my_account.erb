@@ -1,0 +1,34 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <div class="govuk-grid-column-full">
+      <div class="govuk-grid-row">
+        <h1 class="govuk-heading-xl"><%= t('my_account.title') %></h1>
+
+        <dl class="govuk-summary-list govuk-!-width-full">
+          <div class="govuk-summary-list__row" id="email-address">
+            <dt class="govuk-summary-list__key">
+              <%= t('my_account.email_address') %>
+            </dt>
+            <dd class="govuk-summary-list__value">
+              placeholder@test.co.uk
+            </dd>
+            <dd class="govuk-summary-list__actions">
+              <a class="govuk-link" id="email-sign-out" href="/sign-out"><%= t('my_account.sign_out') %><span class="govuk-visually-hidden"> sign out</span></a>
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row" id='bearer-token'>
+            <dt class="govuk-summary-list__key">
+              <%= t('my_account.bearer_token') %>
+            </dt>
+            <dd class="govuk-summary-list__value" id="bearer-token-value">
+              Placeholder
+            </dd>
+            <dd class="govuk-summary-list__actions">
+              <a class="govuk-link" id="copy-bearer-token" href="#"><%= t('my_account.copy_bearer_token') %><span class="govuk-visually-hidden"> bearer token</span></a>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>

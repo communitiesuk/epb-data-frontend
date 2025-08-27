@@ -169,6 +169,13 @@ en:
     energy_eff_ratings: "Energy Efficiency Rating A, B, C, D, E, F, G"
     count_and_size: "Your request contains <strong>placeholder number</strong> certificates. The estimated download size is <strong>placeholder size</strong> MB."
 
+  my_account:
+    title: "My account"
+    email_address: "Email address"
+    bearer_token: "Bearer token (for developers)"
+    sign_out: "Sign out"
+    copy_bearer_token: "Copy"
+
   signed_out:
     title: "You have signed out"
     link: "To go back, sign in to our service using"
