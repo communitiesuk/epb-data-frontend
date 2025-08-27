@@ -30,7 +30,7 @@ describe "Acceptance::DataAccessOptions", type: :feature do
       it "has the correct content for use api option" do
         expect(response.body).to have_selector("h2.govuk-heading-m", text: "Use a developer API")
         expect(response.body).to have_selector("p.govuk-body", text: "Use an API to access certificate data.")
-        expect(response.body).to have_link("Use API", href: "/use-api")
+        expect(response.body).to have_link("Use API", href: "/manage-profile")
       end
     end
   end

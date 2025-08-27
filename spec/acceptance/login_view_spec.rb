@@ -90,15 +90,22 @@ describe "Acceptance::Login", type: :feature do
         expect(response.body).to have_link("Start now", href: "/login/authorize")
       end
     end
+
+    context "when the request received includes referer=manage-profile" do
+      it "has the correct Start now button" do
+        get "#{login_url}?referer=manage-profile"
+        expect(last_response.body).to have_link("Start now", href: "/login/authorize?referer=manage-profile")
+      end
+    end
   end
 
   describe "get .get-energy-certificate-data.epb-frontend/login/authorize" do
-    before do
-      allow(sign_onelogin_request_test_use_case).to receive(:execute).and_return("test_signed_request")
-      get "#{login_url}/authorize"
-    end
-
     context "when the request is received" do
+      before do
+        allow(sign_onelogin_request_test_use_case).to receive(:execute).and_return("test_signed_request")
+        get "#{login_url}/authorize"
+      end
+
       it "returns status 302" do
         expect(last_response.status).to eq(302)
       end
@@ -128,6 +135,23 @@ describe "Acceptance::Login", type: :feature do
           aud: "#{ENV['ONELOGIN_HOST_URL']}/authorize",
           client_id: ENV["ONELOGIN_CLIENT_ID"],
           redirect_uri: "#{last_request.scheme}://#{last_request.host_with_port}/login/callback",
+          state: last_response.cookies["state"].first,
+          nonce: last_response.cookies["nonce"].first,
+        )
+      end
+    end
+
+    context "when the request is received with referer parameter" do
+      before do
+        allow(sign_onelogin_request_test_use_case).to receive(:execute).and_return("test_signed_request")
+        get "#{login_url}/authorize?referer=manage-profile"
+      end
+
+      it "calls the use case with the correct arguments" do
+        expect(sign_onelogin_request_test_use_case).to have_received(:execute).with(
+          aud: "#{ENV['ONELOGIN_HOST_URL']}/authorize",
+          client_id: ENV["ONELOGIN_CLIENT_ID"],
+          redirect_uri: "#{last_request.scheme}://#{last_request.host_with_port}/login/callback/admin",
           state: last_response.cookies["state"].first,
           nonce: last_response.cookies["nonce"].first,
         )

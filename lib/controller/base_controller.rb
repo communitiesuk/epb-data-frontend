@@ -61,22 +61,19 @@ module Controller
     before do
       set_locale
 
-      restricted_paths = %w[/type-of-properties /filter-properties /download /download/all]
+      restricted_paths = %w[/type-of-properties /manage-profile /filter-properties /download /download/all]
       if restricted_paths.include?(request.path) && Helper::Toggles.enabled?("epb-frontend-data-restrict-user-access")
         Helper::Session.is_user_authenticated?(session)
       end
       raise MaintenanceMode if request.path != "/healthcheck" && Helper::Toggles.enabled?("ebp-data-frontend-maintenance-mode")
-    rescue Errors::AuthenticationError => e
-      send_to_sentry(e)
-      message =
-        e.methods.include?(:message) ? e.message : e
+    rescue Errors::AuthenticationError
+      redirect_url = "/login"
 
-      error = { type: e.class.name, message: }
+      if request.path == "/manage-profile"
+        redirect_url += "?referer=manage-profile"
+      end
 
-      error[:backtrace] = e.backtrace if e.methods.include? :backtrace
-
-      @logger.error JSON.generate(error)
-      redirect "/login"
+      redirect redirect_url
     end
 
     def show(template, locals, layout = :layout)

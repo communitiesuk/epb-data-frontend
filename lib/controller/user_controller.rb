@@ -3,7 +3,8 @@ module Controller
     get "/login" do
       status 200
       @back_link_href = "/data-access-options"
-      erb :login
+      authorize_url = params["referer"] == "manage-profile" ? "/login/authorize?referer=manage-profile" : "/login/authorize"
+      erb :login, locals: { authorize_url: }
     rescue StandardError => e
       server_error(e)
     end
@@ -14,6 +15,10 @@ module Controller
       frontend_url = "#{request.scheme}://#{request.host_with_port}"
       aud = "#{host_url}/authorize"
       redirect_uri = "#{frontend_url}/login/callback"
+
+      if params["referer"] == "manage-profile"
+        redirect_uri += "/admin"
+      end
 
       nonce = request.cookies["nonce"] || SecureRandom.hex(16)
       state = request.cookies["state"] || SecureRandom.hex(16)
@@ -119,7 +124,6 @@ module Controller
       validate_one_login_callback
       token_response_hash = exchange_code_for_token
       set_user_one_login_info(token_response_hash)
-      @logger.info "User logged in successfully with email: #{session[:email_address]} and will be redirected to type of properties page."
       redirect "/#{redirect_path}?nocache=#{Time.now.to_i}"
     rescue StandardError => e
       case e
@@ -132,7 +136,8 @@ module Controller
         error[:backtrace] = e.backtrace if e.methods.include? :backtrace
 
         @logger.error JSON.generate(error)
-        redirect "/login"
+
+        redirect redirect_path == "manage-profile" ? "/login?referer=manage_profile" : "/login"
       when Errors::TokenExchangeError, Errors::AuthenticationError, Errors::NetworkError
         @logger.warn "Authentication error: #{e.message}"
         server_error(e)
