@@ -85,9 +85,9 @@
       <% if Helper::Session.is_logged_in?(session) %>
       <nav aria-label="Menu" class="govuk-service-navigation__wrapper">
         <ul class="govuk-service-navigation__list" id="navigation">
-          <li class="govuk-service-navigation__item sign_out">
-               <span class="govuk-visually-hidden">Sign out</span>
-                <a href="/sign-out" class="govuk-link" id="sign-out"> <%=t('layout.body.sign_out')%></a>
+          <li class="govuk-service-navigation__item my-account">
+               <span class="govuk-visually-hidden">My account</span>
+                <a href="/api/my-account" class="govuk-link" id="my-account"> <%=t('layout.body.my_account')%></a>
           </li>
         </ul>
       </nav>

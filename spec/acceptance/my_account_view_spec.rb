@@ -38,26 +38,5 @@ describe "Acceptance::MyAccount", type: :feature do
         expect(response.body).to have_link("Copy", href: "#")
       end
     end
-
-    context "when a user is signed in" do
-      before do
-        allow(Helper::Session).to receive(:is_logged_in?).and_return(true)
-      end
-
-      it "displays the sign out button" do
-        expect(response.body).to have_css("#sign-out.govuk-link")
-        expect(response.body).to have_link("Sign out", href: "/sign-out")
-      end
-    end
-
-    context "when a user is not signed in" do
-      before do
-        allow(Helper::Session).to receive(:is_logged_in?).and_return(false)
-      end
-
-      it "displays the sign out button" do
-        expect(response.body).not_to have_css("#sign-out.govuk-link")
-      end
-    end
   end
 end
