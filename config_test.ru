@@ -53,5 +53,6 @@ ENV["ONELOGIN_HOST_URL"] = "http://localhost:3333"
 ENV["ONELOGIN_CLIENT_ID"] = "HGIOgho9HIRhgoepdIOPFdIUWgewi0jw"
 ENV["ONELOGIN_TLS_KEYS"] = OneLoginStub.tls_keys
 ENV["SESSION_SECRET"] = "test_session_secret" * 4
+ENV["EPB_DATA_USER_CREDENTIAL_TABLE_NAME"] = "dynamodb_test_table_name"
 
 run FrontendService.new
