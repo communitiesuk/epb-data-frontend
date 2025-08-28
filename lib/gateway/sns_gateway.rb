@@ -17,7 +17,7 @@ module Gateway
 
     def sns_client
       case ENV["APP_ENV"]
-      when "local", nil
+      when "local", "docker", nil
         Aws::SNS::Client.new(stub_responses: true)
       else
         Aws::SNS::Client.new(region: "eu-west-2", credentials: Aws::ECSCredentials.new)

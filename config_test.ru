@@ -40,8 +40,6 @@ SnsClientStub.fetch(message: sns_message)
 
 ENV["STAGE"] = "test"
 ENV["EPB_UNLEASH_URI"] = "https://test-toggle-server/api"
-ENV["AWS_TEST_ACCESS_ID"] = "test.aws.id"
-ENV["AWS_TEST_ACCESS_SECRET"] = "test.aws.secret"
 ENV["SEND_DOWNLOAD_TOPIC_ARN"] = "arn:aws:sns:us-east-1:123456789012:testTopic"
 AUTH_URL = "http://test-auth-server.gov.uk"
 ENV["EPB_AUTH_CLIENT_ID"] = "test.id"
