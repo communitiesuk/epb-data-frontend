@@ -4,6 +4,15 @@ module Controller
       status 200
       @back_link_href = request.referer || "/"
       erb :my_account
+    rescue StandardError => e
+      case e
+      when Errors::BearerTokenMissing
+        logger.warn "Bearer token missing: #{e.message}"
+        redirect "/login?referer=api/my-account"
+      else
+        logger.error "Unexpected error during /api/my-account get endpoint: #{e.message}"
+        server_error(e)
+      end
     end
   end
 end

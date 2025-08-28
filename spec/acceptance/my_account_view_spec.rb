@@ -52,6 +52,12 @@ describe "Acceptance::MyAccount", type: :feature do
       it "shows the bearer token" do
         expect(response.body).to have_css("#bearer-token-value", text: "kfhbks750D0RnC2oKGsoM936wKmtd4ZcoSw489rPo4FDqQ2SYQVtVnQ4PhZ33b46YZPNZXo6r")
       end
+
+      it "redirects to /login when the bearer token is missing" do
+        allow(ViewModels::MyAccount).to receive(:get_bearer_token).and_raise(Errors::BearerTokenMissing)
+        expect(response).to be_redirect
+        expect(response.location).to include("/login?referer=api/my-account")
+      end
     end
   end
 end
