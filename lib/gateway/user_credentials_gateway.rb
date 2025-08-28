@@ -25,16 +25,27 @@ module Gateway
     end
 
     def get_user(one_login_sub)
-      resp = @table.scan(
+      response = @table.scan(
         filter_expression: "OneLoginSub = :sub",
         expression_attribute_values: {
           ":sub" => one_login_sub,
         },
       )
 
-      raise Errors::MultipleUsersWithSameSubError if resp.count > 1
+      raise Errors::MultipleUsersWithSameSubError if response.count > 1
 
-      resp.count.zero? ? nil : resp.items.first["UserId"]
+      response.count.zero? ? nil : response.items.first["UserId"]
+    end
+
+    def get_user_token(user_id)
+      response = @table.get_item(
+        key: {
+          "UserId" => user_id,
+        },
+      )
+      raise Errors::BearerTokenMissing unless response.item
+
+      response.item["BearerToken"]
     end
 
   private

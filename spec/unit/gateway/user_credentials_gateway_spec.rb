@@ -134,4 +134,41 @@ describe Gateway::UserCredentialsGateway do
       end
     end
   end
+
+  describe "#get_user_token" do
+    context "when getting a token" do
+      let(:expected_query_body) do
+        {
+          "Key": {
+            "UserId": { "S": user_id },
+          },
+          "TableName": "test_users_table",
+        }.to_json
+      end
+
+      let(:query_response) do
+        {
+          "Item" => {
+            "UserId" => { "S" => user_id },
+            "OneLoginSub" => { "S" => "mock-sub-id" },
+            "CreatedAt" => { "S" => Time.now.to_s },
+            "BearerToken" => { "S" => "the-bearer-token" },
+          },
+        }.to_json
+      end
+
+      before do
+        WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com")
+               .with(body: expected_query_body,
+                     headers: {
+                       "X-Amz-Target" => "DynamoDB_20120810.GetItem",
+                     })
+               .to_return(status: 200, body: query_response)
+      end
+
+      it "returns the BearerToken" do
+        expect(gateway.get_user_token(user_id)).to eq("the-bearer-token")
+      end
+    end
+  end
 end
