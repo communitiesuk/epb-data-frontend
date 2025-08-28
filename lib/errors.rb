@@ -99,6 +99,9 @@ module Errors
   class MultipleUsersWithSameSubError < ApiError
   end
 
+  class BearerTokenMissing < RuntimeError
+  end
+
   module DoNotReport
   end
 end

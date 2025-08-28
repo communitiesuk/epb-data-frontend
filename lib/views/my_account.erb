@@ -10,7 +10,7 @@
               <%= t('my_account.email_address') %>
             </dt>
             <dd class="govuk-summary-list__value">
-              placeholder@test.co.uk
+              <%= Helper::Session.get_email_from_session(session) %>
             </dd>
             <dd class="govuk-summary-list__actions">
               <a class="govuk-link" id="email-sign-out" href="/sign-out"><%= t('my_account.sign_out') %><span class="govuk-visually-hidden"> sign out</span></a>

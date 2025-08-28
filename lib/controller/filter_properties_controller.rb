@@ -20,7 +20,7 @@ module Controller
           begin
             redirect "/download/all?property_type=#{params['property_type']}" if default_filters?
             count = get_download_size(params)
-            email = get_email_from_session(session)
+            email = Helper::Session.get_email_from_session(session)
 
             params["download_count"] = count
             params["email"] = email if email
@@ -197,17 +197,6 @@ module Controller
       status 400
       @error_form_ids << "eff-rating-section"
       @errors[:eff_rating] = t("error.invalid_filter_option.eff_rating_invalid")
-    end
-
-    def get_email_from_session(session)
-      if Helper::Toggles.enabled?("epb-frontend-data-restrict-user-access")
-        email = Helper::Session.get_session_value(session, :email_address)
-        raise Errors::AuthenticationError, "Failed to get user email from session" unless email
-
-        email
-      else
-        "placeholder@email.com"
-      end
     end
   end
 end

@@ -43,6 +43,30 @@ describe Helper::Session do
     end
   end
 
+  describe "#get_email_from_session" do
+    context "when the toggle is enabled" do
+      before do
+        allow(Helper::Toggles).to receive(:enabled?).with("epb-frontend-data-restrict-user-access").and_return(true)
+      end
+
+      it "returns the email if it exists in the session" do
+        email = described_class.get_email_from_session(session)
+        expect(email).to eq("test@email.com")
+      end
+    end
+
+    context "when the toggle is disabled" do
+      before do
+        allow(Helper::Toggles).to receive(:enabled?).with("epb-frontend-data-restrict-user-access").and_return(false)
+      end
+
+      it "returns the placeholder email" do
+        email = described_class.get_email_from_session(session)
+        expect(email).to eq("placeholder@email.com")
+      end
+    end
+  end
+
   describe "#is_user_authenticated?" do
     context "when session is not nil" do
       it "returns true if email is set" do
