@@ -6,4 +6,5 @@ class FrontendService < Controller::BaseController
   use Controller::FilterPropertiesController
   use Controller::FileController
   use Controller::UserController
+  use Controller::ApiController
 end

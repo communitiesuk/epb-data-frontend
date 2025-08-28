@@ -7,6 +7,10 @@ describe "Acceptance::TypeOfProperties", type: :feature do
   let(:response) { get local_host }
 
   describe "get .get-energy-certificate-data.epb-frontend/type-of-properties" do
+    before do
+      allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true)
+    end
+
     context "when the type of properties page is rendered" do
       it "returns status 200" do
         expect(response.status).to eq(200)

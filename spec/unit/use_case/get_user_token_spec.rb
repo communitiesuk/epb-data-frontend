@@ -24,15 +24,5 @@ describe UseCase::GetUserToken do
         expect(user_credentials_gateway).to have_received(:get_user_token).with(test_user_id).exactly(:once)
       end
     end
-
-    context "when the bearer token is missing" do
-      before do
-        allow(user_credentials_gateway).to receive(:get_user_token).and_raise(Errors::BearerTokenMissing)
-      end
-
-      it "raises a BearerTokenMissing error" do
-        expect { use_case.execute("non-existent-user-id") }.to raise_error(Errors::BearerTokenMissing)
-      end
-    end
   end
 end

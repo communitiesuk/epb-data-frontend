@@ -9,8 +9,8 @@
             <dt class="govuk-summary-list__key">
               <%= t('my_account.email_address') %>
             </dt>
-            <dd class="govuk-summary-list__value">
-              <%= Helper::Session.get_email_from_session(session) %>
+            <dd class="govuk-summary-list__value" id="email-address-value">
+              <%= ViewModels::MyAccount.get_email_address(session) %>
             </dd>
             <dd class="govuk-summary-list__actions">
               <a class="govuk-link" id="email-sign-out" href="/sign-out"><%= t('my_account.sign_out') %><span class="govuk-visually-hidden"> sign out</span></a>
@@ -21,7 +21,7 @@
               <%= t('my_account.bearer_token') %>
             </dt>
             <dd class="govuk-summary-list__value" id="bearer-token-value">
-              Placeholder
+              <%= ViewModels::MyAccount.get_bearer_token(session) %>
             </dd>
             <dd class="govuk-summary-list__actions">
               <a class="govuk-link" id="copy-bearer-token" href="#"><%= t('my_account.copy_bearer_token') %><span class="govuk-visually-hidden"> bearer token</span></a>

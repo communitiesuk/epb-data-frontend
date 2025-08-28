@@ -157,6 +157,7 @@ describe "Acceptance::FilterProperties", type: :feature do
 
     context "when the selected dates are valid" do
       before do
+        allow(Helper::Session).to receive(:get_email_from_session).and_return("placeholder@email.com")
         allow(get_download_size_use_case).to receive(:execute).and_return(123)
         allow(send_sns_use_case).to receive(:execute)
       end
@@ -217,6 +218,7 @@ describe "Acceptance::FilterProperties", type: :feature do
       let(:valid_response_with_multiple_councils) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{multiple_councils}" }
 
       before do
+        allow(Helper::Session).to receive(:get_email_from_session).and_return("placeholder@email.com")
         allow(get_download_size_use_case).to receive(:execute).and_return(123)
         allow(send_sns_use_case).to receive(:execute)
       end
@@ -232,6 +234,7 @@ describe "Acceptance::FilterProperties", type: :feature do
       let(:valid_response_with_multiple_constituencies) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{multiple_constituencies}" }
 
       before do
+        allow(Helper::Session).to receive(:get_email_from_session).and_return("placeholder@email.com")
         allow(get_download_size_use_case).to receive(:execute).and_return(123)
         allow(send_sns_use_case).to receive(:execute)
       end
@@ -246,6 +249,7 @@ describe "Acceptance::FilterProperties", type: :feature do
       let(:valid_response_with_postcode) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{valid_postcode}" }
 
       before do
+        allow(Helper::Session).to receive(:get_email_from_session).and_return("placeholder@email.com")
         allow(get_download_size_use_case).to receive(:execute).and_return(123)
         allow(send_sns_use_case).to receive(:execute)
       end
@@ -311,6 +315,7 @@ describe "Acceptance::FilterProperties", type: :feature do
 
     context "when the efficiency rating selection is valid" do
       before do
+        allow(Helper::Session).to receive(:get_email_from_session).and_return("placeholder@email.com")
         allow(get_download_size_use_case).to receive(:execute).and_return(123)
         allow(send_sns_use_case).to receive(:execute)
       end

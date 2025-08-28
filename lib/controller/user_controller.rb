@@ -90,12 +90,6 @@ module Controller
       redirect "#{host_url}?#{query_string}"
     end
 
-    get "/api/my-account" do
-      status 200
-      @back_link_href = request.referer || "/"
-      erb :my_account
-    end
-
     def validate_one_login_callback
       received_state = params[:state]
       stored_state = request.cookies["state"]

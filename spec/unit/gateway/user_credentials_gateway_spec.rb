@@ -136,16 +136,16 @@ describe Gateway::UserCredentialsGateway do
   end
 
   describe "#get_user_token" do
-    context "when getting a token" do
-      let(:expected_query_body) do
-        {
-          "Key": {
-            "UserId": { "S": user_id },
-          },
-          "TableName": "test_users_table",
-        }.to_json
-      end
+    let(:expected_query_body) do
+      {
+        "Key": {
+          "UserId": { "S": user_id },
+        },
+        "TableName": "test_users_table",
+      }.to_json
+    end
 
+    context "when getting a token" do
       let(:query_response) do
         {
           "Item" => {
@@ -168,6 +168,21 @@ describe Gateway::UserCredentialsGateway do
 
       it "returns the BearerToken" do
         expect(gateway.get_user_token(user_id)).to eq("the-bearer-token")
+      end
+    end
+
+    context "when the token is missing" do
+      it "raises Errors::BearerTokenMissing if the token is missing" do
+        WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com")
+               .with(body: expected_query_body,
+                     headers: {
+                       "X-Amz-Target" => "DynamoDB_20120810.GetItem",
+                     })
+               .to_return(status: 200, body: {}.to_json)
+
+        expect {
+          gateway.get_user_token(user_id)
+        }.to raise_error(Errors::BearerTokenMissing)
       end
     end
   end
