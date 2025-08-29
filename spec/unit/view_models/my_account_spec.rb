@@ -15,7 +15,7 @@ describe ViewModels::MyAccount do
     end
 
     it "returns the bearer token from the use case" do
-      bearer_token = view_model.get_bearer_token(session, container: container)
+      bearer_token = view_model.get_bearer_token(session, get_user_token_use_case)
       expect(bearer_token).to eq("mock-bearer-token")
     end
   end

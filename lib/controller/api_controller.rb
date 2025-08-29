@@ -3,7 +3,8 @@ module Controller
     get "/api/my-account" do
       status 200
       @back_link_href = request.referer || "/"
-      erb :my_account
+
+      erb :my_account, locals: { use_case: @container.get_object(:get_user_token_use_case) }
     rescue StandardError => e
       case e
       when Errors::BearerTokenMissing
