@@ -118,7 +118,7 @@ module Controller
     def one_login_callback(redirect_path:)
       validate_one_login_callback
       token_response_hash = exchange_code_for_token(callback_path: request.path)
-      set_user_one_login_info(token_response_hash)
+      Helper::Onelogin.set_user_one_login_info(container: @container, session:, token_response_hash:)
       redirect "/#{redirect_path}?nocache=#{Time.now.to_i}"
     rescue StandardError => e
       case e
@@ -140,18 +140,6 @@ module Controller
         @logger.error "Unexpected error during login callback: #{e.message}"
         server_error(e)
       end
-    end
-
-    def set_user_one_login_info(token_response_hash)
-      access_token = token_response_hash["access_token"]
-      id_token = token_response_hash["id_token"]
-      use_case = @container.get_object(:get_onelogin_user_info_use_case)
-      user_info = Helper::Onelogin.fetch_user_info(access_token:, use_case:)
-      user_id = @container.get_object(:get_user_id_use_case).execute(user_info[:sub])
-
-      Helper::Session.set_session_value(session, :email_address, user_info[:email])
-      Helper::Session.set_session_value(session, :id_token, id_token)
-      Helper::Session.set_session_value(session, :user_id, user_id)
     end
   end
 end

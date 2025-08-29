@@ -63,6 +63,18 @@ module Helper
       use_case.execute(access_token:)
     end
 
+    def self.set_user_one_login_info(container:, session:, token_response_hash:)
+      access_token = token_response_hash["access_token"]
+      id_token = token_response_hash["id_token"]
+      use_case = container.get_object(:get_onelogin_user_info_use_case)
+      user_info = Helper::Onelogin.fetch_user_info(access_token:, use_case:)
+      user_id = container.get_object(:get_user_id_use_case).execute(user_info[:sub])
+
+      Helper::Session.set_session_value(session, :email_address, user_info[:email])
+      Helper::Session.set_session_value(session, :id_token, id_token)
+      Helper::Session.set_session_value(session, :user_id, user_id)
+    end
+
     private_class_method def self.extract_private_key(tls_keys)
       onelogin_keys = JSON.parse(tls_keys)
       private_key_pem = onelogin_keys["private_key"]
