@@ -14,6 +14,7 @@ en:
       govuk: "GOV.UK"
       phase_banner: "This is a test site. The data is not real and the certificates are not valid."
       my_account: "My account"
+      sign_in: "Sign in"
       footer:
         heading: "Support links"
         accessibility_statement: "Accessibility"

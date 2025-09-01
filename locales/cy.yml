@@ -15,6 +15,7 @@ cy:
       govuk: "GOV.UK"
       phase_banner: "This is a test site. The data is not real and the certificates are not valid."
       my_account: "Fy nghyfrif"
+      sign_in: "Mewngofnodi"
       footer:
         heading: "Dolenni cymorth"
         accessibility_statement: "Hygyrchedd"

@@ -85,12 +85,23 @@
       <% if Helper::Session.is_logged_in?(session) %>
       <nav aria-label="Menu" class="govuk-service-navigation__wrapper">
         <ul class="govuk-service-navigation__list" id="navigation">
-          <li class="govuk-service-navigation__item my-account">
+          <li class="govuk-service-navigation__item top-right-nav-link">
                <span class="govuk-visually-hidden">My account</span>
                 <a href="/api/my-account" class="govuk-link" id="my-account"> <%=t('layout.body.my_account')%></a>
           </li>
         </ul>
       </nav>
+      <% end %>
+
+      <% unless Helper::Session.is_logged_in?(session) %>
+        <nav aria-label="Menu" class="govuk-service-navigation__wrapper">
+          <ul class="govuk-service-navigation__list" id="navigation">
+            <li class="govuk-service-navigation__item top-right-nav-link">
+              <span class="govuk-visually-hidden">Sign In</span>
+              <a href="/login" class="govuk-link" id="sign_in"> <%=t('layout.body.sign_in')%></a>
+            </li>
+          </ul>
+        </nav>
       <% end %>
     </div>
   </div>
