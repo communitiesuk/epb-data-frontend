@@ -15,5 +15,15 @@ module Controller
         server_error(e)
       end
     end
+
+    get "/api/api-guidance" do
+      status 200
+      @back_link_href = request.referer || "/"
+
+      erb :api_guidance
+    rescue StandardError => e
+      logger.error "Unexpected error during /api/my-account get endpoint: #{e.message}"
+      server_error(e)
+    end
   end
 end
