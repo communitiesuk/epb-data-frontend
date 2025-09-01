@@ -48,7 +48,7 @@ describe "Acceptance::ServiceStartPage", type: :feature do
       it "has the correct content for developer apis" do
         expect(response.body).to have_css("h2", text: "Developer APIs")
         expect(response.body).to have_css("p", text: "Information on using a developer API.")
-        expect(response.body).to have_link("API guidance", href: "/api-guidance")
+        expect(response.body).to have_link("API guidance", href: "/api/api-guidance")
         expect(response.body).to have_link("API technical documentation", href: "/api-technical-documentation")
       end
 
