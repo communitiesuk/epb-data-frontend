@@ -73,25 +73,20 @@ describe "Acceptance::TypeOfProperties", type: :feature do
       end
     end
 
-    context "when the 'epb-frontend-data-restrict-user-access' feature toggle is on" do
-      before { Helper::Toggles.set_feature("epb-frontend-data-restrict-user-access", true) }
-      after { Helper::Toggles.set_feature("epb-frontend-data-restrict-user-access", false) }
+    context "when the user is authenticated" do
+      before { allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true) }
 
-      context "when the user is authenticated" do
-        before { allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true) }
-
-        it "allows access to the type of properties page" do
-          expect(response.body).to include("What type of certificates do you want data on?")
-        end
+      it "allows access to the type of properties page" do
+        expect(response.body).to include("What type of certificates do you want data on?")
       end
+    end
 
-      context "when the user is not authenticated" do
-        before { allow(Helper::Session).to receive(:is_user_authenticated?).and_raise(Errors::AuthenticationError, "User is not authenticated") }
+    context "when the user is not authenticated" do
+      before { allow(Helper::Session).to receive(:is_user_authenticated?).and_raise(Errors::AuthenticationError, "User is not authenticated") }
 
-        it "redirects to the login page" do
-          expect(response).to be_redirect
-          expect(response.location).to include("/login")
-        end
+      it "redirects to the login page" do
+        expect(response).to be_redirect
+        expect(response.location).to include("/login")
       end
     end
   end

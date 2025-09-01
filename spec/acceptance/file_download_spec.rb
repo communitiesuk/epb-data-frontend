@@ -1,6 +1,10 @@
 describe "Acceptance::FileDownload", type: :feature do
   include RSpecFrontendServiceMixin
 
+  before do
+    allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true)
+  end
+
   describe "get .get-energy-certificate-data.epb-frontend/download" do
     let(:local_host) do
       "http://get-energy-performance-data/download"
@@ -14,28 +18,21 @@ describe "Acceptance::FileDownload", type: :feature do
       get "#{local_host}?file=#{file_name}"
     end
 
-    context "when 'the epb-frontend-data-restrict-user-access feature' toggle is on" do
-      before { Helper::Toggles.set_feature("epb-frontend-data-restrict-user-access", true) }
-      after { Helper::Toggles.set_feature("epb-frontend-data-restrict-user-access", false) }
-
+    context "when user is authenticated" do
       it "returns the redirect status" do
         expect(response.status).to eq(302)
       end
 
-      context "when user is authenticated" do
-        before { allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true) }
-
-        it "redirects to file download" do
-          expect(response.headers["location"]).to include("https://user-data.s3.us-stubbed-1.amazonaws.com/#{file_name}?X-Amz-Algorithm=AWS4-HMAC")
-        end
+      it "redirects to file download" do
+        expect(response.headers["location"]).to include("https://user-data.s3.us-stubbed-1.amazonaws.com/#{file_name}?X-Amz-Algorithm=AWS4-HMAC")
       end
+    end
 
-      context "when user is not authenticated" do
-        before { allow(Helper::Session).to receive(:is_user_authenticated?).and_raise(Errors::AuthenticationError, "User is not authenticated") }
+    context "when user is not authenticated" do
+      before { allow(Helper::Session).to receive(:is_user_authenticated?).and_raise(Errors::AuthenticationError, "User is not authenticated") }
 
-        it "redirects to login page" do
-          expect(response.headers["location"]).to include("/login")
-        end
+      it "redirects to login page" do
+        expect(response.headers["location"]).to include("/login")
       end
     end
 
@@ -95,28 +92,23 @@ describe "Acceptance::FileDownload", type: :feature do
       expect(response.status).to eq(302)
     end
 
-    context "when 'the epb-frontend-data-restrict-user-access feature' toggle is on" do
-      before { Helper::Toggles.set_feature("epb-frontend-data-restrict-user-access", true) }
-      after { Helper::Toggles.set_feature("epb-frontend-data-restrict-user-access", false) }
+    context "when user is authenticated" do
+      before { allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true) }
 
       it "returns the redirect status" do
         expect(response.status).to eq(302)
       end
 
-      context "when user is authenticated" do
-        before { allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true) }
-
-        it "redirects to full-load file download" do
-          expect(response.headers["location"]).to include("https://user-data.s3.us-stubbed-1.amazonaws.com/#{property_type}/full-load/#{property_type}.zip?X-Amz-Algorithm=AWS4-HMAC")
-        end
+      it "redirects to full-load file download" do
+        expect(response.headers["location"]).to include("https://user-data.s3.us-stubbed-1.amazonaws.com/#{property_type}/full-load/#{property_type}.zip?X-Amz-Algorithm=AWS4-HMAC")
       end
+    end
 
-      context "when user is not authenticated" do
-        before { allow(Helper::Session).to receive(:is_user_authenticated?).and_raise(Errors::AuthenticationError, "User is not authenticated") }
+    context "when user is not authenticated" do
+      before { allow(Helper::Session).to receive(:is_user_authenticated?).and_raise(Errors::AuthenticationError, "User is not authenticated") }
 
-        it "redirects to login page" do
-          expect(response.headers["location"]).to include("/login")
-        end
+      it "redirects to login page" do
+        expect(response.headers["location"]).to include("/login")
       end
     end
 

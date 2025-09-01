@@ -49,6 +49,10 @@ describe "Acceptance::FilterProperties", type: :feature do
   end
 
   describe "get .get-energy-certificate-data.epb-frontend/filter-properties" do
+    before do
+      allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true)
+    end
+
     context "when the data access options page is rendered" do
       before do
         Timecop.freeze(Time.utc(2025, 4, 1))
@@ -121,13 +125,9 @@ describe "Acceptance::FilterProperties", type: :feature do
 
     context "when all filter conditions are met the session data is valid" do
       before do
-        Helper::Toggles.set_feature("epb-frontend-data-restrict-user-access", true)
         allow(get_download_size_use_case).to receive(:execute).and_return(123)
-        allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true)
         allow(send_sns_use_case).to receive(:execute)
       end
-
-      after { Helper::Toggles.set_feature("epb-frontend-data-restrict-user-access", false) }
 
       context "when an email is found in the session" do
         before do

@@ -62,7 +62,7 @@ module Controller
       set_locale
 
       restricted_paths = %w[/type-of-properties /api/my-account /filter-properties /download /download/all]
-      if restricted_paths.include?(request.path) && Helper::Toggles.enabled?("epb-frontend-data-restrict-user-access")
+      if restricted_paths.include?(request.path)
         Helper::Session.is_user_authenticated?(session)
       end
       raise MaintenanceMode if request.path != "/healthcheck" && Helper::Toggles.enabled?("ebp-data-frontend-maintenance-mode")
