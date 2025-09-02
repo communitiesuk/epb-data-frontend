@@ -22,8 +22,8 @@ describe "Acceptance::ApiGuidance", type: :feature do
 
       it "has the Authentication section with the correct links" do
         expect(response.body).to have_css("h2", text: "Authentication")
-        expect(response.body).to have_link("sign in", href: "/login?referer=api/api-guidance")
-        expect(response.body).to have_link("create an account", href: "/login?referer=api/api-guidance")
+        expect(response.body).to have_link("sign in", href: "/api/my-account")
+        expect(response.body).to have_link("create an account", href: "/api/my-account")
       end
 
       it "has the Technical documentation section with the correct link" do

@@ -187,7 +187,7 @@ cy:
       dec: "Display Energy Certificates (DECs) and recommendation reports for public buildings"
     authentication:
       title: "Authentication"
-      logged_out_description: "You'll need to <a class=\"govuk-link\" href=\"/login?referer=api/api-guidance\" rel=\"license\">sign in</a> to GOV.UK One Login to get a bearer token. If you do not have a GOV.UK One Login, you can <a class=\"govuk-link\" href=\"/login?referer=api/api-guidance\" rel=\"license\">create an account</a>."
+      logged_out_description: "You'll need to <a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">sign in</a> to GOV.UK One Login to get a bearer token. If you do not have a GOV.UK One Login, you can <a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">create an account</a>."
       logged_in_description: "<a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">View your account</a> to see your bearer token"
     rate_limiting:
       title: "Rate limiting"
