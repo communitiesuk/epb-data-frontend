@@ -38,6 +38,8 @@ sns_message =
   }
 SnsClientStub.fetch(message: sns_message)
 
+ENV["SCRIPT_NONCE"] = SecureRandom.random_number(16**10).to_s(16).rjust(10, "0") if ENV["SCRIPT_NONCE"].nil?
+
 ENV["STAGE"] = "test"
 ENV["EPB_UNLEASH_URI"] = "https://test-toggle-server/api"
 ENV["SEND_DOWNLOAD_TOPIC_ARN"] = "arn:aws:sns:us-east-1:123456789012:testTopic"
@@ -52,5 +54,6 @@ ENV["ONELOGIN_CLIENT_ID"] = "test.onelogin.client.id"
 ENV["ONELOGIN_TLS_KEYS"] = OneLoginStub.tls_keys
 ENV["SESSION_SECRET"] = "test_session_secret" * 4
 ENV["EPB_DATA_USER_CREDENTIAL_TABLE_NAME"] = "dynamodb_test_table_name"
+ENV["GTM_PROPERTY_FINDING"] = "G-T6666"
 
 run FrontendService.new

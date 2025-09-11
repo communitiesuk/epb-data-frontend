@@ -21,6 +21,8 @@ AUTH_URL = "http://test-auth-server.gov.uk"
 
 require_relative "../spec/test_doubles/one_login_stub"
 
+ENV["SCRIPT_NONCE"] = SecureRandom.random_number(16**10).to_s(16).rjust(10, "0") if ENV["SCRIPT_NONCE"].nil?
+
 ENV["EPB_AUTH_CLIENT_ID"] = "test.id"
 ENV["EPB_AUTH_CLIENT_SECRET"] = "test.client.secret"
 ENV["EPB_AUTH_SERVER"] = AUTH_URL
@@ -39,6 +41,7 @@ ENV["ONELOGIN_HOST_URL"] = "https://oidc.integration.account.gov.uk"
 ENV["ONELOGIN_CLIENT_ID"] = "test.onelogin.client.id"
 ENV["ONELOGIN_TLS_KEYS"] = OneLoginStub.tls_keys
 ENV["EPB_DATA_USER_CREDENTIAL_TABLE_NAME"] = "test_users_table"
+ENV["GTM_PROPERTY_FINDING"] = "G-T6666"
 I18n.load_path = Dir[File.join(File.dirname(__FILE__), "/../locales", "*.yml")]
 I18n.enforce_available_locales = true
 I18n.available_locales = %w[en cy]

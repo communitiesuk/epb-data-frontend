@@ -25,7 +25,7 @@
   <% if ENV["STAGE"] == "test" %>
     <script nonce="<%= script_nonce %>"><%= capybara_lockstep_js %></script>
   <% end %>
-
+  <%= erb :partial__include_analytics %>
 </head>
 
 <body class="govuk-template__body no-js">
@@ -33,6 +33,7 @@
   document.body.classList.remove("no-js");
   document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
 </script>
+<%= erb :partial__include_analytics_noscript %>
 <script type="text/javascript" src="<%= assets_path('/javascript/accessible-autocomplete.min.js') %>" nonce="<%= script_nonce %>"></script>
 
 <a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link"><%=t('layout.body.skip')%></a>
