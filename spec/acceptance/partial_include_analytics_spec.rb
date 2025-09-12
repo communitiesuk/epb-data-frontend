@@ -4,40 +4,48 @@ describe "Partial include analytics", type: :feature do
   include RSpecFrontendServiceMixin
 
   let(:url) do
-    "http://get-energy-performance-data/type-of-property"
+    "http://get-energy-performance-data"
   end
 
   before do
     allow(CGI).to receive(:h).and_return("123456")
   end
 
-  context "when the google_property is set and cookie_consent cookie is null" do
+  context "when the cookie_consent cookie is null" do
     let(:response) do
       get url
     end
 
+    it "returns 200" do
+      expect(response.status).to be(200)
+    end
+
     it "includes the partial in the layout" do
       expect(response.body).to include("https://www.googletagmanager.com/gtm.js?id=")
-      expect(response.body).to include("GOOGLE_PROPERTY = 'G-T6666'")
+      expect(response.body).to include("GOOGLE_PROPERTY = 'G-H8EVD5HY3G'")
     end
 
     it "includes the partial no script in the layout" do
-      expect(response.body).to include("https://www.googletagmanager.com/ns.html?id=G-T6666")
+      expect(response.body).to include("https://www.googletagmanager.com/ns.html?id=G-H8EVD5HY3G")
     end
   end
 
-  context "when the google_property is set and cookie_consent cookie is true" do
+  context "when the cookie_consent cookie is true" do
     let(:response) do
       get url, {}, "HTTP_COOKIE" => "cookie_consent=true"
     end
 
+    it "returns 200" do
+      expect(response.status).to be(200)
+    end
+
     it "includes the partial in the layout" do
       expect(response.body).to include("https://www.googletagmanager.com/gtm.js?id=")
-      expect(response.body).to include("GOOGLE_PROPERTY = 'G-T6666'")
+      expect(response.body).to include("GOOGLE_PROPERTY = 'G-H8EVD5HY3G'")
     end
 
     it "includes the partial no script in the layout" do
-      expect(response.body).to include("https://www.googletagmanager.com/ns.html?id=G-T6666")
+      expect(response.body).to include("https://www.googletagmanager.com/ns.html?id=G-H8EVD5HY3G")
     end
 
     it "include the gtag script" do
@@ -45,10 +53,13 @@ describe "Partial include analytics", type: :feature do
     end
   end
 
-  context "when the google_property is set and cookie_consent cookie is false" do
-    let(:helper) { instance_double(Helpers) }
+  context "when the cookie_consent cookie is false" do
     let(:response) do
       get url, {}, "HTTP_COOKIE" => "cookie_consent=false"
+    end
+
+    it "returns 200" do
+      expect(response.status).to be(200)
     end
 
     it "does not include the partial in the layout" do
@@ -70,7 +81,11 @@ describe "Partial include analytics", type: :feature do
     end
 
     let(:response) do
-      get url
+      get url, {}, "HTTP_COOKIE" => "cookie_consent=true"
+    end
+
+    it "returns 200" do
+      expect(response.status).to be(200)
     end
 
     it "does not include the partial in the layout" do

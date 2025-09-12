@@ -41,7 +41,8 @@ ENV["ONELOGIN_HOST_URL"] = "https://oidc.integration.account.gov.uk"
 ENV["ONELOGIN_CLIENT_ID"] = "test.onelogin.client.id"
 ENV["ONELOGIN_TLS_KEYS"] = OneLoginStub.tls_keys
 ENV["EPB_DATA_USER_CREDENTIAL_TABLE_NAME"] = "test_users_table"
-ENV["GTM_PROPERTY_FINDING"] = "G-T6666"
+ENV["GTM_PROPERTY_FINDING"] = "G-H8EVD5HY3G"
+
 I18n.load_path = Dir[File.join(File.dirname(__FILE__), "/../locales", "*.yml")]
 I18n.enforce_available_locales = true
 I18n.available_locales = %w[en cy]

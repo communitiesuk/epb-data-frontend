@@ -1,4 +1,5 @@
 <% if cookie_consent? && google_property %>
+
 <!-- Google Tag Manager -->
 <script nonce="<%= script_nonce %>">
   (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push(
@@ -9,16 +10,18 @@
   })(window,document,'script','dataLayer','<%= google_property %>');
 </script>
 <!-- End Google Tag Manager -->
+
 <script nonce="<%= script_nonce %>">
-GOOGLE_PROPERTY = '<%= google_property %>';
+  GOOGLE_PROPERTY = '<%= google_property %>';
 </script>
 <% end %>
+
 <script nonce="<%= script_nonce %>">
-exports = {};
-<% if cookie_consent? %>
-function gtag() {
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push(arguments);
-}
-<% end %>
+  exports = {};
+  <% if cookie_consent? %>
+    function gtag() {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push(arguments);
+    }
+  <% end %>
 </script>
