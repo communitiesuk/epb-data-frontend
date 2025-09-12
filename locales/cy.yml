@@ -3,6 +3,9 @@ cy:
     captcha_error: "Profwch mai rhywun dynol sydd yna a rhoi cynnig arall arni"
 
   data_missing:
+    not_recorded: "Heb eu cofnodi"
+    no_disclosure: "Dim datganiad asesydd wedi’i ddarparu"
+    disclosure_number_not_valid: "Nid yw’r cod datgelu a roddwyd yn ddilys"
 
   #TODO: update translation
   service_name: "Cael data perfformiad ynni adeiladau"
