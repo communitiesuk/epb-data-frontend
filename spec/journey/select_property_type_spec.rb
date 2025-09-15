@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-xdescribe "Journey::SelectPropertyType", :journey, type: :feature do
+describe "Journey::SelectPropertyType", :journey, type: :feature do
   let(:getting_domain) do
     "http://get-energy-performance-data.epb-frontend:9393"
   end

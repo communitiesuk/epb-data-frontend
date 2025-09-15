@@ -55,5 +55,6 @@ ENV["ONELOGIN_TLS_KEYS"] = OneLoginStub.tls_keys
 ENV["SESSION_SECRET"] = "test_session_secret" * 4
 ENV["EPB_DATA_USER_CREDENTIAL_TABLE_NAME"] = "dynamodb_test_table_name"
 ENV["GTM_PROPERTY_FINDING"] = "G-H8EVD5HY3G"
+ENV["LOCAL_SESSION"] = "true"
 
 run FrontendService.new

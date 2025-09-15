@@ -3,7 +3,7 @@
 shared_context "when awaiting responses" do
 end
 
-xdescribe "Journey::FilterProperties", :journey, type: :feature do
+describe "Journey::FilterProperties", :journey, type: :feature do
   let(:getting_domain) do
     "http://get-energy-performance-data.epb-frontend:9393"
   end
@@ -45,7 +45,7 @@ xdescribe "Journey::FilterProperties", :journey, type: :feature do
     end
 
     it "the response location will be to the pre-signed url" do
-      expect(page).to have_current_path(%r{^/domestic/full-load/domestic\.zip\?X-Amz-Algorithm=AWS4-HMAC-SHA256&.*})
+      expect(page).to have_current_path(%r{^/full-load/domestic-csv\.zip\?X-Amz-Algorithm=AWS4-HMAC-SHA256&.*})
     end
   end
 

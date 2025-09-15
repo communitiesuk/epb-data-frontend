@@ -1,5 +1,12 @@
 module Helper
   class Session
+    def self.set_local(session)
+      unless ENV["LOCAL_SESSION"].nil?
+        session[:email_address] = "test@example.com"
+      end
+      nil
+    end
+
     def self.set_session_value(session, key, value)
       session[key] = value
     end

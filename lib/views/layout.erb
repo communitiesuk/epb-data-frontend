@@ -25,7 +25,7 @@
   <% if ENV["STAGE"] == "test" %>
     <script nonce="<%= script_nonce %>"><%= capybara_lockstep_js %></script>
   <% end %>
-  <%= erb :partial__include_analytics %>
+
 </head>
 
 <body class="govuk-template__body no-js">

@@ -60,19 +60,16 @@ module Controller
 
     before do
       set_locale
-
-      restricted_paths = %w[/type-of-properties /api/my-account /filter-properties /download /download/all]
-      if restricted_paths.include?(request.path)
+      Helper::Session.set_local(session)
+      if is_restricted?
         Helper::Session.is_user_authenticated?(session)
       end
       raise MaintenanceMode if request.path != "/healthcheck" && Helper::Toggles.enabled?("ebp-data-frontend-maintenance-mode")
     rescue Errors::AuthenticationError
       redirect_url = "/login"
-
       if request.path == "/api/my-account"
         redirect_url += "?referer=api/my-account"
       end
-
       redirect redirect_url
     end
 
@@ -119,6 +116,13 @@ module Controller
         "#{t('error.500.heading')} – #{t('layout.body.govuk')}"
       status(was_timeout ? 504 : 500)
       erb :error_page_500
+    end
+
+    def is_restricted?
+      restricted_paths = %w[/type-of-properties /api/my-account /filter-properties /download /download/all]
+      return false unless ENV["LOCAL_SESSION"].nil?
+
+      restricted_paths.include?(request.path) ? true : false
     end
   end
 end
