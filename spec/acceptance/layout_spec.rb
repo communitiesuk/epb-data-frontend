@@ -29,6 +29,15 @@ describe "Acceptance::Layout", type: :feature do
         expect(response.body).not_to have_link("My account", href: "/api/my-account")
       end
 
+      it "has a link in the footer for the cookies page" do
+        expect(response.body).to have_css("footer ul.govuk-footer__inline-list li:nth-child(1) a", text: "Cookies")
+        expect(response.body).to have_link("Cookies", href: "/cookies")
+      end
+
+      it "includes the cookie banner" do
+        expect(response.body).to include("govuk-cookie-banner")
+      end
+
       context "when a user is signed in" do
         before do
           allow(Helper::Session).to receive(:is_logged_in?).and_return(true)
