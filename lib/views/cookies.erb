@@ -1,0 +1,59 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <% if defined?(is_success) && is_success %>
+      <%= erb :design_system__notification_banner, locals: {
+        html: "<h3 class=\"govuk-notification-banner__heading\">#{h(t('cookies.notification.success'))}</h3>
+             <p class=\"govuk-body\">
+               #{t('cookies.notification.go_back')}
+               <a href=\"#{root_page_url}\">#{t('service_name')}</a>
+             </p>",
+        titleText: h(t('cookies.notification.title')),
+        type: "success"
+      } %>
+    <% end %>
+    <h1 class="govuk-heading-xl"><%= t("cookies.title") %></h1>
+    <p class="govuk-body"><%= t("cookies.intro") %></p>
+
+    <div class="govuk-inset-text">
+      <p class="govuk-body"><%=t("cookies.dont_worry") %></p>
+    </div>
+
+    <h2 class="govuk-heading-l"><%= t("cookies.measure.title") %></h2>
+    <p class="govuk-body"><%= t("cookies.measure.analytics") %></p>
+    <p class="govuk-body"><%= t("cookies.measure.list.title") %></p>
+
+    <ul class="govuk-list govuk-list--bullet">
+      <li><%= t("cookies.measure.list.1") %></li>
+      <li><%= t("cookies.measure.list.2") %></li>
+      <li><%= t("cookies.measure.list.3") %></li>
+    </ul>
+
+    <p class="govuk-body"><%= t("cookies.dont_worry_again") %></p>
+
+    <form id="cookies-consent-form" action="" method="post">
+      <input type="hidden" name="lang" value="<%= I18n.locale.to_s %>" />
+      <div class="govuk-form-group">
+        <fieldset id="cookies-setting-fieldset" class="govuk-fieldset" aria-required="true">
+          <legend class="govuk-fieldset__legend govuk-visually-hidden"><%= t("cookies.form_title") %></legend>
+          <div class="govuk-radios">
+            <div class="govuk-radios__item">
+              <input id="cookies-setting" class="govuk-radios__input" name="cookies_setting" type="radio" value="true" />
+              <label id="cookies-setting-true-label" class="govuk-label govuk-radios__label" for="cookies-setting">
+                <%= t("cookies.form_yes") %>
+              </label>
+            </div>
+            <div class="govuk-radios__item">
+              <input id="cookies-setting-false" class="govuk-radios__input" name="cookies_setting" type="radio" value="false" />
+              <label id="cookies-setting-false-label" class="govuk-label govuk-radios__label" for="cookies-setting-false">
+                <%= t("cookies.form_no") %>
+              </label>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      <button id="cookies-setting-button" name="cookies-setting-button" class="govuk-button button" data-module="govuk-button">
+        <%= t("cookies.form_save") %>
+      </button>
+    </form>
+  </div>
+</div>
