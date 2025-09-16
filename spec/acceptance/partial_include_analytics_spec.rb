@@ -1,6 +1,6 @@
 require "sinatra/cookies"
 
-xdescribe "Partial include analytics", type: :feature do
+describe "Partial include analytics", type: :feature do
   include RSpecFrontendServiceMixin
 
   let(:url) do

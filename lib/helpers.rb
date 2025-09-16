@@ -137,7 +137,7 @@ module Helpers
   end
 
   def google_property
-    ENV["STAGE"] == "test" ? ENV["GTM_PROPERTY_FINDING"] : "G-H8EVD5HY3G"
+    ENV["GTM_PROPERTY_FINDING"]
   end
 
   def root_page_url
