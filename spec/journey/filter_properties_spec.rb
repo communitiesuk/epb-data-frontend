@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-shared_context "when awaiting responses" do
-end
-
 describe "Journey::FilterProperties", :journey, type: :feature do
   let(:getting_domain) do
     "http://get-energy-performance-data.epb-frontend:9393"

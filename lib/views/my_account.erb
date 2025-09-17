@@ -24,7 +24,7 @@
               <%= ViewModels::MyAccount.get_bearer_token(session, locals[:use_case]) %>
             </dd>
             <dd class="govuk-summary-list__actions">
-              <a class="govuk-link" id="copy-bearer-token" href="#"><%= t('my_account.copy_bearer_token') %><span class="govuk-visually-hidden"> bearer token</span></a>
+              <%= erb :component__copy_bearer_token %>
             </dd>
           </div>
         </dl>

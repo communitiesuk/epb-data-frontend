@@ -41,7 +41,7 @@ describe "Acceptance::MyAccount", type: :feature do
       end
 
       it "shows the copy link on bearer token table row" do
-        expect(response.body).to have_link("Copy", href: "#")
+        expect(response.body).to have_button("Copy")
       end
 
       it "shows the email address" do
