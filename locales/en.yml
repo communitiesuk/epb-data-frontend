@@ -129,7 +129,7 @@ en:
     title: "What type of certificates do you want data on?"
     radio_selects:
       domestic:
-        text: "Energy Performance Certificates (EPCs)"
+        text: "Domestic Energy Performance Certificates (EPCs)"
         hint: "For domestic properties such as houses or flats"
       commercial:
         text: "Commercial Energy Performance Certificates (CEPCs)"
@@ -144,7 +144,7 @@ en:
     submit: "Continue"
 
   filter_properties:
-    domestic_title: "Energy Performance Certificates"
+    domestic_title: "Domestic Energy Performance Certificates"
     non_domestic_title: "Commercial Energy Performance Certificates"
     dec_title: "Display Energy Certificates"
     download_all_data:
@@ -225,7 +225,7 @@ en:
       title: "Data available"
       description: "Use the APIs to get data on:"
       domestic: "Domestic Energy Performance Certificates (EPCs)"
-      non_domestic: "Non-domestic Energy Performance Certificates (EPCs) and recommendation reports"
+      commercial: "Commercial Energy Performance Certificates (EPCs) and recommendation reports"
       dec: "Display Energy Certificates (DECs) and recommendation reports for public buildings"
     authentication:
       title: "Authentication"

@@ -31,15 +31,39 @@ describe "Journey::SelectPropertyType", :journey, type: :feature do
 
   after(:all) { Process.kill("KILL", process_id) if process_id }
 
-  context "when selecting a property type" do
-    before do
-      visit "#{getting_domain}/type-of-properties"
-      find("#label-domestic").click
-      click_on "Continue"
-    end
+  context "when selecting domestic" do
+    context "when selecting a property type" do
+      before do
+        visit "#{getting_domain}/type-of-properties"
+        find("#label-domestic").click
+        click_on "Continue"
+      end
 
-    it "shows the correct header for the filter property page" do
-      expect(page).to have_content "Download all data"
+      it "shows the correct header for the filter property page" do
+        expect(page).to have_selector("h1", text: "Domestic Energy Performance Certificates")
+      end
+
+      it "passes the property type in the query string" do
+        expect(page.current_url).to include("?property_type=domestic")
+      end
+    end
+  end
+
+  context "when selecting commercial" do
+    context "when selecting a property type" do
+      before do
+        visit "#{getting_domain}/type-of-properties"
+        find("#label-commercial").click
+        click_on "Continue"
+      end
+
+      it "shows the correct header for the filter property page" do
+        expect(page).to have_selector("h1", text: "Commercial Energy Performance Certificates")
+      end
+
+      it "passes the property type in the query string" do
+        expect(page.current_url).to include("?property_type=commercial")
+      end
     end
   end
 

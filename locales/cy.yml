@@ -224,7 +224,7 @@ cy:
       title: "Data available"
       description: "Use the APIs to get data on:"
       domestic: "Domestic Energy Performance Certificates (EPCs)"
-      non_domestic: "Non-domestic Energy Performance Certificates (EPCs) and recommendation reports"
+      commercial: "Commercial Energy Performance Certificates (EPCs) and recommendation reports"
       dec: "Display Energy Certificates (DECs) and recommendation reports for public buildings"
     authentication:
       title: "Authentication"

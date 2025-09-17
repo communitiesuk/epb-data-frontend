@@ -3,13 +3,13 @@ describe ViewModels::FilterProperties do
 
   describe "#page_title" do
     let(:expected_titles) do
-      ["Energy Performance Certificates",
+      ["Domestic Energy Performance Certificates",
        "Commercial Energy Performance Certificates",
        "Display Energy Certificates"]
     end
 
     it "returns the correct title for domestic, non-domestic and public properties" do
-      property_types = %w[domestic non_domestic public_buildings]
+      property_types = %w[domestic commercial public_buildings]
       property_types.each_with_index do |property_type, index|
         expect(view_model.page_title(property_type)).to eq(expected_titles[index])
       end
