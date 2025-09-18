@@ -18,7 +18,8 @@ module Controller
         if request.post? && @errors.empty?
 
           begin
-            redirect "/download/all?property_type=#{params['property_type']}" if default_filters?
+            property_type = params["property_type"]
+            redirect "/download/all?property_type=#{property_type}" if default_filters?(property_type)
             count = get_download_size(params)
             email = Helper::Session.get_email_from_session(session)
 
@@ -38,6 +39,9 @@ module Controller
             when Errors::UserEmailNotVerified, Errors::AuthenticationError, Errors::NetworkError
               logger.warn "Authentication error: #{e.message}"
               redirect "/login"
+            when Errors::InvalidPropertyType
+              logger.warn "Invalid property type as parameter: #{e.message}"
+              server_error(e)
             else
               logger.error "Unexpected error during filter_properties post: #{e.message}"
               server_error(e)
@@ -141,8 +145,8 @@ module Controller
       use_case.execute(**use_case_args)
     end
 
-    def default_filters?
-      default_filters = {
+    def default_filters?(property_type)
+      commercial_and_dec_default_filters = {
         "from-month" => "January",
         "from-year" => "2012",
         "to-month" => ViewModels::FilterProperties.previous_month,
@@ -150,10 +154,15 @@ module Controller
         "postcode" => "",
         "local-authority" => ["Select all"],
         "parliamentary-constituency" => ["Select all"],
-        "ratings" => %w[A B C D E F G],
       }
 
-      default_filters.all? { |key, value| params[key] == value }
+      domestic_default_filters = commercial_and_dec_default_filters.merge({ "ratings" => %w[A B C D E F G] })
+
+      if property_type == "domestic"
+        domestic_default_filters.all? { |key, value| params[key] == value }
+      else
+        commercial_and_dec_default_filters.all? { |key, value| params[key] == value }
+      end
     end
 
     def validate_date

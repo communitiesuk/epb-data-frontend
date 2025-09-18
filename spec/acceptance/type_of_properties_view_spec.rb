@@ -31,7 +31,7 @@ describe "Acceptance::TypeOfProperties", type: :feature do
 
       it "has the correct content for cepc radio button" do
         expect(response.body).to have_css("label.govuk-label", text: "Commercial Energy Performance Certificates (CEPCs)")
-        expect(response.body).to have_css("div.govuk-hint", id: "non-domestic-hint", text: "For non-domestic properties such as commercial or industrial buildings")
+        expect(response.body).to have_css("div.govuk-hint", id: "commercial-hint", text: "For non-domestic properties such as commercial or industrial buildings")
       end
 
       it "has the correct content for dec radio button" do
@@ -51,13 +51,22 @@ describe "Acceptance::TypeOfProperties", type: :feature do
     end
 
     context "when submitting with a property type" do
-      let(:response) do
+      let(:domestic_response) do
         post "http://get-energy-performance-data/type-of-properties", { property_type: "domestic" }
       end
 
-      it "routes to the correct page with the correct query params" do
-        expect(response).to be_redirect
-        expect(response.location).to include("/filter-properties?property_type=domestic")
+      let(:commercial_response) do
+        post "http://get-energy-performance-data/type-of-properties", { property_type: "commercial" }
+      end
+
+      it "routes to the domestic page with the domestic property_type param" do
+        expect(domestic_response).to be_redirect
+        expect(domestic_response.location).to include("/filter-properties?property_type=domestic")
+      end
+
+      it "routes to the commercial page with the commercial property_type param" do
+        expect(commercial_response).to be_redirect
+        expect(commercial_response.location).to include("/filter-properties?property_type=commercial")
       end
     end
 
