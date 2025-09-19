@@ -6,7 +6,7 @@ module UseCase
     end
 
     def execute(property_type:, date_start:, date_end:, area_type:, area_value:, efficiency_ratings:, include_recommendations:, email_address:)
-      raise Errors::InvalidPropertyType unless %w[domestic non_domestic public_buildings].include? property_type
+      raise Errors::InvalidPropertyType unless %w[domestic commercial public_buildings].include? property_type
 
       download_request_message = {
         property_type: property_type,
