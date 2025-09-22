@@ -21,12 +21,7 @@ describe "Partial include analytics", type: :feature do
     end
 
     it "includes the partial in the layout" do
-      expect(response.body).to include("https://www.googletagmanager.com/gtm.js?id=")
-      expect(response.body).to include("GOOGLE_PROPERTY = 'G-H8EVD5HY3G'")
-    end
-
-    it "includes the partial no script in the layout" do
-      expect(response.body).to include("https://www.googletagmanager.com/ns.html?id=G-H8EVD5HY3G")
+      expect(response.body).to include("gtag/js?id=G-H8EVD5HY3G")
     end
   end
 
@@ -40,12 +35,7 @@ describe "Partial include analytics", type: :feature do
     end
 
     it "includes the partial in the layout" do
-      expect(response.body).to include("https://www.googletagmanager.com/gtm.js?id=")
-      expect(response.body).to include("GOOGLE_PROPERTY = 'G-H8EVD5HY3G'")
-    end
-
-    it "includes the partial no script in the layout" do
-      expect(response.body).to include("https://www.googletagmanager.com/ns.html?id=G-H8EVD5HY3G")
+      expect(response.body).to include("gtag/js?id=G-H8EVD5HY3G")
     end
 
     it "include the gtag script" do
@@ -63,11 +53,7 @@ describe "Partial include analytics", type: :feature do
     end
 
     it "does not include the partial in the layout" do
-      expect(response.body).not_to include("https://www.googletagmanager.com/gtm.js?id=")
-    end
-
-    it "does not include the partial no script in the layout" do
-      expect(response.body).not_to include("https://www.googletagmanager.com/ns.html?id")
+      expect(response.body).not_to include("gtag/js?id=G-H8EVD5HY3G")
     end
 
     it "does not include the gtag script" do
@@ -89,11 +75,7 @@ describe "Partial include analytics", type: :feature do
     end
 
     it "does not include the partial in the layout" do
-      expect(response.body).not_to include("https://www.googletagmanager.com/gtm.js?id=")
-    end
-
-    it "does not include the partial no script in the layout" do
-      expect(response.body).not_to include("https://www.googletagmanager.com/ns.html?id")
+      expect(response.body).not_to include("gtag/js?id=G-H8EVD5HY3G")
     end
   end
 end
