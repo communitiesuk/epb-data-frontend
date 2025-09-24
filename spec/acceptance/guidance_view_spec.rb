@@ -52,8 +52,8 @@ describe "Acceptance::ServiceStartPage", type: :feature do
         expect(response.body).to have_link("API technical documentation", href: "/api-technical-documentation")
       end
 
-      it "has the Get Help section" do
-        expect(response.body).to have_css("h2", text: "Get help")
+      it "has the Get Help or Give Feedback section" do
+        expect(response.body).to have_css("h2", text: "Get help or give feedback")
       end
 
       it "has the correct MHCLG contact email" do

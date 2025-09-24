@@ -31,8 +31,10 @@ describe "Acceptance::ApiGuidance", type: :feature do
         expect(response.body).to have_link("View technical documentation", href: "https://api-docs.epcregisters.net/")
       end
 
-      it "has the Get Help section" do
-        expect(response.body).to have_css("h2", text: "Get help")
+      it "has the Get Help or give feedback section" do
+        expect(response.body).to have_css("h2", text: "Get help or give feedback")
+        feedback_form_link = "https://forms.cloud.microsoft/Pages/ShareFormPage.aspx?id=EGg0v32c3kOociSi7zmVqETToTZGq_ZHjAjIalVbxERUNURZSEc1UU1YMVpTS1c2MTU1RUZGUE5LUi4u&sharetoken=ygvnOLiiMDqFkdj2dKjt"
+        expect(response.body).to have_link("feedback form", href: feedback_form_link)
       end
     end
   end

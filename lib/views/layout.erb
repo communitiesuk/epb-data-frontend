@@ -112,6 +112,8 @@
 </section>
 
 <div class="govuk-width-container govuk-body">
+  <%= erb :component__feedback_banner %>
+
   <% unless ENV["STAGE"] == "production" %>
     <div class="govuk-phase-banner non-production">
       <p class="govuk-phase-banner__content">

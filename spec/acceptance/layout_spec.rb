@@ -38,6 +38,10 @@ describe "Acceptance::Layout", type: :feature do
         expect(response.body).to include("govuk-cookie-banner")
       end
 
+      it "includes the feedback banner" do
+        expect(response.body).to include("govuk-phase-banner")
+      end
+
       context "when a user is signed in" do
         before do
           allow(Helper::Session).to receive(:is_logged_in?).and_return(true)
