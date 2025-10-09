@@ -38,8 +38,45 @@ describe "Acceptance::Layout", type: :feature do
         expect(response.body).to include("govuk-cookie-banner")
       end
 
-      it "includes the feedback banner" do
-        expect(response.body).to include("govuk-phase-banner")
+      context "when in integration" do
+        curr_env = ENV["STAGE"]
+
+        before { ENV["STAGE"] = "integration" }
+
+        after { ENV["STAGE"] = curr_env }
+
+        it "includes the test site banner" do
+          expect(response.body).to include("govuk-phase-banner")
+          expect(response.body).to include("Integration")
+          expect(response.body).not_to include("Beta")
+        end
+      end
+
+      context "when in staging" do
+        curr_env = ENV["STAGE"]
+
+        before { ENV["STAGE"] = "staging" }
+
+        after { ENV["STAGE"] = curr_env }
+
+        it "includes the test site banner" do
+          expect(response.body).to include("govuk-phase-banner")
+          expect(response.body).to include("Staging")
+          expect(response.body).not_to include("Beta")
+        end
+      end
+
+      context "when in production" do
+        curr_env = ENV["STAGE"]
+
+        before { ENV["STAGE"] = "production" }
+
+        after { ENV["STAGE"] = curr_env }
+
+        it "includes the feedback banner" do
+          expect(response.body).to include("govuk-phase-banner")
+          expect(response.body).to include("Beta")
+        end
       end
 
       context "when a user is signed in" do

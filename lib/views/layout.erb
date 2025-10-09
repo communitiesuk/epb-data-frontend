@@ -112,12 +112,15 @@
 </section>
 
 <div class="govuk-width-container govuk-body">
-  <%= erb :component__feedback_banner %>
+  <% unless ENV["STAGE"] != "production" %>
+    <%= erb :component__feedback_banner %>
+  <% end %>
+
 
   <% unless ENV["STAGE"] == "production" %>
     <div class="govuk-phase-banner non-production">
       <p class="govuk-phase-banner__content">
-        <strong class="govuk-tag govuk-phase-banner__content__tag epbr-environment-tag">
+        <strong class="govuk-tag govuk-phase-banner__content__tag epbr-environment-tag banner_title">
           <%= ENV["STAGE"].capitalize %>
         </strong>
         <span class="govuk-phase-banner__text">
