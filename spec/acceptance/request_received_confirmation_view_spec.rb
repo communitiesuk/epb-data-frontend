@@ -63,7 +63,7 @@ describe "Acceptance::RequestReceivedConfirmation", type: :feature do
 
       it "the title to be correct" do
         expect(last_response.body).to have_selector("h2", text: "Request received")
-        expect(last_response.body).to have_selector("p.govuk-body", text: "This may take up to 15 minutes to be delivered to your inbox.")
+        expect(last_response.body).to have_selector("p.govuk-body", text: "This may take a few minutes to be delivered to your inbox.")
       end
 
       it "shows correct content for the requested data" do
