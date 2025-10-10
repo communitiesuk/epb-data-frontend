@@ -53,7 +53,7 @@ en:
         accepted: "You’ve accepted analytics cookies. You can %{change_settings_link} at any time."
         rejected: "You’ve rejected analytics cookies. You can %{change_settings_link} at any time."
         hide_message: "Hide cookie message"
-      phase_banner: "This is a test site. The data is not real and the certificates are not valid."
+      environment_banner_non_prod: "This is a test site. The data is not real."
       my_account: "My account"
       sign_in: "Sign in"
       feedback_intro: "This is a new service - your"

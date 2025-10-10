@@ -112,27 +112,24 @@
 </section>
 
 <div class="govuk-width-container govuk-body">
-  <% unless ENV["STAGE"] != "production" %>
+  <% if ENV["STAGE"] == "production" %>
     <%= erb :component__feedback_banner %>
-  <% end %>
-
-
-  <% unless ENV["STAGE"] == "production" %>
+  <% else %>
     <div class="govuk-phase-banner non-production">
       <p class="govuk-phase-banner__content">
-        <strong class="govuk-tag govuk-phase-banner__content__tag epbr-environment-tag banner_title">
+        <strong class="govuk-tag govuk-phase-banner__content__tag epbr-environment-tag">
           <%= ENV["STAGE"].capitalize %>
         </strong>
         <span class="govuk-phase-banner__text">
-          <%=t('layout.body.phase_banner')%>
+          <%=t('layout.body.environment_banner_non_prod')%>
         </span>
       </p>
     </div>
-    <% if @back_link_href %>
-      <%= erb :'component__back_link', locals: { href: @back_link_href } %>
-    <% end %>
   <% end %>
 
+  <% if @back_link_href %>
+    <%= erb :'component__back_link', locals: { href: @back_link_href } %>
+  <% end %>
 
   <main id="main-content" class="govuk-main-wrapper" role="main">
     <%= yield %>
