@@ -75,8 +75,8 @@ describe "Acceptance::FilterProperties", type: :feature do
         expect(response.body).to have_selector("h1", text: "Energy Performance Certificates")
       end
 
-      it "does not show the efficiency rating filter for commercial and public properties" do
-        property_types = %w[commercial public_buildings]
+      it "does not show the efficiency rating filter for non-domestic and public properties" do
+        property_types = %w[non-domestic public_buildings]
 
         property_types.each do |property_type|
           response = get "#{local_host}?property_type=#{property_type}"
@@ -213,15 +213,15 @@ describe "Acceptance::FilterProperties", type: :feature do
       end
     end
 
-    context "when selecting default commercial filters" do
+    context "when selecting default non-domestic filters" do
       let(:default_dates) { "from-month=January&from-year=2012&to-month=#{(Date.today << 1).strftime('%B')}&to-year=#{Date.today.year}" }
       let(:default_area) { "postcode=&local-authority[]=Select+all&parliamentary-constituency[]=Select+all" }
       let(:default_filters) { "#{default_dates}&#{default_area}" }
-      let(:valid_response_with_default_filters) { post "#{local_host}?property_type=commercial&#{default_filters}" }
+      let(:valid_response_with_default_filters) { post "#{local_host}?property_type=non-domestic&#{default_filters}" }
 
       it "redirects to the /download/all endpoint" do
         expect(valid_response_with_default_filters.status).to eq(302)
-        expect(valid_response_with_default_filters.headers["Location"]).to eq("http://get-energy-performance-data/download/all?property_type=commercial")
+        expect(valid_response_with_default_filters.headers["Location"]).to eq("http://get-energy-performance-data/download/all?property_type=non-domestic")
       end
     end
 

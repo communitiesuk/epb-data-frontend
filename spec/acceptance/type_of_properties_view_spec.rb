@@ -25,24 +25,24 @@ describe "Acceptance::TypeOfProperties", type: :feature do
       end
 
       it "has the correct content for epc radio button" do
-        expect(response.body).to have_css("label.govuk-label", text: "Energy Performance Certificates (EPCs)")
+        expect(response.body).to have_css("label.govuk-label", text: "Energy Performance Certificates")
         expect(response.body).to have_css("div.govuk-hint", id: "domestic-item-hint", text: "For domestic properties such as houses or flats")
       end
 
-      it "has the correct content for cepc radio button" do
-        expect(response.body).to have_css("label.govuk-label", text: "Commercial Energy Performance Certificates (CEPCs)")
-        expect(response.body).to have_css("div.govuk-hint", id: "commercial-hint", text: "For non-domestic properties such as commercial or industrial buildings")
+      it "has the correct content for non-domestic radio button" do
+        expect(response.body).to have_css("label.govuk-label", text: "Non-domestic Energy Performance Certificates")
+        expect(response.body).to have_css("div.govuk-hint", id: "non-domestic-hint", text: "For non-domestic properties such as commercial or industrial buildings")
       end
 
       it "has the correct content for dec radio button" do
-        expect(response.body).to have_css("label.govuk-label", text: "Display Energy Certificates (DECs)")
+        expect(response.body).to have_css("label.govuk-label", text: "Display Energy Certificates")
         expect(response.body).to have_css("div.govuk-hint", id: "public-buildings-hint", text: "For public buildings such as schools or hospitals")
       end
 
       it "has the correct content for dropdown" do
         expect(response.body).to have_css("span.govuk-details__summary-text", text: "What buildings have a Display Energy Certificate?")
-        expect(response.body).to have_content("Buildings that are occupied by a public authority, are frequently visited by the public and have a floor area above 250m² must have a Display Energy Certificate (DEC).")
-        expect(response.body).to have_content("Buildings with a Display Energy Certificate (DEC) may also have a Commercial Energy Performance Certificate (CEPC).")
+        expect(response.body).to have_content("Buildings that are occupied by a public authority, are frequently visited by the public and have a floor area above 250m² must have a Display Energy Certificate.")
+        expect(response.body).to have_content("Buildings with a Display Energy Certificate may also have a Non-domestic Energy Performance Certificate.")
       end
 
       it "has a continue button" do
@@ -55,8 +55,8 @@ describe "Acceptance::TypeOfProperties", type: :feature do
         post "http://get-energy-performance-data/type-of-properties", { property_type: "domestic" }
       end
 
-      let(:commercial_response) do
-        post "http://get-energy-performance-data/type-of-properties", { property_type: "commercial" }
+      let(:non_domestic_response) do
+        post "http://get-energy-performance-data/type-of-properties", { property_type: "non_domestic" }
       end
 
       it "routes to the domestic page with the domestic property_type param" do
@@ -64,9 +64,9 @@ describe "Acceptance::TypeOfProperties", type: :feature do
         expect(domestic_response.location).to include("/filter-properties?property_type=domestic")
       end
 
-      it "routes to the commercial page with the commercial property_type param" do
-        expect(commercial_response).to be_redirect
-        expect(commercial_response.location).to include("/filter-properties?property_type=commercial")
+      it "routes to the non_domestic page with the non_domestic property_type param" do
+        expect(non_domestic_response).to be_redirect
+        expect(non_domestic_response.location).to include("/filter-properties?property_type=non_domestic")
       end
     end
 

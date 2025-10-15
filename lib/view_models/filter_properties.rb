@@ -6,7 +6,7 @@ module ViewModels
       case property_type
       when "domestic"
         I18n.t("filter_properties.domestic_title")
-      when "commercial"
+      when "non_domestic"
         I18n.t("filter_properties.non_domestic_title")
       when "public_buildings"
         I18n.t("filter_properties.dec_title")

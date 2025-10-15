@@ -131,23 +131,23 @@ cy:
     title: "What type of certificates do you want data on?"
     radio_selects:
       domestic:
-        text: "Energy Performance Certificates (EPCs)"
+        text: "Energy Performance Certificates"
         hint: "For domestic properties such as houses or flats"
-      commercial:
-        text: "Commercial Energy Performance Certificates (CEPCs)"
+      non-domestic:
+        text: "Non-domestic Energy Performance Certificates"
         hint: "For non-domestic properties such as commercial or industrial buildings"
       dec:
-        text: "Display Energy Certificates (DECs)"
+        text: "Display Energy Certificates"
         hint: "For public buildings such as schools or hospitals"
     summary:
       text: "What buildings have a Display Energy Certificate?"
-      para_1: "Buildings that are occupied by a public authority, are frequently visited by the public and have a floor area above 250m² must have a Display Energy Certificate (DEC)."
-      para_2: "Buildings with a Display Energy Certificate (DEC) may also have a Commercial Energy Performance Certificate (CEPC)."
+      para_1: "Buildings that are occupied by a public authority, are frequently visited by the public and have a floor area above 250m² must have a Display Energy Certificate."
+      para_2: "Buildings with a Display Energy Certificate may also have a Non-domestic Energy Performance Certificate."
     submit: "Parhau"
 
   filter_properties:
-    domestic_title: "Energy Performance Certificates"
-    non_domestic_title: "Commercial Energy Performance Certificates"
+    domestic_title: "Domestic Energy Performance Certificates"
+    non_domestic_title: "Non-domestic Energy Performance Certificates"
     dec_title: "Display Energy Certificates"
     download_all_data:
       title: "Download all data"
@@ -226,9 +226,9 @@ cy:
     data_available:
       title: "Data available"
       description: "Use the APIs to get data on:"
-      domestic: "Domestic Energy Performance Certificates (EPCs)"
-      commercial: "Commercial Energy Performance Certificates (EPCs) and recommendation reports"
-      dec: "Display Energy Certificates (DECs) and recommendation reports for public buildings"
+      domestic: "Domestic Energy Performance Certificates"
+      non-domestic: "Non-domestic Energy Performance Certificates and recommendation reports"
+      dec: "Display Energy Certificates and recommendation reports for public buildings"
     authentication:
       title: "Authentication"
       logged_out_description: "You'll need to <a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">sign in</a> to GOV.UK One Login to get a bearer token. If you do not have a GOV.UK One Login, you can <a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">create an account</a>."
