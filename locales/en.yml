@@ -121,7 +121,7 @@ en:
     title: "How would you like to access the data?"
     download_files:
       title: "Download files"
-      description: "Download certificate data which can be opened in Microsoft Excel."
+      description: "Download certificate data in CSV format."
       button_text: "Download files"
     use_api:
       title: "Use a developer API"

@@ -23,7 +23,7 @@ describe "Acceptance::DataAccessOptions", type: :feature do
 
       it "has the correct content for download files option" do
         expect(response.body).to have_selector("h2.govuk-heading-m", text: "Download files")
-        expect(response.body).to have_selector("p.govuk-body", text: "Download certificate data which can be opened in Microsoft Excel.")
+        expect(response.body).to have_selector("p.govuk-body", text: "Download certificate data in CSV format.")
         expect(response.body).to have_link("Download files", href: "/type-of-properties")
       end
 
