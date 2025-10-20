@@ -146,7 +146,7 @@ module Controller
     end
 
     def default_filters?(property_type)
-      commercial_and_dec_default_filters = {
+      non_domestic_and_dec_default_filters = {
         "from-month" => "January",
         "from-year" => "2012",
         "to-month" => ViewModels::FilterProperties.previous_month,
@@ -156,12 +156,12 @@ module Controller
         "parliamentary-constituency" => ["Select all"],
       }
 
-      domestic_default_filters = commercial_and_dec_default_filters.merge({ "ratings" => %w[A B C D E F G] })
+      domestic_default_filters = non_domestic_and_dec_default_filters.merge({ "ratings" => %w[A B C D E F G] })
 
       if property_type == "domestic"
         domestic_default_filters.all? { |key, value| params[key] == value }
       else
-        commercial_and_dec_default_filters.all? { |key, value| params[key] == value }
+        non_domestic_and_dec_default_filters.all? { |key, value| params[key] == value }
       end
     end
 
