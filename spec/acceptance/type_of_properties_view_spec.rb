@@ -12,6 +12,14 @@ describe "Acceptance::TypeOfProperties", type: :feature do
     end
 
     context "when the type of properties page is rendered" do
+      before do
+        Helper::Toggles.set_feature("epb-data-frontend-hide-DEC-download-option", true)
+      end
+
+      after do
+        Helper::Toggles.set_feature("epb-data-frontend-hide-DEC-download-option", false)
+      end
+
       it "returns status 200" do
         expect(response.status).to eq(200)
       end
@@ -108,8 +116,8 @@ describe "Acceptance::TypeOfProperties", type: :feature do
         Helper::Toggles.set_feature("epb-data-frontend-hide-DEC-download-option", false)
       end
 
-      it "the DEC radio button will be hidden" do
-        expect(response.body).not_to have_selector("#label-dec", text: "Display Energy Certificates")
+      it "the DEC radio button will be visible" do
+        expect(response.body).to have_selector("#label-dec", text: "Display Energy Certificates")
       end
     end
 
@@ -118,8 +126,8 @@ describe "Acceptance::TypeOfProperties", type: :feature do
         Helper::Toggles.set_feature("epb-data-frontend-hide-DEC-download-option", false)
       end
 
-      it "the DEC radio button will not be hidden" do
-        expect(response.body).to have_selector("#label-dec", text: "Display Energy Certificates")
+      it "the DEC radio button will be visible" do
+        expect(response.body).not_to have_selector("#label-dec", text: "Display Energy Certificates")
       end
     end
   end

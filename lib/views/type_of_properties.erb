@@ -38,7 +38,7 @@
                 <%= t("property_type.radio_selects.non-domestic.hint") %>
               </div>
             </div>
-              <% unless Helper::Toggles.enabled?("epb-data-frontend-hide-DEC-download-option") %>
+              <% if Helper::Toggles.enabled?("epb-data-frontend-hide-DEC-download-option") %>
                 <div class="govuk-radios__item">
                   <input class="govuk-radios__input" id="public-buildings" name="property_type" type="radio" value="public_buildings" aria-describedby="public-properties-hint">
                   <label id="label-dec" class="govuk-label govuk-radios__label" for="public-buildings">
