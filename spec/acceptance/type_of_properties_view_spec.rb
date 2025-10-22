@@ -126,7 +126,7 @@ describe "Acceptance::TypeOfProperties", type: :feature do
         Helper::Toggles.set_feature("epb-data-frontend-hide-DEC-download-option", false)
       end
 
-      it "the DEC radio button will be visible" do
+      it "the DEC radio button will be hidden" do
         expect(response.body).not_to have_selector("#label-dec", text: "Display Energy Certificates")
       end
     end
