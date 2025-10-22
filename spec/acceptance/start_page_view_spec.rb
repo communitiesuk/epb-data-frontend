@@ -16,9 +16,9 @@ describe "Acceptance::ServiceStartPage", type: :feature do
         expect(response.body).to have_link("Start now", href: "/data-access-options")
       end
 
-      it "has the correct link to Scottish EPC Register, guidance page and EPC Register" do
-        expect(response.body).to have_link("visit the Scottish EPC Register", href: "https://www.scottishepcregister.org.uk/")
-        expect(response.body).to have_link("visit the EPC Register", href: "https://www.gov.uk/find-energy-certificate")
+      it "has the correct link to Scottish EPB Register, guidance page and EPB Register" do
+        expect(response.body).to have_link("visit the Scottish Energy Performance of Buildings (EPB) Register", href: "https://www.scottishepcregister.org.uk/")
+        expect(response.body).to have_link("visit the Energy Performance of Buildings (EPB) Register", href: "https://www.gov.uk/find-energy-certificate")
         expect(response.body).to have_link("Visit the guidance page", href: "/guidance")
       end
 
