@@ -87,7 +87,10 @@ describe "Acceptance::Login", type: :feature do
 
       it "shows the correct title and body text" do
         expect(response.body).to have_selector("h1", text: "Get energy performance of buildings data")
-        expect(response.body).to have_selector("p.govuk-body", text: "You'll need a GOV.UK One Login to use this service. If you do not have a GOV.UK One Login, you can create one.")
+        expect(response.body).to have_selector("p.govuk-body", text: "If you’ve used other government services for example, to file a Self Assessment tax return or apply for or renew a passport, you can use the same login details here.")
+        expect(response.body).to have_selector("strong", text: "Self Assessment tax return")
+        expect(response.body).to have_selector("strong", text: "apply for or renew a passport")
+        expect(response.body).to have_selector("p.govuk-body", text: "If you don’t have a One Login, you can create one when you start.")
       end
 
       it "has the correct Start now button" do
