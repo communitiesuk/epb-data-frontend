@@ -140,6 +140,7 @@ GEM
       rack (>= 1.2, < 4)
       snaky_hash (~> 2.0)
       version_gem (~> 1.1)
+    ostruct (0.6.3)
     parallel (1.26.3)
     parser (3.3.7.0)
       ast (~> 2.4.1)
@@ -307,6 +308,7 @@ DEPENDENCIES
   erubis (~> 2.7)
   i18n (~> 1.14.6)
   nokogiri (~> 1.18.1)
+  ostruct (~> 0.6.3)
   puma (~> 6.4)
   rack (~> 3.1.8)
   rack-contrib (~> 2.5.0)
@@ -329,7 +331,7 @@ DEPENDENCIES
   zeitwerk (~> 2.7.1)
 
 RUBY VERSION
-   ruby 3.3.4p94
+   ruby 3.4.7p58
 
 BUNDLED WITH
-   2.5.23
+   2.7.2
