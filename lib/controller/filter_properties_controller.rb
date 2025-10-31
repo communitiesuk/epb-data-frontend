@@ -8,13 +8,6 @@ module Controller
         params["ratings"] ||= %w[A B C D E F G] unless request.post?
         status 200
 
-        if request.get?
-          use_case = @container.get_object(:get_file_size_use_case)
-          file_name = "full-load/#{params['property_type']}-csv.zip"
-          size_in_bytes = use_case.execute(file_name: file_name)
-          @download_size = ViewModels::FilterProperties.format_file_size(size_in_bytes)
-        end
-
         if request.post?
           validate_date
           validate_area
@@ -55,7 +48,7 @@ module Controller
             end
           end
         else
-          erb :filter_properties
+          erb :filter_properties, locals: { use_case: @container.get_object(:get_file_size_use_case)}
         end
       end
 

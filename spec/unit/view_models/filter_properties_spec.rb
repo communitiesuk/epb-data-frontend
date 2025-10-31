@@ -151,10 +151,19 @@ describe ViewModels::FilterProperties do
     end
   end
 
-  describe "#format_file_size" do
+  describe "#get_full_load_file_size" do
+    let(:get_file_size_use_case) do
+      instance_double(UseCase::GetFileSize)
+    end
+
+    before do
+      allow(get_file_size_use_case).to receive(:execute).and_return(3.35 * 1024 * 1024 * 1024)
+    end
+
     it "returns formatted file size" do
-      expect { view_model.format_file_size(3_600_000_000) }.not_to raise_error
-      expect(view_model.format_file_size(3_600_000_000)).to be(3.35)
+      property_type = "domestic"
+      expect { view_model.get_full_load_file_size(property_type, get_file_size_use_case) }.not_to raise_error
+      expect(view_model.get_full_load_file_size(property_type, get_file_size_use_case)).to eq(3.35)
     end
   end
 end

@@ -1026,7 +1026,9 @@ module ViewModels
       HEREDOC
     end
 
-    def self.format_file_size(size_in_bytes)
+    def self.get_full_load_file_size(property_type, use_case)
+      file_name = "full-load/#{property_type}-csv.zip"
+      size_in_bytes = use_case.execute(file_name: file_name)
       (size_in_bytes.to_f / (1024 * 1024 * 1024)).round(2)
     end
 

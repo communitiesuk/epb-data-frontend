@@ -56,7 +56,7 @@ describe "Acceptance::FilterProperties", type: :feature do
   describe "get .get-energy-certificate-data.epb-frontend/filter-properties" do
     before do
       allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true)
-      allow(get_file_size_use_case).to receive(:execute).and_return(3600)
+      allow(ViewModels::FilterProperties).to receive(:get_full_load_file_size).and_return(3.5)
     end
 
     context "when the data access options page is rendered" do
@@ -126,7 +126,7 @@ describe "Acceptance::FilterProperties", type: :feature do
 
       it "shows information about the download" do
         expect(response.body).to have_css(".govuk-body", text: "The download will begin immediately once requested. The estimated download size is")
-        expect(response.body).to have_css(".govuk-body", text: "0.0 GB.")
+        expect(response.body).to have_css(".govuk-body", text: "3.5 GB.")
       end
     end
 
