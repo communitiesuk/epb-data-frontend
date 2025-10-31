@@ -30,10 +30,15 @@ describe "Acceptance::FilterProperties", type: :feature do
     instance_double(UseCase::SendDownloadRequest)
   end
 
+  let(:get_file_size_use_case) do
+    instance_double(UseCase::GetFileSize)
+  end
+
   let(:app) do
     fake_container = instance_double(Container)
     allow(fake_container).to receive(:get_object).with(:get_download_size_use_case).and_return(get_download_size_use_case)
     allow(fake_container).to receive(:get_object).with(:send_download_request_use_case).and_return(send_sns_use_case)
+    allow(fake_container).to receive(:get_object).with(:get_file_size_use_case).and_return(get_file_size_use_case)
 
     Rack::Builder.new do
       use Rack::Session::Cookie, secret: "test" * 16
@@ -51,6 +56,7 @@ describe "Acceptance::FilterProperties", type: :feature do
   describe "get .get-energy-certificate-data.epb-frontend/filter-properties" do
     before do
       allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true)
+      allow(get_file_size_use_case).to receive(:execute).and_return(3600)
     end
 
     context "when the data access options page is rendered" do
@@ -119,7 +125,8 @@ describe "Acceptance::FilterProperties", type: :feature do
       end
 
       it "shows information about the download" do
-        expect(response.body).to have_css(".govuk-body", text: "The download will begin immediately once requested. The estimated download size is x.x GB.")
+        expect(response.body).to have_css(".govuk-body", text: "The download will begin immediately once requested. The estimated download size is")
+        expect(response.body).to have_css(".govuk-body", text: "0.0 GB.")
       end
     end
 

@@ -41,4 +41,35 @@ describe Gateway::S3Gateway do
       end
     end
   end
+
+  describe "#get_file_size" do
+    context "when getting file info of an existing file" do
+      let(:response) do
+        gateway.get_file_size(bucket: "user-data", file_name: "folder/test.csv")
+      end
+
+      before do
+        WebMock.stub_request(:head, "https://user-data.s3.eu-west-2.amazonaws.com/folder/test.csv")
+               .to_return(
+                 status: 200,
+                 headers: { "Content-Length" => "3600" },
+               )
+      end
+
+      it "returns a hash with file size and last updated date" do
+        expect(response).to eq(3600)
+      end
+    end
+
+    context "when getting file info of a non-existing file" do
+      before do
+        WebMock.stub_request(:head, "https://user-data.s3.eu-west-2.amazonaws.com/banana.zip")
+               .to_return(status: 404)
+      end
+
+      it "raises a FileNotFound error" do
+        expect { gateway.get_file_size(bucket: "user-data", file_name: "banana.zip") }.to raise_error(Errors::FileNotFound, "banana.zip")
+      end
+    end
+  end
 end

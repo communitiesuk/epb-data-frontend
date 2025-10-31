@@ -150,4 +150,11 @@ describe ViewModels::FilterProperties do
       end
     end
   end
+
+  describe "#format_file_size" do
+    it "returns formatted file size" do
+      expect { view_model.format_file_size(3_600_000_000) }.not_to raise_error
+      expect(view_model.format_file_size(3_600_000_000)).to be(3.35)
+    end
+  end
 end

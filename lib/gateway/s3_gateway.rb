@@ -14,6 +14,13 @@ module Gateway
       raise Errors::FileNotFound, file_name
     end
 
+    def get_file_size(bucket:, file_name:)
+      response = @s3_client.head_object(bucket:, key: file_name)
+      response.content_length
+    rescue Aws::S3::Errors::NotFound
+      raise Errors::FileNotFound, file_name
+    end
+
   private
 
     def get_s3_client

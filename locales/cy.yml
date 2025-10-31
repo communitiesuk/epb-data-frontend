@@ -155,7 +155,7 @@ cy:
       property_type: "Energy Performance Certificates and recommendations"
       countries: "England and Wales"
       date_range: "January 2012 - %{previous_month}"
-      file_size: "The download will begin immediately once requested. The estimated download size is x.x GB."
+      file_size: "The download will begin immediately once requested. The estimated download size is"
       button_text: "Download all"
     filter_options:
       title: "Filter certificates (optional)"

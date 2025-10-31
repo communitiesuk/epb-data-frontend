@@ -24,6 +24,7 @@ class Container
     get_onelogin_user_info_use_case = UseCase::GetOneloginUserInfo.new(onelogin_gateway:)
     get_user_id_use_case = UseCase::GetUserId.new(user_credentials_gateway:)
     get_user_token_use_case = UseCase::GetUserToken.new(user_credentials_gateway:)
+    get_file_size_use_case = UseCase::GetFileSize.new(gateway: Gateway::S3Gateway.new, bucket_name: ENV["AWS_S3_USER_DATA_BUCKET_NAME"])
     @objects = {
       send_download_request_use_case:,
       get_download_size_use_case:,
@@ -33,6 +34,7 @@ class Container
       get_onelogin_user_info_use_case:,
       get_user_id_use_case:,
       get_user_token_use_case:,
+      get_file_size_use_case:,
     }
   end
 

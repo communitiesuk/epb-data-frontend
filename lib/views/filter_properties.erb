@@ -28,6 +28,7 @@
           </div>
           <p class="govuk-body">
             <%= t('filter_properties.download_all_data.file_size') %>
+            <%= "#{@download_size} GB." %>
           </p>
           <a
             href="/download/all?property_type=<%= params["property_type"] %>"

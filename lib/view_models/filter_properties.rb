@@ -1026,6 +1026,10 @@ module ViewModels
       HEREDOC
     end
 
+    def self.format_file_size(size_in_bytes)
+      (size_in_bytes.to_f / (1024 * 1024 * 1024)).round(2)
+    end
+
     private_class_method :council_csv
     private_class_method :constituency_csv
   end
