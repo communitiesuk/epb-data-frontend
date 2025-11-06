@@ -48,7 +48,7 @@ module Controller
             end
           end
         else
-          erb :filter_properties, locals: { use_case: @container.get_object(:get_file_size_use_case)}
+          erb :filter_properties, locals: { use_case: @container.get_object(:get_file_size_use_case) }
         end
       end
 
