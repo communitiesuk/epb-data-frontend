@@ -11,13 +11,6 @@ module Controller
       erb :data_access_options
     end
 
-    get "/guidance" do
-      status 200
-      @back_link_href = request.referer || "/"
-      @hide_guidance_text = true
-      erb :guidance
-    end
-
     get "/api-healthcheck" do
       uri = URI("#{ENV['EPB_DATA_WAREHOUSE_API_URL']}/healthcheck")
       response = Net::HTTP.get_response(uri)
