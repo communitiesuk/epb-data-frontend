@@ -20,5 +20,12 @@ module Controller
       @hide_guidance_text = true
       erb :'guidance_pages/how_the_data_is_produced'
     end
+
+    get "/changes-to-the-format-and-methodology" do
+      status 200
+      @back_link_href = request.referer || "/"
+      @hide_guidance_text = true
+      erb :'guidance_pages/changes_to_the_format_and_methodology'
+    end
   end
 end
