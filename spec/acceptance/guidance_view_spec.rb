@@ -32,7 +32,7 @@ describe "Acceptance::ServiceStartPage", type: :feature do
         expect(response.body).to have_css("h2", text: "Understanding the data")
         expect(response.body).to have_css("p", text: "Information on how the data is formatted and produced.")
         expect(response.body).to have_link("What information the data contains", href: "/data-information")
-        expect(response.body).to have_link("How the data is produced and released", href: "/how-data-is-produced-released")
+        expect(response.body).to have_link("How the data is produced", href: "/how-the-data-is-produced")
         expect(response.body).to have_link("Changes to the format and methodology", href: "/changes-to-format-methodology")
         expect(response.body).to have_link("Data limitations and quality", href: "/data-limitations-quality")
       end
@@ -98,6 +98,45 @@ describe "Acceptance::ServiceStartPage", type: :feature do
       it "has the correct content for API section" do
         expect(response.body).to have_css("p", text: "For domestic EPC data, the recommendation reports are included in the EPCs.")
         expect(response.body).to have_css("p", text: "For commercial EPC data, the certificate numbers can be used to fetch the recommendation reports.")
+      end
+
+      it "has the Get Help or Give Feedback section" do
+        expect(response.body).to have_css("h2", text: "Get help or give feedback")
+      end
+
+      it "does not render content for guidance under the Get Help section" do
+        expect(response.body).not_to have_content("Visit the guidance page for information on:")
+      end
+    end
+  end
+
+  describe "get .get-energy-certificate-data.epb-frontend/how-the-data-is-produced" do
+    let(:path) { "/how-the-data-is-produced" }
+    let(:response) { get "#{base_url}#{path}" }
+
+    context "when the start page is rendered" do
+      it "returns status 200" do
+        expect(response.status).to eq(200)
+      end
+
+      it "shows a back link and redirects to previous page" do
+        header "Referer", "/previous_page"
+        expect(response.body).to have_link("Back", href: "/previous_page")
+      end
+
+      it "directs back link to home page if no referer header found" do
+        expect(response.body).to have_link("Back", href: "/")
+      end
+
+      it "has the correct title" do
+        expect(response.body).to have_css("h1", text: "How the data is produced")
+      end
+
+      it "has the correct content for section titles" do
+        expect(response.body).to have_css("h2", text: "Why energy certificates are created")
+        expect(response.body).to have_css("h2", text: "How energy certificates are produced")
+        expect(response.body).to have_css("h2", text: "Data release frequency")
+        expect(response.body).to have_css("h2", text: "Unique Property Reference Numbers (UPRNs)")
       end
 
       it "has the Get Help or Give Feedback section" do

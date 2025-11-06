@@ -13,5 +13,12 @@ module Controller
       @hide_guidance_text = true
       erb :'guidance_pages/link_certificates_to_recommendations'
     end
+
+    get "/how-the-data-is-produced" do
+      status 200
+      @back_link_href = request.referer || "/"
+      @hide_guidance_text = true
+      erb :'guidance_pages/how_the_data_is_produced'
+    end
   end
 end
