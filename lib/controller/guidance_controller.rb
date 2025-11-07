@@ -34,5 +34,12 @@ module Controller
       @hide_guidance_text = true
       erb :'guidance_pages/licensing_restrictions'
     end
+
+    get "/data-protection" do
+      status 200
+      @back_link_href = request.referer || "/"
+      @hide_guidance_text = true
+      erb :'guidance_pages/data_protection'
+    end
   end
 end
