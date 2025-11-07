@@ -27,5 +27,12 @@ module Controller
       @hide_guidance_text = true
       erb :'guidance_pages/changes_to_the_format_and_methodology'
     end
+
+    get "/licensing-restrictions" do
+      status 200
+      @back_link_href = request.referer || "/"
+      @hide_guidance_text = true
+      erb :'guidance_pages/licensing_restrictions'
+    end
   end
 end
