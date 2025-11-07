@@ -34,7 +34,7 @@ describe "Acceptance::GuidancePage", type: :feature do
         expect(response.body).to have_link("What information the data contains", href: "/data-information")
         expect(response.body).to have_link("How the data is produced", href: "/how-the-data-is-produced")
         expect(response.body).to have_link("Changes to the format and methodology", href: "/changes-to-the-format-and-methodology")
-        expect(response.body).to have_link("Data limitations and quality", href: "/data-limitations-quality")
+        expect(response.body).to have_link("Data limitations and exclusions", href: "/data-limitations")
       end
 
       it "has the correct content for publishing and usage restrictions" do
@@ -281,6 +281,51 @@ describe "Acceptance::GuidancePage", type: :feature do
       it "has the correct content for personal data misuse section" do
         expect(response.body).to have_css("h2", text: "How to report misuse of personal data")
         expect(response.body).to have_link("Information Commissioner’s Office (ICO)", href: "https://ico.org.uk/")
+      end
+
+      it "has the Get Help or Give Feedback section" do
+        expect(response.body).to have_css("h2", text: "Get help or give feedback")
+      end
+
+      it "does not render content for guidance under the Get Help section" do
+        expect(response.body).not_to have_content("Visit the guidance page for information on:")
+      end
+    end
+  end
+
+  describe "get .get-energy-certificate-data.epb-frontend/data-limitations" do
+    let(:path) { "/data-limitations" }
+    let(:response) { get "#{base_url}#{path}" }
+
+    context "when the start page is rendered" do
+      it "returns status 200" do
+        expect(response.status).to eq(200)
+      end
+
+      it "shows a back link and redirects to previous page" do
+        header "Referer", "/previous_page"
+        expect(response.body).to have_link("Back", href: "/previous_page")
+      end
+
+      it "directs back link to home page if no referer header found" do
+        expect(response.body).to have_link("Back", href: "/")
+      end
+
+      it "has the correct title" do
+        expect(response.body).to have_css("h1", text: "Data limitations and exclusions")
+      end
+
+      it "has the correct section titles" do
+        expect(response.body).to have_css("h2", text: "Representativeness")
+        expect(response.body).to have_css("h2", text: "Date availability")
+        expect(response.body).to have_css("h2", text: "Data quality")
+        expect(response.body).to have_css("h2", text: "Boundary changes")
+        expect(response.body).to have_css("h2", text: "What data is excluded")
+      end
+
+      it "displays the anomalies table with ten rows" do
+        expect(response.body).to have_css("table.govuk-table")
+        expect(response.body).to have_css("tbody.govuk-table__body tr", count: 10)
       end
 
       it "has the Get Help or Give Feedback section" do
