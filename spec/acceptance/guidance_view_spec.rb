@@ -31,7 +31,7 @@ describe "Acceptance::GuidancePage", type: :feature do
       it "has the correct content for understanding the data" do
         expect(response.body).to have_css("h2", text: "Understanding the data")
         expect(response.body).to have_css("p", text: "Information on how the data is formatted and produced.")
-        expect(response.body).to have_link("What information the data contains", href: "/data-information")
+        expect(response.body).to have_link("Linking certificates to recommendations", href: "/linking-certificates-to-recommendations")
         expect(response.body).to have_link("How the data is produced", href: "/how-the-data-is-produced")
         expect(response.body).to have_link("Changes to the format and methodology", href: "/changes-to-the-format-and-methodology")
         expect(response.body).to have_link("Data limitations and exclusions", href: "/data-limitations")
@@ -65,8 +65,8 @@ describe "Acceptance::GuidancePage", type: :feature do
     end
   end
 
-  describe "get .get-energy-certificate-data.epb-frontend/how-to-link-certificates-to-recommendations" do
-    let(:path) { "/how-to-link-certificates-to-recommendations" }
+  describe "get .get-energy-certificate-data.epb-frontend/linking-certificates-to-recommendations" do
+    let(:path) { "/linking-certificates-to-recommendations" }
     let(:response) { get "#{base_url}#{path}" }
 
     context "when the start page is rendered" do
@@ -84,7 +84,7 @@ describe "Acceptance::GuidancePage", type: :feature do
       end
 
       it "has the correct title" do
-        expect(response.body).to have_css("h1", text: "How to link certificates to recommendations")
+        expect(response.body).to have_css("h1", text: "Linking certificates to recommendations")
       end
 
       it "has the correct content under the title" do
