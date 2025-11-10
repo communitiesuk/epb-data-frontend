@@ -41,7 +41,7 @@ describe "Acceptance::GuidancePage", type: :feature do
         expect(response.body).to have_css("h2", text: "Publishing and usage restrictions")
         expect(response.body).to have_css("p", text: "Information on the restrictions that affect how the data is published and how you can use it.")
         expect(response.body).to have_link("Licensing restrictions", href: "/licensing-restrictions")
-        expect(response.body).to have_link("Data protection", href: "/data-protection")
+        expect(response.body).to have_link("Data protection", href: "/data-protection-requirements")
       end
 
       it "has the correct content for developer apis" do
@@ -245,8 +245,8 @@ describe "Acceptance::GuidancePage", type: :feature do
     end
   end
 
-  describe "get .get-energy-certificate-data.epb-frontend/data-protection" do
-    let(:path) { "/data-protection" }
+  describe "get .get-energy-certificate-data.epb-frontend/data-protection-requirements" do
+    let(:path) { "/data-protection-requirements" }
     let(:response) { get "#{base_url}#{path}" }
 
     context "when the start page is rendered" do
@@ -264,7 +264,7 @@ describe "Acceptance::GuidancePage", type: :feature do
       end
 
       it "has the correct title" do
-        expect(response.body).to have_css("h1", text: "Data protection")
+        expect(response.body).to have_css("h1", text: "Data protection requirements")
       end
 
       it "has the correct content for registration section" do
@@ -280,7 +280,7 @@ describe "Acceptance::GuidancePage", type: :feature do
 
       it "has the correct content for personal data misuse section" do
         expect(response.body).to have_css("h2", text: "How to report misuse of personal data")
-        expect(response.body).to have_link("Information Commissioner’s Office (ICO)", href: "https://ico.org.uk/")
+        expect(response.body).to have_link("Information Commissioner’s Office", href: "https://ico.org.uk/")
       end
 
       it "has the Get Help or Give Feedback section" do
