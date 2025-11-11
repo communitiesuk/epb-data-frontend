@@ -1,0 +1,103 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-grid-row">
+        <h1 class="govuk-heading-xl">Energy certificate data APIs</h1>
+
+        <p class="govuk-body">
+          Learn about the APIs we offer for software developers and how you can connect to them.
+        </p>
+      </div>
+      <div class="govuk-grid-row">
+        <h2 class="govuk-heading-m">Data available</h2>
+
+        <p class="govuk-body">
+          Use the API to get data on:
+        </p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>Domestic energy performance certificates (EPCs)</li>
+          <li>Non-domestic energy performance certificates (EPCs) and recommendation reports for public buildings</li>
+          <li>Display energy certificates (DECs) and recommendation reports for public buildings</li>
+        </ul>
+      </div>
+      <div class="govuk-grid-row">
+        <h2 class="govuk-heading-m">Authentication</h2>
+
+        <% unless Helper::Session.is_user_authenticated?(session) %>
+          <p class="govuk-body">
+            You need to <a class="govuk-link" href="/login?referer=api/energy-certificate-data-apis">sign in</a> or <a class="govuk-link" href="/login?referer=api/energy-certificate-data-apis">create an account</a> with GOV.UK One Login to receive a bearer token.
+          </p>
+          <p class="govuk-body">
+            You can find your bearer token here or under <a class="govuk-link" href="/api/my-account">My account</a> once you have signed in.
+          </p>
+        <% end %>
+
+        <% if Helper::Session.is_user_authenticated?(session) %>
+          <dl class="govuk-summary-list govuk-!-width-full">
+            <div class="govuk-summary-list__row" id='bearer-token'>
+              <dt class="govuk-summary-list__key">
+                Bearer token:
+              </dt>
+              <dd class="govuk-summary-list__value" id="bearer-token-value">
+                <%= ViewModels::MyAccount.get_bearer_token(session, locals[:use_case]) %>
+              </dd>
+              <dd class="govuk-summary-list__actions">
+                <%= erb :component__copy_bearer_token %>
+              </dd>
+            </div>
+          </dl>
+        <% end %>
+      </div>
+      <div class="govuk-grid-row">
+        <h2 class="govuk-heading-m">Open API specification</h2>
+
+        <p class="govuk-body">
+          Our APIs use <a class="govuk-link" href="https://swagger.io/specification/">OpenAPI Specification</a> (OAS) - previously known as 'Swagger' - to describe the API's interface.
+        </p>
+        <p class="govuk-body">
+          The OAS file for each API contains general documentation as well as specific details of endpoints, including request and response headers and bodies.
+        </p>
+        <p class="govuk-body">
+          The OAS file for each API contains general documentation as well as specific details of endpoints, including request and response headers and bodies.
+          We use the OAS file to generate the API specifications in our API catalogue.
+          You can also download the OAS file for an API - go to the API specification and look for the "Get this specification in OAS format" button.
+        </p>
+        <p class="govuk-body">
+          You can use a tool such as <a class="govuk-link" href="https://swagger.io/tools/swagger-codegen/">Swagger Codegen</a> to generate stubs, test harnesses and SDKs in your favourite programming language.
+          Our OAS files use OAS version 3.
+        </p>
+      </div>
+      <div class="govuk-grid-row">
+        <h2 class="govuk-heading-m">Conditions of use</h2>
+
+        <p class="govuk-body">
+          Find out more about <a class="govuk-link" href="/licensing-restrictions">Licensing restrictions</a> and <a class="govuk-link" href="/data-protection-requirements">Data protection requirements</a>.
+        </p>
+      </div>
+      <div class="govuk-grid-row">
+        <h2 class="govuk-heading-m">Rate limiting</h2>
+
+        <p class="govuk-body">
+          We limit the number of requests each application can make. This protects our service against excessive use and Denial-of-Service attacks and encourages you to use our API endpoints efficiently.
+          We set limits based on anticipated loads and peaks. Our standard limit is three requests per second per application.
+        </p>
+        <p class="govuk-body">
+          If you reach this limit, you’ll get a response with an HTTP status of 429 (Too Many Requests).
+          If a 429 response is received, we recommend that your code should stop making additional API requests for a short period of time before retrying.
+        </p>
+        <p class="govuk-body">
+          Our rate limits are designed to encourage real-time interactions. As such we advise software developers to avoid batching requests if they wish to avoid being rate limited.
+        </p>
+        <p class="govuk-body">
+          If you continually hit this rate limit, contact us to discuss your application design and whether it’s appropriate to raise your rate limit.
+        </p>
+      </div>
+      <div class="govuk-grid-row">
+        <h2 class="govuk-heading-m">Technical documentation</h2>
+        <p class="govuk-body"><a class="govuk-link" href="#">Placeholder for a link</a></p>
+        <p class="govuk-body"><a class="govuk-link" href="#">Placeholder for a link</a></p>
+      </div>
+      <%= erb :component__get_help %>
+    </div>
+  </div>
+</div>
