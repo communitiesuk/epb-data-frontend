@@ -7,6 +7,13 @@ module Controller
       erb :guidance
     end
 
+    get "/data-dictionary" do
+      status 200
+      @back_link_href = request.referer || "/"
+      @hide_guidance_text = true
+      erb :'guidance_pages/data_dictionary'
+    end
+
     get "/linking-certificates-to-recommendations" do
       status 200
       @back_link_href = request.referer || "/"

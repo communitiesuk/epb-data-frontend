@@ -31,6 +31,7 @@ describe "Acceptance::GuidancePage", type: :feature do
       it "has the correct content for understanding the data" do
         expect(response.body).to have_css("h2", text: "Understanding the data")
         expect(response.body).to have_css("p", text: "Information on how the data is formatted and produced.")
+        expect(response.body).to have_link("Data dictionary", href: "/data-dictionary")
         expect(response.body).to have_link("Linking certificates to recommendations", href: "/linking-certificates-to-recommendations")
         expect(response.body).to have_link("How the data is produced", href: "/how-the-data-is-produced")
         expect(response.body).to have_link("Changes to the format and methodology", href: "/changes-to-the-format-and-methodology")
@@ -57,6 +58,46 @@ describe "Acceptance::GuidancePage", type: :feature do
 
       it "has the correct MHCLG contact email" do
         expect(response.body).to have_content("mhclg.digital-services@communities.gov.uk")
+      end
+
+      it "does not render content for guidance under the Get Help section" do
+        expect(response.body).not_to have_content("Visit the guidance page for information on:")
+      end
+    end
+  end
+
+  describe "get .get-energy-certificate-data.epb-frontend/data-dictionary" do
+    let(:path) { "/data-dictionary" }
+    let(:response) { get "#{base_url}#{path}" }
+
+    context "when the start page is rendered" do
+      it "returns status 200" do
+        expect(response.status).to eq(200)
+      end
+
+      it "shows a back link and redirects to previous page" do
+        header "Referer", "/previous_page"
+        expect(response.body).to have_link("Back", href: "/previous_page")
+      end
+
+      it "directs back link to home page if no referer header found" do
+        expect(response.body).to have_link("Back", href: "/")
+      end
+
+      it "has the correct title" do
+        expect(response.body).to have_css("h1", text: "Data dictionary")
+      end
+
+      it "has the correct content under the title" do
+        expect(response.body).to have_css("p", text: "The data dictionary provides an explanation for every variable included in the dataset, as well as information on the data source and caveats.")
+      end
+
+      it "has the correct content for documents section" do
+        expect(response.body).to have_css("h2", text: "Documents")
+      end
+
+      it "has the Get Help or Give Feedback section" do
+        expect(response.body).to have_css("h2", text: "Get help or give feedback")
       end
 
       it "does not render content for guidance under the Get Help section" do
