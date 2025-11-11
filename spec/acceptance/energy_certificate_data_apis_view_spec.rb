@@ -51,8 +51,8 @@ describe "Acceptance::EnergyCertificateDataApis", type: :feature do
 
       it "has the correct content for conditions of use section" do
         expect(response.body).to have_css("h2", text: "Conditions of use")
-        expect(response.body).to have_link("Licensing restrictions", href: "/licensing-restrictions")
-        expect(response.body).to have_link("Data protection requirements", href: "/data-protection-requirements")
+        expect(response.body).to have_link("Licensing restrictions", href: "/guidance/licensing-restrictions")
+        expect(response.body).to have_link("Data protection requirements", href: "/guidance/data-protection-requirements")
       end
 
       it "has the correct content for rate limiting section" do

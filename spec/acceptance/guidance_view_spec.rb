@@ -31,18 +31,18 @@ describe "Acceptance::GuidancePage", type: :feature do
       it "has the correct content for understanding the data" do
         expect(response.body).to have_css("h2", text: "Understanding the data")
         expect(response.body).to have_css("p", text: "Information on how the data is formatted and produced.")
-        expect(response.body).to have_link("Data dictionary", href: "/data-dictionary")
-        expect(response.body).to have_link("Linking certificates to recommendations", href: "/linking-certificates-to-recommendations")
-        expect(response.body).to have_link("How the data is produced", href: "/how-the-data-is-produced")
-        expect(response.body).to have_link("Changes to the format and methodology", href: "/changes-to-the-format-and-methodology")
-        expect(response.body).to have_link("Data limitations and exclusions", href: "/data-limitations")
+        expect(response.body).to have_link("Data dictionary", href: "/guidance/data-dictionary")
+        expect(response.body).to have_link("Linking certificates to recommendations", href: "/guidance/linking-certificates-to-recommendations")
+        expect(response.body).to have_link("How the data is produced", href: "/guidance/how-the-data-is-produced")
+        expect(response.body).to have_link("Changes to the format and methodology", href: "/guidance/changes-to-the-format-and-methodology")
+        expect(response.body).to have_link("Data limitations and exclusions", href: "/guidance/data-limitations")
       end
 
       it "has the correct content for publishing and usage restrictions" do
         expect(response.body).to have_css("h2", text: "Publishing and usage restrictions")
         expect(response.body).to have_css("p", text: "Information on the restrictions that affect how the data is published and how you can use it.")
-        expect(response.body).to have_link("Licensing restrictions", href: "/licensing-restrictions")
-        expect(response.body).to have_link("Data protection", href: "/data-protection-requirements")
+        expect(response.body).to have_link("Licensing restrictions", href: "/guidance/licensing-restrictions")
+        expect(response.body).to have_link("Data protection", href: "/guidance/data-protection-requirements")
       end
 
       it "has the correct content for developer apis" do
@@ -66,8 +66,8 @@ describe "Acceptance::GuidancePage", type: :feature do
     end
   end
 
-  describe "get .get-energy-certificate-data.epb-frontend/data-dictionary" do
-    let(:path) { "/data-dictionary" }
+  describe "get .get-energy-certificate-data.epb-frontend/guidance/data-dictionary" do
+    let(:path) { "/guidance/data-dictionary" }
     let(:response) { get "#{base_url}#{path}" }
 
     context "when the start page is rendered" do
@@ -106,8 +106,8 @@ describe "Acceptance::GuidancePage", type: :feature do
     end
   end
 
-  describe "get .get-energy-certificate-data.epb-frontend/linking-certificates-to-recommendations" do
-    let(:path) { "/linking-certificates-to-recommendations" }
+  describe "get .get-energy-certificate-data.epb-frontend/guidance/linking-certificates-to-recommendations" do
+    let(:path) { "/guidance/linking-certificates-to-recommendations" }
     let(:response) { get "#{base_url}#{path}" }
 
     context "when the start page is rendered" do
@@ -151,8 +151,8 @@ describe "Acceptance::GuidancePage", type: :feature do
     end
   end
 
-  describe "get .get-energy-certificate-data.epb-frontend/how-the-data-is-produced" do
-    let(:path) { "/how-the-data-is-produced" }
+  describe "get .get-energy-certificate-data.epb-frontend/guidance/how-the-data-is-produced" do
+    let(:path) { "/guidance/how-the-data-is-produced" }
     let(:response) { get "#{base_url}#{path}" }
 
     context "when the start page is rendered" do
@@ -190,8 +190,8 @@ describe "Acceptance::GuidancePage", type: :feature do
     end
   end
 
-  describe "get .get-energy-certificate-data.epb-frontend/changes-to-the-format-and-methodology" do
-    let(:path) { "/changes-to-the-format-and-methodology" }
+  describe "get .get-energy-certificate-data.epb-frontend/guidance/changes-to-the-format-and-methodology" do
+    let(:path) { "/guidance/changes-to-the-format-and-methodology" }
     let(:response) { get "#{base_url}#{path}" }
 
     context "when the start page is rendered" do
@@ -242,8 +242,8 @@ describe "Acceptance::GuidancePage", type: :feature do
     end
   end
 
-  describe "get .get-energy-certificate-data.epb-frontend/licensing-restrictions" do
-    let(:path) { "/licensing-restrictions" }
+  describe "get .get-energy-certificate-data.epb-frontend/guidance/licensing-restrictions" do
+    let(:path) { "/guidance/licensing-restrictions" }
     let(:response) { get "#{base_url}#{path}" }
 
     context "when the start page is rendered" do
@@ -286,8 +286,8 @@ describe "Acceptance::GuidancePage", type: :feature do
     end
   end
 
-  describe "get .get-energy-certificate-data.epb-frontend/data-protection-requirements" do
-    let(:path) { "/data-protection-requirements" }
+  describe "get .get-energy-certificate-data.epb-frontend/guidance/data-protection-requirements" do
+    let(:path) { "/guidance/data-protection-requirements" }
     let(:response) { get "#{base_url}#{path}" }
 
     context "when the start page is rendered" do
@@ -334,8 +334,8 @@ describe "Acceptance::GuidancePage", type: :feature do
     end
   end
 
-  describe "get .get-energy-certificate-data.epb-frontend/data-limitations" do
-    let(:path) { "/data-limitations" }
+  describe "get .get-energy-certificate-data.epb-frontend/guidance/data-limitations" do
+    let(:path) { "/guidance/data-limitations" }
     let(:response) { get "#{base_url}#{path}" }
 
     context "when the start page is rendered" do
