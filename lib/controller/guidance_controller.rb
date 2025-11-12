@@ -4,7 +4,6 @@ module Controller
       status 200
       @back_link_href = request.referer || "/"
       @hide_guidance_text = true
-      params["referer"] = "guidance"
 
       erb :guidance
     end

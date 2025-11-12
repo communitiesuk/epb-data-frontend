@@ -2,8 +2,17 @@ module Controller
   class UserController < BaseController
     get "/login" do
       status 200
-      @back_link_href = "/data-access-options"
-      authorize_url = params["referer"] ? "/login/authorize?referer=#{params['referer']}" : "/login/authorize"
+      @back_link_href = request.referer || "/"
+
+      authorize_url = case request.referer
+                      when "api/my-account"
+                        "/login/authorize?referer=api/my-account"
+                      when "guidance"
+                        "/login/authorize?referer=guidance"
+                      else
+                        "/login/authorize"
+                      end
+
       erb :login, locals: { authorize_url: }
     rescue StandardError => e
       server_error(e)
