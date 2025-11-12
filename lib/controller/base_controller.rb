@@ -67,9 +67,16 @@ module Controller
       raise MaintenanceMode if request.path != "/healthcheck" && Helper::Toggles.enabled?("ebp-data-frontend-maintenance-mode")
     rescue Errors::AuthenticationError
       redirect_url = "/login"
-      if request.path == "/api/my-account"
-        redirect_url += "?referer=api/my-account"
-      end
+
+      referer_path = case request.path
+                     when "/api/my-account"
+                       "api/my-account"
+                     when "/guidance/energy-certificate-data-apis"
+                       "guidance/energy-certificate-data-apis"
+                     end
+
+      redirect_url += "?referer=#{referer_path}" if referer_path
+
       redirect redirect_url
     end
 

@@ -18,6 +18,8 @@ module Controller
 
       if params["referer"] == "api/my-account"
         redirect_uri += "/admin"
+      elsif params["referer"] == "guidance/energy-certificate-data-apis"
+        redirect_uri += "/energy-certificate-data-apis"
       end
 
       nonce = request.cookies["nonce"] || SecureRandom.hex(16)
@@ -49,6 +51,10 @@ module Controller
 
     get "/login/callback" do
       one_login_callback(redirect_path: "type-of-properties")
+    end
+
+    get "/login/callback/energy-certificate-data-apis" do
+      one_login_callback(redirect_path: "guidance/energy-certificate-data-apis")
     end
 
     get "/login/callback/admin" do
@@ -132,7 +138,16 @@ module Controller
 
         @logger.error JSON.generate(error)
 
-        redirect redirect_path == "api/my-account" ? "/login?referer=api/my-account" : "/login"
+        redirect_url = case redirect_path
+                       when "api/my-account"
+                         "/login?referer=api/my-account"
+                       when "guidance/energy-certificate-data-apis"
+                         "/login?referer=guidance/energy-certificate-data-apis"
+                       else
+                         "/login"
+                       end
+
+        redirect redirect_url
       when Errors::TokenExchangeError, Errors::AuthenticationError, Errors::NetworkError
         @logger.warn "Authentication error: #{e.message}"
         server_error(e)
