@@ -174,17 +174,17 @@ describe "Acceptance::Login", type: :feature do
       end
     end
 
-    context "when the request is received with guidance/energy-certificate-data-apis referer parameter" do
+    context "when the request is received with guidance referer parameter" do
       before do
         allow(sign_onelogin_request_test_use_case).to receive(:execute).and_return("test_signed_request")
-        get "#{login_url}/authorize?referer=guidance/energy-certificate-data-apis"
+        get "#{login_url}/authorize?referer=guidance"
       end
 
       it "calls the use case with the correct arguments" do
         expect(sign_onelogin_request_test_use_case).to have_received(:execute).with(
           aud: "#{ENV['ONELOGIN_HOST_URL']}/authorize",
           client_id: ENV["ONELOGIN_CLIENT_ID"],
-          redirect_uri: "#{last_request.scheme}://#{last_request.host_with_port}/login/callback/energy-certificate-data-apis",
+          redirect_uri: "#{last_request.scheme}://#{last_request.host_with_port}/login/callback/guidance",
           state: last_response.cookies["state"].first,
           nonce: last_response.cookies["nonce"].first,
         )

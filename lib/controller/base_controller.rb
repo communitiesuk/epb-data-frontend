@@ -71,8 +71,8 @@ module Controller
       referer_path = case request.path
                      when "/api/my-account"
                        "api/my-account"
-                     when "/guidance/energy-certificate-data-apis"
-                       "guidance/energy-certificate-data-apis"
+                     when "/guidance"
+                       "guidance"
                      end
 
       redirect_url += "?referer=#{referer_path}" if referer_path

@@ -4,6 +4,8 @@ module Controller
       status 200
       @back_link_href = request.referer || "/"
       @hide_guidance_text = true
+      params["referer"] = "guidance"
+
       erb :guidance
     end
 
@@ -59,8 +61,6 @@ module Controller
     get "/guidance/energy-certificate-data-apis" do
       status 200
       @back_link_href = request.referer || "/"
-
-      params["referer"] = "guidance/energy-certificate-data-apis"
 
       erb :'guidance_pages/energy_certificate_data_apis', locals: { use_case: @container.get_object(:get_user_token_use_case) }
     rescue StandardError => e

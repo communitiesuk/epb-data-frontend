@@ -18,8 +18,8 @@ module Controller
 
       if params["referer"] == "api/my-account"
         redirect_uri += "/admin"
-      elsif params["referer"] == "guidance/energy-certificate-data-apis"
-        redirect_uri += "/energy-certificate-data-apis"
+      elsif params["referer"] == "guidance"
+        redirect_uri += "/guidance"
       end
 
       nonce = request.cookies["nonce"] || SecureRandom.hex(16)
@@ -53,8 +53,8 @@ module Controller
       one_login_callback(redirect_path: "type-of-properties")
     end
 
-    get "/login/callback/energy-certificate-data-apis" do
-      one_login_callback(redirect_path: "guidance/energy-certificate-data-apis")
+    get "/login/callback/guidance" do
+      one_login_callback(redirect_path: "guidance")
     end
 
     get "/login/callback/admin" do
@@ -141,8 +141,8 @@ module Controller
         redirect_url = case redirect_path
                        when "api/my-account"
                          "/login?referer=api/my-account"
-                       when "guidance/energy-certificate-data-apis"
-                         "/login?referer=guidance/energy-certificate-data-apis"
+                       when "guidance"
+                         "/login?referer=guidance"
                        else
                          "/login"
                        end
