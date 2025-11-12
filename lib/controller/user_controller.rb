@@ -3,7 +3,7 @@ module Controller
     get "/login" do
       status 200
       @back_link_href = "/data-access-options"
-      authorize_url = params["referer"] == "api/my-account" ? "/login/authorize?referer=api/my-account" : "/login/authorize"
+      authorize_url = params["referer"] ? "/login/authorize?referer=#{params['referer']}" : "/login/authorize"
       erb :login, locals: { authorize_url: }
     rescue StandardError => e
       server_error(e)

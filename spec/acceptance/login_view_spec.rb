@@ -98,10 +98,19 @@ describe "Acceptance::Login", type: :feature do
       end
     end
 
-    context "when the request received includes referer=api/my-account" do
-      it "has the correct Start now button" do
-        get "#{login_url}?referer=api/my-account"
-        expect(last_response.body).to have_link("Start now", href: "/login/authorize?referer=api/my-account")
+    context "when the request received includes referer" do
+      context "when referer is api/my-account" do
+        it "has the correct referer for Start now button on one login page" do
+          get "#{login_url}?referer=api/my-account"
+          expect(last_response.body).to have_link("Start now", href: "/login/authorize?referer=api/my-account")
+        end
+      end
+
+      context "when referer is guidance/energy-certificate-data-apis" do
+        it "has the correct referer for Start now button on one login page" do
+          get "#{login_url}?referer=guidance/energy-certificate-data-apis"
+          expect(last_response.body).to have_link("Start now", href: "/login/authorize?referer=guidance/energy-certificate-data-apis")
+        end
       end
     end
   end
