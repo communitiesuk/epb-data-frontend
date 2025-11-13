@@ -7,8 +7,8 @@ module Controller
       authorize_url = case params["referer"]
                       when "api/my-account"
                         "/login/authorize?referer=api/my-account"
-                      when "guidance"
-                        "/login/authorize?referer=guidance"
+                      when "guidance/energy-certificate-data-apis"
+                        "/login/authorize?referer=guidance/energy-certificate-data-apis"
                       else
                         "/login/authorize"
                       end
@@ -25,10 +25,11 @@ module Controller
       aud = "#{host_url}/authorize"
       redirect_uri = "#{frontend_url}/login/callback"
 
-      if params["referer"] == "api/my-account"
+      case params["referer"]
+      when "api/my-account"
         redirect_uri += "/admin"
-      elsif params["referer"] == "guidance"
-        redirect_uri += "/guidance"
+      when "guidance/energy-certificate-data-apis"
+        redirect_uri += "/energy-certificate-data-apis"
       end
 
       nonce = request.cookies["nonce"] || SecureRandom.hex(16)
@@ -62,12 +63,12 @@ module Controller
       one_login_callback(redirect_path: "type-of-properties")
     end
 
-    get "/login/callback/guidance" do
-      one_login_callback(redirect_path: "guidance")
-    end
-
     get "/login/callback/admin" do
       one_login_callback(redirect_path: "api/my-account")
+    end
+
+    get "/login/callback/energy-certificate-data-apis" do
+      one_login_callback(redirect_path: "guidance/energy-certificate-data-apis")
     end
 
     get "/jwks" do
@@ -147,16 +148,16 @@ module Controller
 
         @logger.error JSON.generate(error)
 
-        redirect_url = case redirect_path
-                       when "api/my-account"
-                         "/login?referer=api/my-account"
-                       when "guidance"
-                         "/login?referer=guidance"
-                       else
-                         "/login"
-                       end
+        redirect_endpoint = case redirect_path
+                            when "api/my-account"
+                              "/login?referer=api/my-account"
+                            when "guidance/energy-certificate-data-apis"
+                              "/login?referer=guidance/energy-certificate-data-apis"
+                            else
+                              "/login"
+                            end
 
-        redirect redirect_url
+        redirect redirect_endpoint
       when Errors::TokenExchangeError, Errors::AuthenticationError, Errors::NetworkError
         @logger.warn "Authentication error: #{e.message}"
         server_error(e)
