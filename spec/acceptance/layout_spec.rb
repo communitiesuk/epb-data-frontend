@@ -87,19 +87,11 @@ describe "Acceptance::Layout", type: :feature do
         it "displays the my account button" do
           expect(response.body).to have_link("My account", href: "/api/my-account")
         end
-
-        it "does not display the sign in button" do
-          expect(response.body).not_to have_link("Sign in", href: "/login")
-        end
       end
 
       context "when a user is not signed in" do
         before do
           allow(Helper::Session).to receive(:is_logged_in?).and_return(false)
-        end
-
-        it "displays the sign in button" do
-          expect(response.body).to have_link("Sign in", href: "/login")
         end
 
         it "does not display the my account button" do

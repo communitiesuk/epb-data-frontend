@@ -55,7 +55,6 @@ en:
         hide_message: "Hide cookie message"
       environment_banner_non_prod: "This is a test site. The data is not real."
       my_account: "My account"
-      sign_in: "Sign in"
       feedback_intro: "This is a new service - your"
       feedback_link_content: "feedback"
       feedback_outro: "will help us to improve it."
