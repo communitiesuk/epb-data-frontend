@@ -23,7 +23,7 @@
       <div class="govuk-grid-row">
         <h2 class="govuk-heading-m govuk-!-padding-top-4">Authentication</h2>
 
-        <% unless Helper::Session.is_user_authenticated?(session) %>
+        <% unless Helper::Session.is_logged_in?(session) %>
           <p class="govuk-body">
             You need to <a class="govuk-link" href="/login?referer=guidance/energy-certificate-data-apis">sign in</a> or <a class="govuk-link" href="/login?referer=guidance/energy-certificate-data-apis">create an account</a> with GOV.UK One Login to receive a bearer token.
           </p>
@@ -32,7 +32,7 @@
           </p>
         <% end %>
 
-        <% if Helper::Session.is_user_authenticated?(session) %>
+        <% if Helper::Session.is_logged_in?(session) %>
           <dl class="govuk-summary-list govuk-!-width-full">
             <div class="govuk-summary-list__row" id='bearer-token'>
               <dt class="govuk-summary-list__key">
