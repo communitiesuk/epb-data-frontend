@@ -102,8 +102,7 @@ describe "Acceptance::Login", type: :feature do
     context "when the request received includes a referer" do
       context "when referer is 'guidance'" do
         before do
-          header "Referer", "guidance"
-          get login_url
+          get "#{login_url}?referer=guidance"
         end
 
         it "has the correct referer for Start now button" do
@@ -113,8 +112,7 @@ describe "Acceptance::Login", type: :feature do
 
       context "when referer is 'api/my-account'" do
         before do
-          header "Referer", "api/my-account"
-          get login_url
+          get "#{login_url}?referer=api/my-account"
         end
 
         it "has the correct referer for Start now button (authorize_url)" do

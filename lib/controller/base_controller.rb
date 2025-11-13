@@ -68,14 +68,9 @@ module Controller
     rescue Errors::AuthenticationError
       redirect_url = "/login"
 
-      referer_path = case request.path
-                     when "/api/my-account"
-                       "api/my-account"
-                     when "/guidance"
-                       "guidance"
-                     end
-
-      redirect_url += "?referer=#{referer_path}" if referer_path
+      if request.path == "/api/my-account"
+        redirect_url += "?referer=api/my-account"
+      end
 
       redirect redirect_url
     end

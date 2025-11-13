@@ -4,7 +4,7 @@ module Controller
       status 200
       @back_link_href = request.referer || "/"
 
-      authorize_url = case request.referer
+      authorize_url = case params["referer"]
                       when "api/my-account"
                         "/login/authorize?referer=api/my-account"
                       when "guidance"
