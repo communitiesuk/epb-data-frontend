@@ -415,8 +415,8 @@ describe "Acceptance::GuidancePage", type: :feature do
 
       it "has the correct content for authentication section" do
         expect(response.body).to have_css("h2", text: "Authentication")
-        expect(response.body).to have_link("sign in", href: "/login?referer=guidance/energy-certificate-data-apis")
-        expect(response.body).to have_link("create an account", href: "/login?referer=guidance/energy-certificate-data-apis")
+        expect(response.body).to have_link("sign in", href: "/api/my-account")
+        expect(response.body).to have_link("create an account", href: "/api/my-account")
         expect(response.body).to have_link("My account", href: "/api/my-account")
       end
 

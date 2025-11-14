@@ -100,16 +100,6 @@ describe "Acceptance::Login", type: :feature do
     end
 
     context "when the request received includes a referer" do
-      context "when referer is 'guidance/energy-certificate-data-apis'" do
-        before do
-          get "#{login_url}?referer=guidance/energy-certificate-data-apis"
-        end
-
-        it "has the correct referer for Start now button" do
-          expect(last_response.body).to have_link("Start now", href: "/login/authorize?referer=guidance/energy-certificate-data-apis")
-        end
-      end
-
       context "when referer is 'api/my-account'" do
         before do
           get "#{login_url}?referer=api/my-account"
@@ -175,23 +165,6 @@ describe "Acceptance::Login", type: :feature do
           aud: "#{ENV['ONELOGIN_HOST_URL']}/authorize",
           client_id: ENV["ONELOGIN_CLIENT_ID"],
           redirect_uri: "#{last_request.scheme}://#{last_request.host_with_port}/login/callback/admin",
-          state: last_response.cookies["state"].first,
-          nonce: last_response.cookies["nonce"].first,
-        )
-      end
-    end
-
-    context "when the request is received with guidance/energy-certificate-data-apis referer parameter" do
-      before do
-        allow(sign_onelogin_request_test_use_case).to receive(:execute).and_return("test_signed_request")
-        get "#{login_url}/authorize?referer=guidance/energy-certificate-data-apis"
-      end
-
-      it "calls the use case with the correct arguments" do
-        expect(sign_onelogin_request_test_use_case).to have_received(:execute).with(
-          aud: "#{ENV['ONELOGIN_HOST_URL']}/authorize",
-          client_id: ENV["ONELOGIN_CLIENT_ID"],
-          redirect_uri: "#{last_request.scheme}://#{last_request.host_with_port}/login/callback/energy-certificate-data-apis",
           state: last_response.cookies["state"].first,
           nonce: last_response.cookies["nonce"].first,
         )

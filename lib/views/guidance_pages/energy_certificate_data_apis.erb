@@ -25,7 +25,7 @@
 
         <% unless Helper::Session.is_logged_in?(session) %>
           <p class="govuk-body">
-            You need to <a class="govuk-link" href="/login?referer=guidance/energy-certificate-data-apis">sign in</a> or <a class="govuk-link" href="/login?referer=guidance/energy-certificate-data-apis">create an account</a> with GOV.UK One Login to receive a bearer token.
+            You need to <a class="govuk-link" href="/api/my-account">sign in</a> or <a class="govuk-link" href="/api/my-account">create an account</a> with GOV.UK One Login to receive a bearer token.
           </p>
           <p class="govuk-body">
             You can find your bearer token here or under <a class="govuk-link" href="/api/my-account">My account</a> once you have signed in.
