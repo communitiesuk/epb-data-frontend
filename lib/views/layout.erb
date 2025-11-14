@@ -120,15 +120,9 @@
     <%= erb :'component__back_link', locals: { href: @back_link_href } %>
   <% end %>
 
-
-  <% if @no_main_wrapper %>
+  <main id="main-content" class="govuk-main-wrapper" role="main">
     <%= yield %>
-  <% else %>
-    <main id="main-content" class="govuk-main-wrapper" role="main">
-      <%= yield %>
-    </main>
-  <% end %>
-
+  </main>
 </div>
 
 <footer class="govuk-footer" role="contentinfo">
