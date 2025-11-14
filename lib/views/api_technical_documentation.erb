@@ -1,21 +1,85 @@
 
+
 <div class="govuk-grid-row">
-  <div class="govuk-grid-column-full">
-    <div class="govuk-grid-column-two-thirds">
-      <div class="govuk-grid-row">
-        <h1 class="govuk-heading-xl">Energy certificate data API documentation</h1>
+        <div class="govuk-grid-column-one-third">
 
-        <p class="govuk-body-l">
-          This documentation is for developers interested in using the Energy Certificate Data API to access Energy Performance Certificate (EPC) and Display Energy Certificate (DEC) data for buildings in England and Wales.
-        </p>
+          <nav class="navigation govuk-!-margin-top-7 govuk-!-padding-bottom-12" aria-label="Using Notify">
+            <ul class="side-nav__component">
+              <li class="side-nav__list"> <a href="#overview" class="govuk-link govuk-link--no-visited-state govuk-link--no-underline">Overview</a>  </li>
+              <li class="side-nav__list"> <a href="#making-a-request" class="govuk-link govuk-link--no-visited-state govuk-link--no-underline">Making a request</a> </li>
+              <li class="side-nav__list"> <a href="#headers" class="govuk-link govuk-link--no-visited-state govuk-link--no-underline">Headers</a> </li>
 
-        <p class="govuk-body-m">
-          Developers can also use our <a href="/api-documentation/index.html">OpenAPI</a> file with tools such as <a href="https://swagger.io/">Swagger</a> and <a href="https://github.com/Redocly/redoc">Redoc</a> to assist with using the REST API.
-        </p>
+            </ul>
+          </nav>
+        </div>
+
+        <div class="govuk-grid-column-two-thirds">
+          <section id="overview">
+          <h1 class="govuk-heading-m">Energy certificate data API documentation</h1>
+
+          <p class="govuk-body">
+            This documentation is for developers interested in using the Energy Certificate Data API to access Energy Performance Certificate (EPC) and Display Energy Certificate (DEC) data for buildings in England and Wales.
+          </p>
+
+          <p class="govuk-body">
+            Developers can also use our <a href="/api-documentation/index.html">OpenAPI</a> file with tools such as <a href="https://swagger.io/">Swagger</a> and <a href="https://github.com/Redocly/redoc">Redoc</a> to assist with using the REST API.
+          </p>
+            <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" aria-hidden="true">
+          </section>
+
+          <search id="make-a-request">
+            <h2 class="govuk-heading-m">Making a request</h2>
+
+            <p class="govuk-body">
+              The base URL
+            </p>
+              <pre class="highlight plaintext">
+                <code><%= ENV["EPB_DATA_WAREHOUSE_API_URL"] %></code>
+              </pre>
+
+            <p class="govuk-body">
+              Requests should be GET requests, with all parameters specified in the query string of the URL.  You should not send any request body.
+            </p>
+
+
+            <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" aria-hidden="true">
+          </search>
+
+
+          <search id="headers">
+            <h2 class="govuk-heading-m">Heahders</h2>
+            <h3>Authorisation header</h3>
+
+            <p class="govuk-body">
+              The authorisation header is a bearer token that can be found on your <a href="api/my-account">my account</a> page when you are logged in to the service.<br/>
+              You must include an authorisation header.
+            </p>
+            <p class="govuk-body">
+              When you have your bearer token, add the token to a header as follows:
+            </p>
+
+            <pre class="highlight">
+            <code> "Authorization": "Bearer your_bearer_token"</code>
+            </pre>
+
+             <h3>Accept header</h3>
+              <p class="govuk-body">
+
+The accept header is application/json:
+              </p>
+            <pre class="highlight">
+            <code>"Accept": "application/json"</code>
+       </pre>
+
+
+            <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" aria-hidden="true">
+          </search>
+
+
+
+        </div>
 
 
       </div>
-      <%= erb :component__get_help %>
-    </div>
-  </div>
-</div>
+
+

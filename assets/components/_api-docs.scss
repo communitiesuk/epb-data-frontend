@@ -1,0 +1,25 @@
+.side-nav__component{
+  list-style-type: none;
+  padding: 0;
+}
+
+li.side-nav__list{
+  display: list-item;
+  unicode-bidi: isolate;
+  padding-top:10px
+}
+
+
+pre{
+  background: rgb(249, 248.5, 248);
+  overflow: auto;
+  position: relative;
+  border: 1px solid #bfc1c3;
+  font-family: monospace, monospace;
+  font-size: 1em;
+  padding: 15px 15px 15px 0;
+}
+
+code {
+  border-radius: 1px;
+}
