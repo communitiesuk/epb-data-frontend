@@ -8,4 +8,5 @@ class FrontendService < Controller::BaseController
   use Controller::UserController
   use Controller::ApiController
   use Controller::GuidanceController
+  use Controller::ApiTechDocsController
 end
