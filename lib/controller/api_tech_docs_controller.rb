@@ -4,7 +4,7 @@ module Controller
       status 200
       status 200
       @back_link_href = request.referer || "/"
-      @hide_guidance_text = true
+      @no_main_wrapper = true
       erb :api_technical_documentation
     end
   end
