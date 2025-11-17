@@ -5,8 +5,8 @@
         </div>
 
         <div class="govuk-grid-column-two-thirds">
-          <section id="overview">
-          <h1 class="govuk-heading-m">Energy certificate data API documentation</h1>
+
+          <h1 class="govuk-heading-l">Energy certificate data API documentation</h1>
 
           <p class="govuk-body">
             This documentation is for developers interested in using the Energy Certificate Data API to access Energy Performance Certificate (EPC) and Display Energy Certificate (DEC) data for buildings in England and Wales.
@@ -16,109 +16,16 @@
             Developers can also use our <a href="/api-documentation/index.html">OpenAPI</a> file with tools such as <a href="https://swagger.io/">Swagger</a> and <a href="https://github.com/Redocly/redoc">Redoc</a> to assist with using the REST API.
           </p>
             <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" aria-hidden="true">
-          </section>
-
-          <section id="making-a-request">
-            <h2 class="govuk-heading-m">Making a request</h2>
-
-            <p class="govuk-body">
-              The base URL
-            </p>
 
 
-            <pre><code><%= ENV["EPB_DATA_WAREHOUSE_API_URL"] %></code></pre>
-
-            <p class="govuk-body">
-              Requests should be GET requests, with all parameters specified in the query string of the URL.  You should not send any request body.
-            </p>
 
 
-            <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" aria-hidden="true">
-          </section>
-
-          <section id="headers">
-            <h2 class="govuk-heading-m">Headers</h2>
-            <h3>Authorisation header</h3>
-
-            <p class="govuk-body">
-              The authorisation header is a bearer token that can be found on your <a href="api/my-account">my account</a> page when you are logged in to the service.<br/>
-              You must include an authorisation header.
-            </p>
-            <p class="govuk-body">
-              When you have your bearer token, add the token to a header as follows:
-            </p>
-
-            <pre><code>"Authorization": "Bearer your_bearer_token"</code></pre>
-
-             <h3>Accept header</h3>
-              <p class="govuk-body">
-                The accept header is application/json:
-              </p>
-
-            <pre><code>"Accept": "application/json"</code></pre>
 
 
-            <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" aria-hidden="true">
-          </section>
 
-
-          <section id="fetch-certificates">
-            <h2 class="govuk-heading-m">Fetch certificate data</h2>
-            <p class="govuk-body">
-              You can fetch the full data for an EPC or DEC using its certificate number.
-            </p>
-            <h4>Method</h4>
-            <pre><code>GET /api/certificate</code></pre>
-            <h4>Parameters</h4>
-            <h5>certificate_number (required)</h5>
-              The 20-digit certificate number of the EPC or DEC.
-              For example:
-
-
-            <pre><code>?certificate_number=1111-2222-3333-4444-5555</code></pre>
-
-            <h4>Responses</h4>
-
-            <p class="govuk-body">
-              If the request is successful, the response body is json with a status code of 200. The json structure and keys will vary depending on the type of certificate
-              and the schema that was used to register it, but there will always be a “data” block that wraps the certificate data:
-            </p>
-
-            <pre><code class="javascript"><%=str= <<~JSON
-                        {
-                            "data": {
-                                "uprn": 012345678912,
-                                "addressLine1": "12 Example Street",
-                                "postTown": "Fulchester",
-                                "postcode": "FU1 1AB",
-                                "assessmentType": "RdSAP",
-                                ...
-                            }}````````````````
-          JSON
-                          ViewModels::ApiTechDocs.markdown(str)
-%></code></pre>
-
-            <p class="govuk-body">
-              We publish samples of the JSON schema for every EPC schema (RdSAP, SAP, CEPC etc) and schema version supported by the service.
-            </p>
-            <p class="govuk-body">  <a href="https://github.com/communitiesuk/epb-data-warehouse/tree/main/spec/fixtures/json_samples"> Click here to view the JSON samples</a>
-            </p>
-
-          <h4>Error codes</h4>
-
-            <p class="govuk-body">If the request is not successful an HTTP error code will be returned:   </p>
-            <ul>
-            <li>404 – no certificate could be found with the certificate number </li>
-
-              <li>400 – the certificate_number was not in the right format</li>
-            </ul>
-
-            <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" aria-hidden="true">
-          </section>
 
         </div>
 
-
-      </div>
+</div>
 
 

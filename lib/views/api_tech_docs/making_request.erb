@@ -1,0 +1,29 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-one-third">
+
+    <%= erb :'api_tech_docs/component__navigation', locals: { href: @back_link_href } %>
+  </div>
+
+  <div class="govuk-grid-column-two-thirds">
+
+
+      <h1 class="govuk-heading-l">Making a request</h1>
+
+      <p class="govuk-body">
+        The base URL
+      </p>
+
+      <pre><code><%= ENV["EPB_DATA_WAREHOUSE_API_URL"] %></code></pre>
+
+      <p class="govuk-body">
+        Requests should be GET requests, with all parameters specified in the query string of the URL.  You should not send any request body.
+      </p>
+
+
+      <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" aria-hidden="true">
+
+  </div>
+
+</div>
+
+

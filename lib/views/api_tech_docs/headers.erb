@@ -1,0 +1,44 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-one-third">
+
+    <%= erb :'api_tech_docs/component__navigation', locals: { href: @back_link_href } %>
+  </div>
+
+  <div class="govuk-grid-column-two-thirds">
+
+      <h1 class="govuk-heading-l">Headers</h1>
+      <h2 class="govuk-heading-m">Authorisation header</h2>
+
+      <p class="govuk-body">
+        The authorisation header is a bearer token that can be found on your <a href="api/my-account">my account</a> page when you are logged in to the service.<br/>
+        You must include an authorisation header.
+      </p>
+      <p class="govuk-body">
+        When you have your bearer token, add the token to a header as follows:
+      </p>
+
+      <pre><code>"Authorization": "Bearer your_bearer_token"</code></pre>
+
+      <h2 class="govuk-heading-m">Accept header</h2>
+      <p class="govuk-body">
+        The accept header is application/json:
+      </p>
+
+      <pre><code>"Accept": "application/json"</code></pre>
+
+      <h2 class="govuk-heading-m">Example</h2>
+
+      <pre><code ><%= str= <<~CODE
+               curl #{ENV["EPB_DATA_WAREHOUSE_API_URL"]}/api/certificate?certificate_number=1111-2222-3333-4444-5555 \
+               -H "Authorization: Bearer my_bearer_token" \
+               -H "Accept: application/json"
+              CODE
+                      ViewModels::ApiTechDocs.markdown(str)
+      %></code></pre>
+
+
+
+
+  </div>
+
+</div>
