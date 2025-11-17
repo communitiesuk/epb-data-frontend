@@ -120,7 +120,8 @@
     <%= erb :'component__back_link', locals: { href: @back_link_href } %>
   <% end %>
 
-  <main id="main-content" class="govuk-main-wrapper" role="main">
+
+  <main id="main-content" class="govuk-main-wrapper<% if @main_no_padding %> govuk-!-padding-top-0<% end %>" role="main">
     <%= yield %>
   </main>
 </div>

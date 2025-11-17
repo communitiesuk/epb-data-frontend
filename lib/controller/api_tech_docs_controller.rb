@@ -5,6 +5,7 @@ module Controller
       status 200
       @back_link_href = request.referer || "/"
       @hide_guidance_text = true
+      @main_no_padding = true
       erb :api_technical_documentation
     end
   end
