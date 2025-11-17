@@ -110,7 +110,7 @@
               and the schema that was used to register it, but there will always be a “data” block that wraps the certificate data:
             </p>
 
-            <pre><code class="javascript"><%=str=  <<~JSON
+            <pre><code class="javascript"><%=str= <<~JSON
                         {
                             "data": {
                                 "uprn": 012345678912,
@@ -119,12 +119,25 @@
                                 "postcode": "FU1 1AB",
                                 "assessmentType": "RdSAP",
                                 ...
-                            }}
+                            }}````````````````
           JSON
                           ViewModels::ApiTechDocs.markdown(str)
 %></code></pre>
 
+            <p class="govuk-body">
+              We publish samples of the JSON schema for every EPC schema (RdSAP, SAP, CEPC etc) and schema version supported by the service.
+            </p>
+            <p class="govuk-body">  <a href="https://github.com/communitiesuk/epb-data-warehouse/tree/main/spec/fixtures/json_samples"> Click here to view the JSON samples</a>
+            </p>
 
+          <h4>Error codes</h4>
+
+            <p class="govuk-body">If the request is not successful an HTTP error code will be returned:   </p>
+            <ul>
+            <li>404 – no certificate could be found with the certificate number </li>
+
+              <li>400 – the certificate_number was not in the right format</li>
+            </ul>
 
             <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" aria-hidden="true">
           </section>
