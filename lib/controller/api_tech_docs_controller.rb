@@ -6,7 +6,7 @@ module Controller
       @back_link_href = request.referer || "/"
       @hide_guidance_text = true
       @main_no_padding = true
-      erb :api_technical_documentation
+      erb :'api_tech_docs/overview'
     end
   end
 end

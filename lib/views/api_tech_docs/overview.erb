@@ -1,33 +1,7 @@
 <div class="govuk-grid-row">
         <div class="govuk-grid-column-one-third">
 
-          <nav class="app-subnav" aria-labelledby="app-subnav-heading">
-            <h3 class="app-subnav__theme">General documentation</h3>
-
-            <ul class="app-subnav__section">
-              <li class="app-subnav__section-item"><a href="#overview" class="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline">Energy certificate data API documentation</a>  </li>
-              <li class="app-subnav__section-item"><a href="#making-a-request" class="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline">Making a request</a> </li>
-              <li class="app-subnav__section-item"><a href="#headers" class="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline">Headers</a> </li>
-            </ul>
-
-
-              <h3 class="app-subnav__theme">API specifications</h3>
-              <ul class="app-subnav__section">
-                  <li class="app-subnav__section-item">
-                    <a href="#fetch-certificates" class="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline">Fetch certificate data  </a> </li>
-                  <li class="app-subnav__section-item">
-                    <a href="#example-requests" class="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline">Search for domestic certificates </a> </li>
-                  <li class="app-subnav__section-item">
-                    <a href="#example-requests" class="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline">Search for non-domestic certificates </a> </li>
-                  <li class="app-subnav__section-item">
-                    <a href="#example-requests" class="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline">Search certificates that have changed</a> </li>
-                  <li class="app-subnav__section-item">
-                    <a href="#example-requests" class="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline">Download domestic full load csv</a> </li>
-                  <li class="app-subnav__section-item">
-                    <a href="#example-requests" class="gapp-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline">Fetch info about domestic full load csv</a> </li>
-                </ul>
-
-          </nav>
+          <%= erb :'api_tech_docs/component__navigation', locals: { href: @back_link_href } %>
         </div>
 
         <div class="govuk-grid-column-two-thirds">
