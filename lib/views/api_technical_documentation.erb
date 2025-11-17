@@ -13,12 +13,18 @@
 
               <h3 class="app-subnav__theme">API specifications</h3>
               <ul class="app-subnav__section">
-                  <li class="app-subnav__section-item"> <a href="#example-requests" class="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline">Fetch certificate data  </a> </li>
-                  <li class="app-subnav__section-item"> <a href="#example-requests" class="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline">Search for domestic certificates </a> </li>
-                  <li class="app-subnav__section-item"> <a href="#example-requests" class="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline">Search for non-domestic certificates </a> </li>
-                  <li class="app-subnav__section-item"> <a href="#example-requests" class="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline">Search certificates that have changed</a> </li>
-                  <li class="app-subnav__section-item"> <a href="#example-requests" class="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline">Download domestic full load csv</a> </li>
-                  <li class="app-subnav__section-item"> <a href="#example-requests" class="gapp-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline">Fetch info about domestic full load csv</a> </li>
+                  <li class="app-subnav__section-item">
+                    <a href="#fetch-certificates" class="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline">Fetch certificate data  </a> </li>
+                  <li class="app-subnav__section-item">
+                    <a href="#example-requests" class="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline">Search for domestic certificates </a> </li>
+                  <li class="app-subnav__section-item">
+                    <a href="#example-requests" class="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline">Search for non-domestic certificates </a> </li>
+                  <li class="app-subnav__section-item">
+                    <a href="#example-requests" class="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline">Search certificates that have changed</a> </li>
+                  <li class="app-subnav__section-item">
+                    <a href="#example-requests" class="app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline">Download domestic full load csv</a> </li>
+                  <li class="app-subnav__section-item">
+                    <a href="#example-requests" class="gapp-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline">Fetch info about domestic full load csv</a> </li>
                 </ul>
 
           </nav>
@@ -81,21 +87,43 @@
             <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" aria-hidden="true">
           </section>
 
-          <section id="example-requests">
-            <h2 class="govuk-heading-m">Example requests</h2>
+
+          <section id="fetch-certificates">
+            <h2 class="govuk-heading-m">Fetch certificate data</h2>
             <p class="govuk-body">
-              To fetch the full certificate data for certificate number 1111-2222-3333-4444-5555:
+              You can fetch the full data for an EPC or DEC using its certificate number.
             </p>
-            <p class="govuk-body">
+            <h4>Method</h4>
+            <pre><code>GET /api/certificate</code></pre>
+            <h4>Parameters</h4>
+            <h5>certificate_number (required)</h5>
+              The 20-digit certificate number of the EPC or DEC.
+              For example:
 
-            <pre ><code>GET /api/certificate?certificate_number=1111-2222-3333-4444-5555</code></pre>
+
+            <pre><code>?certificate_number=1111-2222-3333-4444-5555</code></pre>
+
+            <h4>Responses</h4>
 
             <p class="govuk-body">
-              To get a list of all the domestic EPCs registered in March 2022 at postcode LS1 4AP:
+              If the request is successful, the response body is json with a status code of 200. The json structure and keys will vary depending on the type of certificate
+              and the schema that was used to register it, but there will always be a “data” block that wraps the certificate data:
             </p>
-            <p class="govuk-body">
 
-            <pre><code>GET /api/domestic/search?postcode=LS1+4AP&date_start=2022-03-01&date_end=2022-03-3</code></pre>
+            <pre><code class="javascript"><%=str=  <<~JSON
+                        {
+                            "data": {
+                                "uprn": 012345678912,
+                                "addressLine1": "12 Example Street",
+                                "postTown": "Fulchester",
+                                "postcode": "FU1 1AB",
+                                "assessmentType": "RdSAP",
+                                ...
+                            }}
+          JSON
+                          ViewModels::ApiTechDocs.markdown(str)
+%></code></pre>
+
 
 
             <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" aria-hidden="true">
