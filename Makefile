@@ -41,3 +41,8 @@ journey:
 .PHONY: one-login
 one-login:
 	@scripts/one_login_simulator.sh
+
+.PHONY: reload-local
+reload-local:
+	@make frontend-build
+	@make run ARGS=config_test.ru
