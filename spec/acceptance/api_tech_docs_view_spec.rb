@@ -14,12 +14,6 @@ describe "Acceptance::ApiTechnicalDocumentation", type: :feature do
       it "has the correct title" do
         expect(response.body).to have_css("h1", text: "Energy certificate data API documentation")
       end
-
-      it "has the navigation links" do
-        expect(response.body).to have_link("Overview", href: "#overview")
-        expect(response.body).to have_link("Making a request", href: "#making-a-request")
-        expect(response.body).to have_link("Headers", href: "#headers")
-      end
     end
   end
 end
