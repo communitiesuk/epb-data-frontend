@@ -90,6 +90,7 @@ describe "Acceptance::GuidancePage", type: :feature do
 
       it "has the correct content under the title" do
         expect(response.body).to have_css("p", text: "The data dictionary provides an explanation for every variable included in the dataset, as well as information on the data source and caveats.")
+        expect(response.body).to have_css("p", text: "The data dictionary is only available for Domestic EPC data.")
       end
 
       it "has the correct content for documents section" do
@@ -133,12 +134,12 @@ describe "Acceptance::GuidancePage", type: :feature do
       end
 
       it "has the correct content for CSV download section" do
-        expect(response.body).to have_css("p", text: "For domestic EPC and commercial EPC data, the certificate numbers can be used to identify certificates and to link them with their recommendations.")
+        expect(response.body).to have_css("p", text: "For domestic EPC and non-domestic EPC data, the certificate numbers can be used to identify certificates and to link them with their recommendations.")
       end
 
       it "has the correct content for API section" do
         expect(response.body).to have_css("p", text: "For domestic EPC data, the recommendation reports are included in the EPCs.")
-        expect(response.body).to have_css("p", text: "For commercial EPC data, the certificate numbers can be used to fetch the recommendation reports.")
+        expect(response.body).to have_css("p", text: "For non-domestic EPC data, the certificate numbers can be used to fetch the recommendation reports.")
       end
 
       it "has the Get Help or Give Feedback section" do
