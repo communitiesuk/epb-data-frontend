@@ -22,7 +22,7 @@ module Controller
 
     get "/api-technical-documentation/search-domestic-certificates" do
       set_headers
-      @assessment_type_tile = "domestic"
+      @assessment_type_title = "domestic"
       @assessment_type = "domestic"
       erb :'api_tech_docs/search_certificates'
     end
@@ -38,7 +38,6 @@ module Controller
 
     def set_headers
       status 200
-      @back_link_href = request.referer || "/"
       @hide_guidance_text = true
       @main_no_padding = true
     end
