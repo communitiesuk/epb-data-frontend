@@ -1,0 +1,52 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-one-third">
+
+    <%= erb :'api_tech_docs/component__navigation' %>
+  </div>
+  <div class="govuk-grid-column-two-thirds">
+
+    <div class="govuk-!-margin-bottom-7">
+    <h1 class="govuk-heading-l">Download <%= @assessment_type_title %> full load <%= @file_type  %></h1>
+
+    <p class="govuk-body">
+      Download a zip file of the full data set of <%= @assessment_type_title %> EPCs as series of <%= @file_type  %> files by year
+    </p>
+    <p class="govuk-body"> This file is re-generated on the 1st of every month (see file info for the date it was last updated).
+    </p>
+  </div>
+
+
+    <div class="govuk-!-margin-bottom-7">
+      <h2 class="govuk-heading-m">Method</h2>
+
+      <pre><code>GET /api/files/<%= @assessment_type %>/<%= @file_type %></code></pre>
+    </div>
+
+    <div class="govuk-!-margin-bottom-7">
+      <h2 class="govuk-heading-m">Response</h2>
+
+      <p>If the request is successful, the response will return a status of 302.</p>
+      <p>The response header will include the location of the file to be downloaded. </p>
+      <p>The URL of the file will be generated at run time.   </p>
+
+      <pre><code><%= ViewModels::ApiTechDocs.file_download_response(@assessment_type, @file_type) %></code></pre>
+    </div>
+
+    <div class="govuk-!-margin-bottom-7">
+      <h2 class="govuk-heading-m">Error</h2>
+
+      <p>If the request is not successful an HTTP error code will be returned:.</p>
+      <p>404. No file is found"</p>
+
+    </div>
+
+    <div class="govuk-!-margin-bottom-7">
+      <h2 class="govuk-heading-m">Example</h2>
+
+
+      <pre><code><%= ViewModels::ApiTechDocs.curl_example "api/files/#{@assessment_type}/#{@file_type} -L -o 'my_#{@assessment_type}_file.zip"%></code></pre>
+
+    </div>
+
+  </div>
+</div>

@@ -29,9 +29,25 @@ module Controller
 
     get "/api-technical-documentation/search-non-domestic-certificates" do
       set_headers
-      @assessment_type_tile = "non domestic"
+      @assessment_type_title = "non domestic"
       @assessment_type = "non-domestic"
       erb :'api_tech_docs/search_certificates'
+    end
+
+    get "/api-technical-documentation/download-domestic-full-load-csv" do
+      set_headers
+      @assessment_type_title = "domestic"
+      @assessment_type = "domestic"
+      @file_type = "csv"
+      erb :'api_tech_docs/download_file'
+    end
+
+    get "/api-technical-documentation/download-non-domestic-full-load-csv" do
+      set_headers
+      @assessment_type_title = "non domestic"
+      @assessment_type = "non-domestic"
+      @file_type = "csv"
+      erb :'api_tech_docs/download_file'
     end
 
   private

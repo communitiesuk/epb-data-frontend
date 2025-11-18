@@ -23,6 +23,18 @@ module ViewModels
       markdown(str)
     end
 
+    def self.file_download_response(assessment_type, file_type)
+      str = <<~CODE
+         HTTP/2 302
+         content-type: text/html;charset=utf-8
+         content-length: 0
+         location: https://temp.s3.eu-west-2.amazonaws.com/full-load/#{assessment_type}-#{file_type}.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAZTY5CLDTM44P7FGE%2F20251118%2Feu-west-2%2Fs3%2Faw....
+         date: Tue, 18 Nov 2025 14:11:11 GMT
+        ...
+      CODE
+      markdown(str)
+    end
+
     private_class_method def self.domestic_search_response
       <<~CODE
           { "data": {
