@@ -20,6 +20,20 @@ module Controller
       erb :'api_tech_docs/fetch_certificate_data'
     end
 
+    get "/api-technical-documentation/search-domestic-certificates" do
+      set_headers
+      @assessment_type_tile = "domestic"
+      @assessment_type = "domestic"
+      erb :'api_tech_docs/search_certificates'
+    end
+
+    get "/api-technical-documentation/search-non-domestic-certificates" do
+      set_headers
+      @assessment_type_tile = "non domestic"
+      @assessment_type = "non-domestic"
+      erb :'api_tech_docs/search_certificates'
+    end
+
   private
 
     def set_headers
