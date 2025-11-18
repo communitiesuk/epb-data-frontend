@@ -35,6 +35,10 @@ module ViewModels
       markdown(str)
     end
 
+    def self.base_url
+      ENV["EPB_DATA_WAREHOUSE_API_URL"]
+    end
+
     private_class_method def self.domestic_search_response
       <<~CODE
           { "data": {
@@ -106,10 +110,6 @@ module ViewModels
           }
         }
       CODE
-    end
-
-    private_class_method def self.base_url
-      ENV["EPB_DATA_WAREHOUSE_API_URL"]
     end
   end
 end

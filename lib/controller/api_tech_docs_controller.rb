@@ -10,11 +10,6 @@ module Controller
       erb :'api_tech_docs/making_request'
     end
 
-    get "/api-technical-documentation/headers" do
-      set_headers
-      erb :'api_tech_docs/headers'
-    end
-
     get "/api-technical-documentation/fetch-certificate-data" do
       set_headers
       erb :'api_tech_docs/fetch_certificate_data'
