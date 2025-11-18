@@ -1,13 +1,16 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-one-third">
 
-    <%= erb :'api_tech_docs/component__navigation', locals: { href: @back_link_href } %>
+    <%= erb :'api_tech_docs/component__navigation' %>
   </div>
   <div class="govuk-grid-column-two-thirds">
   <h1 class="govuk-heading-l">Fetch certificate data</h1>
   <p class="govuk-body">
     You can fetch the full data for an EPC or DEC using its certificate number.
   </p>
+
+    <div class="govuk-!-margin-bottom-7">
+
   <h2 class="govuk-heading-m">Method</h2>
   <pre><code>GET /api/certificate</code></pre>
   <h2 class="govuk-heading-m">Parameters</h2>
@@ -17,8 +20,10 @@
 
 
   <pre><code>?certificate_number=1111-2222-3333-4444-5555</code></pre>
+    </div>
+    <div class="govuk-!-margin-bottom-7">
 
-  <h2 class="govuk-heading-m">Responses</h2>
+    <h2 class="govuk-heading-m">Responses</h2>
 
   <p class="govuk-body">
     If the request is successful, the response body is json with a status code of 200. The json structure and keys will vary depending on the type of certificate
@@ -44,7 +49,8 @@
   </p>
   <p class="govuk-body">  <a href="https://github.com/communitiesuk/epb-data-warehouse/tree/main/spec/fixtures/json_samples"> Click here to view the JSON samples</a>
   </p>
-
+    </div>
+    <div class="govuk-!-margin-bottom-7">
   <h2 class="govuk-heading-m">Error codes</h2>
 
   <p class="govuk-body">If the request is not successful an HTTP error code will be returned:   </p>
@@ -53,15 +59,13 @@
 
     <li>400 – the certificate_number was not in the right format</li>
   </ul>
+    </div>
+
+    <div class="govuk-!-margin-bottom-7">
 
     <h2 class="govuk-heading-m">Example</h2>
 
-    <pre><code ><%= str= <<~CODE
-               curl #{ENV["EPB_DATA_WAREHOUSE_API_URL"]}/api/certificate?certificate_number=1111-2222-3333-4444-5555 \
-               -H "Authorization: Bearer my_bearer_token" \
-               -H "Accept: application/json"
-              CODE
-                    ViewModels::ApiTechDocs.markdown(str)
-    %></code></pre>
-
+    <pre><code ><%= ViewModels::ApiTechDocs.curl_example "/api/certificate?certificate_number=1111-2222-3333-4444-5555"%></code></pre>
+    </div>
   </div>
+ </div>
