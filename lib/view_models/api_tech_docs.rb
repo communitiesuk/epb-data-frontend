@@ -33,6 +33,36 @@ module ViewModels
       markdown(str)
     end
 
+    def self.codes_response
+      str = <<~CODE
+        {
+          "data": [
+            "built_form",
+            "construction_age_band"
+          ]
+        }
+      CODE
+      markdown(str)
+    end
+
+    def self.codes_info_response
+      str = <<~CODE
+        {
+         "data": [
+           {
+             "key": "NR",
+             "values": [
+               {
+                 "value": "Detached",
+                 "schemaVersion": "RdSAP-Schema-17.0"
+               }
+             ]
+           }
+         ]
+      CODE
+      markdown(str)
+    end
+
     def self.curl_example(url_path)
       url = "#{ENV['EPB_DATA_WAREHOUSE_API_URL']}#{url_path}"
       str = <<~CODE

@@ -44,6 +44,16 @@ module Controller
       erb :'api_tech_docs/file_info'
     end
 
+    get "/api-technical-documentation/codes" do
+      set_headers
+      erb :'api_tech_docs/codes'
+    end
+
+    get "/api-technical-documentation/codes-info" do
+      set_headers
+      erb :'api_tech_docs/codes_info'
+    end
+
   private
 
     def set_headers

@@ -1,0 +1,80 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-one-third">
+
+    <%= erb :'api_tech_docs/component__navigation' %>
+  </div>
+  <div class="govuk-grid-column-two-thirds">
+
+    <div class="govuk-!-margin-bottom-7">
+      <h1 class="govuk-heading-l">Fetch EPC codes information</h1>
+
+      <p class="govuk-body">
+        Fetch the value(s) for a code by key and/or schema version
+      </p>
+    </div>
+
+    <div class="govuk-!-margin-bottom-7">
+      <h2 class="govuk-heading-m">Method</h2>
+      <pre><code>GET /api/codes/info</code></pre>
+
+    </div>
+
+
+    <h2 class="govuk-heading-m">Parameters</h2>
+
+    <div class="govuk-!-margin-bottom-7">
+      <h3 class="govuk-heading-s">code (required) </h3>
+
+      <p class="govuk-body"> A code provided by the /api/codes/ endpoint</p>
+
+      <p class="govuk-body">For example: </p>
+      <pre><code>?code=built_form</code></pre>
+    </div>
+
+
+    <div class="govuk-!-margin-bottom-7">
+      <h3 class="govuk-heading-s">key (optional) </h3>
+
+      <p class="govuk-body">The key found as a value in EPC data</p>
+
+      <p class="govuk-body">For example: </p>
+      <pre><code>?key=1</code></pre>
+    </div>
+
+    <div class="govuk-!-margin-bottom-7">
+      <h3 class="govuk-heading-s">schema_version (optional) </h3>
+
+      <p class="govuk-body">The EPC schema version</p>
+      <p class="govuk-body">As the value of codes may vary between EPC schema version you can specify this value to find and exact match</p>
+
+      <p class="govuk-body">For example: </p>
+      <pre><code>?schema_version=RdSAP-Schema-19.0</code></pre>
+    </div>
+
+    <div class="govuk-!-margin-bottom-7">
+      <h2 class="govuk-heading-m">Response</h2>
+      If the request is successful, the response body is json with a status code of 200:
+      <pre><code class="javascript"><%=  ViewModels::ApiTechDocs.codes_info_response %></code></pre>
+
+    </div>
+
+    <div class="govuk-!-margin-bottom-7">
+      <h2 class="govuk-heading-m">Error codes</h2>
+      <p class="govuk-body">If the request is not successful an HTTP error code will be returned:</p>
+
+      <ul>
+        <li>404 – No codes could be found for that query </li>
+      </ul>
+    </div>
+
+    <div class="govuk-!-margin-bottom-7">
+      <h2 class="govuk-heading-m">Example</h2>
+      If the request is successful, the response body is json with a status code of 200:
+
+      <pre><code><%= ViewModels::ApiTechDocs.curl_example "/api/codes/info?code=built_form&?key=1&schema_version=RdSAP-Schema-19.0" %></code></pre>
+
+
+    </div>
+
+  </div>
+</div>
