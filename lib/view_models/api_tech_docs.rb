@@ -66,9 +66,21 @@ module ViewModels
     def self.curl_example(url_path)
       url = "#{ENV['EPB_DATA_WAREHOUSE_API_URL']}#{url_path}"
       str = <<~CODE
-        curl #{url} \
-        -H "Authorization: Bearer my_bearer_token" \
-        -H "Accept: application/json"
+        curl #{url}  \\
+        -H "Authorization: Bearer my_bearer_token"  \\
+        -H "Accept: application/json" \\
+      CODE
+      markdown(str)
+    end
+
+    def self.download_file_example(url_path, assessment_type)
+      url = "#{ENV['EPB_DATA_WAREHOUSE_API_URL']}#{url_path}"
+      str = <<~CODE
+        curl #{url} \\
+        -H "Authorization: Bearer my_bearer_token" \\
+        -H "Accept: application/json" \\
+        -L  \\
+        -o 'my_#{assessment_type}_file.zip#{' '}
       CODE
       markdown(str)
     end

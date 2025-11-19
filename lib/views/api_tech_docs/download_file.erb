@@ -29,6 +29,8 @@
       <p>The response header will include the location of the file to be downloaded. </p>
       <p>The URL of the file will be generated at run time.   </p>
 
+
+
       <pre><code class="javascript"><%= ViewModels::ApiTechDocs.file_download_response(@assessment_type, @file_type) %></code></pre>
     </div>
 
@@ -43,7 +45,7 @@
     <div class="govuk-!-margin-bottom-7">
       <h2 class="govuk-heading-m">Example</h2>
 
-      <pre><code><%= ViewModels::ApiTechDocs.curl_example "api/files/#{@assessment_type}/#{@file_type} -L -o 'my_#{@assessment_type}_file.zip"%></code></pre>
+      <pre><code class="javascript"><%= ViewModels::ApiTechDocs.download_file_example "api/files/#{@assessment_type}/#{@file_type}",@assessment_type%></code></pre>
     </div>
 
   </div>
