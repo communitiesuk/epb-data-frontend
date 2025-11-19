@@ -1,0 +1,76 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-one-third">
+
+    <%= erb :'api_tech_docs/component__navigation' %>
+  </div>
+  <div class="govuk-grid-column-two-thirds">
+
+    <div class="govuk-!-margin-bottom-7">
+      <h1 class="govuk-heading-l">Search for certificates that have changed</h1>
+
+      <p class="govuk-body">
+      Search for a EPCS that have changed within a specific date
+      </p>
+      <p class="govuk-body"> Changes to EPCs will only be recorded as changed from either of the following event types:</p>
+        <ul>
+          <li><em class="javascript">removed</em> - An EPC that is no longer published</li>
+          <li><em class="javascript"> address_id_updated</em> - An EPC whose UPPN has been updated</li>
+        </ul>
+    </div>
+
+      <div class="govuk-!-margin-bottom-7">
+        <h2 class="govuk-heading-m">Method</h2>
+        <pre><code>GET /api/deltas</code></pre>
+
+    </div>
+
+    <div class="govuk-!-margin-bottom-7">
+        <h2 class="govuk-heading-m">Parameters</h2>
+
+    </div>
+    <div class="govuk-!-margin-bottom-7">
+      <h3 class="govuk-heading-s">date_start (required)   </h3>
+
+      <p class="govuk-body">Start date of the date range to retrieve, in the format YYY-MM-DD.  </p>
+
+      <p class="govuk-body">For example: </p>
+      <pre><code>?date_start=2020-11-06</code></pre>
+    </div>
+
+    <div class="govuk-!-margin-bottom-7">
+      <h3 class="govuk-heading-s">date_end (required)   </h3>
+
+      <p class="govuk-body">End date of the date range to retrieve, in the format YYY-MM-DD.  </p>
+
+      <p class="govuk-body">For example: </p>
+      <pre><code>?date_end=2020-11-06</code></pre>
+    </div>
+
+
+    <div class="govuk-!-margin-bottom-7">
+      <h2 class="govuk-heading-m">Response</h2>
+      If the request is successful, the response body is json with a status code of 200:
+
+      <pre><code class="javascript"><%=  ViewModels::ApiTechDocs.delta_response %></code></pre>
+
+    </div>
+
+    <div class="govuk-!-margin-bottom-7">
+      <h2 class="govuk-heading-m">Error codes</h2>
+      <p class="govuk-body">If the request is not successful an HTTP error code will be returned:</p>
+
+      <ul>
+        <li>400 – one or more of the required parameters was missing or one of the parameters was not in the right format.  The response body will include a json error message that explains the specific error.</li>
+        <li>404 – no certificate changes found that match the parameters of the query </li>
+      </ul>
+    </div>
+
+    <div class="govuk-!-margin-bottom-7">
+      <h2 class="govuk-heading-m">Example</h2>
+
+      <pre><code><%= ViewModels::ApiTechDocs.curl_example "/api/deltas?date_start=2021-07-10&date_end=2021-08-10" %></code></pre>
+
+    </div>
+
+  </div>
+</div>

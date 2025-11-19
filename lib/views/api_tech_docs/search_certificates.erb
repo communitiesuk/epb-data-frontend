@@ -111,13 +111,7 @@
 
 
     </div>
-    <div class="govuk-!-margin-bottom-7">
-      <h2 class="govuk-heading-m">Example</h2>
 
-
-      <pre><code><%= ViewModels::ApiTechDocs.curl_example "api/domestic/search?date_start=2021-07-10&date_end=2021-08-10&council[]=Manchester&efficiency_rating[]=A&efficiency_rating[]=B&efficiency_rating[]=C&current_page=1&page_size=5000" %></code></pre>
-
-    </div>
 
 
     <div class="govuk-!-margin-bottom-7">
@@ -137,6 +131,14 @@
         <li>404 – no certificates exist that match the parameters of the query </li>
       </ul>
     </div>
+
+    <div class="govuk-!-margin-bottom-7">
+      <h2 class="govuk-heading-m">Example</h2>
+
+      <pre><code><%= ViewModels::ApiTechDocs.curl_example "api/domestic/search?date_start=2021-07-10&date_end=2021-08-10&council[]=Manchester&efficiency_rating[]=A&efficiency_rating[]=B&efficiency_rating[]=C&current_page=1&page_size=5000" %></code></pre>
+
+    </div>
+
     <div class="govuk-!-margin-bottom-7" id="councils">
 
     <h3 class="govuk-heading-m">List of council names recognised by the API </h3>

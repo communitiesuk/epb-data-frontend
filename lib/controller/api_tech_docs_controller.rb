@@ -15,6 +15,12 @@ module Controller
       erb :'api_tech_docs/fetch_certificate_data'
     end
 
+    get "/api-technical-documentation/search-certificates-changed" do
+      set_headers
+
+      erb :'api_tech_docs/deltas'
+    end
+
     get "/api-technical-documentation/search-certificates/:type" do
       set_headers
       @assessment_type_title = params["type"].gsub("-", " ")

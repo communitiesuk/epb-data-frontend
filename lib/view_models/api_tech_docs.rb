@@ -13,6 +13,26 @@ module ViewModels
       markdown(str)
     end
 
+    def self.delta_response
+      str = <<~CODE
+              {
+                "data": [
+                  {
+                    "certificateNumber": "0000-0000-0000-0002-1111",
+                    "eventType": "removed",
+                    "timestamp": "2025-02-17T16:26:08.535Z"
+                  },
+        {
+                    "certificateNumber": "0000-0000-0000-0002-1112",
+                    "eventType": "address_id_updated",
+                    "timestamp": "2025-02-18T16:26:08.535Z"
+                  }
+                ]
+        }
+      CODE
+      markdown(str)
+    end
+
     def self.curl_example(url_path)
       url = "#{ENV['EPB_DATA_WAREHOUSE_API_URL']}#{url_path}"
       str = <<~CODE
