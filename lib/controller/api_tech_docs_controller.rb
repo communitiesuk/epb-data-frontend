@@ -1,12 +1,12 @@
 module Controller
   class ApiTechDocsController < Controller::BaseController
     get "/api-technical-documentation" do
-      status 200
+      set_headers
       erb :'api_tech_docs/overview'
     end
 
     get "/api-technical-documentation/making-a-request" do
-      status 200
+      set_headers
       erb :'api_tech_docs/making_request'
     end
 
@@ -15,33 +15,18 @@ module Controller
       erb :'api_tech_docs/fetch_certificate_data'
     end
 
-    get "/api-technical-documentation/search-domestic-certificates" do
+    get "/api-technical-documentation/search-certificates/:type" do
       set_headers
-      @assessment_type_title = "domestic"
-      @assessment_type = "domestic"
+      @assessment_type_title = params["type"].gsub("-", " ")
+      @assessment_type = params["title"]
       erb :'api_tech_docs/search_certificates'
     end
 
-    get "/api-technical-documentation/search-non-domestic-certificates" do
+    get "/api-technical-documentation/download/:title/:file_type" do
       set_headers
-      @assessment_type_title = "non domestic"
-      @assessment_type = "non-domestic"
-      erb :'api_tech_docs/search_certificates'
-    end
-
-    get "/api-technical-documentation/download-domestic-full-load-csv" do
-      set_headers
-      @assessment_type_title = "domestic"
-      @assessment_type = "domestic"
-      @file_type = "csv"
-      erb :'api_tech_docs/download_file'
-    end
-
-    get "/api-technical-documentation/download-non-domestic-full-load-csv" do
-      set_headers
-      @assessment_type_title = "non domestic"
-      @assessment_type = "non-domestic"
-      @file_type = "csv"
+      @assessment_type_title = params["title"]
+      @assessment_type = params["title"]
+      @file_type = params["file_type"]
       erb :'api_tech_docs/download_file'
     end
 
