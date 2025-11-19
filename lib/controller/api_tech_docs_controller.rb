@@ -30,6 +30,14 @@ module Controller
       erb :'api_tech_docs/download_file'
     end
 
+    get "/api-technical-documentation/download-info/:title/:file_type" do
+      set_headers
+      @assessment_type_title = params["title"]
+      @assessment_type = params["title"]
+      @file_type = params["file_type"]
+      erb :'api_tech_docs/file_info'
+    end
+
   private
 
     def set_headers

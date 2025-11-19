@@ -9,7 +9,7 @@
     <h1 class="govuk-heading-l">Download <%= @assessment_type_title %> full load <%= @file_type  %></h1>
 
     <p class="govuk-body">
-      Download a zip file of the full data set of <%= @assessment_type_title %> EPCs as series of <%= @file_type  %> files by year
+      Download a zip file of the full data set of <%= @assessment_type_title %> EPCs as series of <%= @file_type  %> files by year.
     </p>
     <p class="govuk-body"> This file is re-generated on the 1st of every month (see file info for the date it was last updated).
     </p>
@@ -29,7 +29,7 @@
       <p>The response header will include the location of the file to be downloaded. </p>
       <p>The URL of the file will be generated at run time.   </p>
 
-      <pre><code><%= ViewModels::ApiTechDocs.file_download_response(@assessment_type, @file_type) %></code></pre>
+      <pre><code class="javascript"><%= ViewModels::ApiTechDocs.file_download_response(@assessment_type, @file_type) %></code></pre>
     </div>
 
     <div class="govuk-!-margin-bottom-7">
@@ -43,9 +43,7 @@
     <div class="govuk-!-margin-bottom-7">
       <h2 class="govuk-heading-m">Example</h2>
 
-
       <pre><code><%= ViewModels::ApiTechDocs.curl_example "api/files/#{@assessment_type}/#{@file_type} -L -o 'my_#{@assessment_type}_file.zip"%></code></pre>
-
     </div>
 
   </div>

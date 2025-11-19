@@ -35,6 +35,22 @@ module ViewModels
       markdown(str)
     end
 
+    def self.link_class
+      "app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
+    end
+
+    def self.file_info_response
+      str = <<~CODE
+        	{
+          "data": {
+            "fileSize": 2923946932,
+            "lastUpdated": "2025-08-01T00:31:19.000+00:00"
+          }
+        }
+      CODE
+      markdown(str)
+    end
+
     def self.base_url
       ENV["EPB_DATA_WAREHOUSE_API_URL"]
     end
