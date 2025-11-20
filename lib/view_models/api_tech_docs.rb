@@ -132,7 +132,7 @@ module ViewModels
                 "council": "Manchester",
                 "constituency": "Manchester Rusholme",
                 "currentEnergyEfficiencyBand": "D",
-                "registrationDate": "2021-08-11T00:00:00.000+00:00",
+                "registrationDate": "2021-08-11",
                 "uprn": 10094703381
               },
               {
