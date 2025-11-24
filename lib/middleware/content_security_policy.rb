@@ -17,9 +17,7 @@ module Middleware
 
     def call(env)
       status, headers, body = @csp_middleware.call(env)
-
       headers = strip_report_uri(headers.clone) unless should_report?
-
       [status, headers.compact, body]
     end
 
