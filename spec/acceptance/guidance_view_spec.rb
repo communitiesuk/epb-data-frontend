@@ -411,7 +411,7 @@ describe "Acceptance::GuidancePage", type: :feature do
 
       it "has the correct content for data available section" do
         expect(response.body).to have_css("h2", text: "Data available")
-        expect(response.body).to have_css("p", text: "Use the API to get data on:")
+        expect(response.body).to have_css("p", text: "Use the APIs to get data on:")
       end
 
       it "has the correct content for authentication section" do
@@ -440,8 +440,7 @@ describe "Acceptance::GuidancePage", type: :feature do
 
       it "has the correct content for technical documentation section" do
         expect(response.body).to have_css("h2", text: "Technical documentation")
-        expect(response.body).to have_link(href: "#")
-        expect(response.body).to have_link(href: "#")
+        expect(response.body).to have_link("API Technical Documentation", href: "/api-technical-documentation")
       end
 
       it "has the Get Help or Give Feedback section" do
