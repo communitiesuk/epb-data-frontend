@@ -97,6 +97,10 @@ module ViewModels
       markdown(str)
     end
 
+    def self.current_item_class(request_path, link_path)
+      request_path == link_path ? "app-subnav__section-item--current" : ""
+    end
+
     def self.link_class
       "app-subnav__link govuk-link govuk-link--no-visited-state govuk-link--no-underline"
     end

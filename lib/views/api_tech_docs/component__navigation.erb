@@ -10,8 +10,9 @@
 
   <h3 class="app-subnav__theme">API specifications</h3>
   <ul class="app-subnav__section">
-    <li class="app-subnav__section-item">
-      <a href="/api-technical-documentation/fetch-certificate-data" class="<%= ViewModels::ApiTechDocs.link_class %>">Fetch certificate data  </a> </li>
+
+    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Fetch certificate data", link: "fetch-certificate-data" } %>
+
     <li class="app-subnav__section-item">
       <a href="/api-technical-documentation/search-certificates/domestic" class="<%= ViewModels::ApiTechDocs.link_class %>">Search for domestic certificates </a> </li>
     <li class="app-subnav__section-item">
