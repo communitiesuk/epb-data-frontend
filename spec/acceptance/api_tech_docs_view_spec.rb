@@ -59,6 +59,15 @@ describe "Acceptance::ApiTechnicalDocumentation", type: :feature do
         end
       end
 
+      it "each page has the current link class" do
+        page_urls.each do |link|
+          response = get "#{base_url}#{path}/#{link}"
+          url = "#{path}/#{link}"
+          expect(response.body).to have_css("li.app-subnav__section-item--current", count: 1)
+          expect(response.body).to have_css("li.app-subnav__section-item--current a[href='#{url}']")
+        end
+      end
+
       context "when calling the pages that document endpoints" do
         it "each page has the expected sections" do
           end_points.each do |link|
