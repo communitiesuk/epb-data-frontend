@@ -2,42 +2,29 @@
   <h3 class="app-subnav__theme">General documentation</h3>
 
   <ul class="app-subnav__section">
-    <li class="app-subnav__section-item"><a href="/api-technical-documentation" class="<%= ViewModels::ApiTechDocs.link_class %>">Energy certificate data API documentation</a>  </li>
-    <li class="app-subnav__section-item"><a href="/api-technical-documentation/making-a-request" class="<%= ViewModels::ApiTechDocs.link_class %>">Making a request</a> </li>
+    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Energy certificate data API documentation", link: "" } %>
+    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Making a request", link: "/making-a-request" } %>
   </ul>
 
 
 
   <h3 class="app-subnav__theme">API specifications</h3>
   <ul class="app-subnav__section">
-    <li class="app-subnav__section-item">
-      <a href="/api-technical-documentation/fetch-certificate-data" class="<%= ViewModels::ApiTechDocs.link_class %>">Fetch certificate data  </a> </li>
-    <li class="app-subnav__section-item">
-      <a href="/api-technical-documentation/search-certificates/domestic" class="<%= ViewModels::ApiTechDocs.link_class %>">Search for domestic certificates </a> </li>
-    <li class="app-subnav__section-item">
-      <a href="/api-technical-documentation/search-certificates/non-domestic" class="<%= ViewModels::ApiTechDocs.link_class %>">Search for non-domestic certificates </a> </li>
-    <li class="app-subnav__section-item">
-      <a href="/api-technical-documentation/search-certificates-changed" class="<%= ViewModels::ApiTechDocs.link_class %>">Search certificates that have changed</a> </li>
-    <li class="app-subnav__section-item">
-      <a href="/api-technical-documentation/download/domestic/csv" class="<%= ViewModels::ApiTechDocs.link_class %>">Download domestic full load csv</a> </li>
-    <li class="app-subnav__section-item">
-      <a href="/api-technical-documentation/download-info/domestic/csv" class="<%= ViewModels::ApiTechDocs.link_class %>">Fetch info about domestic full load csv</a> </li>
-    <li class="app-subnav__section-item">
-      <a href="/api-technical-documentation/download/domestic/json" class="<%= ViewModels::ApiTechDocs.link_class %>">Download domestic full load json</a> </li>
-    <li class="app-subnav__section-item">
-      <a href="/api-technical-documentation/download-info/domestic/json" class="<%= ViewModels::ApiTechDocs.link_class %>">Fetch info about domestic full load json</a> </li>
-    <li class="app-subnav__section-item">
-      <a href="/api-technical-documentation/download/non-domestic/csv" class="<%= ViewModels::ApiTechDocs.link_class %>">Download non domestic full load csv</a> </li>
-    <li class="app-subnav__section-item">
-      <a href="/api-technical-documentation/download-info/non-domestic/csv" class="<%= ViewModels::ApiTechDocs.link_class %>">Fetch info about non domestic full load csv</a> </li>
-    <li class="app-subnav__section-item">
-      <a href="/api-technical-documentation/download/non-domestic/json" class="<%= ViewModels::ApiTechDocs.link_class %>">Download non domestic full load json</a> </li>
-    <li class="app-subnav__section-item">
-      <a href="/api-technical-documentation/download-info/non-domestic/json" class="<%= ViewModels::ApiTechDocs.link_class %>">Fetch info about non domestic full load json</a> </li>
-    <li class="app-subnav__section-item">
-      <a href="/api-technical-documentation/codes" class="<%= ViewModels::ApiTechDocs.link_class %>">Fetch EPC codes</a> </li>
-    <li class="app-subnav__section-item">
-      <a href="/api-technical-documentation/codes-info" class="<%= ViewModels::ApiTechDocs.link_class %>">Fetch EPC codes info</a> </li>
+
+    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Fetch certificate data", link: "/fetch-certificate-data" } %>
+    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Search for domestic certificates", link: "/search-certificates/domestic" } %>
+    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Search for non-domestic certificates", link: "/search-certificates/non-domestic" } %>
+    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Search certificates that have changed", link: "/search-certificates-changed" } %>
+    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Download domestic full load csv", link: "/download/domestic/csv" } %>
+    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Fetch info about domestic full load csv", link: "/download-info/domestic/csv" } %>
+    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Download domestic full load json", link: "/download/domestic/json" } %>
+    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Fetch info about domestic full load json", link: "/download-info/domestic/json" } %>
+    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Download non domestic full load csv", link: "/download/non-domestic/csv" } %>
+    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Fetch info about non domestic full load csv", link: "/download-info/non-domestic/csv" } %>
+    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Download non domestic full load json", link: "/download/non-domestic/json" } %>
+    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Fetch info about non domestic full load json", link: "/download-info/non-domestic/json" } %>
+    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Fetch EPC codes", link: "/codes" } %>
+    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Fetch EPC codes info", link: "/codes-info" } %>
   </ul>
 
 </nav>
