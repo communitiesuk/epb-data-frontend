@@ -270,3 +270,6 @@ cy:
       paragraph_1: Os cafodd eich EPC ei chreu yn ddiweddar, dylech gysylltu â'r asesydd. Gallwch weld manylion cysylltu’r asesydd tua gwaelod <a href="https://www.gov.uk/find-energy-certificate">eich EPC</a>.
       paragraph_2: Os cafodd eich EPC ei chreu ychydig yn ôl, dylech chi <a href="https://www.gov.uk/get-new-energy-certificate">sicrhau tystysgrif newydd</a>..
       note: Nid yw optio EPC allan yn ei gwneud yn annilys. Dim ond pan fyddan nhw’n dod i ben neu’n cael eu disodli gan EPC newydd y bydd EPCs yn dod yn annilys.
+    advised_by_third_party:
+      title: Does dim angen ichi optio allan er mwyn gael gafael ar gyllid grant
+      warning: Mae optio EPC allan er mwyn sicrhau cyllid grant yn dwyll.
