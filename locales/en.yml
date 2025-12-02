@@ -259,10 +259,14 @@ en:
       - October
       - November
       - December
-
   opt_out:
     reason:
       title: Why would you like to opt out your EPC?
       continue: Continue
       radio:
         incorrect: My EPC is incorrect
+    incorrect_epc:
+      title: What to do if your EPC is incorrect
+      paragraph_1: If your EPC was created recently, you should contact the assessor. You can find the contact details for the assessor near the bottom of <a href="https://www.gov.uk/find-energy-certificate">your EPC</a>.
+      paragraph_2: If your EPC was created a while ago, you should <a href="https://www.gov.uk/get-new-energy-certificate">get a new certificate</a>.
+      note: Opting out an EPC does not make it invalid. EPCs are only invalidated when they expire or when they are replaced by a new EPC.
