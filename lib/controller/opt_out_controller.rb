@@ -22,7 +22,7 @@ module Controller
         # redirect "/opt_out/reason=#{params['reason']}"
       else
         @error_form_ids << "reason-error"
-        @errors[:reason] = t("opt_out.error.invalid_reason_selection.heading")
+        @errors[:reason] = t("opt_out.reason.error.invalid_reason_selection.heading")
         erb :'opt_out/reason'
       end
     end

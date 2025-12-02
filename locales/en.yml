@@ -268,9 +268,9 @@ en:
         advised: I have been advised by someone else
         other: Other / Prefer not to say
       warning: Opting out an EPC for the purpose of securing grant funding is fraud.
-    error:
-      invalid_reason_selection:
-        heading: Select a reason for opting out
+      error:
+        invalid_reason_selection:
+          heading: Select a reason for opting out
 
     incorrect_epc:
       title: What to do if your EPC is incorrect
