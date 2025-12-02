@@ -261,10 +261,16 @@ cy:
 
   opt_out:
     reason:
-      title: Why would you like to opt out your EPC?
-      continue: Continue
+      title: Pam hoffech chi optio’ch EPC allan?
+      continue: Parhau
       radio:
-        incorrect: My EPC is incorrect
+        incorrect: Mae fy EPC yn anghywir
+        advised: Rhywun arall sydd wedi dweud wrtha i
+        other: Arall / Gwell gen i beidio â dweud
+      warning: Mae optio EPC allan er mwyn sicrhau cyllid grant yn dwyll.
+    error:
+      invalid_reason_selection:
+        heading: Select a reason for opting out
     incorrect_epc:
       title: Beth i'w wneud os yw'ch EPC yn anghywir
       paragraph_1: Os cafodd eich EPC ei chreu yn ddiweddar, dylech gysylltu â'r asesydd. Gallwch weld manylion cysylltu’r asesydd tua gwaelod <a href="https://www.gov.uk/find-energy-certificate">eich EPC</a>.

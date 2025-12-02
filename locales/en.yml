@@ -265,6 +265,13 @@ en:
       continue: Continue
       radio:
         incorrect: My EPC is incorrect
+        advised: I have been advised by someone else
+        other: Other / Prefer not to say
+      warning: Opting out an EPC for the purpose of securing grant funding is fraud.
+    error:
+      invalid_reason_selection:
+        heading: Select a reason for opting out
+
     incorrect_epc:
       title: What to do if your EPC is incorrect
       paragraph_1: If your EPC was created recently, you should contact the assessor. You can find the contact details for the assessor near the bottom of <a href="https://www.gov.uk/find-energy-certificate">your EPC</a>.

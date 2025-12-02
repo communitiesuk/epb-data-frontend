@@ -6,6 +6,27 @@ module Controller
       erb :'opt_out/start'
     end
 
+    get "/opt-out/reason" do
+      status 200
+      set_layout
+      @errors = {}
+      erb :'opt_out/reason'
+    rescue StandardError => e
+      server_error(e)
+    end
+
+    post "/opt-out/reason" do
+      @errors = {}
+      @error_form_ids = []
+      if params["reason"]
+        # redirect "/opt_out/reason=#{params['reason']}"
+      else
+        @error_form_ids << "reason-error"
+        @errors[:reason] = t("opt_out.error.invalid_reason_selection.heading")
+        erb :'opt_out/reason'
+      end
+    end
+
     get "/opt-out/incorrect-epc" do
       status 200
       set_layout

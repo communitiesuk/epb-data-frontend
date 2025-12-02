@@ -1,0 +1,57 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <div class="govuk-grid-column-two-thirds">
+      <% unless @errors.empty? %>
+        <%= erb :error_summary, locals: { error_form_ids: @error_form_ids }%>
+      <% end %>
+
+      <form method="post">
+        <fieldset class="govuk-fieldset" aria-describedby="reason-hint">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+            <h1 class="govuk-fieldset__heading govuk-!-padding-bottom-4">
+              <%= t("opt_out.reason.title") %>
+            </h1>
+          </legend>
+          <div class="govuk-form-group<% if @errors[:reason] %> govuk-form-group--error<% end %>">
+            <input type="hidden" name="lang" value="<%= I18n.locale.to_s %>" />
+            <% if @errors[:reason] %>
+              <p id='reason-error' class="govuk-error-message">
+                <%= @errors[:reason] %>
+              </p>
+            <% end %>
+            <div class="govuk-radios" data-module="govuk-radios">
+              <div class="govuk-radios__item">
+                <input class="govuk-radios__input" id="epc_incorrect" name="reason" type="radio" value="epc_incorrect" aria-describedby="epc_incorrect-item-hint">
+                <label  id="label-epc_incorrect" class="govuk-label govuk-radios__label" for="epc_incorrect">
+                  <%= t("opt_out.reason.radio.incorrect") %>
+                </label>
+              </div>
+              <div class="govuk-radios__item">
+                <input class="govuk-radios__input" id="epc_advised" name="reason" type="radio" value="epc_advised" aria-describedby="epc_advised-item-hint">
+                <label  id="label-epc_advised" class="govuk-label govuk-radios__label" for="epc_advised">
+                  <%= t("opt_out.reason.radio.advised") %>
+                </label>
+              </div>
+              <div class="govuk-radios__item">
+                <input class="govuk-radios__input" id="epc_other" name="reason" type="radio" value="epc_other" aria-describedby="epc_other-item-hint">
+                <label  id="label-epc_other" class="govuk-label govuk-radios__label" for="epc_other">
+                  <%= t("opt_out.reason.radio.other") %>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+              <span class="govuk-visually-hidden">Warning</span>
+              <%= t("opt_out.reason.warning") %>
+            </strong>
+          </div>
+          <button class="govuk-button" data-module="govuk-button" type="submit">
+            <%= t("opt_out.reason.continue") %>
+          </button>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>
