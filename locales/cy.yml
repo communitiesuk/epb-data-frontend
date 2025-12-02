@@ -260,6 +260,16 @@ cy:
       - Rhagfyr
 
   opt_out:
+    start_page:
+      title: "Opting out an EPC"
+      description_1: "If you are the owner or occupier of the property then you can choose to opt out of public disclosure."
+      description_2: "Opting out stops a property’s EPCs from appearing in our search results and in published bulk EPC data."
+      description_3: "EPCs that have been opted out can still be found on the register using the certificate number."
+      opt_out_guidance:
+        link: "View the guidance"
+        text: " to learn more."
+      continue: "Continue"
+
     reason:
       title: Pam hoffech chi optio’ch EPC allan?
       continue: Parhau
