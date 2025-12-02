@@ -13,5 +13,9 @@ describe "Acceptance::OptOutIncorrectEpc", type: :feature do
     it "contains the correct h1 header" do
       expect(response.body).to have_selector("h1", text: "What to do if your EPC is incorrect")
     end
+
+    it "shows a back link and redirects to previous page" do
+      expect(response.body).to have_link("Back", href: "/opt-out/reason")
+    end
   end
 end

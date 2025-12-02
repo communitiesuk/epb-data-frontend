@@ -9,6 +9,7 @@ module Controller
     get "/opt-out/incorrect-epc" do
       status 200
       set_layout
+      @back_link_href = "/opt-out/reason"
       erb :'opt_out/incorrect_epc'
     end
 
