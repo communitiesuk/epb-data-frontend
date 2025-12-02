@@ -291,3 +291,9 @@ en:
     advised_by_third_party:
       title: You do not need to opt out to access grant funding
       warning: Opting out an EPC for the purpose of securing grant funding is fraud.
+    owner:
+      title: Are you the legal owner of the property that you want to opt out?
+      radio_yes: "Yes"
+      radio_no: "No"
+      note: If you are a landlord, opting out an EPC may prevent a tenant from accessing information they rely upon.
+      continue: Continue

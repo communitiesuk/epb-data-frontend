@@ -1,0 +1,39 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-grid-row">
+        <h1 class="govuk-heading-xl"><%= t('opt_out.owner.title') %></h1>
+
+        <p class="govuk-body">
+          <%= t('opt_out.incorrect_epc.paragraph_1') %>
+        </p>
+
+        <form method="post">
+
+          <div class="govuk-radios" data-module="govuk-radios">
+            <div class="govuk-radios__item">
+              <input class="govuk-radios__input" id="owner_yes" name="owner" type="radio" value="yes">
+              <label  id="label-yes" class="govuk-label govuk-radios__label" for="owner_yes">
+                <%= t("opt_out.owner.radio_yes") %>
+              </label>
+            </div>
+            <div class="govuk-radios__item">
+              <input class="govuk-radios__input" id="owner_no" name="owner" type="radio" value="no">
+              <label id="label-no" class="govuk-label govuk-radios__label" for="owner_no">
+                <%= t("opt_out.owner.radio_no") %>
+              </label>
+            </div>
+          </div>
+
+          <div class="govuk-inset-text">
+            <%= t('opt_out.owner.note') %>
+          </div>
+
+          <button type="submit" class="govuk-button" data-module="govuk-button">
+            <%= t('opt_out.owner.continue') %>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

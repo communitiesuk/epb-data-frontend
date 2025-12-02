@@ -41,6 +41,21 @@ module Controller
       erb :'opt_out/advised_by_third_party'
     end
 
+    get "/opt-out/owner" do
+      status 200
+      set_layout
+      @back_link_href = "/opt-out/reason"
+      erb :'opt_out/owner'
+    end
+
+    post "/opt-out/owner" do
+      if params["owner"] == "yes"
+        redirect "/login?referer=/opt-out"
+      else
+        redirect "/opt-out/occupant"
+      end
+    end
+
     def set_layout
       @hide_my_account = true
     end
