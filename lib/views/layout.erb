@@ -86,6 +86,7 @@
         </a>
       </span>
 
+      <% if !@hide_my_account %>
       <% if Helper::Session.is_logged_in?(session) %>
       <nav aria-label="Menu" class="govuk-service-navigation__wrapper">
         <ul class="govuk-service-navigation__list" id="navigation">
@@ -96,6 +97,8 @@
         </ul>
       </nav>
       <% end %>
+      <% end %>
+
     </div>
   </div>
 </section>
