@@ -259,3 +259,10 @@ en:
       - October
       - November
       - December
+
+  opt_out:
+    reason:
+      title: Why would you like to opt out your EPC?
+      continue: Continue
+      radio:
+        incorrect: My EPC is incorrect
