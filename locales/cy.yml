@@ -307,7 +307,7 @@ cy:
       paragraph_1: Rhaid i chi fod yn berchen ar yr eiddo neu'n byw ynddo er mwyn optio EPC allan.
 
     occupant:
-      title: Do you live in the property that you want to opt-out?
+      title: Ydych chi'n byw yn yr eiddo yr hoffech ei optio allan?
       radio:
         occupant_yes: "Ie"
         occupant_no: "Nage"

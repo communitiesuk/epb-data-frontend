@@ -57,10 +57,10 @@ module Controller
       case params["owner"]
       when "yes"
         Helper::Session.set_session_value(session, :opt_out, { owner: "yes" })
-        redirect "/login?referer=/opt-out"
+        redirect localised_url("/login?referer=/opt-out")
       when "no"
         Helper::Session.set_session_value(session, :opt_out, { owner: "no" })
-        redirect "/opt-out/occupant"
+        redirect localised_url("/opt-out/occupant")
       else
         @error_form_ids << "owner-error"
         @errors[:owner] = t("opt_out.owner.error")
@@ -88,10 +88,10 @@ module Controller
       case params["occupant"]
       when "occupant_yes"
         Helper::Session.set_session_value(session, :opt_out, { occupant: "yes" })
-        redirect "/login?referer=/opt-out"
+        redirect localised_url("/login?referer=/opt-out")
       when "occupant_no"
         Helper::Session.set_session_value(session, :opt_out, { occupant: "no" })
-        redirect "/opt-out/ineligible"
+        redirect localised_url("/opt-out/ineligible")
       else
         @error_form_ids << "occupant-error"
         @errors[:occupant] = t("opt_out.occupant.error.invalid_occupant_selection.heading")
