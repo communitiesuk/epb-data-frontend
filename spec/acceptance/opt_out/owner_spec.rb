@@ -34,6 +34,10 @@ describe "Acceptance::OptOutOwner", type: :feature do
   end
 
   describe "post .get-energy-certificate-data.epb-frontend/opt-out/owner" do
+    before do
+      allow(Helper::Session).to receive(:set_session_value)
+    end
+
     context "when yes radio button is selected" do
       let(:response) { post "#{base_url}/opt-out/owner", { owner: "yes" } }
 
@@ -43,6 +47,11 @@ describe "Acceptance::OptOutOwner", type: :feature do
 
       it "redirects to the login page" do
         expect(response.location).to include("/login?referer=/opt-out")
+      end
+
+      it "has the session value" do
+        response
+        expect(Helper::Session).to have_received(:set_session_value).with(anything, :opt_out, { owner: "yes" })
       end
     end
 
@@ -55,6 +64,11 @@ describe "Acceptance::OptOutOwner", type: :feature do
 
       it "redirects to the login page" do
         expect(response.location).to include("/opt-out/occupant")
+      end
+
+      it "has the session value" do
+        response
+        expect(Helper::Session).to have_received(:set_session_value).with(anything, :opt_out, { owner: "no" })
       end
     end
 

@@ -56,8 +56,10 @@ module Controller
       set_default
       case params["owner"]
       when "yes"
+        Helper::Session.set_session_value(session, :opt_out, { owner: "yes" })
         redirect "/login?referer=/opt-out"
       when "no"
+        Helper::Session.set_session_value(session, :opt_out, { owner: "no" })
         redirect "/opt-out/occupant"
       else
         @error_form_ids << "owner-error"
