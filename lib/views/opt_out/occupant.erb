@@ -1,0 +1,44 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <div class="govuk-grid-column-two-thirds">
+      <% unless @errors.empty? %>
+        <%= erb :error_summary, locals: { error_form_ids: @error_form_ids }%>
+      <% end %>
+
+      <form method="post">
+        <fieldset class="govuk-fieldset" aria-describedby="reason-hint">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+            <h1 class="govuk-fieldset__heading govuk-!-padding-bottom-4">
+              <%= t("opt_out.occupant.title") %>
+            </h1>
+          </legend>
+          <div class="govuk-form-group<% if @errors[:occupant] %> govuk-form-group--error<% end %>">
+            <input type="hidden" name="lang" value="<%= I18n.locale.to_s %>" />
+            <% if @errors[:occupant] %>
+              <p id='occupant-error' class="govuk-error-message">
+                <%= @errors[:occupant] %>
+              </p>
+            <% end %>
+            <div class="govuk-radios" data-module="govuk-radios">
+              <div class="govuk-radios__item">
+                <input class="govuk-radios__input" id="occupant_yes" name="occupant" type="radio" value="occupant_yes" aria-describedby="occupant_yes-item-hint">
+                <label  id="label-occupant_yes" class="govuk-label govuk-radios__label" for="occupant_yes">
+                  <%= t("opt_out.occupant.radio.occupant_yes")%>
+                </label>
+              </div>
+              <div class="govuk-radios__item">
+                <input class="govuk-radios__input" id="occupant_no" name="occupant" type="radio" value="occupant_no" aria-describedby="occupant_no-item-hint">
+                <label  id="label-occupant_no" class="govuk-label govuk-radios__label" for="occupant_no">
+                  <%= t("opt_out.occupant.radio.occupant_no")%>
+                </label>
+              </div>
+            </div>
+          </div>
+          <button class="govuk-button" data-module="govuk-button" type="submit">
+            <%= t("opt_out.reason.continue") %>
+          </button>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>

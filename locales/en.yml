@@ -306,3 +306,13 @@ en:
     ineligible:
       title: You are not eligible to opt out
       paragraph_1: You must own or live in the property to opt-out an EPC.
+
+    occupant:
+      title: Do you live in the property that you want to opt-out?
+      radio:
+        occupant_yes: "Yes"
+        occupant_no: "No"
+      error:
+        invalid_occupant_selection:
+          heading: Select if you live in the property
+

@@ -74,10 +74,34 @@ module Controller
       erb :'opt_out/ineligible'
     end
 
+    get "/opt-out/occupant" do
+      status 200
+      set_layout
+      @errors = {}
+      erb :'opt_out/occupant'
+    rescue StandardError => e
+      server_error(e)
+    end
+
+    post "/opt-out/occupant" do
+      @errors = {}
+      @error_form_ids = []
+      if params["occupant"]
+        # redirect "/opt_out/occupant=#{params['occupant']}"
+      else
+        @error_form_ids << "occupant-error"
+        @errors[:occupant] = t("opt_out.occupant.error.invalid_occupant_selection.heading")
+        erb :'opt_out/occupant'
+      end
+    end
+
+    def set_layout
+      @hide_my_account = true
+    end
+
     def set_default
       @errors = {}
       @error_form_ids = []
-      @hide_my_account = true
     end
   end
 end

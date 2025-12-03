@@ -305,3 +305,12 @@ cy:
     ineligible:
       title: Dydych chi ddim yn gymwys i optio allan
       paragraph_1: Rhaid i chi fod yn berchen ar yr eiddo neu'n byw ynddo er mwyn optio EPC allan.
+
+    occupant:
+      title: Do you live in the property that you want to opt-out?
+      radio:
+        occupant_yes: "Yes"
+        occupant_no: "No"
+      error:
+        invalid_occupant_selection:
+          heading: Select if you live in the property
