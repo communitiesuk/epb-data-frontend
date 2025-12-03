@@ -1,34 +1,46 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
     <div class="govuk-grid-column-two-thirds">
+
       <div class="govuk-grid-row">
+        <% unless @errors.empty? %>
+          <%= erb :error_summary, locals: { error_form_ids: @error_form_ids }%>
+        <% end %>
+
         <h1 class="govuk-heading-xl"><%= t('opt_out.owner.title') %></h1>
 
-        <form method="post">
+          <form method="post">
+            <div class="govuk-form-group<% if @errors[:owner] %> govuk-form-group--error<% end %>">
+              <input type="hidden" name="lang" value="<%= I18n.locale.to_s %>" />
+              <% if @errors[:owner] %>
+                <p id='owner-error' class="govuk-error-message">
+                  <%= @errors[:owner] %>
+                </p>
+              <% end %>
 
-          <div class="govuk-radios" data-module="govuk-radios">
-            <div class="govuk-radios__item">
-              <input class="govuk-radios__input" id="owner_yes" name="owner" type="radio" value="yes">
-              <label  id="label-yes" class="govuk-label govuk-radios__label" for="owner_yes">
-                <%= t("opt_out.owner.radio_yes") %>
-              </label>
+            <div class="govuk-radios" data-module="govuk-radios">
+              <div class="govuk-radios__item">
+                <input class="govuk-radios__input" id="owner_yes" name="owner" type="radio" value="yes">
+                <label  id="label-yes" class="govuk-label govuk-radios__label" for="owner_yes">
+                  <%= t("opt_out.owner.radio_yes") %>
+                </label>
+              </div>
+              <div class="govuk-radios__item">
+                <input class="govuk-radios__input" id="owner_no" name="owner" type="radio" value="no">
+                <label id="label-no" class="govuk-label govuk-radios__label" for="owner_no">
+                  <%= t("opt_out.owner.radio_no") %>
+                </label>
+              </div>
             </div>
-            <div class="govuk-radios__item">
-              <input class="govuk-radios__input" id="owner_no" name="owner" type="radio" value="no">
-              <label id="label-no" class="govuk-label govuk-radios__label" for="owner_no">
-                <%= t("opt_out.owner.radio_no") %>
-              </label>
             </div>
-          </div>
+            <div class="govuk-inset-text">
+              <%= t('opt_out.owner.note') %>
+            </div>
 
-          <div class="govuk-inset-text">
-            <%= t('opt_out.owner.note') %>
-          </div>
-
-          <button type="submit" class="govuk-button" data-module="govuk-button">
-            <%= t('opt_out.owner.continue') %>
-          </button>
-        </form>
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+              <%= t('opt_out.owner.continue') %>
+            </button>
+          </form>
       </div>
     </div>
   </div>

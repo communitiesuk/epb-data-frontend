@@ -46,7 +46,7 @@ describe "Acceptance::OptOutOwner", type: :feature do
       end
     end
 
-    context "when no radio button is selected" do
+    context "when the 'no' radio button is selected" do
       let(:response) { post "#{base_url}/opt-out/owner", { owner: "no" } }
 
       it "returns status 302" do
@@ -55,6 +55,22 @@ describe "Acceptance::OptOutOwner", type: :feature do
 
       it "redirects to the login page" do
         expect(response.location).to include("/opt-out/occupant")
+      end
+    end
+
+    context "when the user has not made a selection" do
+      let(:response) { post "#{base_url}/opt-out/owner" }
+
+      it "returns status 200" do
+        expect(response.status).to eq(200)
+      end
+
+      it "displays the error summary" do
+        expect(response.body).to have_css("div.govuk-error-summary")
+      end
+
+      it "display the selection error" do
+        expect(response.body).to have_css("p#owner-error", text: /Select whether you are the legal owner/)
       end
     end
   end
