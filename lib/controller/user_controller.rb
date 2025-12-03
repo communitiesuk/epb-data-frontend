@@ -2,7 +2,14 @@ module Controller
   class UserController < BaseController
     get "/login" do
       status 200
-      @back_link_href = request.referer || "/"
+
+      if params["referer"] == "/opt-out"
+        if Helper::Session.get_session_value(session, :opt_out).values.first == "no"
+          redirect localised_url("/opt-out/ineligible")
+        end
+      else
+        @back_link_href = request.referer || "/"
+      end
 
       authorize_url = case params["referer"]
                       when "api/my-account"

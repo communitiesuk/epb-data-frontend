@@ -112,6 +112,7 @@ describe "Acceptance::Login", type: :feature do
 
       context "when referer is '/opt-out'" do
         before do
+          allow(Helper::Session).to receive(:get_session_value).and_return({ owner: "yes" })
           get "#{login_url}?referer=/opt-out"
         end
 
@@ -129,6 +130,32 @@ describe "Acceptance::Login", type: :feature do
 
         it "has the correct text" do
           expect(last_response.body).to have_css("p", text: "You need to log in or sign up to make an opt out request.")
+        end
+
+        it "there is no back button" do
+          expect(last_response.body).not_to have_link("Back", href: "/previous_page")
+        end
+
+        context "when the owner is not confirmed in the session data" do
+          before do
+            allow(Helper::Session).to receive(:get_session_value).and_return({ owner: "no" })
+            get "#{login_url}?referer=/opt-out"
+          end
+
+          it "sends them to the ineligible page" do
+            expect(last_response.headers["location"]).to include("/opt-out/ineligible")
+          end
+        end
+
+        context "when the occupier is not confirmed in the session data" do
+          before do
+            allow(Helper::Session).to receive(:get_session_value).and_return({ occupier: "no" })
+            get "#{login_url}?referer=/opt-out"
+          end
+
+          it "sends them to the ineligible page" do
+            expect(last_response.headers["location"]).to include("/opt-out/ineligible")
+          end
         end
       end
     end
