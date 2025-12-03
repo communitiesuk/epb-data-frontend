@@ -36,4 +36,44 @@ describe "Acceptance::OptOccupant", type: :feature do
       end
     end
   end
+
+  describe "post .get-energy-certificate-data.epb-frontend/opt-out/owner" do
+    before do
+      allow(Helper::Session).to receive(:set_session_value)
+    end
+
+    context "when yes radio button is selected" do
+      let(:response) { post "#{base_url}/opt-out/occupant", { occupant: "occupant_yes" } }
+
+      it "returns status 302" do
+        expect(response.status).to eq(302)
+      end
+
+      it "redirects to the login page" do
+        expect(response.location).to include("/login?referer=/opt-out")
+      end
+
+      it "has the session value" do
+        response
+        expect(Helper::Session).to have_received(:set_session_value).with(anything, :opt_out, { occupant: "yes" })
+      end
+    end
+
+    context "when the 'no' radio button is selected" do
+      let(:response) { post "#{base_url}/opt-out/occupant", { occupant: "occupant_no" } }
+
+      it "returns status 302" do
+        expect(response.status).to eq(302)
+      end
+
+      it "redirects to the login page" do
+        expect(response.location).to include("/opt-out/ineligible")
+      end
+
+      it "has the session value" do
+        response
+        expect(Helper::Session).to have_received(:set_session_value).with(anything, :opt_out, { occupant: "no" })
+      end
+    end
+  end
 end

@@ -84,10 +84,14 @@ module Controller
     end
 
     post "/opt-out/occupant" do
-      @errors = {}
-      @error_form_ids = []
-      if params["occupant"]
-        # redirect "/opt_out/occupant=#{params['occupant']}"
+      set_default
+      case params["occupant"]
+      when "occupant_yes"
+        Helper::Session.set_session_value(session, :opt_out, { occupant: "yes" })
+        redirect "/login?referer=/opt-out"
+      when "occupant_no"
+        Helper::Session.set_session_value(session, :opt_out, { occupant: "no" })
+        redirect "/opt-out/ineligible"
       else
         @error_form_ids << "occupant-error"
         @errors[:occupant] = t("opt_out.occupant.error.invalid_occupant_selection.heading")
