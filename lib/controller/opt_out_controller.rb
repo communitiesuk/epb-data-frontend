@@ -105,6 +105,20 @@ module Controller
       erb :'opt_out/name'
     end
 
+    post "/opt-out/name" do
+      set_default
+      name = params["name"].strip
+      if name.empty?
+        @error_form_ids << "name-error"
+        @errors[:name] = t("opt_out.name.error")
+        erb :'opt_out/name'
+      else
+        opt_out_session = Helper::Session.get_session_value(session, :opt_out)
+        opt_out_session[:name] = name
+        Helper::Session.set_session_value(session, :opt_out, opt_out_session)
+        redirect "/opt-out/certificate-details"
+      end
+    end
     def set_default
       @errors = {}
       @error_form_ids = []

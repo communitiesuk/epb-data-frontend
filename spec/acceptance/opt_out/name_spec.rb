@@ -1,3 +1,4 @@
+require_relative "../../shared_examples/shared_opt_out_authentication"
 describe "Acceptance::OptOutOwner", type: :feature do
   include RSpecFrontendServiceMixin
 
@@ -32,17 +33,54 @@ describe "Acceptance::OptOutOwner", type: :feature do
       end
     end
 
-    context "when the user is not authenticated" do
+    it_behaves_like "when checking an authorisation for opt-out restricted endpoints", end_point: "name"
+  end
+
+  describe "post .get-energy-certificate-data.epb-frontend/opt-out/name" do
+    before do
+      allow(Helper::Session).to receive(:set_session_value)
+      allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out).and_return({ owner: "yes" })
+    end
+
+    context "when the user is authenticated" do
       before do
-        allow(Helper::Session).to receive(:is_user_authenticated?).and_raise(Errors::AuthenticationError, "User is not authenticated")
+        allow(Helper::Session).to receive_messages(
+          is_user_authenticated?: true,
+          get_email_from_session: "test@email.com",
+        )
       end
 
-      it "returns status 302" do
-        expect(response.status).to eq(302)
+      context "when there is a name in the input" do
+        let(:response) { post "#{base_url}/opt-out/name", { name: "Testy McTest" } }
+
+        it "returns status 302" do
+          expect(response.status).to eq(302)
+        end
+
+        it "redirects to the certificate-details page" do
+          expect(response.location).to include("/opt-out/certificate-details")
+        end
+
+        it "has the session value" do
+          response
+          expect(Helper::Session).to have_received(:set_session_value).with(anything, :opt_out, { owner: "yes", name: "Testy McTest" })
+        end
       end
 
-      it "redirects to the login page" do
-        expect(response.location).to include("/login?referer=opt-out")
+      context "when the input is empty" do
+        let(:response) { post "#{base_url}/opt-out/name", { name: " " } }
+
+        it "returns status 200" do
+          expect(response.status).to eq(200)
+        end
+
+        it "displays the error summary" do
+          expect(response.body).to have_css("div.govuk-error-summary")
+        end
+
+        it "display the selection error" do
+          expect(response.body).to have_css("p#name-error", text: /You must provide your full name/)
+        end
       end
     end
   end
