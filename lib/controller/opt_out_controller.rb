@@ -66,6 +66,12 @@ module Controller
       end
     end
 
+    get "/opt-out/ineligible" do
+      status 200
+      set_default
+      erb :'opt_out/ineligible'
+    end
+
     def set_default
       @errors = {}
       @error_form_ids = []
