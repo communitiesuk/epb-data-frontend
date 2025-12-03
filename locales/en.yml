@@ -220,6 +220,11 @@ en:
     sign_out: "Sign out"
     copy_bearer_token: "Copy"
 
+  login:
+    opt_out:
+      title: Create your GOV.UK One Login or sign in
+      paragraph_1: You need to log in or sign up to make an opt out request.
+
   api_guidance:
     title: "Using energy certificate data APIs"
     header: "Information to help developers use energy certificate data APIs"

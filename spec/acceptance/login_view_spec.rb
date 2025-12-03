@@ -109,6 +109,28 @@ describe "Acceptance::Login", type: :feature do
           expect(last_response.body).to have_link("Start now", href: "/login/authorize?referer=api/my-account")
         end
       end
+
+      context "when referer is '/opt-out'" do
+        before do
+          get "#{login_url}?referer=/opt-out"
+        end
+
+        it "returns status 200" do
+          expect(response.status).to eq(200)
+        end
+
+        it "has the correct referer for Start now button (authorize_url)" do
+          expect(last_response.body).to have_link("Start now", href: "/login/authorize?referer=/opt-out")
+        end
+
+        it "has the correct title" do
+          expect(last_response.body).to have_css("h1", text: "Create your GOV.UK One Login or sign in")
+        end
+
+        it "has the correct text" do
+          expect(last_response.body).to have_css("p", text: "You need to log in or sign up to make an opt out request.")
+        end
+      end
     end
   end
 

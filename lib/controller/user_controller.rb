@@ -4,7 +4,14 @@ module Controller
       status 200
       @back_link_href = request.referer || "/"
 
-      authorize_url = params["referer"] == "api/my-account" ? "/login/authorize?referer=api/my-account" : "/login/authorize"
+      authorize_url = case params["referer"]
+                      when "api/my-account"
+                        "/login/authorize?referer=api/my-account"
+                      when "/opt-out"
+                        "/login/authorize?referer=/opt-out"
+                      else
+                        "/login/authorize"
+                      end
 
       erb :login, locals: { authorize_url: }
     rescue StandardError => e
