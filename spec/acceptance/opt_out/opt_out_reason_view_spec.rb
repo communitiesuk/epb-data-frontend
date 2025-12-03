@@ -45,5 +45,42 @@ describe "Acceptance::OptOutReason", type: :feature do
         expect(response.body).to have_link("Select a reason for opting out", href: "#reason-error")
       end
     end
+
+    context "when selecting the incorrect reason" do
+      let(:response) { post "#{base_url}/opt-out/reason?reason=epc_incorrect" }
+
+      it "redirects to '/opt-out/incorrect-epc'" do
+        expect(response).to be_redirect
+        expect(response.location).to include("/opt-out/incorrect-epc")
+      end
+    end
+
+    context "when selecting the advised reason" do
+      let(:response) { post "#{base_url}/opt-out/reason?reason=epc_advised" }
+
+      it "redirects to '/opt-out/advised-by-third-party'" do
+        expect(response).to be_redirect
+        expect(response.location).to include("/opt-out/advised-by-third-party")
+      end
+    end
+
+    context "when selecting the other reason" do
+      let(:response) { post "#{base_url}/opt-out/reason?reason=epc_other" }
+
+      it "redirects to '/opt-out/advised-by-third-party'" do
+        expect(response).to be_redirect
+        expect(response.location).to include("/opt-out/owner")
+      end
+    end
+
+    context "when visiting the page in welsh" do
+      let(:response) { get "#{base_url}/opt-out/reason?lang=cy" }
+
+      context "when it renders the page" do
+        it "has the correct title" do
+          expect(response.body).to have_css("h1", text: "Pam hoffech chi optio’ch EPC allan?")
+        end
+      end
+    end
   end
 end

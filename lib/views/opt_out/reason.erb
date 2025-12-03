@@ -5,7 +5,7 @@
         <%= erb :error_summary, locals: { error_form_ids: @error_form_ids }%>
       <% end %>
 
-      <form method="post">
+      <form method="post" novalidate>
         <fieldset class="govuk-fieldset" aria-describedby="reason-hint">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
             <h1 class="govuk-fieldset__heading govuk-!-padding-bottom-4">

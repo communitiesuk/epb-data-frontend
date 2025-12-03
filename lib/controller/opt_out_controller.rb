@@ -16,10 +16,16 @@ module Controller
     end
 
     post "/opt-out/reason" do
+      set_layout
       @errors = {}
       @error_form_ids = []
-      if params["reason"]
-        # redirect "/opt_out/reason=#{params['reason']}"
+      case params["reason"]
+      when "epc_incorrect"
+        redirect localised_url("/opt-out/incorrect-epc")
+      when "epc_advised"
+        redirect localised_url("/opt-out/advised-by-third-party")
+      when "epc_other"
+        redirect localised_url("/opt-out/owner")
       else
         @error_form_ids << "reason-error"
         @errors[:reason] = t("opt_out.reason.error.invalid_reason_selection.heading")
