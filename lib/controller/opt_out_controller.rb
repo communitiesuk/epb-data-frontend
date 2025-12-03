@@ -76,7 +76,7 @@ module Controller
 
     get "/opt-out/occupant" do
       status 200
-      set_layout
+      set_default
       @errors = {}
       erb :'opt_out/occupant'
     rescue StandardError => e
@@ -99,13 +99,16 @@ module Controller
       end
     end
 
-    def set_layout
-      @hide_my_account = true
+    get "/opt-out/name" do
+      status 200
+      set_default
+      erb :'opt_out/name'
     end
 
     def set_default
       @errors = {}
       @error_form_ids = []
+      @hide_my_account = true
     end
   end
 end

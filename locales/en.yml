@@ -316,3 +316,8 @@ en:
         invalid_occupant_selection:
           heading: Select if you live in the property
 
+    name:
+      title: What is your full name?
+      label: First and last name
+      error: You must provide your full name
+      continue: Continue

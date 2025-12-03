@@ -8,6 +8,8 @@ require_relative "../helper/toggles"
 
 module Controller
   class BaseController < Sinatra::Base
+    RESTRICTED_PATHS = %w[/type-of-properties /api/my-account /filter-properties /download /download/all /opt-out/name].freeze
+
     helpers Helpers
     attr_reader :toggles
 
@@ -70,6 +72,8 @@ module Controller
 
       if request.path == "/api/my-account"
         redirect_url += "?referer=api/my-account"
+      elsif request.path.start_with?("/opt-out")
+        redirect_url += "?referer=opt-out"
       end
 
       redirect redirect_url
@@ -121,10 +125,9 @@ module Controller
     end
 
     def is_restricted?
-      restricted_paths = %w[/type-of-properties /api/my-account /filter-properties /download /download/all]
       return false unless ENV["LOCAL_SESSION"].nil?
 
-      restricted_paths.include?(request.path) ? true : false
+      RESTRICTED_PATHS.include?(request.path) ? true : false
     end
   end
 end

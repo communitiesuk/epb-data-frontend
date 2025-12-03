@@ -1,0 +1,33 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <div class="govuk-grid-column-two-thirds">
+
+      <div class="govuk-grid-row">
+        <% unless @errors.empty? %>
+          <%= erb :error_summary, locals: { error_form_ids: @error_form_ids }%>
+        <% end %>
+
+        <h1 class="govuk-heading-xl"><%= t('opt_out.name.title') %></h1>
+
+          <form method="post">
+            <div class="govuk-form-group<% if @errors[:name] %> govuk-form-group--error<% end %>">
+              <input type="hidden" name="lang" value="<%= I18n.locale.to_s %>" />
+              <% if @errors[:name] %>
+                <p id='name-error' class="govuk-error-message">
+                  <%= @errors[:name] %>
+                </p>
+              <% end %>
+              <label id="label_name" class="govuk-label govuk-label--l" for="name">
+                <%= t('opt_out.name.label') %>
+              </label>
+              <input class="govuk-input" id="name" name="Name" type="text">
+            </div>
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+              <%= t('opt_out.name.continue') %>
+            </button>
+          </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -314,3 +314,9 @@ cy:
       error:
         invalid_occupant_selection:
           heading: Select if you live in the property
+
+    name:
+      title: What is your full name?
+      label: Enw cyntaf ac olaf
+      error: You must provide your full name
+      continue: Parhau
