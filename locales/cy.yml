@@ -273,7 +273,7 @@ cy:
       opt_out_guidance:
         link: "View the guidance"
         text: " to learn more."
-      continue: "Continue"
+      continue: "Parhau"
 
     reason:
       title: Pam hoffech chi optio’ch EPC allan?
@@ -309,8 +309,8 @@ cy:
     occupant:
       title: Do you live in the property that you want to opt-out?
       radio:
-        occupant_yes: "Yes"
-        occupant_no: "No"
+        occupant_yes: "Ie"
+        occupant_no: "Nage"
       error:
         invalid_occupant_selection:
           heading: Select if you live in the property
