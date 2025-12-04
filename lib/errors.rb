@@ -102,6 +102,9 @@ module Errors
   class BearerTokenMissing < RuntimeError
   end
 
+  class MissingOptOutValues < RuntimeError
+  end
+
   module DoNotReport
   end
 end

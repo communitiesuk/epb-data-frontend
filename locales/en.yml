@@ -268,6 +268,8 @@ en:
       - November
       - December
   opt_out:
+    warning: Opting out an EPC for the purpose of securing grant funding is fraud.
+
     start_page:
       title: "Opting out an EPC"
       description_1: "If you are the owner or occupier of a property then you can choose to opt out of having EPC data for the property disclosed publicly."
@@ -278,7 +280,6 @@ en:
         text: " to learn more."
       continue: "Continue"
 
-
     reason:
       title: Why would you like to opt out your EPC?
       continue: Continue
@@ -286,7 +287,6 @@ en:
         incorrect: My EPC is incorrect
         advised: I have been advised by someone else
         other: Other / Prefer not to say
-      warning: Opting out an EPC for the purpose of securing grant funding is fraud.
       error:
         invalid_reason_selection:
           heading: Select a reason for opting out
@@ -298,7 +298,6 @@ en:
       note: Opting out an EPC does not make it invalid. EPCs are only invalidated when they expire or when they are replaced by a new EPC.
     advised_by_third_party:
       title: You do not need to opt out to access grant funding
-      warning: Opting out an EPC for the purpose of securing grant funding is fraud.
     owner:
       title: Are you the legal owner of the property that you want to opt out?
       radio_yes: "Yes"
@@ -324,6 +323,22 @@ en:
       label: First and last name
       error: You must provide your full name
       continue: Continue
+
+    check_your_answers:
+      title: Check your answers before submitting your request
+      personal_details:
+        title: Personal details
+        name: Name
+        email: Email address
+        relationship_to_property: Relationship to the property
+      property_details:
+        title: Property details
+        address: Property address
+        certificate_number: Certificate number
+      confirmation:
+        title: Confirmation
+        body: I confirm that these details are correct
+      submit: Submit request
 
     received:
       title: Request received

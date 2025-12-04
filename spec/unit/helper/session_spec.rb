@@ -1,5 +1,6 @@
 describe Helper::Session do
-  let(:session) { { "email_address": "test@email.com" } }
+  let(:session) { { "email_address": "test@email.com", opt_out: { name: "Some Name", owner: "yes", certificate_number: "test_cert_number" } } }
+  let(:session_with_occupant) { { "email_address": "test@email.com", opt_out: { name: "Some Name", occupant: "no" } } }
   let(:key) { :test_key }
 
   context "when setting a session value" do
@@ -47,6 +48,34 @@ describe Helper::Session do
     it "returns the email if it exists in the session" do
       email = described_class.get_email_from_session(session)
       expect(email).to eq("test@email.com")
+    end
+  end
+
+  describe "#get_full_name_from_session" do
+    it "returns the full name if it exists in the session" do
+      full_name = described_class.get_full_name_from_session(session)
+      expect(full_name).to eq("Some Name")
+    end
+  end
+
+  describe "#get_owner_from_opt_out_session_key" do
+    it "returns the correct value for owner key in the session" do
+      value = described_class.get_owner_from_opt_out_session_key(session)
+      expect(value).to eq("yes")
+    end
+  end
+
+  describe "#get_occupant_from_opt_out_session" do
+    it "returns the correct value for occupant key in the session" do
+      value = described_class.get_occupant_from_opt_out_session_key(session_with_occupant)
+      expect(value).to eq("no")
+    end
+  end
+
+  describe "#get_certificate_number_from_session" do
+    it "returns the certificate number if it exists in the session" do
+      certificate_number = described_class.get_certificate_number_from_session(session)
+      expect(certificate_number).to eq("test_cert_number")
     end
   end
 

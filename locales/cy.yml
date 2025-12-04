@@ -268,6 +268,8 @@ cy:
       - Rhagfyr
 
   opt_out:
+    warning: Mae optio EPC allan er mwyn sicrhau cyllid grant yn dwyll.
+
     start_page:
       title: "Opting out an EPC"
       description_1: "If you are the owner or occupier of a property then you can choose to opt out of having EPC data for the property disclosed publicly."
@@ -285,7 +287,6 @@ cy:
         incorrect: Mae fy EPC yn anghywir
         advised: Rhywun arall sydd wedi dweud wrtha i
         other: Arall / Gwell gen i beidio â dweud
-      warning: Mae optio EPC allan er mwyn sicrhau cyllid grant yn dwyll.
       error:
         invalid_reason_selection:
           heading: Select a reason for opting out
@@ -296,7 +297,6 @@ cy:
       note: Nid yw optio EPC allan yn ei gwneud yn annilys. Dim ond pan fyddan nhw’n dod i ben neu’n cael eu disodli gan EPC newydd y bydd EPCs yn dod yn annilys.
     advised_by_third_party:
       title: Does dim angen ichi optio allan er mwyn gael gafael ar gyllid grant
-      warning: Mae optio EPC allan er mwyn sicrhau cyllid grant yn dwyll.
     owner:
       title: Ai chi yw perchennog cyfreithiol yr eiddo yr hoffech ei optio allan?
       radio_yes: Ie
@@ -323,6 +323,22 @@ cy:
       label: Enw cyntaf ac olaf
       error: You must provide your full name
       continue: Parhau
+
+    check_your_answers:
+      title: Gwiriwch eich atebion cyn cyflwyno'ch cais
+      personal_details:
+        title: Manylion personol
+        name: Enw
+        email: Cyfeiriad ebost
+        relationship_to_property: Relationship to the property
+      property_details:
+        title: Manylion yr eiddo
+        address: Property address
+        certificate_number: Rhif y dystysgrif
+      confirmation:
+        title: Confirmation
+        body: I confirm that these details are correct
+      submit: Cyflwyno’r cais
 
     received:
       title: Y cais wedi dod i law

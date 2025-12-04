@@ -30,6 +30,32 @@ module Helper
       email
     end
 
+    def self.get_full_name_from_session(session)
+      opt_out_key = get_session_value(session, :opt_out)
+      full_name = opt_out_key[:name]
+      raise Errors::MissingOptOutValues, "Failed to get user full name from session opt out key" unless full_name
+
+      full_name
+    end
+
+    def self.get_owner_from_opt_out_session_key(session)
+      opt_out_key = get_session_value(session, :opt_out)
+      opt_out_key[:owner]
+    end
+
+    def self.get_occupant_from_opt_out_session_key(session)
+      opt_out_key = get_session_value(session, :opt_out)
+      opt_out_key[:occupant]
+    end
+
+    def self.get_certificate_number_from_session(session)
+      opt_out_key = get_session_value(session, :opt_out)
+      certificate_number = opt_out_key[:certificate_number]
+      raise Errors::MissingOptOutValues, "Failed to get certificate number from session" unless certificate_number
+
+      certificate_number
+    end
+
     def self.is_user_authenticated?(session)
       raise Errors::AuthenticationError, "Session is not available" if session.nil?
 

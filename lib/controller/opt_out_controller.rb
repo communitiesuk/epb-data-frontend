@@ -120,11 +120,18 @@ module Controller
       end
     end
 
+    get "/opt-out/check-your-answers" do
+      status 200
+      set_default
+      erb :'opt_out/check_your_answers'
+    end
+
     get "/opt-out/received" do
       status 200
       set_default
       erb :'opt_out/received'
     end
+
     def set_default
       @errors = {}
       @error_form_ids = []
