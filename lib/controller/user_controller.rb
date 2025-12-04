@@ -3,7 +3,7 @@ module Controller
     get "/login" do
       status 200
 
-      if params["referer"] == "/opt-out"
+      if params["referer"] == "opt-out"
         @hide_my_account = true
         if Helper::Session.get_session_value(session, :opt_out).values.first != "yes"
           redirect localised_url("/opt-out/ineligible")
@@ -15,8 +15,8 @@ module Controller
       authorize_url = case params["referer"]
                       when "api/my-account"
                         "/login/authorize?referer=api/my-account"
-                      when "/opt-out"
-                        "/login/authorize?referer=/opt-out"
+                      when "opt-out"
+                        "/login/authorize?referer=opt-out"
                       else
                         "/login/authorize"
                       end
@@ -36,7 +36,7 @@ module Controller
       case params["referer"]
       when "api/my-account"
         redirect_uri += "/admin"
-      when "/opt-out"
+      when "opt-out"
         redirect_uri += "/opt-out"
       end
 
@@ -160,7 +160,7 @@ module Controller
                          when "api/my-account"
                            "/login?referer=api/my-account"
                          when "opt-out/name"
-                           "/login?referer=/opt-out"
+                           "/login?referer=opt-out"
                          else
                            "/login"
                          end

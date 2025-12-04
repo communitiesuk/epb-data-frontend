@@ -57,7 +57,7 @@ module Controller
       case params["owner"]
       when "yes"
         Helper::Session.set_session_value(session, :opt_out, { owner: "yes" })
-        redirect localised_url("/login?referer=/opt-out")
+        redirect localised_url("/login?referer=opt-out")
       when "no"
         Helper::Session.set_session_value(session, :opt_out, { owner: "no" })
         redirect localised_url("/opt-out/occupant")
@@ -88,7 +88,7 @@ module Controller
       case params["occupant"]
       when "occupant_yes"
         Helper::Session.set_session_value(session, :opt_out, { occupant: "yes" })
-        redirect localised_url("/login?referer=/opt-out")
+        redirect localised_url("/login?referer=opt-out")
       when "occupant_no"
         Helper::Session.set_session_value(session, :opt_out, { occupant: "no" })
         redirect localised_url("/opt-out/ineligible")

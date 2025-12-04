@@ -114,10 +114,10 @@ describe "Acceptance::Login", type: :feature do
         end
       end
 
-      context "when referer is '/opt-out'" do
+      context "when referer is 'opt-out'" do
         before do
           allow(Helper::Session).to receive(:get_session_value).and_return({ owner: "yes" })
-          get "#{login_url}?referer=/opt-out"
+          get "#{login_url}?referer=opt-out"
         end
 
         it "returns status 200" do
@@ -125,7 +125,7 @@ describe "Acceptance::Login", type: :feature do
         end
 
         it "has the correct referer for Start now button (authorize_url)" do
-          expect(last_response.body).to have_link("Start now", href: "/login/authorize?referer=/opt-out")
+          expect(last_response.body).to have_link("Start now", href: "/login/authorize?referer=opt-out")
         end
 
         it "has the correct title" do
@@ -147,7 +147,7 @@ describe "Acceptance::Login", type: :feature do
         context "when the owner is not confirmed in the session data" do
           before do
             allow(Helper::Session).to receive(:get_session_value).and_return({ owner: "no" })
-            get "#{login_url}?referer=/opt-out"
+            get "#{login_url}?referer=opt-out"
           end
 
           it "sends them to the ineligible page" do
@@ -158,7 +158,7 @@ describe "Acceptance::Login", type: :feature do
         context "when the occupier is not confirmed in the session data" do
           before do
             allow(Helper::Session).to receive(:get_session_value).and_return({ occupier: "no" })
-            get "#{login_url}?referer=/opt-out"
+            get "#{login_url}?referer=opt-out"
           end
 
           it "sends them to the ineligible page" do
@@ -231,7 +231,7 @@ describe "Acceptance::Login", type: :feature do
     context "when the request is received with opt-out referer parameter" do
       before do
         allow(sign_onelogin_request_test_use_case).to receive(:execute).and_return("test_signed_request")
-        get "#{login_url}/authorize?referer=/opt-out"
+        get "#{login_url}/authorize?referer=opt-out"
       end
 
       it "calls the use case with the correct arguments" do
@@ -404,7 +404,7 @@ describe "Acceptance::Login", type: :feature do
       end
 
       it "redirects to the login page" do
-        expect(last_response.headers["Location"]).to eq("http://get-energy-performance-data/login?referer=/opt-out")
+        expect(last_response.headers["Location"]).to eq("http://get-energy-performance-data/login?referer=opt-out")
       end
     end
   end

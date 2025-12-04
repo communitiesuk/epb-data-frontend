@@ -50,7 +50,7 @@ describe "Acceptance::OptOccupant", type: :feature do
       end
 
       it "redirects to the login page" do
-        expect(response.location).to include("/login?referer=/opt-out")
+        expect(response.location).to include("/login?referer=opt-out")
       end
 
       it "has the session value" do
