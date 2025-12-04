@@ -5,8 +5,8 @@
         <%= erb :error_summary, locals: { error_form_ids: @error_form_ids }%>
       <% end %>
 
-      <form method="post">
-        <fieldset class="govuk-fieldset" aria-describedby="reason-hint">
+      <form method="post" novalidate>
+        <fieldset class="govuk-fieldset">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
             <h1 class="govuk-fieldset__heading govuk-!-padding-bottom-4">
               <%= t("opt_out.occupant.title") %>
@@ -21,13 +21,13 @@
             <% end %>
             <div class="govuk-radios" data-module="govuk-radios">
               <div class="govuk-radios__item">
-                <input class="govuk-radios__input" id="occupant_yes" name="occupant" type="radio" value="occupant_yes" aria-describedby="occupant_yes-item-hint">
+                <input class="govuk-radios__input" id="occupant_yes" name="occupant" type="radio" value="occupant_yes">
                 <label  id="label-occupant_yes" class="govuk-label govuk-radios__label" for="occupant_yes">
                   <%= t("opt_out.occupant.radio.occupant_yes")%>
                 </label>
               </div>
               <div class="govuk-radios__item">
-                <input class="govuk-radios__input" id="occupant_no" name="occupant" type="radio" value="occupant_no" aria-describedby="occupant_no-item-hint">
+                <input class="govuk-radios__input" id="occupant_no" name="occupant" type="radio" value="occupant_no">
                 <label  id="label-occupant_no" class="govuk-label govuk-radios__label" for="occupant_no">
                   <%= t("opt_out.occupant.radio.occupant_no")%>
                 </label>

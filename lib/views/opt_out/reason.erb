@@ -6,7 +6,7 @@
       <% end %>
 
       <form method="post" novalidate>
-        <fieldset class="govuk-fieldset" aria-describedby="reason-hint">
+        <fieldset class="govuk-fieldset">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
             <h1 class="govuk-fieldset__heading govuk-!-padding-bottom-4">
               <%= t("opt_out.reason.title") %>
@@ -21,19 +21,19 @@
             <% end %>
             <div class="govuk-radios" data-module="govuk-radios">
               <div class="govuk-radios__item">
-                <input class="govuk-radios__input" id="epc_incorrect" name="reason" type="radio" value="epc_incorrect" aria-describedby="epc_incorrect-item-hint">
+                <input class="govuk-radios__input" id="epc_incorrect" name="reason" type="radio" value="epc_incorrect">
                 <label  id="label-epc_incorrect" class="govuk-label govuk-radios__label" for="epc_incorrect">
                   <%= t("opt_out.reason.radio.incorrect") %>
                 </label>
               </div>
               <div class="govuk-radios__item">
-                <input class="govuk-radios__input" id="epc_advised" name="reason" type="radio" value="epc_advised" aria-describedby="epc_advised-item-hint">
+                <input class="govuk-radios__input" id="epc_advised" name="reason" type="radio" value="epc_advised">
                 <label  id="label-epc_advised" class="govuk-label govuk-radios__label" for="epc_advised">
                   <%= t("opt_out.reason.radio.advised") %>
                 </label>
               </div>
               <div class="govuk-radios__item">
-                <input class="govuk-radios__input" id="epc_other" name="reason" type="radio" value="epc_other" aria-describedby="epc_other-item-hint">
+                <input class="govuk-radios__input" id="epc_other" name="reason" type="radio" value="epc_other">
                 <label  id="label-epc_other" class="govuk-label govuk-radios__label" for="epc_other">
                   <%= t("opt_out.reason.radio.other") %>
                 </label>
