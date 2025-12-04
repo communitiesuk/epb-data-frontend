@@ -1,4 +1,4 @@
-describe "Acceptance::OptOccupant", type: :feature do
+describe "Acceptance::OptOutOccupant", type: :feature do
   include RSpecFrontendServiceMixin
 
   let(:base_url) { "http://get-energy-performance-data" }

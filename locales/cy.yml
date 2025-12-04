@@ -324,6 +324,22 @@ cy:
       error: You must provide your full name
       continue: Parhau
 
+    certificate_details:
+      title: Which property would you like to opt out?
+      address_title: Cyfeiriad
+      address_line2: Address line 2 (optional)
+      town: Tref neu ddinas
+      certificate_number:
+        title: Rhif y dystysgrif
+        hint: Mae hwn i’w weld tua brig <a href="https://www.gov.uk/find-energy-certificate">eich EPC.</a>.
+        error: Enter a valid certificate number
+      address_line1:
+        title: Address line 1
+        error: Enter the first line of your address
+      postcode:
+        title: Cod post
+        error: Enter a valid postcode
+
     check_your_answers:
       title: Gwiriwch eich atebion cyn cyflwyno'ch cais
       personal_details:

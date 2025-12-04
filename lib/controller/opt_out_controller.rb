@@ -120,6 +120,56 @@ module Controller
       end
     end
 
+    get "/opt-out/certificate-details" do
+      status 200
+      set_default
+      erb :'opt_out/certificate_details'
+    end
+
+    post "/opt-out/certificate-details" do
+      set_default
+      certificate_number = params["certificate_number"].strip
+      address_line1 = params["address_line1"].strip
+      address_line2 = params["address_line2"].strip
+      address_town = params["address_town"].strip
+      address_postcode = params["address_postcode"].strip
+
+      if certificate_number.empty? || !certificate_valid(certificate_number)
+        @error_form_ids << "certificate-number-error"
+        @errors[:certificate_number] = t("opt_out.certificate_details.certificate_number.error")
+      end
+
+      if address_line1.empty?
+        @error_form_ids << "address-line1-error"
+        @errors[:address_line1] = t("opt_out.certificate_details.address_line1.error")
+      end
+
+      if address_postcode.empty?
+        @error_form_ids << "address-postcode-error"
+        @errors[:address_postcode] = t("opt_out.certificate_details.postcode.error")
+      else
+        begin
+          Helper::PostcodeValidator.validate(address_postcode)
+        rescue Errors::PostcodeIncomplete, Errors::PostcodeWrongFormat, Errors::PostcodeNotValid
+          @error_form_ids << "address-postcode-error"
+          @errors[:address_postcode] = t("opt_out.certificate_details.postcode.error")
+        end
+      end
+
+      if @errors.empty?
+        opt_out_session = Helper::Session.get_session_value(session, :opt_out) || {}
+        opt_out_session[:certificate_number] = certificate_number
+        opt_out_session[:address_line1] = address_line1
+        opt_out_session[:address_line2] = address_line2
+        opt_out_session[:address_town] = address_town
+        opt_out_session[:address_postcode] = address_postcode
+        Helper::Session.set_session_value(session, :opt_out, opt_out_session)
+        redirect "/opt-out/check-your-answers"
+      else
+        erb :'opt_out/certificate_details'
+      end
+    end
+
     get "/opt-out/check-your-answers" do
       status 200
       set_default
@@ -136,6 +186,11 @@ module Controller
       @errors = {}
       @error_form_ids = []
       @hide_my_account = true
+    end
+
+    def certificate_valid(rrn)
+      valid_rrn = "^(\\d{4}-){4}\\d{4}$".freeze
+      rrn.delete("-").length == 20 && Regexp.new(valid_rrn).match?(rrn)
     end
   end
 end

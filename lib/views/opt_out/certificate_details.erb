@@ -1,0 +1,82 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <div class="govuk-grid-column-two-thirds">
+
+      <div class="govuk-grid-row">
+        <% unless @errors.empty? %>
+          <%= erb :error_summary, locals: { error_form_ids: @error_form_ids }%>
+        <% end %>
+
+        <h1 class="govuk-heading-xl"><%= t('opt_out.certificate_details.title') %></h1>
+
+        <form method="post">
+          <fieldset class="govuk-fieldset">
+            <div class="govuk-form-group<% if @errors[:certificate_number] %> govuk-form-group--error<% end %>">
+              <h2 class="govuk-label-wrapper">
+                <label class="govuk-label govuk-label--l" for="certificate-number" id="certificate-number-label">
+                  <%= t('opt_out.certificate_details.certificate_number.title') %>
+                </label>
+              </h2>
+              <div id="certificate-number-hint" class="govuk-hint">
+                <%= t('opt_out.certificate_details.certificate_number.hint') %>
+              </div>
+              <% if @errors[:certificate_number] %>
+                <p id='certificate-number-error' class="govuk-error-message">
+                  <%= @errors[:certificate_number] %>
+                </p>
+              <% end %>
+              <input class="govuk-input govuk-!-width-one-half" id="certificate-number" name="certificate_number" type="text" aria-describedby="certificate-number-hint">
+            </div>
+          </fieldset>
+          <br>
+          <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+              <h2 class="govuk-fieldset__heading">
+                <%= t('opt_out.certificate_details.address_title') %>
+              </h2>
+            </legend>
+            <div class="govuk-form-group<% if @errors[:address_line1] %> govuk-form-group--error<% end %>">
+              <label class="govuk-label" for="address-line1">
+                <%= t('opt_out.certificate_details.address_line1.title') %>
+              </label>
+              <% if @errors[:address_line1] %>
+                <p id='address-line1-error' class="govuk-error-message">
+                  <%= @errors[:address_line1] %>
+                </p>
+              <% end %>
+              <input class="govuk-input" id="address-line1" name="address_line1" type="text" autocomplete="address-line1">
+            </div>
+            <div class="govuk-form-group">
+              <label class="govuk-label" for="address-line-2">
+                <%= t('opt_out.certificate_details.address_line2') %>
+              </label>
+              <input class="govuk-input" id="address-line-2" name="address_line2" type="text" autocomplete="address-line2">
+            </div>
+            <div class="govuk-form-group">
+              <label class="govuk-label" for="address-town">
+                <%= t('opt_out.certificate_details.town') %>
+              </label>
+              <input class="govuk-input govuk-!-width-two-thirds" id="address-town" name="address_town" type="text" autocomplete="address-level2">
+            </div>
+            <div class="govuk-form-group<% if @errors[:address_postcode] %> govuk-form-group--error<% end %>">
+              <label class="govuk-label" for="address-postcode">
+                <%= t('opt_out.certificate_details.postcode.title') %>
+              </label>
+              <% if @errors[:address_postcode] %>
+                <p id='address-postcode-error' class="govuk-error-message">
+                  <%= @errors[:address_postcode] %>
+                </p>
+              <% end %>
+              <input class="govuk-input govuk-input--width-10" id="address-postcode" name="address_postcode" type="text" autocomplete="postal-code">
+            </div>
+          </fieldset>
+          <br>
+          <button type="submit" class="govuk-button" data-module="govuk-button">
+            <%= t('opt_out.name.continue') %>
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>

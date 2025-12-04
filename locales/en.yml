@@ -324,6 +324,22 @@ en:
       error: You must provide your full name
       continue: Continue
 
+    certificate_details:
+      title: Which property would you like to opt out?
+      address_title: Address
+      address_line2: Address line 2 (optional)
+      town: Town or city
+      certificate_number:
+        title: Certificate number
+        hint: This can be found near the top of <a href="https://www.gov.uk/find-energy-certificate">your EPC</a>.
+        error: Enter a valid certificate number
+      address_line1:
+        title: Address line 1
+        error: Enter the first line of your address
+      postcode:
+        title: Postcode
+        error: Enter a valid postcode
+
     check_your_answers:
       title: Check your answers before submitting your request
       personal_details:
