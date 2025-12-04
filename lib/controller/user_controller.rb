@@ -32,8 +32,11 @@ module Controller
       aud = "#{host_url}/authorize"
       redirect_uri = "#{frontend_url}/login/callback"
 
-      if params["referer"] == "api/my-account"
+      case params["referer"]
+      when "api/my-account"
         redirect_uri += "/admin"
+      when "/opt-out"
+        redirect_uri += "/opt-out"
       end
 
       nonce = request.cookies["nonce"] || SecureRandom.hex(16)
@@ -69,6 +72,10 @@ module Controller
 
     get "/login/callback/admin" do
       one_login_callback(redirect_path: "api/my-account")
+    end
+
+    get "/login/callback/opt-out" do
+      one_login_callback(redirect_path: "opt-out/name")
     end
 
     get "/jwks" do
@@ -148,7 +155,16 @@ module Controller
 
         @logger.error JSON.generate(error)
 
-        redirect redirect_path == "api/my-account" ? "/login?referer=api/my-account" : "/login"
+        redirect_link =  case redirect_path
+                         when "api/my-account"
+                           "/login?referer=api/my-account"
+                         when "opt-out/name"
+                           "/login?referer=/opt-out"
+                         else
+                           "/login"
+                         end
+
+        redirect localised_url(redirect_link)
       when Errors::TokenExchangeError, Errors::AuthenticationError, Errors::NetworkError
         @logger.warn "Authentication error: #{e.message}"
         server_error(e)

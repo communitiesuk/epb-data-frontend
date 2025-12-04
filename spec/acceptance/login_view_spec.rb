@@ -12,6 +12,10 @@ describe "Acceptance::Login", type: :feature do
     "#{callback_url}/admin"
   end
 
+  let(:callback_opt_out_url) do
+    "#{callback_url}/opt-out"
+  end
+
   let(:response) { get login_url }
 
   let(:onelogin_gateway) do
@@ -219,6 +223,23 @@ describe "Acceptance::Login", type: :feature do
         )
       end
     end
+
+    context "when the request is received with opt-out referer parameter" do
+      before do
+        allow(sign_onelogin_request_test_use_case).to receive(:execute).and_return("test_signed_request")
+        get "#{login_url}/authorize?referer=/opt-out"
+      end
+
+      it "calls the use case with the correct arguments" do
+        expect(sign_onelogin_request_test_use_case).to have_received(:execute).with(
+          aud: "#{ENV['ONELOGIN_HOST_URL']}/authorize",
+          client_id: ENV["ONELOGIN_CLIENT_ID"],
+          redirect_uri: "#{last_request.scheme}://#{last_request.host_with_port}/login/callback/opt-out",
+          state: last_response.cookies["state"].first,
+          nonce: last_response.cookies["nonce"].first,
+        )
+      end
+    end
   end
 
   describe "get .get-energy-certificate-data.epb-frontend/login/callback" do
@@ -331,6 +352,55 @@ describe "Acceptance::Login", type: :feature do
 
       it "redirects to the login page" do
         expect(last_response.headers["Location"]).to eq("http://get-energy-performance-data/login?referer=api/my-account")
+      end
+    end
+  end
+
+  describe "get .get-energy-certificate-data.epb-frontend/login/callback/opt-out" do
+    before do
+      allow(request_onelogin_token_use_case).to receive(:execute).and_return(token_response)
+      allow(get_onelogin_user_info_use_case).to receive(:execute).and_return(user_info_response)
+      allow(Helper::Onelogin).to receive(:check_one_login_errors).and_return(true)
+      allow(Helper::Session).to receive(:set_session_value)
+      allow(get_user_id_use_case).to receive(:execute).and_return("e40c46c3-4636-4a8a-abd7-be72e1a525f6")
+    end
+
+    context "when the request is received" do
+      before do
+        Timecop.freeze(Time.utc(2025, 6, 25, 12, 0, 0))
+        get callback_opt_out_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
+      end
+
+      after do
+        Timecop.return
+      end
+
+      it "calls the request_onelogin_token_use_case with the right arguments" do
+        expect(request_onelogin_token_use_case).to have_received(:execute).with({ code: "test_code", redirect_uri: "http://get-energy-performance-data/login/callback/opt-out" })
+      end
+
+      it "returns status 302" do
+        expect(last_response.status).to eq(302)
+      end
+
+      it "redirects to the /opt-out/name page" do
+        redirect_uri = URI(last_response.location)
+        expect(redirect_uri.path).to eq("/opt-out/name")
+        expect(redirect_uri.query).to eq("nocache=1750852800")
+      end
+    end
+
+    context "when request raises StateMismatch error" do
+      before do
+        get callback_opt_out_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=different_test_state" }
+      end
+
+      it "returns status 302" do
+        expect(last_response.status).to eq(302)
+      end
+
+      it "redirects to the login page" do
+        expect(last_response.headers["Location"]).to eq("http://get-energy-performance-data/login?referer=/opt-out")
       end
     end
   end
