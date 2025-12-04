@@ -32,7 +32,7 @@ describe "Acceptance::OptOutCertificateDetails", type: :feature do
         expect(response.body).to have_css("button[type='submit']", text: "Continue")
       end
 
-      # it_behaves_like "when checking an authorisation for opt-out restricted endpoints", end_point: "certificate-details"
+      it_behaves_like "when checking an authorisation for opt-out restricted endpoints", end_point: "certificate-details"
     end
   end
 
