@@ -136,8 +136,12 @@ describe "Acceptance::Login", type: :feature do
           expect(last_response.body).to have_css("p", text: "You need to log in or sign up to make an opt out request.")
         end
 
-        it "there is no back button" do
+        it "has no back button" do
           expect(last_response.body).not_to have_link("Back", href: "/previous_page")
+        end
+
+        it "has no link to my account" do
+          expect(last_response.body).not_to have_link("My account", href: "/api/my-account")
         end
 
         context "when the owner is not confirmed in the session data" do

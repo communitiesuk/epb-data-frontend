@@ -221,6 +221,9 @@ en:
     copy_bearer_token: "Copy"
 
   login:
+    title: Get energy performance of buildings data
+    paragraph_1: If you’ve used other government services for example, to <strong>file a Self Assessment tax return</strong> or <strong>apply for or renew a passport</strong>, you can use the same login details here.
+    paragraph_2: If you don’t have a One Login, you can create one when you start.
     opt_out:
       title: Create your GOV.UK One Login or sign in
       paragraph_1: You need to log in or sign up to make an opt out request.

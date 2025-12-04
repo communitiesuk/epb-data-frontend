@@ -8,16 +8,16 @@
             <%= t("login.opt_out.paragraph_1") %>
           </p>
         <% else %>
-          <h1 class="govuk-heading-xl">Get energy performance of buildings data</h1>
-
-          <p class="govuk-body">
-            If you’ve used other government services for example, to <strong>file a Self Assessment tax return</strong> or <strong>apply for or renew a passport</strong>, you can use the same login details here.
-          </p>
-
-          <p class="govuk-body">
-            If you don’t have a One Login, you can create one when you start.
-          </p>
+          <h1 class="govuk-heading-xl"><%= t("login.title") %></h1>
         <% end %>
+
+          <p class="govuk-body">
+            <%= t("login.paragraph_1") %>
+          </p>
+
+          <p class="govuk-body">
+            <%= t("login.paragraph_2") %>
+          </p>
           <a
           href="<%= locals[:authorize_url] %>"
           role="button"

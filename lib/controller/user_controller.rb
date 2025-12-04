@@ -4,7 +4,8 @@ module Controller
       status 200
 
       if params["referer"] == "/opt-out"
-        if Helper::Session.get_session_value(session, :opt_out).values.first == "no"
+        @hide_my_account = true
+        if Helper::Session.get_session_value(session, :opt_out).values.first != "yes"
           redirect localised_url("/opt-out/ineligible")
         end
       else

@@ -127,7 +127,7 @@ module Controller
     def is_restricted?
       return false unless ENV["LOCAL_SESSION"].nil?
 
-      RESTRICTED_PATHS.include?(request.path) ? true : false
+      RESTRICTED_PATHS.include?(request.path) || false
     end
   end
 end
