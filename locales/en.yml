@@ -343,5 +343,5 @@ en:
     received:
       title: Request received
       sub_heading: What happens next
-      para_1: Your request may take up to 10 working days.
-      para_2: You will receive an email once your request has been completed.
+      description_1: Your request may take up to <strong>10 working days.</strong>
+      description_2: You will receive an email once your request has been completed.

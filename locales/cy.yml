@@ -343,5 +343,5 @@ cy:
     received:
       title: Y cais wedi dod i law
       sub_heading: Beth sy'n digwydd nesaf
-      para_1: Gall eich cais gymryd hyd at 10 diwrnod gwaith.
-      para_2: Fe gewch chi neges ebost pan fydd eich cais wedi'i gwblhau.
+      description_1: Gall eich cais gymryd hyd at <strong>10 diwrnod gwaith.</strong>
+      description_2: Fe gewch chi neges ebost pan fydd eich cais wedi'i gwblhau.
