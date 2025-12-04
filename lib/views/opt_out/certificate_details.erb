@@ -25,7 +25,13 @@
                   <%= @errors[:certificate_number] %>
                 </p>
               <% end %>
-              <input class="govuk-input govuk-!-width-one-half" id="certificate-number" name="certificate_number" type="text" aria-describedby="certificate-number-hint">
+              <input class="govuk-input govuk-!-width-one-half"
+                     id="certificate-number"
+                     name="certificate_number"
+                     type="text"
+                     aria-describedby="certificate-number-hint"
+                     <% if params['certificate_number'] %>value="<%= params['certificate_number'] %>"<% end %>
+              >
             </div>
           </fieldset>
           <br>
@@ -44,19 +50,39 @@
                   <%= @errors[:address_line1] %>
                 </p>
               <% end %>
-              <input class="govuk-input" id="address-line1" name="address_line1" type="text" autocomplete="address-line1">
+              <input class="govuk-input"
+                     id="address-line1"
+                     name="address_line1"
+                     type="text"
+                     autocomplete="address-line1"
+                     <% if params['address_line1'] %>value="<%= params['address_line1'] %>"<% end %>
+
+              >
             </div>
             <div class="govuk-form-group">
               <label class="govuk-label" for="address-line-2">
                 <%= t('opt_out.certificate_details.address_line2') %>
               </label>
-              <input class="govuk-input" id="address-line-2" name="address_line2" type="text" autocomplete="address-line2">
+              <input class="govuk-input"
+                     id="address-line-2"
+                     name="address_line2"
+                     type="text"
+                     autocomplete="address-line2"
+                     <% if params['address_line2'] %>value="<%= params['address_line2'] %>"<% end %>
+
+              >
             </div>
             <div class="govuk-form-group">
               <label class="govuk-label" for="address-town">
                 <%= t('opt_out.certificate_details.town') %>
               </label>
-              <input class="govuk-input govuk-!-width-two-thirds" id="address-town" name="address_town" type="text" autocomplete="address-level2">
+              <input class="govuk-input govuk-!-width-two-thirds"
+                     id="address-town"
+                     name="address_town"
+                     type="text"
+                     autocomplete="address-level2"
+                     <% if params['address_town'] %>value="<%= params['address_town'] %>"<% end %>
+              >
             </div>
             <div class="govuk-form-group<% if @errors[:address_postcode] %> govuk-form-group--error<% end %>">
               <label class="govuk-label" for="address-postcode">
@@ -67,7 +93,12 @@
                   <%= @errors[:address_postcode] %>
                 </p>
               <% end %>
-              <input class="govuk-input govuk-input--width-10" id="address-postcode" name="address_postcode" type="text" autocomplete="postal-code">
+              <input class="govuk-input govuk-input--width-10"
+                     id="address-postcode"
+                     name="address_postcode"
+                     type="text"
+                     <% if params['address_postcode'] %>value="<%= params['address_postcode'] %>"<% end %>
+              >
             </div>
           </fieldset>
           <br>
