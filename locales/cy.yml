@@ -323,3 +323,9 @@ cy:
       label: Enw cyntaf ac olaf
       error: You must provide your full name
       continue: Parhau
+
+    received:
+      title: Y cais wedi dod i law
+      sub_heading: Beth sy'n digwydd nesaf
+      para_1: Gall eich cais gymryd hyd at 10 diwrnod gwaith.
+      para_2: Fe gewch chi neges ebost pan fydd eich cais wedi'i gwblhau.

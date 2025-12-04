@@ -119,6 +119,12 @@ module Controller
         redirect "/opt-out/certificate-details"
       end
     end
+
+    get "/opt-out/received" do
+      status 200
+      set_default
+      erb :'opt_out/received'
+    end
     def set_default
       @errors = {}
       @error_form_ids = []

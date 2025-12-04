@@ -324,3 +324,9 @@ en:
       label: First and last name
       error: You must provide your full name
       continue: Continue
+
+    received:
+      title: Request received
+      sub_heading: What happens next
+      para_1: Your request may take up to 10 working days.
+      para_2: You will receive an email once your request has been completed.
