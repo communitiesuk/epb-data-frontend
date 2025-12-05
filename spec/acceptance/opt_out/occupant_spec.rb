@@ -43,7 +43,7 @@ describe "Acceptance::OptOutOccupant", type: :feature do
     end
 
     context "when yes radio button is selected" do
-      let(:response) { post "#{base_url}/opt-out/occupant", { occupant: "occupant_yes" } }
+      let(:response) { post "#{base_url}/opt-out/occupant", { occupant: "yes" } }
 
       it "returns status 302" do
         expect(response.status).to eq(302)
@@ -60,7 +60,7 @@ describe "Acceptance::OptOutOccupant", type: :feature do
     end
 
     context "when the 'no' radio button is selected" do
-      let(:response) { post "#{base_url}/opt-out/occupant", { occupant: "occupant_no" } }
+      let(:response) { post "#{base_url}/opt-out/occupant", { occupant: "no" } }
 
       it "returns status 302" do
         expect(response.status).to eq(302)
