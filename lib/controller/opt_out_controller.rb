@@ -86,10 +86,10 @@ module Controller
     post "/opt-out/occupant" do
       set_default
       case params["occupant"]
-      when "occupant_yes"
+      when "yes"
         Helper::Session.set_session_value(session, :opt_out, { occupant: "yes" })
         redirect localised_url("/login?referer=opt-out")
-      when "occupant_no"
+      when "no"
         Helper::Session.set_session_value(session, :opt_out, { occupant: "no" })
         redirect localised_url("/opt-out/ineligible")
       else
