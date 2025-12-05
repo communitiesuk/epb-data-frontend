@@ -61,15 +61,19 @@
             </div>
             <div class="govuk-form-group">
               <label class="govuk-label" for="address-line-2">
-                <%= t('opt_out.certificate_details.address_line2') %>
+                <%= t('opt_out.certificate_details.address_line2.title') %>
               </label>
+              <% if @errors[:address_line2] %>
+                <p id='address-line2-error' class="govuk-error-message">
+                  <%= @errors[:address_line2] %>
+                </p>
+              <% end %>
               <input class="govuk-input"
                      id="address-line-2"
                      name="address_line2"
                      type="text"
                      autocomplete="address-line2"
                      <% if params['address_line2'] %>value="<%= params['address_line2'] %>"<% end %>
-
               >
             </div>
             <div class="govuk-form-group">

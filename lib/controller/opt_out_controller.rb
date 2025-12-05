@@ -162,6 +162,14 @@ module Controller
       if address_line1.empty?
         @error_form_ids << "address-line1-error"
         @errors[:address_line1] = t("opt_out.certificate_details.address_line1.error")
+      elsif address_line1.length > 255
+        @error_form_ids << "address-line1-error"
+        @errors[:address_line1] = t("opt_out.certificate_details.address_line1.too_long_error")
+      end
+
+      if address_line2.length > 255
+        @error_form_ids << "address-line2-error"
+        @errors[:address_line2] = t("opt_out.certificate_details.address_line2.too_long_error")
       end
 
       if address_postcode.empty?
