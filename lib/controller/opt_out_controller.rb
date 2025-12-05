@@ -137,7 +137,7 @@ module Controller
         redirect "/opt-out/ineligible"
       end
 
-      unless opt_out_session.key(:name)
+      unless opt_out_session.key?(:name)
         redirect "/opt-out/name"
       end
 

@@ -13,6 +13,7 @@ describe "Acceptance::OptOutCertificateDetails", type: :feature do
           is_user_authenticated?: true,
           get_email_from_session: "test@email.com",
         )
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out).and_return({ owner: "yes", name: "Testy McTest" })
       end
 
       it "returns status 200" do
