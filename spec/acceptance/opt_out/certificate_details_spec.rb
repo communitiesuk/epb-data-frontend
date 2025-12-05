@@ -33,6 +33,48 @@ describe "Acceptance::OptOutCertificateDetails", type: :feature do
       end
 
       it_behaves_like "when checking an authorisation for opt-out restricted endpoints", end_point: "certificate-details"
+
+      context "when the user skipped over the eligibility questions" do
+        before do
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out).and_return({ name: "Testy McTest" })
+        end
+
+        it "returns status 302" do
+          expect(response.status).to eq(302)
+        end
+
+        it "redirects to the start page" do
+          expect(response.location).to include("/opt-out")
+        end
+      end
+
+      context "when the user was not eligible" do
+        before do
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out).and_return({ owner: "no", occupant: "no", name: "Testy McTest" })
+        end
+
+        it "returns status 302" do
+          expect(response.status).to eq(302)
+        end
+
+        it "redirects to ineligible page" do
+          expect(response.location).to include("/opt-out/ineligible")
+        end
+      end
+
+      context "when the user skipped over the name step" do
+        before do
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out).and_return({ owner: "yes" })
+        end
+
+        it "returns status 302" do
+          expect(response.status).to eq(302)
+        end
+
+        it "redirects to ineligible page" do
+          expect(response.location).to include("/opt-out/name")
+        end
+      end
     end
   end
 

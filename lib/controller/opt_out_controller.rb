@@ -127,6 +127,20 @@ module Controller
     end
 
     get "/opt-out/certificate-details" do
+      opt_out_session = Helper::Session.get_session_value(session, :opt_out) || {}
+
+      unless opt_out_session.key?(:owner) || opt_out_session.key?(:occupant)
+        redirect "/opt-out/"
+      end
+
+      unless opt_out_session[:owner] == "yes" || opt_out_session[:occupant] == "yes"
+        redirect "/opt-out/ineligible"
+      end
+
+      unless opt_out_session.key(:name)
+        redirect "/opt-out/name"
+      end
+
       status 200
       set_default
       erb :'opt_out/certificate_details'
