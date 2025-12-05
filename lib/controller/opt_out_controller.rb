@@ -172,6 +172,11 @@ module Controller
         @errors[:address_line2] = t("opt_out.certificate_details.address_line2.too_long_error")
       end
 
+      if address_town.length > 255
+        @error_form_ids << "address-town-error"
+        @errors[:address_town] = t("opt_out.certificate_details.town.too_long_error")
+      end
+
       if address_postcode.empty?
         @error_form_ids << "address-postcode-error"
         @errors[:address_postcode] = t("opt_out.certificate_details.postcode.error")

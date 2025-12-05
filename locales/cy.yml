@@ -329,7 +329,6 @@ cy:
     certificate_details:
       title: Which property would you like to opt out?
       address_title: Cyfeiriad
-      town: Tref neu ddinas (optional)
       certificate_number:
         title: Rhif y dystysgrif
         hint: Mae hwn i’w weld tua brig <a href="https://www.gov.uk/find-energy-certificate">eich EPC.</a>.
@@ -337,10 +336,13 @@ cy:
       address_line1:
         title: Address line 1
         error: Enter the first line of your address
-        too_long_error: Address line 1 must be 255 or less
+        too_long_error: Address line 1 must be 255 characters or less
       address_line2:
         title: Address line 2 (optional)
-        too_long_error: Address line 2 must be 255 or less
+        too_long_error: Address line 2 must be 255 characters or less
+      town:
+        title: Tref neu ddinas (optional)
+        too_long_error: Town or city must be 255 characters or less
       postcode:
         title: Cod post
         error: Enter a valid postcode

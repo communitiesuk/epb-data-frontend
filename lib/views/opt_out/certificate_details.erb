@@ -78,8 +78,13 @@
             </div>
             <div class="govuk-form-group">
               <label class="govuk-label" for="address-town">
-                <%= t('opt_out.certificate_details.town') %>
+                <%= t('opt_out.certificate_details.town.title') %>
               </label>
+              <% if @errors[:address_town] %>
+                <p id='address-town-error' class="govuk-error-message">
+                  <%= @errors[:address_town] %>
+                </p>
+              <% end %>
               <input class="govuk-input govuk-!-width-two-thirds"
                      id="address-town"
                      name="address_town"

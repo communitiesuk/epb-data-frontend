@@ -178,7 +178,7 @@ describe "Acceptance::OptOutCertificateDetails", type: :feature do
         end
 
         it "display the selection error" do
-          expect(response.body).to have_css("p#address-line1-error", text: /Address line 1 must be 255 or less/)
+          expect(response.body).to have_css("p#address-line1-error", text: /Address line 1 must be 255 characters or less/)
         end
       end
 
@@ -194,9 +194,24 @@ describe "Acceptance::OptOutCertificateDetails", type: :feature do
         end
 
         it "display the selection error" do
-          expect(response.body).to have_css("p#address-line2-error", text: /Address line 2 must be 255 or less/)
+          expect(response.body).to have_css("p#address-line2-error", text: /Address line 2 must be 255 characters or less/)
+        end
+      end
+
+      context "when town or city is longer than 255 characters" do
+        let(:response) { post "#{base_url}/opt-out/certificate-details", { certificate_number: "0000-0000-0000-0000-0000", address_line1: "5 Bob Street", address_line2: "Test Grove", address_town: "256chars" * 32, address_postcode: "TE57 1NG" } }
+
+        it "returns status 200" do
+          expect(response.status).to eq(200)
         end
 
+        it "displays the error summary" do
+          expect(response.body).to have_css("div.govuk-error-summary")
+        end
+
+        it "display the selection error" do
+          expect(response.body).to have_css("p#address-town-error", text: /Town or city must be 255 characters or less/)
+        end
       end
     end
   end
