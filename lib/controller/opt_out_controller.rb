@@ -110,13 +110,19 @@ module Controller
       name = params["name"].strip
       if name.empty?
         @error_form_ids << "name-error"
-        @errors[:name] = t("opt_out.name.error")
-        erb :'opt_out/name'
-      else
+        @errors[:name] = t("opt_out.name.error.empty")
+      elsif name.length > 255
+        @error_form_ids << "name-error"
+        @errors[:name] = t("opt_out.name.error.too_long")
+      end
+
+      if @errors.empty?
         opt_out_session = Helper::Session.get_session_value(session, :opt_out)
         opt_out_session[:name] = name
         Helper::Session.set_session_value(session, :opt_out, opt_out_session)
         redirect "/opt-out/certificate-details"
+      else
+        erb :'opt_out/name'
       end
     end
 

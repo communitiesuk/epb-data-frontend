@@ -320,8 +320,10 @@ cy:
 
     name:
       title: What is your full name?
-      label: Enw cyntaf ac olaf
-      error: You must provide your full name
+      label: Full name
+      error:
+        empty: Enter your full name
+        too_long: Full name must be 255 characters or less
       continue: Parhau
 
     certificate_details:

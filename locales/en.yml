@@ -320,8 +320,10 @@ en:
 
     name:
       title: What is your full name?
-      label: First and last name
-      error: You must provide your full name
+      label: Full name
+      error:
+        empty: Enter your full name
+        too_long: Full name must be 255 characters or less
       continue: Continue
 
     certificate_details:

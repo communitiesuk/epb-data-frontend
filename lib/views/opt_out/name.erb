@@ -19,7 +19,12 @@
               <label id="label_name" class="govuk-label govuk-label--l" for="name">
                 <%= t('opt_out.name.label') %>
               </label>
-              <input class="govuk-input" id="name" name="name" type="text">
+              <input class="govuk-input"
+                     id="name"
+                     name="name"
+                     type="text"
+                     <% if params['name'] %>value="<%= params['name'] %>"<% end %>
+              >
             </div>
 
             <button type="submit" class="govuk-button" data-module="govuk-button">

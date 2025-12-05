@@ -24,7 +24,7 @@ describe "Acceptance::OptOutOwner", type: :feature do
       end
 
       it "has the label and input for the name" do
-        expect(response.body).to have_css("label#label_name", text: "First and last name")
+        expect(response.body).to have_css("label#label_name", text: "Full name")
         expect(response.body).to have_css("input#name[type='text']", count: 1)
       end
 
@@ -79,7 +79,23 @@ describe "Acceptance::OptOutOwner", type: :feature do
         end
 
         it "display the selection error" do
-          expect(response.body).to have_css("p#name-error", text: /You must provide your full name/)
+          expect(response.body).to have_css("p#name-error", text: /Enter your full name/)
+        end
+      end
+
+      context "when the input is longer than 255 characters empty" do
+        let(:response) { post "#{base_url}/opt-out/name", { name: "256chars" * 32 } }
+
+        it "returns status 200" do
+          expect(response.status).to eq(200)
+        end
+
+        it "displays the error summary" do
+          expect(response.body).to have_css("div.govuk-error-summary")
+        end
+
+        it "display the selection error" do
+          expect(response.body).to have_css("p#name-error", text: /Full name must be 255 characters or less/)
         end
       end
     end
