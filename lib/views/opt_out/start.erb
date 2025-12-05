@@ -1,36 +1,37 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
-    <div class="govuk-grid-column-two-thirds govuk-!-padding-left-0">
-      <h1 class="govuk-heading-xl">
-        <%= t('opt_out.start_page.title') %>
-      </h1>
+    <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-grid-row">
+        <h1 class="govuk-heading-xl">
+          <%= t('opt_out.start_page.title') %>
+        </h1>
 
-      <p class="govuk-body">
-        <%= t('opt_out.start_page.description_1') %>
-      </p>
+        <p class="govuk-body">
+          <%= t('opt_out.start_page.description_1') %>
+        </p>
 
-      <p class="govuk-body">
-        <%= t('opt_out.start_page.description_2') %>
-      </p>
+        <p class="govuk-body">
+          <%= t('opt_out.start_page.description_2') %>
+        </p>
 
-      <p class="govuk-body">
-        <%= t('opt_out.start_page.description_3') %>
-      </p>
+        <p class="govuk-body">
+          <%= t('opt_out.start_page.description_3') %>
+        </p>
 
-      <p class="govuk-body">
-        <a class="govuk-link" href="https://www.gov.uk/guidance/energy-performance-certificates-opt-out-of-public-disclosure"> <%= t('opt_out.start_page.opt_out_guidance.link') %></a> <%= t('opt_out.start_page.opt_out_guidance.text') %>
-      </p>
+        <p class="govuk-body">
+          <a class="govuk-link" href="https://www.gov.uk/guidance/energy-performance-certificates-opt-out-of-public-disclosure"> <%= t('opt_out.start_page.opt_out_guidance.link') %></a> <%= t('opt_out.start_page.opt_out_guidance.text') %>
+        </p>
 
-      <a
-        href="<%= localised_url('/opt-out/reason') %>"
-        role="button"
-        draggable="false"
-        class="govuk-button"
-      >
-        <%= t('opt_out.start_page.continue') %>
+        <a
+          href="<%= localised_url('/opt-out/reason') %>"
+          role="button"
+          draggable="false"
+          class="govuk-button"
+        >
+          <%= t('opt_out.start_page.continue') %>
 
-      </a>
-
+        </a>
+      </div>
     </div>
   </div>
 </div>
