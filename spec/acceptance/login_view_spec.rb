@@ -146,9 +146,9 @@ describe "Acceptance::Login", type: :feature do
           end
         end
 
-        context "when the occupier is confirmed" do
+        context "when the occupant is confirmed" do
           before do
-            allow(Helper::Session).to receive(:get_session_value).and_return({ owner: "no", occupier: "yes" })
+            allow(Helper::Session).to receive(:get_session_value).and_return({ owner: "no", occupant: "yes" })
             get "#{login_url}?referer=opt-out"
           end
 
@@ -157,7 +157,7 @@ describe "Acceptance::Login", type: :feature do
           end
         end
 
-        context "when there is no owner or occupier session data" do
+        context "when there is no owner or occupant session data" do
           before do
             allow(Helper::Session).to receive(:get_session_value).and_return({ name: "yes" })
             get "#{login_url}?referer=opt-out"
