@@ -1,7 +1,7 @@
 module ViewModels
   class OptOut
     def self.get_full_name_from_session(session)
-      full_name = Helper::Session.get_full_name_from_session(session)
+      full_name = Helper::Session.get_opt_out_session_value(session, :name)
 
       if full_name.nil?
         raise Errors::MissingOptOutValues, "Failed to get full name from session opt out key. Full name is nil."
@@ -21,7 +21,7 @@ module ViewModels
     end
 
     def self.get_certificate_number_from_session(session)
-      certificate_number = Helper::Session.get_certificate_number_from_session(session)
+      certificate_number = Helper::Session.get_opt_out_session_value(session, :certificate_number)
 
       if certificate_number.nil?
         raise Errors::MissingOptOutValues, "Failed to get certificate number from session opt out key. Certificate number is nil."
@@ -41,8 +41,8 @@ module ViewModels
     end
 
     def self.get_relationship_to_the_property(session)
-      owner = Helper::Session.get_owner_from_opt_out_session_key(session)
-      occupant = Helper::Session.get_occupant_from_opt_out_session_key(session)
+      owner = Helper::Session.get_opt_out_session_value(session, :owner)
+      occupant = Helper::Session.get_opt_out_session_value(session, :occupant)
 
       if occupant.nil? && owner.nil?
         raise Errors::MissingOptOutValues, "Failed to get relationship to the property from session opt out key. Both owner and occupant values are nil."

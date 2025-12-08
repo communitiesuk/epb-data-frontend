@@ -10,10 +10,6 @@ describe "Acceptance::OptOutCheckYourAnswers", type: :feature do
       allow(Helper::Session).to receive_messages(
         is_user_authenticated?: true,
         get_email_from_session: "test@email.com",
-        get_full_name_from_session: "Some Name",
-        get_owner_from_opt_out_session_key: "yes",
-        get_occupant_from_opt_out_session_key: nil,
-        get_certificate_number_from_session: "EPC1234567890",
         get_opt_out_session_value: "Some Address Detail",
       )
       allow(ViewModels::OptOut).to receive_messages(
@@ -97,11 +93,7 @@ describe "Acceptance::OptOutCheckYourAnswers", type: :feature do
     context "when the data is missing from the session" do
       before do
         allow(Helper::Session).to receive_messages(
-          get_owner_from_opt_out_session_key: nil,
-          get_occupant_from_opt_out_session_key: nil,
           get_email_from_session: nil,
-          get_full_name_from_session: nil,
-          get_certificate_number_from_session: nil,
           get_opt_out_session_value: nil,
         )
 

@@ -30,26 +30,6 @@ module Helper
       email
     end
 
-    def self.get_full_name_from_session(session)
-      opt_out_key = get_session_value(session, :opt_out)
-      opt_out_key[:name]
-    end
-
-    def self.get_owner_from_opt_out_session_key(session)
-      opt_out_key = get_session_value(session, :opt_out)
-      opt_out_key[:owner]
-    end
-
-    def self.get_occupant_from_opt_out_session_key(session)
-      opt_out_key = get_session_value(session, :opt_out)
-      opt_out_key[:occupant]
-    end
-
-    def self.get_certificate_number_from_session(session)
-      opt_out_key = get_session_value(session, :opt_out)
-      opt_out_key[:certificate_number]
-    end
-
     def self.get_opt_out_session_value(session, key)
       opt_out_key = get_session_value(session, :opt_out)
       opt_out_key[key]
