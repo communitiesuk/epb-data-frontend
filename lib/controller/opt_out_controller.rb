@@ -4,6 +4,8 @@ module Controller
       status 200
       set_default
       erb :'opt_out/start'
+    rescue StandardError => e
+      server_error(e)
     end
 
     get "/opt-out/reason" do
@@ -29,6 +31,8 @@ module Controller
         @errors[:reason] = t("opt_out.reason.error.invalid_reason_selection.heading")
         erb :'opt_out/reason'
       end
+    rescue StandardError => e
+      server_error(e)
     end
 
     get "/opt-out/incorrect-epc" do
@@ -36,6 +40,8 @@ module Controller
       set_default
       @back_link_href = localised_url("/opt-out/reason")
       erb :'opt_out/incorrect_epc'
+    rescue StandardError => e
+      server_error(e)
     end
 
     get "/opt-out/advised-by-third-party" do
@@ -43,6 +49,8 @@ module Controller
       set_default
       @back_link_href = localised_url("/opt-out/reason")
       erb :'opt_out/advised_by_third_party'
+    rescue StandardError => e
+      server_error(e)
     end
 
     get "/opt-out/owner" do
@@ -50,6 +58,8 @@ module Controller
       set_default
       @back_link_href = localised_url("/opt-out/reason")
       erb :'opt_out/owner'
+    rescue StandardError => e
+      server_error(e)
     end
 
     post "/opt-out/owner" do
@@ -66,12 +76,16 @@ module Controller
         @errors[:owner] = t("opt_out.owner.error")
         erb :'opt_out/owner'
       end
+    rescue StandardError => e
+      server_error(e)
     end
 
     get "/opt-out/ineligible" do
       status 200
       set_default
       erb :'opt_out/ineligible'
+    rescue StandardError => e
+      server_error(e)
     end
 
     get "/opt-out/occupant" do
@@ -97,12 +111,22 @@ module Controller
         @errors[:occupant] = t("opt_out.occupant.error.invalid_occupant_selection.heading")
         erb :'opt_out/occupant'
       end
+    rescue StandardError => e
+      server_error(e)
     end
 
     get "/opt-out/name" do
       status 200
       set_default
       erb :'opt_out/name'
+    rescue StandardError => e
+      case e
+      when Errors::AuthenticationError
+        logger.warn "Authentication error: #{e.message}"
+        redirect localised_url("/login?referer=opt-out")
+      else
+        server_error(e)
+      end
     end
 
     post "/opt-out/name" do
@@ -124,6 +148,8 @@ module Controller
       else
         erb :'opt_out/name'
       end
+    rescue StandardError => e
+      server_error(e)
     end
 
     get "/opt-out/certificate-details" do
@@ -144,6 +170,14 @@ module Controller
       status 200
       set_default
       erb :'opt_out/certificate_details'
+    rescue StandardError => e
+      case e
+      when Errors::AuthenticationError
+        logger.warn "Authentication error: #{e.message}"
+        redirect localised_url("/login?referer=opt-out")
+      else
+        server_error(e)
+      end
     end
 
     post "/opt-out/certificate-details" do
@@ -201,6 +235,8 @@ module Controller
       else
         erb :'opt_out/certificate_details'
       end
+    rescue StandardError => e
+      server_error(e)
     end
 
     get "/opt-out/check-your-answers" do
@@ -238,6 +274,8 @@ module Controller
       status 200
       set_default
       erb :'opt_out/received'
+    rescue StandardError => e
+      server_error(e)
     end
 
     def set_default
