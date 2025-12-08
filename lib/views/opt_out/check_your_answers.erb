@@ -16,7 +16,7 @@
                 <%= t('opt_out.check_your_answers.personal_details.name') %>
               </dt>
               <dd class="govuk-summary-list__value" id="full-name-value">
-                <%#= ViewModels::OptOut.get_full_name_from_session(session) %>
+                <%= ViewModels::OptOut.get_full_name_from_session(session) %>
               </dd>
             </div>
             <div class="govuk-summary-list__row">
@@ -24,7 +24,7 @@
                 <%= t('opt_out.check_your_answers.personal_details.email') %>
               </dt>
               <dd class="govuk-summary-list__value" id="email-address-value">
-                <%#= ViewModels::OptOut.get_email_from_session(session) %>
+                <%= ViewModels::OptOut.get_email_from_session(session) %>
               </dd>
             </div>
             <div class="govuk-summary-list__row">
@@ -32,7 +32,7 @@
                 <%= t('opt_out.check_your_answers.personal_details.relationship_to_property') %>
               </dt>
               <dd class="govuk-summary-list__value" id="property-relationship-value">
-                <%#= ViewModels::OptOut.get_relationship_to_the_property(session) %>
+                <%= ViewModels::OptOut.get_relationship_to_the_property(session) %>
               </dd>
             </div>
           </dl>
@@ -47,7 +47,7 @@
                 <%= t('opt_out.check_your_answers.property_details.certificate_number') %>
               </dt>
               <dd class="govuk-summary-list__value" id="certificate-number-value">
-                <%#= ViewModels::OptOut.get_certificate_number_from_session(session) %>
+                <%= ViewModels::OptOut.get_certificate_number_from_session(session) %>
               </dd>
             </div>
             <div class="govuk-summary-list__row">
@@ -55,10 +55,10 @@
                 <%= t('opt_out.check_your_answers.property_details.address') %>
               </dt>
               <dd class="govuk-summary-list__value">
-<!--                <p class="govuk-body"><%#= ViewModels::OptOut.get_address_detail_from_session(session, :address_line1) %></p>-->
-<!--                <p class="govuk-body"><%#= ViewModels::OptOut.get_address_detail_from_session(session, :address_line2) %></p>-->
-<!--                <p class="govuk-body"><%#= ViewModels::OptOut.get_address_detail_from_session(session, :address_town) %></p>-->
-<!--                <p class="govuk-body"><%#= ViewModels::OptOut.get_address_detail_from_session(session, :address_postcode) %></p>-->
+                <p class="govuk-body"><%= ViewModels::OptOut.get_address_detail_from_session(session, :address_line1) %></p>
+                <p class="govuk-body"><%= ViewModels::OptOut.get_address_detail_from_session(session, :address_line2) %></p>
+                <p class="govuk-body"><%= ViewModels::OptOut.get_address_detail_from_session(session, :address_town) %></p>
+                <p class="govuk-body"><%= ViewModels::OptOut.get_address_detail_from_session(session, :address_postcode) %></p>
               </dd>
             </div>
           </dl>
