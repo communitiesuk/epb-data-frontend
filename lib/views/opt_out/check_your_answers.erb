@@ -68,7 +68,7 @@
           <h1 class="govuk-heading-m"><%= t('opt_out.check_your_answers.confirmation.title') %></h1>
 
         <div class="govuk-checkboxes__item <% if @errors[:confirmation] %> govuk-form-group--error<% end %>">
-          <input class="govuk-checkboxes__input" id="confirmation" name="confirmation" type="checkbox" value="checked" required>
+          <input class="govuk-checkboxes__input" id="confirmation" name="confirmation" type="checkbox" value="checked" aria-describedby="confirmation-error">
           <% if @errors[:confirmation] %>
             <p id='confirmation-error' class="govuk-error-message">
               <%= @errors[:confirmation] %>
