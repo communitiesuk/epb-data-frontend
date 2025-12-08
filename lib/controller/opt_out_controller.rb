@@ -207,6 +207,31 @@ module Controller
       status 200
       set_default
       erb :'opt_out/check_your_answers'
+    rescue StandardError => e
+      case e
+      when Errors::AuthenticationError
+        logger.warn "Authentication error: #{e.message}"
+        redirect localised_url("/login?referer=opt-out")
+      when Errors::MissingOptOutValues
+        @logger.warn "Session values are missing when reaching /opt-out/check-your-answers: #{e.message}"
+        redirect localised_url("/opt-out")
+      else
+        server_error(e)
+      end
+    end
+
+    post "/opt-out/check-your-answers" do
+      set_default
+
+      if params["confirmation"] == "checked"
+        redirect "/opt_out/received"
+      else
+        @error_form_ids << "confirmation-error"
+        @errors[:confirmation] = t("opt_out.check_your_answers.confirmation.error")
+        erb :'opt_out/check_your_answers'
+      end
+    rescue StandardError => e
+      server_error(e)
     end
 
     get "/opt-out/received" do

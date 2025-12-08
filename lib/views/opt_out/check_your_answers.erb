@@ -2,6 +2,10 @@
   <div class="govuk-grid-column-full">
     <div class="govuk-grid-column-two-thirds">
       <div class="govuk-grid-row">
+        <% unless @errors.empty? %>
+          <%= erb :error_summary, locals: { error_form_ids: @error_form_ids }%>
+        <% end %>
+
         <h1 class="govuk-heading-xl"><%= t('opt_out.check_your_answers.title') %></h1>
 
           <h1 class="govuk-heading-m"><%= t('opt_out.check_your_answers.personal_details.title') %></h1>
@@ -51,7 +55,10 @@
                 <%= t('opt_out.check_your_answers.property_details.address') %>
               </dt>
               <dd class="govuk-summary-list__value">
-                Address line 1, Address line 2, Town, Postcode
+                <p class="govuk-body"><%= ViewModels::OptOut.get_address_detail_from_session(session, :address_line1) %></p>
+                <p class="govuk-body"><%= ViewModels::OptOut.get_address_detail_from_session(session, :address_line2) %></p>
+                <p class="govuk-body"><%= ViewModels::OptOut.get_address_detail_from_session(session, :address_town) %></p>
+                <p class="govuk-body"><%= ViewModels::OptOut.get_address_detail_from_session(session, :address_postcode) %></p>
               </dd>
             </div>
           </dl>
@@ -60,8 +67,13 @@
 
           <h1 class="govuk-heading-m"><%= t('opt_out.check_your_answers.confirmation.title') %></h1>
 
-        <div class="govuk-checkboxes__item">
-          <input class="govuk-checkboxes__input" id="confirmation" name="confirmation" type="checkbox" value="confirmation">
+        <div class="govuk-checkboxes__item <% if @errors[:confirmation] %> govuk-form-group--error<% end %>">
+          <input class="govuk-checkboxes__input" id="confirmation" name="confirmation" type="checkbox" value="checked" required>
+          <% if @errors[:confirmation] %>
+            <p id='confirmation-error' class="govuk-error-message">
+              <%= @errors[:confirmation] %>
+            </p>
+          <% end %>
           <label class="govuk-label govuk-checkboxes__label" for="confirmation">
             <%= t('opt_out.check_your_answers.confirmation.body') %>
           </label>
@@ -69,17 +81,19 @@
 
         <br></br>
 
-        <div class="govuk-warning-text">
-          <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-          <strong class="govuk-warning-text__text">
-            <span class="govuk-visually-hidden">Warning</span>
-            <%= t("opt_out.warning") %>
-          </strong>
-        </div>
+      <div class="govuk-warning-text">
+        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+        <strong class="govuk-warning-text__text">
+          <span class="govuk-visually-hidden">Warning</span>
+          <%= t("opt_out.warning") %>
+        </strong>
+      </div>
+      <form method="post">
         <button class="govuk-button" data-module="govuk-button" type="submit">
           <%= t("opt_out.check_your_answers.submit") %>
         </button>
-      </div>
+      </form>
     </div>
+  </div>
   </div>
 </div>

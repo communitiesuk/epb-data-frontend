@@ -361,6 +361,7 @@ cy:
       confirmation:
         title: Confirmation
         body: I confirm that these details are correct
+        error: You must check the box to submit the request
       submit: Cyflwyno’r cais
 
     received:
