@@ -115,38 +115,51 @@ describe "Acceptance::Login", type: :feature do
       end
 
       context "when referer is 'opt-out'" do
-        before do
-          allow(Helper::Session).to receive(:get_session_value).and_return({ owner: "yes" })
-          get "#{login_url}?referer=opt-out"
-        end
-
-        it "returns status 200" do
-          expect(response.status).to eq(200)
-        end
-
-        it "has the correct referer for Start now button (authorize_url)" do
-          expect(last_response.body).to have_link("Start now", href: "/login/authorize?referer=opt-out")
-        end
-
-        it "has the correct title" do
-          expect(last_response.body).to have_css("h1", text: "Create your GOV.UK One Login or sign in")
-        end
-
-        it "has the correct text" do
-          expect(last_response.body).to have_css("p", text: "You need to log in or sign up to make an opt out request.")
-        end
-
-        it "has no back button" do
-          expect(last_response.body).not_to have_link("Back", href: "/previous_page")
-        end
-
-        it "has no link to my account" do
-          expect(last_response.body).not_to have_link("My account", href: "/api/my-account")
-        end
-
-        context "when the owner is not confirmed in the session data" do
+        context "when the owner is confirmed" do
           before do
-            allow(Helper::Session).to receive(:get_session_value).and_return({ owner: "no" })
+            allow(Helper::Session).to receive(:get_session_value).and_return({ owner: "yes" })
+            get "#{login_url}?referer=opt-out"
+          end
+
+          it "returns status 200" do
+            expect(last_response.status).to eq(200)
+          end
+
+          it "has the correct referer for Start now button (authorize_url)" do
+            expect(last_response.body).to have_link("Start now", href: "/login/authorize?referer=opt-out")
+          end
+
+          it "has the correct title" do
+            expect(last_response.body).to have_css("h1", text: "Create your GOV.UK One Login or sign in")
+          end
+
+          it "has the correct text" do
+            expect(last_response.body).to have_css("p", text: "You need to log in or sign up to make an opt out request.")
+          end
+
+          it "has no back button" do
+            expect(last_response.body).not_to have_link("Back", href: "/previous_page")
+          end
+
+          it "has no link to my account" do
+            expect(last_response.body).not_to have_link("My account", href: "/api/my-account")
+          end
+        end
+
+        context "when the occupier is confirmed" do
+          before do
+            allow(Helper::Session).to receive(:get_session_value).and_return({ owner: "no", occupier: "yes" })
+            get "#{login_url}?referer=opt-out"
+          end
+
+          it "has the correct referer for Start now button (authorize_url)" do
+            expect(last_response.body).to have_link("Start now", href: "/login/authorize?referer=opt-out")
+          end
+        end
+
+        context "when there is no owner or occupier session data" do
+          before do
+            allow(Helper::Session).to receive(:get_session_value).and_return({ name: "yes" })
             get "#{login_url}?referer=opt-out"
           end
 
@@ -155,14 +168,14 @@ describe "Acceptance::Login", type: :feature do
           end
         end
 
-        context "when the occupier is not confirmed in the session data" do
+        context "when there is no session data" do
           before do
-            allow(Helper::Session).to receive(:get_session_value).and_return({ occupier: "no" })
+            allow(Helper::Session).to receive(:get_session_value).and_return(nil)
             get "#{login_url}?referer=opt-out"
           end
 
-          it "sends them to the ineligible page" do
-            expect(last_response.headers["location"]).to include("/opt-out/ineligible")
+          it "sends them to the start page" do
+            expect(last_response.headers["location"]).to include("http://get-energy-performance-data/opt-out")
           end
         end
       end
