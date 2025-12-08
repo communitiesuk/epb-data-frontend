@@ -42,6 +42,9 @@ ENV["ONELOGIN_CLIENT_ID"] = "test.onelogin.client.id"
 ENV["ONELOGIN_TLS_KEYS"] = OneLoginStub.tls_keys
 ENV["EPB_DATA_USER_CREDENTIAL_TABLE_NAME"] = "test_users_table"
 ENV["GTM_PROPERTY_FINDING"] = "G-H8EVD5HY3G"
+ENV["NOTIFY_OPT_OUT_TEMPLATE_ID"] = "f5d03031-b559-4264-8503-802ee0e78f4c"
+ENV["NOTIFY_OPT_OUT_EMAIL_RECIPIENT"] = "opt-outs@example.com"
+ENV["NOTIFY_DATA_API_KEY"] = "optoutrequest-658d1738-b6c2-426b-9215-a7a9b30ad44f-ec9bd43e-bf9b-41ef-9e11-43318a7d8c72"
 
 I18n.load_path = Dir[File.join(File.dirname(__FILE__), "/../locales", "*.yml")]
 I18n.enforce_available_locales = true
