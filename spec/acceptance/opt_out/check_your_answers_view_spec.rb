@@ -159,7 +159,7 @@ describe "Acceptance::OptOutCheckYourAnswers", type: :feature do
       it "redirects to the received page" do
         response = post "#{base_url}/opt-out/check-your-answers", { confirmation: "checked" }
         expect(response.status).to eq(302)
-        expect(response.headers["Location"]).to eq("#{base_url}/opt_out/received")
+        expect(response.headers["Location"]).to eq("#{base_url}/opt-out/received")
       end
 
       context "when the confirmation checkbox is not checked" do

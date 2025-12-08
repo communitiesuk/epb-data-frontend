@@ -260,7 +260,7 @@ module Controller
       set_default
 
       if params["confirmation"] == "checked"
-        redirect "/opt_out/received"
+        redirect "/opt-out/received"
       else
         @error_form_ids << "confirmation-error"
         @errors[:confirmation] = t("opt_out.check_your_answers.confirmation.error")

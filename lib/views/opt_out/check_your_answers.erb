@@ -75,7 +75,7 @@
           <% end %>
 
           <div class="govuk-checkboxes__item">
-            <input class="govuk-checkboxes__input" id="confirmation" name="confirmation" type="checkbox" value="checked">
+            <input class="govuk-checkboxes__input" id="confirmation" name="confirmation" type="checkbox" value="checked" form="opt-out-form">
             <label class="govuk-label govuk-checkboxes__label" for="confirmation">
               <%= t('opt_out.check_your_answers.confirmation.body') %>
             </label>
@@ -91,7 +91,7 @@
           <%= t("opt_out.warning") %>
         </strong>
       </div>
-      <form method="post">
+      <form method="post" id="opt-out-form">
         <button class="govuk-button" data-module="govuk-button" type="submit">
           <%= t("opt_out.check_your_answers.submit") %>
         </button>
