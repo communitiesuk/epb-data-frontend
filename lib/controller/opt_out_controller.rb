@@ -144,7 +144,7 @@ module Controller
         opt_out_session = Helper::Session.get_session_value(session, :opt_out)
         opt_out_session[:name] = name
         Helper::Session.set_session_value(session, :opt_out, opt_out_session)
-        redirect "/opt-out/certificate-details"
+        redirect localised_url("/opt-out/certificate-details")
       else
         erb :'opt_out/name'
       end
@@ -156,15 +156,15 @@ module Controller
       opt_out_session = Helper::Session.get_session_value(session, :opt_out) || {}
 
       unless opt_out_session.key?(:owner) || opt_out_session.key?(:occupant)
-        redirect "/opt-out/"
+        redirect localised_url("/opt-out/")
       end
 
       unless opt_out_session[:owner] == "yes" || opt_out_session[:occupant] == "yes"
-        redirect "/opt-out/ineligible"
+        redirect localised_url("/opt-out/ineligible")
       end
 
       unless opt_out_session.key?(:name)
-        redirect "/opt-out/name"
+        redirect localised_url("/opt-out/name")
       end
 
       status 200
@@ -231,7 +231,7 @@ module Controller
         opt_out_session[:address_town] = address_town
         opt_out_session[:address_postcode] = address_postcode
         Helper::Session.set_session_value(session, :opt_out, opt_out_session)
-        redirect "/opt-out/check-your-answers"
+        redirect localised_url("/opt-out/check-your-answers")
       else
         erb :'opt_out/certificate_details'
       end
@@ -260,7 +260,7 @@ module Controller
       set_default
 
       if params["confirmation"] == "checked"
-        redirect "/opt-out/received"
+        redirect localised_url("/opt-out/received")
       else
         @error_form_ids << "confirmation-error"
         @errors[:confirmation] = t("opt_out.check_your_answers.confirmation.error")

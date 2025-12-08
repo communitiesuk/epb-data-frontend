@@ -67,7 +67,7 @@ module Controller
         response_type: "code",
         request: signed_request,
       })
-      redirect "#{host_url}/authorize?#{query_string}"
+      redirect localised_url("#{host_url}/authorize?#{query_string}")
     end
 
     get "/login/callback" do
