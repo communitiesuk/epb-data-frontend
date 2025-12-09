@@ -1,11 +1,11 @@
 describe Gateway::NotifyGateway do
   subject(:gateway) { described_class.new(notify_client) }
 
-  def notify_client
+  let(:notify_client) do
     Notifications::Client.new(ENV["NOTIFY_DATA_API_KEY"])
   end
 
-  def template_id
+  let(:template_id) do
     "f5d03031-b559-4264-8503-802ee0e78f4c"
   end
 
