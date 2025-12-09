@@ -269,7 +269,7 @@ cy:
 
   opt_out:
     warning: Mae optio EPC allan er mwyn sicrhau cyllid grant yn dwyll.
-    find_epc_text:
+    find_epc_text: To find your EPC, use the <a href="https://www.gov.uk/find-energy-certificate">Find an energy certificate</a> service.
 
     start_page:
       title: "Opting out an EPC"
