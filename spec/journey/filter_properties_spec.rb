@@ -8,6 +8,14 @@ describe "Journey::FilterProperties", :journey, type: :feature do
   process_id = nil
 
   before(:all) do
+    # Wait for previous Puma server to finish
+    loop do
+      TCPSocket.new("127.0.0.1", 9393).close
+      sleep 0.001
+    rescue Errno::ECONNREFUSED
+      break
+    end
+
     output = if ENV["SHOW_SERVER_LOGS"] == "true"
                { out: $stdout, err: $stderr }
              else
