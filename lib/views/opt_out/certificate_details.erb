@@ -9,7 +9,7 @@
 
         <h1 class="govuk-heading-xl"><%= t('opt_out.certificate_details.title') %></h1>
 
-        <form method="post">
+        <form method="post" novalidate>
           <fieldset class="govuk-fieldset">
             <div class="govuk-form-group<% if @errors[:certificate_number] %> govuk-form-group--error<% end %>">
               <h2 class="govuk-label-wrapper">
