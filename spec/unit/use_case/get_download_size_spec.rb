@@ -11,6 +11,7 @@ describe UseCase::GetDownloadSize do
     {
       date_start: "2023-01-01",
       date_end: "2023-01-31",
+      property_type: "domestic",
       council: "NotFoundCouncil",
       eff_rating: %w[A G],
     }
@@ -20,6 +21,7 @@ describe UseCase::GetDownloadSize do
     {
       date_start: "2023-01-01",
       date_end: "2023-01-31",
+      property_type: "domestic",
       council: %w[Manchester Birmingham],
       eff_rating: %w[A G],
     }

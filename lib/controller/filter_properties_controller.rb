@@ -96,10 +96,15 @@ module Controller
       halt 403, erb(:error_page_403)
     end
 
+    def is_property_type_valid?(property_type)
+      %w[domestic non-domestic dec].include?(property_type)
+    end
+
     def get_download_size(params_data)
       use_case = @container.get_object(:get_download_size_use_case)
       date_start = ViewModels::FilterProperties.start_date_from_inputs(params_data["from-year"], params_data["from-month"]).to_s
       date_end = ViewModels::FilterProperties.end_date_from_inputs(params_data["to-year"], params_data["to-month"]).to_s
+      property_type = params_data["property_type"] if is_property_type_valid?(params_data["property_type"])
 
       council = if params_data["local-authority"] != ["Select all"] && params_data["area-type"] == "local-authority"
                   params_data[params_data["area-type"]]
@@ -122,6 +127,7 @@ module Controller
         eff_rating:,
         date_start:,
         date_end:,
+        property_type:,
       }
 
       use_case.execute(**use_case_args)

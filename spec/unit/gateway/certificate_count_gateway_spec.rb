@@ -7,6 +7,7 @@ describe Gateway::CertificateCountGateway do
       {
         date_start: "2020-01-01",
         date_end: "2021-01-01",
+        property_type: "domestic",
         council: %w[bedford],
         constituency: nil,
         postcode: nil,

@@ -4,10 +4,11 @@ module UseCase
       @certificate_count_gateway = certificate_count_gateway
     end
 
-    def execute(date_start:, date_end:, council: nil, constituency: nil, postcode: nil, eff_rating: nil)
+    def execute(date_start:, date_end:, property_type:, council: nil, constituency: nil, postcode: nil, eff_rating: nil)
       results_count = @certificate_count_gateway.fetch(
         date_start: date_start,
         date_end: date_end,
+        property_type: property_type,
         council: council,
         constituency: constituency,
         postcode: postcode,
