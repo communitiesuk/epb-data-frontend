@@ -269,6 +269,7 @@ en:
       - December
   opt_out:
     warning: Opting out an EPC for the purpose of securing grant funding is fraud.
+    find_epc_text: To find your EPC, use the <a href="https://www.gov.uk/find-energy-certificate">Find an energy certificate</a> service.
 
     start_page:
       title: "Opting out an EPC"
@@ -293,7 +294,7 @@ en:
 
     incorrect_epc:
       title: What to do if your EPC is incorrect
-      paragraph_1: If your EPC was created recently, you should contact the assessor. You can find the contact details for the assessor near the bottom of <a href="https://www.gov.uk/find-energy-certificate">your EPC</a>.
+      paragraph_1: If your EPC was created recently, you should contact the assessor. You can find the contact details for the assessor near the bottom of your EPC.
       paragraph_2: If your EPC was created a while ago, you should <a href="https://www.gov.uk/get-new-energy-certificate">get a new certificate</a>.
       note: Opting out an EPC does not make it invalid. EPCs are only invalidated when they expire or when they are replaced by a new EPC.
     advised_by_third_party:
