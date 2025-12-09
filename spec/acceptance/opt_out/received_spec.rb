@@ -26,5 +26,15 @@ describe "Acceptance::OptOutReceived", type: :feature do
         expect(response.body).to have_css("h2", text: "What happens next")
       end
     end
+
+    context "when the user is not authenticated" do
+      it "returns status 302" do
+        expect(response.status).to eq(302)
+      end
+
+      it "redirects to the login page" do
+        expect(response.headers["Location"]).to eq("#{base_url}/login?referer=opt-out")
+      end
+    end
   end
 end
