@@ -50,14 +50,38 @@ describe Gateway::NotifyGateway do
   end
 
   describe "#send_email" do
-    it "sends an email" do
-      expect(gateway.send_email(template_id:, destination_email: email_address, **personalisation)).to eq("201b576e-c09b-467b-9dfa-9c3b689ee730")
-      expect(WebMock).to have_requested(
-        :post,
-        "https://api.notifications.service.gov.uk/v2/notifications/email",
-      ).with(
-        body: '{"email_address":"sender@something.com","template_id":"f5d03031-b559-4264-8503-802ee0e78f4c","personalisation":{"is_test":true,"name":"John Smith","email":"sender@something.com","owner_or_occupier":"Owner","certificate_number":"1234-1234-1234-1234-1234","address_line1":"Flat 3","address_line2":"5 Bob Lane","town":"Testerton","postcode":"TE57 1NG"}}',
-      )
+    context "when Notification service responds successfully with 200" do
+      it "sends an email" do
+        expect(gateway.send_email(template_id:, destination_email: email_address, **personalisation)).to eq("201b576e-c09b-467b-9dfa-9c3b689ee730")
+        expect(WebMock).to have_requested(
+          :post,
+          "https://api.notifications.service.gov.uk/v2/notifications/email",
+        ).with(
+          body: '{"email_address":"sender@something.com","template_id":"f5d03031-b559-4264-8503-802ee0e78f4c","personalisation":{"is_test":true,"name":"John Smith","email":"sender@something.com","owner_or_occupier":"Owner","certificate_number":"1234-1234-1234-1234-1234","address_line1":"Flat 3","address_line2":"5 Bob Lane","town":"Testerton","postcode":"TE57 1NG"}}',
+        )
+      end
+    end
+
+    context "when the Notification service responds with 400 error" do
+      before do
+        WebMock.stub_request(:post, "https://api.notifications.service.gov.uk/v2/notifications/email")
+               .to_return(status: 400, body: "BadRequestError: Cannot send to this recipient using a team-only API key.", headers: {})
+      end
+
+      it "raises an NotifySendEmailError" do
+        expect { gateway.send_email(template_id:, destination_email: email_address, **personalisation) }.to raise_error(Errors::NotifySendEmailError, "BadRequestError: Cannot send to this recipient using a team-only API key.")
+      end
+    end
+
+    context "when the Notification service responds with 500 error" do
+      before do
+        WebMock.stub_request(:post, "https://api.notifications.service.gov.uk/v2/notifications/email")
+               .to_return(status: 500, body: "Exception: Internal server error", headers: {})
+      end
+
+      it "raises an NotifyServerError" do
+        expect { gateway.send_email(template_id:, destination_email: email_address, **personalisation) }.to raise_error(Errors::NotifyServerError)
+      end
     end
   end
 

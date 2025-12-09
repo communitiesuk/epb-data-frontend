@@ -105,6 +105,12 @@ module Errors
   class MissingOptOutValues < RuntimeError
   end
 
+  class NotifySendEmailError < RuntimeError
+  end
+
+  class NotifyServerError < RuntimeError
+  end
+
   module DoNotReport
   end
 end

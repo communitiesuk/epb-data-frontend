@@ -24,6 +24,10 @@ module Gateway
       )
 
       response.id
+    rescue Notifications::Client::BadRequestError, Notifications::Client::AuthError, Notifications::Client::RateLimitError => e
+      raise Errors::NotifySendEmailError, e.message
+    rescue Notifications::Client::ServerError
+      raise Errors::NotifyServerError
     end
 
     def check_email_status(notification_id)
