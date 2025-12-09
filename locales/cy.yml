@@ -332,7 +332,7 @@ cy:
       address_title: Cyfeiriad
       certificate_number:
         title: Rhif y dystysgrif
-        hint: Mae hwn i’w weld tua brig <a href="https://www.gov.uk/find-energy-certificate">eich EPC.</a>.
+        hint: Mae hwn i’w weld tua brig eich EPC.
         error: Enter a valid certificate number
       address_line1:
         title: Address line 1

@@ -332,7 +332,7 @@ en:
       address_title: Address
       certificate_number:
         title: Certificate number
-        hint: This can be found near the top of <a href="https://www.gov.uk/find-energy-certificate">your EPC</a>.
+        hint: This can be found near the top of your EPC.
         error: Enter a valid certificate number
       address_line1:
         title: Address line 1

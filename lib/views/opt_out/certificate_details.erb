@@ -18,7 +18,7 @@
                 </label>
               </h2>
               <div id="certificate-number-hint" class="govuk-hint">
-                <%= t('opt_out.certificate_details.certificate_number.hint') %>
+                <%= t('opt_out.certificate_details.certificate_number.hint') %> <%= t('opt_out.find_epc_text') %>
               </div>
               <% if @errors[:certificate_number] %>
                 <p id='certificate-number-error' class="govuk-error-message">
