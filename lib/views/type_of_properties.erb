@@ -38,17 +38,15 @@
                 <%= t("property_type.radio_selects.non-domestic.hint") %>
               </div>
             </div>
-              <% if Helper::Toggles.enabled?("epb-data-frontend-hide-DEC-download-option") %>
-                <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="public-buildings" name="property_type" type="radio" value="public_buildings" aria-describedby="public-properties-hint">
-                  <label id="label-dec" class="govuk-label govuk-radios__label" for="public-buildings">
-                    <%= t("property_type.radio_selects.dec.text") %>
-                  </label>
-                  <div id="public-buildings-hint" class="govuk-hint govuk-radios__hint">
-                    <%= t("property_type.radio_selects.dec.hint") %>
-                  </div>
+              <div class="govuk-radios__item">
+                <input class="govuk-radios__input" id="public-buildings" name="property_type" type="radio" value="public_buildings" aria-describedby="public-properties-hint">
+                <label id="label-dec" class="govuk-label govuk-radios__label" for="public-buildings">
+                  <%= t("property_type.radio_selects.dec.text") %>
+                </label>
+                <div id="public-buildings-hint" class="govuk-hint govuk-radios__hint">
+                  <%= t("property_type.radio_selects.dec.hint") %>
                 </div>
-              <% end %>
+              </div>
           </div>
           </div>
             <details class="govuk-details govuk-!-margin-top-6 govuk-!-margin-left-3">

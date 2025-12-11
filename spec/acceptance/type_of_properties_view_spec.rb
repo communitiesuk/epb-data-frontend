@@ -12,14 +12,6 @@ describe "Acceptance::TypeOfProperties", type: :feature do
     end
 
     context "when the type of properties page is rendered" do
-      before do
-        Helper::Toggles.set_feature("epb-data-frontend-hide-DEC-download-option", true)
-      end
-
-      after do
-        Helper::Toggles.set_feature("epb-data-frontend-hide-DEC-download-option", false)
-      end
-
       it "returns status 200" do
         expect(response.status).to eq(200)
       end
@@ -104,30 +96,6 @@ describe "Acceptance::TypeOfProperties", type: :feature do
       it "redirects to the login page" do
         expect(response).to be_redirect
         expect(response.location).to include("/login")
-      end
-    end
-
-    context "when the epb-data-frontend-hide-DEC-download-option feature toggle is on" do
-      before do
-        Helper::Toggles.set_feature("epb-data-frontend-hide-DEC-download-option", true)
-      end
-
-      after do
-        Helper::Toggles.set_feature("epb-data-frontend-hide-DEC-download-option", false)
-      end
-
-      it "the DEC radio button will be visible" do
-        expect(response.body).to have_selector("#label-dec", text: "Display Energy Certificates")
-      end
-    end
-
-    context "when the epb-data-frontend-hide-DEC-download-option feature toggle is off" do
-      before do
-        Helper::Toggles.set_feature("epb-data-frontend-hide-DEC-download-option", false)
-      end
-
-      it "the DEC radio button will be hidden" do
-        expect(response.body).not_to have_selector("#label-dec", text: "Display Energy Certificates")
       end
     end
   end
