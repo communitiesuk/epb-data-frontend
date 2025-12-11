@@ -82,7 +82,7 @@ describe "Acceptance::FilterProperties", type: :feature do
       end
 
       it "does not show the efficiency rating filter for non-domestic and public properties" do
-        property_types = %w[non-domestic public_buildings]
+        property_types = %w[non-domestic dec]
 
         property_types.each do |property_type|
           response = get "#{local_host}?property_type=#{property_type}"
