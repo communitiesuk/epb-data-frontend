@@ -8,7 +8,7 @@ module ViewModels
         I18n.t("filter_properties.domestic_title")
       when "non_domestic"
         I18n.t("filter_properties.non_domestic_title")
-      when "public_buildings"
+      when "dec"
         I18n.t("filter_properties.dec_title")
       else
         ""
