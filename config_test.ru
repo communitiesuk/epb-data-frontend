@@ -18,11 +18,11 @@ OauthStub.token
 
 default_end_date = Date.new(Date.today.year.to_i, Date::MONTHNAMES.index((Date.today << 1).strftime("%B")) || 0, -1).to_s
 
-CertificateCountStub.fetch(date_start: "2012-01-01", date_end: default_end_date)
-CertificateCountStub.fetch(date_start: "2024-05-01", date_end: "2025-03-31", council: %w[Adur], return_count: 10)
-CertificateCountStub.fetch(date_start: "2024-05-01", date_end: default_end_date, council: %w[Adur Birmingham])
-CertificateCountStub.fetch(date_start: "2024-05-01", date_end: default_end_date, constituency: %w[Ashford Barking])
-CertificateCountStub.fetch(date_start: "2012-01-01", date_end: default_end_date, postcode: "LS1 4AP", return_count: 135)
+CertificateCountStub.fetch(date_start: "2012-01-01", date_end: default_end_date, property_type: "domestic")
+CertificateCountStub.fetch(date_start: "2024-05-01", date_end: "2025-03-31", council: %w[Adur], return_count: 10, property_type: "domestic")
+CertificateCountStub.fetch(date_start: "2024-05-01", date_end: default_end_date, council: %w[Adur Birmingham], property_type: "domestic")
+CertificateCountStub.fetch(date_start: "2024-05-01", date_end: default_end_date, constituency: %w[Ashford Barking], property_type: "domestic")
+CertificateCountStub.fetch(date_start: "2012-01-01", date_end: default_end_date, postcode: "LS1 4AP", return_count: 135, property_type: "domestic")
 CertificateCountStub.fetch_any
 
 sns_message =
