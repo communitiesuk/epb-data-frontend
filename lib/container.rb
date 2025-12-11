@@ -2,6 +2,7 @@
 
 require "aws-sdk-sns"
 require "aws-sdk-s3"
+require "notifications/client"
 
 class Container
   def initialize
@@ -11,6 +12,8 @@ class Container
                                             ENV["EPB_DATA_WAREHOUSE_API_URL"],
                                             OAuth2::Client,
                                             faraday_connection_opts: { request: { timeout: 60 } }
+
+    notify_client = Notifications::Client.new(ENV["NOTIFY_DATA_API_KEY"])
 
     sns_gateway = Gateway::SnsGateway.new
     send_download_request_use_case = UseCase::SendDownloadRequest.new(sns_gateway:, topic_arn: ENV["SEND_DOWNLOAD_TOPIC_ARN"])
@@ -25,6 +28,8 @@ class Container
     get_user_id_use_case = UseCase::GetUserId.new(user_credentials_gateway:)
     get_user_token_use_case = UseCase::GetUserToken.new(user_credentials_gateway:)
     get_file_size_use_case = UseCase::GetFileSize.new(gateway: Gateway::S3Gateway.new, bucket_name: ENV["AWS_S3_USER_DATA_BUCKET_NAME"])
+    notify_gateway = Gateway::NotifyGateway.new(notify_client)
+    send_opt_out_request_email_use_case = UseCase::SendOptOutRequestEmail.new(notify_gateway:)
     @objects = {
       send_download_request_use_case:,
       get_download_size_use_case:,
@@ -35,6 +40,7 @@ class Container
       get_user_id_use_case:,
       get_user_token_use_case:,
       get_file_size_use_case:,
+      send_opt_out_request_email_use_case:,
     }
   end
 

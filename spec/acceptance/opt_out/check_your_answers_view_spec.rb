@@ -154,12 +154,42 @@ describe "Acceptance::OptOutCheckYourAnswers", type: :feature do
         end
       end
     end
+  end
 
-    context "when submitting the form" do
+  describe "post .get-energy-certificate-data.epb-frontend/opt-out/check-your-answers" do
+    let(:use_case) { instance_double(UseCase::SendOptOutRequestEmail) }
+
+    let(:app) do
+      fake_container = instance_double(Container)
+      allow(fake_container).to receive(:get_object).with(:send_opt_out_request_email_use_case).and_return(use_case)
+
+      Rack::Builder.new do
+        use Rack::Session::Cookie, secret: "test" * 16
+        run Controller::OptOutController.new(container: fake_container)
+      end
+    end
+
+    before do
+      allow(use_case).to receive(:execute)
+      allow(Helper::Session).to receive_messages(
+        is_user_authenticated?: true,
+        get_email_from_session: "test@email.com",
+      )
+      allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out).and_return({ owner: "yes", name: "Testy McTest", certificate_number: "1234-1234-1234-1234-1234", address_line1: "123 Fake Street", address_line2: "", address_town: "London", address_postcode: "NW9 0OP" })
+    end
+
+    context "when submitting the form without errors" do
+      before do
+        post "#{base_url}/opt-out/check-your-answers", { confirmation: "checked" }
+      end
+
       it "redirects to the received page" do
-        response = post "#{base_url}/opt-out/check-your-answers", { confirmation: "checked" }
-        expect(response.status).to eq(302)
-        expect(response.headers["Location"]).to eq("#{base_url}/opt-out/received")
+        expect(last_response.status).to eq(302)
+        expect(last_response.headers["Location"]).to eq("#{base_url}/opt-out/received")
+      end
+
+      it "calls the send opt out request email use case" do
+        expect(use_case).to have_received(:execute).with(owner_or_occupier: "Owner", name: "Testy McTest", certificate_number: "1234-1234-1234-1234-1234", address_line1: "123 Fake Street", address_line2: "", town: "London", postcode: "NW9 0OP", email: "test@email.com").once
       end
 
       context "when the confirmation checkbox is not checked" do
@@ -169,6 +199,46 @@ describe "Acceptance::OptOutCheckYourAnswers", type: :feature do
           expect(response.body).to have_css("div.govuk-error-summary__body ul.govuk-list li:first a", text: "You must check the box to submit the request")
           expect(response.body).to have_link("You must check the box to submit the request", href: "#confirmation-error")
         end
+      end
+    end
+
+    context "when the use case raises a NotifyServerError" do
+      before do
+        allow(use_case).to receive(:execute).and_raise(Errors::NotifyServerError)
+        post "#{base_url}/opt-out/check-your-answers", { confirmation: "checked" }
+      end
+
+      it "retries the use case 3 times" do
+        expect(use_case).to have_received(:execute).exactly(3)
+      end
+    end
+
+    context "when the use case raises a NotifyServerError once" do
+      before do
+        first_use_case_call = true
+
+        allow(use_case).to receive(:execute) do
+          if first_use_case_call
+            first_use_case_call = false
+            raise Errors::NotifyServerError
+          end
+        end
+        post "#{base_url}/opt-out/check-your-answers", { confirmation: "checked" }
+      end
+
+      it "retries the use case 2 times" do
+        expect(use_case).to have_received(:execute).exactly(2)
+      end
+    end
+
+    context "when the use case raises a NotifySendEmailError" do
+      before do
+        allow(use_case).to receive(:execute).and_raise(Errors::NotifySendEmailError)
+        post "#{base_url}/opt-out/check-your-answers", { confirmation: "checked" }
+      end
+
+      it "fails with 500 error code" do
+        expect(last_response.status).to eq(500)
       end
     end
   end

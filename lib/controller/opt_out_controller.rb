@@ -223,13 +223,39 @@ module Controller
       set_default
 
       if params["confirmation"] == "checked"
+        opt_out_session = Helper::Session.get_session_value(session, :opt_out)
+        name = opt_out_session[:name]
+        certificate_number = opt_out_session[:certificate_number]
+        address_line1 = opt_out_session[:address_line1]
+        address_line2 = opt_out_session[:address_line2]
+        town = opt_out_session[:address_town]
+        postcode = opt_out_session[:address_postcode]
+        owner = opt_out_session[:owner]
+        occupant = opt_out_session[:occupant]
+        email = Helper::Session.get_email_from_session(session)
+
+        owner_or_occupier = if owner == "yes"
+                              "Owner"
+                            elsif occupant == "yes"
+                              "Occupant"
+                            end
+
+        use_case = @container.get_object(:send_opt_out_request_email_use_case)
+        max_retries = 3
+        max_retries.times do
+          use_case.execute(name:, certificate_number:, address_line1:, address_line2:, town:, postcode:, email:, owner_or_occupier:)
+          break
+        rescue Errors::NotifyServerError
+          nil
+        end
+
         redirect localised_url("/opt-out/received")
       else
         @error_form_ids << "confirmation-error"
         @errors[:confirmation] = t("opt_out.check_your_answers.confirmation.error")
         erb :'opt_out/check_your_answers'
       end
-    rescue StandardError => e
+    rescue StandardError, Errors::NotifySendEmailError => e
       server_error(e)
     end
 
