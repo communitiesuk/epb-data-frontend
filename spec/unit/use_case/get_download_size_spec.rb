@@ -63,5 +63,38 @@ describe UseCase::GetDownloadSize do
         expect { use_case.execute(**invalid_use_case_args) }.to raise_error(Errors::FilteredDataNotFound)
       end
     end
+
+    context "when property type is non_domestic" do
+      let(:use_case_args_non_domestic) do
+        {
+          date_start: "2023-01-01",
+          date_end: "2023-01-31",
+          property_type: "non_domestic",
+          council: %w[Manchester Birmingham],
+          eff_rating: %w[A G],
+        }
+      end
+
+      let(:expected_gateway_args_non_domestic) do
+        use_case_args_non_domestic.merge({
+          property_type: "non-domestic",
+          constituency: nil,
+          postcode: nil,
+        })
+      end
+
+      before do
+        allow(certificate_count_gateway).to receive(:fetch).and_return(50)
+      end
+
+      it "transforms property type and calls the gateway with correct args" do
+        use_case.execute(**use_case_args_non_domestic)
+        expect(certificate_count_gateway).to have_received(:fetch).with(expected_gateway_args_non_domestic).exactly(1).times
+      end
+
+      it "returns the correct count" do
+        expect(use_case.execute(**use_case_args_non_domestic)).to eq(50)
+      end
+    end
   end
 end

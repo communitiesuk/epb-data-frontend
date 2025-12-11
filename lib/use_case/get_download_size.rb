@@ -5,6 +5,8 @@ module UseCase
     end
 
     def execute(date_start:, date_end:, property_type:, council: nil, constituency: nil, postcode: nil, eff_rating: nil)
+      if property_type == "non_domestic" then property_type = "non-domestic" end
+
       results_count = @certificate_count_gateway.fetch(
         date_start: date_start,
         date_end: date_end,
