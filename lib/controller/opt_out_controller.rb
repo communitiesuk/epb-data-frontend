@@ -68,10 +68,10 @@ module Controller
       set_default
       case params["owner"]
       when "yes"
-        Helper::Session.set_session_value(session, :opt_out, { owner: "yes" })
+        Helper::Session.set_session_value(session, :opt_out_owner, "yes")
         redirect localised_url("/login?referer=opt-out")
       when "no"
-        Helper::Session.set_session_value(session, :opt_out, { owner: "no" })
+        Helper::Session.set_session_value(session, :opt_out_owner, "no")
         redirect localised_url("/opt-out/occupant")
       else
         @error_form_ids << "owner-error"
@@ -103,10 +103,10 @@ module Controller
       set_default
       case params["occupant"]
       when "yes"
-        Helper::Session.set_session_value(session, :opt_out, { occupant: "yes" })
+        Helper::Session.set_session_value(session, :opt_out_occupant, "yes")
         redirect localised_url("/login?referer=opt-out")
       when "no"
-        Helper::Session.set_session_value(session, :opt_out, { occupant: "no" })
+        Helper::Session.set_session_value(session, :opt_out_occupant, "no")
         redirect localised_url("/opt-out/ineligible")
       else
         @error_form_ids << "occupant-error"
@@ -143,9 +143,7 @@ module Controller
       end
 
       if @errors.empty?
-        opt_out_session = Helper::Session.get_session_value(session, :opt_out)
-        opt_out_session[:name] = name
-        Helper::Session.set_session_value(session, :opt_out, opt_out_session)
+        Helper::Session.set_session_value(session, :opt_out_name, name)
         redirect localised_url("/opt-out/certificate-details")
       else
         erb :'opt_out/name'
@@ -155,17 +153,19 @@ module Controller
     end
 
     get "/opt-out/certificate-details" do
-      opt_out_session = Helper::Session.get_session_value(session, :opt_out) || {}
+      owner = Helper::Session.get_session_value(session, :opt_out_owner)
+      occupant = Helper::Session.get_session_value(session, :opt_out_occupant)
+      name = Helper::Session.get_session_value(session, :opt_out_name)
 
-      unless opt_out_session.key?(:owner) || opt_out_session.key?(:occupant)
+      if owner.nil? && occupant.nil?
         redirect localised_url("/opt-out")
       end
 
-      unless opt_out_session[:owner] == "yes" || opt_out_session[:occupant] == "yes"
+      unless owner == "yes" || occupant == "yes"
         redirect localised_url("/opt-out/ineligible")
       end
 
-      unless opt_out_session.key?(:name)
+      unless name
         redirect localised_url("/opt-out/name")
       end
 
@@ -223,15 +223,14 @@ module Controller
       set_default
 
       if params["confirmation"] == "checked"
-        opt_out_session = Helper::Session.get_session_value(session, :opt_out)
-        name = opt_out_session[:name]
-        certificate_number = opt_out_session[:certificate_number]
-        address_line1 = opt_out_session[:address_line1]
-        address_line2 = opt_out_session[:address_line2]
-        town = opt_out_session[:address_town]
-        postcode = opt_out_session[:address_postcode]
-        owner = opt_out_session[:owner]
-        occupant = opt_out_session[:occupant]
+        name = Helper::Session.get_session_value(session, :opt_out_name)
+        certificate_number = Helper::Session.get_session_value(session, :opt_out_certificate_number)
+        address_line1 = Helper::Session.get_session_value(session, :opt_out_address_line1)
+        address_line2 = Helper::Session.get_session_value(session, :opt_out_address_line2)
+        town = Helper::Session.get_session_value(session, :opt_out_address_town)
+        postcode = Helper::Session.get_session_value(session, :opt_out_address_postcode)
+        owner = Helper::Session.get_session_value(session, :opt_out_owner)
+        occupant = Helper::Session.get_session_value(session, :opt_out_occupant)
         email = Helper::Session.get_email_from_session(session)
 
         owner_or_occupier = if owner == "yes"

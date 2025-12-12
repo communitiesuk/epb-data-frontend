@@ -13,7 +13,9 @@ describe "Acceptance::OptOutCertificateDetails", type: :feature do
           is_user_authenticated?: true,
           get_email_from_session: "test@email.com",
         )
-        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out).and_return({ owner: "yes", name: "Testy McTest" })
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return("yes")
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_occupant).and_return(nil)
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_name).and_return("Testy McTest")
       end
 
       it "returns status 200" do
@@ -37,7 +39,9 @@ describe "Acceptance::OptOutCertificateDetails", type: :feature do
 
       context "when the user skipped over the eligibility questions" do
         before do
-          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out).and_return({ name: "Testy McTest" })
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return(nil)
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_occupant).and_return(nil)
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_name).and_return("Testy McTest")
         end
 
         it "returns status 302" do
@@ -51,7 +55,9 @@ describe "Acceptance::OptOutCertificateDetails", type: :feature do
 
       context "when the user was not eligible" do
         before do
-          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out).and_return({ owner: "no", occupant: "no", name: "Testy McTest" })
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return("no")
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_occupant).and_return("no")
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_name).and_return("Testy McTest")
         end
 
         it "returns status 302" do
@@ -65,7 +71,9 @@ describe "Acceptance::OptOutCertificateDetails", type: :feature do
 
       context "when the user skipped over the name step" do
         before do
-          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out).and_return({ owner: "yes" })
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return("no")
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_occupant).and_return("yes")
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_name).and_return(nil)
         end
 
         it "returns status 302" do
@@ -82,7 +90,8 @@ describe "Acceptance::OptOutCertificateDetails", type: :feature do
   describe "post .get-energy-certificate-data.epb-frontend/opt-out/certificate-details" do
     before do
       allow(Helper::Session).to receive(:set_session_value)
-      allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out).and_return({ owner: "yes", name: "Testy McTest" })
+      allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return("yes")
+      allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_name).and_return("Testy McTest")
     end
 
     context "when the user is authenticated" do
@@ -104,9 +113,29 @@ describe "Acceptance::OptOutCertificateDetails", type: :feature do
           expect(response.location).to include("/opt-out/check-your-answers")
         end
 
-        it "has the session value" do
+        it "saves the certificate number in the session" do
           response
-          expect(Helper::Session).to have_received(:set_session_value).with(anything, :opt_out, { owner: "yes", name: "Testy McTest", certificate_number: "0000-0000-0000-0000-0000", address_line1: "5 Bob Street", address_line2: "Test Grove", address_town: "Testerton", address_postcode: "TE57 1NG" })
+          expect(Helper::Session).to have_received(:set_session_value).with(anything, :opt_out_certificate_number, "0000-0000-0000-0000-0000")
+        end
+
+        it "saves the address line 1 in the session" do
+          response
+          expect(Helper::Session).to have_received(:set_session_value).with(anything, :opt_out_address_line1, "5 Bob Street")
+        end
+
+        it "saves the address line 2 in the session" do
+          response
+          expect(Helper::Session).to have_received(:set_session_value).with(anything, :opt_out_address_line2, "Test Grove")
+        end
+
+        it "saves the town in the session" do
+          response
+          expect(Helper::Session).to have_received(:set_session_value).with(anything, :opt_out_address_town, "Testerton")
+        end
+
+        it "saves the postcode in the session" do
+          response
+          expect(Helper::Session).to have_received(:set_session_value).with(anything, :opt_out_address_postcode, "TE57 1NG")
         end
       end
 
