@@ -54,13 +54,11 @@ module Helper
     end
 
     def save_opt_out_session
-      opt_out_session = Helper::Session.get_session_value(session, :opt_out) || {}
-      opt_out_session[:certificate_number] = @certificate_number
-      opt_out_session[:address_line1] = @address_line1
-      opt_out_session[:address_line2] = @address_line2
-      opt_out_session[:address_town] = @address_town
-      opt_out_session[:address_postcode] = @address_postcode
-      Helper::Session.set_session_value(session, :opt_out, opt_out_session)
+      Helper::Session.set_session_value(session, :opt_out_certificate_number, @certificate_number)
+      Helper::Session.set_session_value(session, :opt_out_address_line1, @address_line1)
+      Helper::Session.set_session_value(session, :opt_out_address_line2, @address_line2)
+      Helper::Session.set_session_value(session, :opt_out_address_town, @address_town)
+      Helper::Session.set_session_value(session, :opt_out_address_postcode, @address_postcode)
     end
 
     def certificate_valid(rrn)

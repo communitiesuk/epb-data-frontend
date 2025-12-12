@@ -55,7 +55,7 @@ describe "Acceptance::OptOutOccupant", type: :feature do
 
       it "has the session value" do
         response
-        expect(Helper::Session).to have_received(:set_session_value).with(anything, :opt_out, { occupant: "yes" })
+        expect(Helper::Session).to have_received(:set_session_value).with(anything, :opt_out_occupant, "yes")
       end
     end
 
@@ -72,7 +72,7 @@ describe "Acceptance::OptOutOccupant", type: :feature do
 
       it "has the session value" do
         response
-        expect(Helper::Session).to have_received(:set_session_value).with(anything, :opt_out, { occupant: "no" })
+        expect(Helper::Session).to have_received(:set_session_value).with(anything, :opt_out_occupant, "no")
       end
     end
   end

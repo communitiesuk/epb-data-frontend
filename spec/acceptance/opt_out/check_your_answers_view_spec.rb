@@ -97,6 +97,15 @@ describe "Acceptance::OptOutCheckYourAnswers", type: :feature do
           get_opt_out_session_value: nil,
         )
 
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return(nil)
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_occupant).and_return(nil)
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_name).and_return(nil)
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_certificate_number).and_return(nil)
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_line1).and_return(nil)
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_line2).and_return(nil)
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_town).and_return(nil)
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_postcode).and_return(nil)
+
         allow(ViewModels::OptOut).to receive(:get_relationship_to_the_property).and_call_original
         allow(ViewModels::OptOut).to receive(:get_email_from_session).and_call_original
         allow(ViewModels::OptOut).to receive(:get_full_name_from_session).and_call_original
@@ -137,19 +146,19 @@ describe "Acceptance::OptOutCheckYourAnswers", type: :feature do
 
       context "when address details are missing from session" do
         context "when address line 1 or postcode are missing" do
-          let(:session) { { opt_out: { name: "Some Name" } } }
+          let(:session) { { opt_out_name: "Some Name" } }
 
           it "raises MissingOptOutValues error" do
-            expect { ViewModels::OptOut.get_address_detail_from_session(session, :address_line1) }.to raise_error(Errors::MissingOptOutValues)
-            expect { ViewModels::OptOut.get_address_detail_from_session(session, :address_postcode) }.to raise_error(Errors::MissingOptOutValues)
+            expect { ViewModels::OptOut.get_address_detail_from_session(session, :opt_out_address_line1) }.to raise_error(Errors::MissingOptOutValues)
+            expect { ViewModels::OptOut.get_address_detail_from_session(session, :opt_out_address_postcode) }.to raise_error(Errors::MissingOptOutValues)
           end
         end
 
         context "when any other address details are missing" do
-          let(:session) { { opt_out: { name: "Some Name", address_line1: "Some Address", address_postcode: "Some Postcode" } } }
+          let(:session) { { opt_out_name: "Some Name", opt_out_address_line1: "Some Address", opt_out_address_postcode: "Some Postcode" } }
 
           it "does not raise a MissingOptOutValues error" do
-            expect { ViewModels::OptOut.get_address_detail_from_session(session, :address_town) }.not_to raise_error
+            expect { ViewModels::OptOut.get_address_detail_from_session(session, :opt_out_address_town) }.not_to raise_error
           end
         end
       end
@@ -175,7 +184,14 @@ describe "Acceptance::OptOutCheckYourAnswers", type: :feature do
         is_user_authenticated?: true,
         get_email_from_session: "test@email.com",
       )
-      allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out).and_return({ owner: "yes", name: "Testy McTest", certificate_number: "1234-1234-1234-1234-1234", address_line1: "123 Fake Street", address_line2: "", address_town: "London", address_postcode: "NW9 0OP" })
+      allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return("yes")
+      allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_occupant).and_return(nil)
+      allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_name).and_return("Testy McTest")
+      allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_certificate_number).and_return("1234-1234-1234-1234-1234")
+      allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_line1).and_return("123 Fake Street")
+      allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_line2).and_return("")
+      allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_town).and_return("London")
+      allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_postcode).and_return("NW9 0OP")
     end
 
     context "when submitting the form without errors" do

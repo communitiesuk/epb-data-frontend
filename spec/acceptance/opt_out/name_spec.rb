@@ -63,7 +63,7 @@ describe "Acceptance::OptOutOwner", type: :feature do
 
         it "has the session value" do
           response
-          expect(Helper::Session).to have_received(:set_session_value).with(anything, :opt_out, { owner: "yes", name: "Testy McTest" })
+          expect(Helper::Session).to have_received(:set_session_value).with(anything, :opt_out_name, "Testy McTest")
         end
       end
 
