@@ -97,7 +97,7 @@ module Controller
     end
 
     def is_property_type_valid?(property_type)
-      %w[domestic non-domestic dec].include?(property_type)
+      %w[domestic non_domestic dec].include?(property_type)
     end
 
     def get_download_size(params_data)
