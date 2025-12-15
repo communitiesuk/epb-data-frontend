@@ -24,7 +24,7 @@ module Controller
     get "/api-technical-documentation/search-certificates/:type" do
       set_headers
       @assessment_type_title = params["type"].gsub("-", " ")
-      @assessment_type = params["title"]
+      @assessment_type = params["type"]
       erb :'api_tech_docs/search_certificates'
     end
 

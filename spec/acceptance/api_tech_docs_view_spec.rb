@@ -75,6 +75,7 @@ describe "Acceptance::ApiTechnicalDocumentation", type: :feature do
             expect(response.body).to have_css("h2", text: "Method")
             expect(response.body).to have_css("h2", text: "Response")
             expect(response.body).to have_css("h2", text: "Example")
+            expect(response.body).to include("curl http://api.get-energy-performance-data/api")
           end
         end
 
@@ -86,6 +87,18 @@ describe "Acceptance::ApiTechnicalDocumentation", type: :feature do
             end
           end
         end
+      end
+    end
+
+    context "when the making a request page is rendered" do
+      it "show the published url to API" do
+        response = get "#{base_url}#{path}/making-a-request"
+        expect(response.body).to have_css("code", text: "http://api.get-energy-performance-data")
+      end
+
+      it "show the correc curl command to API" do
+        response = get "#{base_url}#{path}/making-a-request"
+        expect(response.body).to include("curl http://api.get-energy-performance-data/api")
       end
     end
   end

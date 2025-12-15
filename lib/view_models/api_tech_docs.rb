@@ -64,7 +64,7 @@ module ViewModels
     end
 
     def self.curl_example(url_path)
-      url = "#{ENV['EPB_DATA_WAREHOUSE_API_URL']}#{url_path}"
+      url = "#{base_url}#{url_path}"
       str = <<~CODE
         curl #{url}  \\
         -H "Authorization: Bearer my_bearer_token"  \\
@@ -74,7 +74,7 @@ module ViewModels
     end
 
     def self.download_file_example(url_path, assessment_type)
-      url = "#{ENV['EPB_DATA_WAREHOUSE_API_URL']}#{url_path}"
+      url = "#{base_url}#{url_path}"
       str = <<~CODE
         curl #{url} \\
         -H "Authorization: Bearer my_bearer_token" \\
@@ -118,7 +118,7 @@ module ViewModels
     end
 
     def self.base_url
-      ENV["EPB_DATA_WAREHOUSE_API_URL"]
+      ENV["PUBLISHED_DWH_API_URL"]
     end
 
     private_class_method def self.domestic_search_response
