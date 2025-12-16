@@ -1,49 +1,43 @@
-
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-one-third">
-
     <%= erb :'api_tech_docs/component__navigation' %>
   </div>
   <div class="govuk-grid-column-two-thirds">
     <h1 class="govuk-heading-l">Search for  <%= @assessment_type_title %> certificates </h1>
-
 
     <p class="govuk-body">
       Search for a set of EPCs using a combination of geographic and/or time-based parameters.
       All parameters are optional, but at least one must be provided in the request query string for the search to succeed.
       If more than 5000 results are returned from the query then the results will be paginated and the current_page and page_size parameters can be used to iterate through the full set of results.
     </p>
-    <div class="govuk-!-margin-bottom-7">
-    <h2 class="govuk-heading-m">Method</h2>
 
-    <pre><code>GET /api/<%= @assessment_type %>/search</code></pre>
+    <div class="govuk-!-margin-bottom-7">
+      <h2 class="govuk-heading-m">Method</h2>
+
+      <pre><code>GET /api/<%= @assessment_type %>/search</code></pre>
     </div>
+
     <h2 class="govuk-heading-m">Parameters</h2>
 
     <div class="govuk-!-margin-bottom-7">
-    <h3 class="govuk-heading-s">postcode (optional) </h3>
+      <h3 class="govuk-heading-s">postcode (optional) </h3>
 
-    <p class="govuk-body"> A URL-encoded postcode in England or Wales.</p>
-
-    <p class="govuk-body">For example: </p>
-    <pre><code>?postcode=LS1+4AP</code></pre>
+      <p class="govuk-body"> A URL-encoded postcode in England or Wales.</p>
+      <p class="govuk-body">For example: </p>
+      <pre><code>?postcode=LS1+4AP</code></pre>
     </div>
-
     <div class="govuk-!-margin-bottom-7">
-      <h3 class="govuk-heading-s">uprn (optional)  </h3>
+      <h3 class="govuk-heading-s">uprn (optional)</h3>
 
       <p class="govuk-body"> The 12-digit unique property reference number for the property.  This should be left-padded with zeroes to be 12 digits. =.</p>
       <p class="govuk-body">For example: </p>
-
       <pre><code>?uprn=000001234567</code></pre>
     </div>
-
     <div class="govuk-!-margin-bottom-7">
-      <h3 class="govuk-heading-s">address (optional)   </h3>
+      <h3 class="govuk-heading-s">address (optional)</h3>
 
       <p class="govuk-body">A URL-encoded partial or full address. </p>
       <p class="govuk-body">For example: </p>
-
       <pre><code>?address=9+union+street</code></pre>
     </div>
     <div class="govuk-!-margin-bottom-7">
@@ -51,49 +45,40 @@
 
       <p class="govuk-body">One or more councils (see <a href="#councils">List of council names</a> below).  </p>
       <p class="govuk-body">For example: </p>
-
       <pre><code>?council[]=Bristol+East&council[]=Bristol+South</code></pre>
     </div>
     <div class="govuk-!-margin-bottom-7">
       <h3 class="govuk-heading-s">constituency[] (optional) </h3>
 
-      <p class="govuk-body">One or more parliamentary constituencies (see <a href="#constituencies">List of council names</a>  below).   </p>
+      <p class="govuk-body">One or more parliamentary constituencies (see <a href="#constituencies">List of council names</a> below).</p>
       <p class="govuk-body">For example: </p>
-
       <pre><code>?constituency[]=Brecon,+Radnor+and+Cwm+Tawe&constituency[]=Gower</code></pre>
     </div>
-
     <div class="govuk-!-margin-bottom-7">
       <h3 class="govuk-heading-s">efficiency_rating[] (optional)  </h3>
 
       <p class="govuk-body">One or more energy efficiency ratings (from A-G).  </p>
       <p class="govuk-body">For example: </p>
-
       <pre><code>?efficiency_rating[]=F&efficiency_rating[]=G</code></pre>
     </div>
-
     <div class="govuk-!-margin-bottom-7">
       <h3 class="govuk-heading-s">date_start (optional)   </h3>
 
       <p class="govuk-body">Start date of the date range to retrieve, in the format YYY-MM-DD.  </p>
       <p>Required if no other param is specified</p>
       <p>The value cannot include today's date</p>
-
       <p class="govuk-body">For example: </p>
       <pre><code>?date_start=2020-11-06</code></pre>
     </div>
-
     <div class="govuk-!-margin-bottom-7">
       <h3 class="govuk-heading-s">date_end (optional)   </h3>
 
       <p class="govuk-body">End date of the date range to retrieve, in the format YYY-MM-DD.  </p>
       <p>Required if no other param is specified</p>
       <p>The value cannot include today's date</p>
-
       <p class="govuk-body">For example: </p>
       <pre><code>?date_end=2020-11-06</code></pre>
     </div>
-
     <div class="govuk-!-margin-bottom-7">
       <h3 class="govuk-heading-s">current_page (optional)  </h3>
 
@@ -101,72 +86,59 @@
       <p class="govuk-body">Required if paginating results  </p>
       <p class="govuk-body">The current page number can be found in the pagination object of the response. </p>
     </div>
-
     <div class="govuk-!-margin-bottom-7">
       <h3 class="govuk-heading-s">page (optional)  </h3>
 
       <p class="govuk-body">The maximum number of certificates to return in each page of query results.  The page_size can be between 1 and 5000.   </p>
-
       <p class="govuk-body">The page size can be found in the pagination object of the response. </p>
-
-
     </div>
 
-
-
     <div class="govuk-!-margin-bottom-7">
-    <h2 class="govuk-heading-m">Response</h2>
-      If the request is successful, the response body is json with a status code of 200:
+      <h2 class="govuk-heading-m">Response</h2>
 
+      <p class="govuk-body">
+        If the request is successful, the response body is json with a status code of 200:
+      </p>
       <pre><code class="javascript"><%=  ViewModels::ApiTechDocs.search_response(@assessment_type) %></code></pre>
-
     </div>
-
     <div class="govuk-!-margin-bottom-7">
-    <h2 class="govuk-heading-m">Error codes</h2>
-      <p class="govuk-body">If the request is not successful an HTTP error code will be returned:</p>
+      <h2 class="govuk-heading-m">Error codes</h2>
 
+      <p class="govuk-body">If the request is not successful an HTTP error code will be returned:</p>
       <ul>
         <li>400 – one or more of the required parameters was missing or one of the parameters was not in the right format.  The response body will include a json error message that explains the specific error.</li>
         <li>404 – no certificates exist that match the parameters of the query </li>
       </ul>
     </div>
-
     <div class="govuk-!-margin-bottom-7">
       <h2 class="govuk-heading-m">Example</h2>
 
-      <pre><code class="javascript"><%= ViewModels::ApiTechDocs.curl_example "/api/domestic/search?date_start=2021-07-10&date_end=2021-08-10&council[]=Manchester&efficiency_rating[]=A&efficiency_rating[]=B&efficiency_rating[]=C&current_page=1&page_size=5000" %></code></pre>
-
+      <pre><code class="javascript"><%= ViewModels::ApiTechDocs.curl_example "api/domestic/search?date_start=2021-07-10&date_end=2021-08-10&council[]=Manchester&efficiency_rating[]=A&efficiency_rating[]=B&efficiency_rating[]=C&current_page=1&page_size=5000" %></code></pre>
     </div>
 
     <div class="govuk-!-margin-bottom-7" id="councils">
+      <h3 class="govuk-heading-m">List of council names recognised by the API </h3>
 
-    <h3 class="govuk-heading-m">List of council names recognised by the API </h3>
-    <p class="govuk-body">
+      <p class="govuk-body">
       These are the values that can be used for the council[] parameter when filtering certificates (URL-escaped where necessary):
     </p>
-
       <ul>
         <% ViewModels::ApiTechDocs.councils.each do |council| %>
          <li> <%= council %></li>
         <% end %>
       </ul>
     </div>
-
     <div class="govuk-!-margin-bottom-7" id="constituencies">
-    <h3 class="govuk-heading-m">List of parliamentary constituencies recognised by the API  </h3>
-    <p class="govuk-body">
-      These are the values that can be used for the constituency[] parameter when filtering certificates (URL-escaped where necessary):
-    </p>
+      <h3 class="govuk-heading-m">List of parliamentary constituencies recognised by the API  </h3>
 
-    <ul>
-      <% ViewModels::ApiTechDocs.parliamentary_constituencies.each do |const| %>
-        <li> <%= const %></li>
-      <% end %>
-    </ul>
+      <p class="govuk-body">
+        These are the values that can be used for the constituency[] parameter when filtering certificates (URL-escaped where necessary):
+      </p>
+      <ul>
+        <% ViewModels::ApiTechDocs.parliamentary_constituencies.each do |const| %>
+          <li> <%= const %></li>
+        <% end %>
+      </ul>
     </div>
-
   </div>
-
-
 </div>

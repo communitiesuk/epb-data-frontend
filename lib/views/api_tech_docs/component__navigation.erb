@@ -6,11 +6,9 @@
     <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Making a request", link: "/making-a-request" } %>
   </ul>
 
-
-
   <h3 class="app-subnav__theme">API specifications</h3>
-  <ul class="app-subnav__section">
 
+  <ul class="app-subnav__section">
     <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Fetch certificate data", link: "/fetch-certificate-data" } %>
     <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Search for domestic certificates", link: "/search-certificates/domestic" } %>
     <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Search for non-domestic certificates", link: "/search-certificates/non-domestic" } %>
@@ -26,5 +24,4 @@
     <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Fetch EPC codes", link: "/codes" } %>
     <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Fetch EPC codes info", link: "/codes-info" } %>
   </ul>
-
 </nav>

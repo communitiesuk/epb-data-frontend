@@ -1,10 +1,8 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-one-third">
-
     <%= erb :'api_tech_docs/component__navigation' %>
   </div>
   <div class="govuk-grid-column-two-thirds">
-
     <div class="govuk-!-margin-bottom-7">
       <h1 class="govuk-heading-l">Fetch EPC codes</h1>
 
@@ -15,26 +13,26 @@
 
     <div class="govuk-!-margin-bottom-7">
       <h2 class="govuk-heading-m">Method</h2>
-      <pre><code>GET /api/codes</code></pre>
 
+      <pre><code>GET /api/codes</code></pre>
     </div>
 
     <div class="govuk-!-margin-bottom-7">
       <h2 class="govuk-heading-m">Response</h2>
-      If the request is successful, the response body is json with a status code of 200:
 
+      <p class="govuk-body">
+        If the request is successful, the response body is json with a status code of 200:
+      </p>
       <pre><code class="javascript"><%=  ViewModels::ApiTechDocs.codes_response %></code></pre>
-
     </div>
 
     <div class="govuk-!-margin-bottom-7">
       <h2 class="govuk-heading-m">Example</h2>
-      If the request is successful, the response body is json with a status code of 200:
 
+      <p class="govuk-body">
+        If the request is successful, the response body is json with a status code of 200:
+      </p>
       <pre><code class="javascript"><%= ViewModels::ApiTechDocs.curl_example "/api/codes" %></code></pre>
-
-
     </div>
-
   </div>
 </div>
