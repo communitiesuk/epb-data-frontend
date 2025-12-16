@@ -1,17 +1,14 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-one-third">
-
     <%= erb :'api_tech_docs/component__navigation' %>
   </div>
   <div class="govuk-grid-column-two-thirds">
-
     <div class="govuk-!-margin-bottom-7">
       <h1 class="govuk-heading-l">Fetch information about <%= @assessment_type_title %> full load <%= @file_type  %></h1>
 
       <p class="govuk-body">
         Returns the size of the zip file to be downloaded and the date it was last created
       </p>
-
     </div>
 
     <div class="govuk-!-margin-bottom-7">
@@ -29,18 +26,15 @@
     <div class="govuk-!-margin-bottom-7">
       <h2 class="govuk-heading-m">Error</h2>
 
-      <p>If the request is not successful an HTTP error code will be returned:.</p>
-      <p>404. No file is found</p>
+      <p class="govuk-body">If the request is not successful, an HTTP error code will be returned:</p>
+      <p class="govuk-body">404. No file is found</p>
 
     </div>
 
     <div class="govuk-!-margin-bottom-7">
       <h2 class="govuk-heading-m">Example</h2>
 
-
       <pre><code class="javascript"><%= ViewModels::ApiTechDocs.curl_example "/api/files/#{@assessment_type}/#{@file_type}/info" %></code></pre>
-
     </div>
-
   </div>
 </div>

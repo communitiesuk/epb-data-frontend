@@ -1,28 +1,23 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-one-third">
-
     <%= erb :'api_tech_docs/component__navigation'%>
   </div>
-
   <div class="govuk-grid-column-two-thirds">
-
     <div class="govuk-!-margin-bottom-7">
-     <h1 class="govuk-heading-l">Making a request</h1>
+      <h1 class="govuk-heading-l">Making a request</h1>
 
       <p class="govuk-body">
         The base URL
       </p>
-
       <pre><code><%= ViewModels::ApiTechDocs.base_url %></code></pre>
-
       <p class="govuk-body">
         Requests should be GET requests, with all parameters specified in the query string of the URL.  You should not send any request body.
       </p>
     </div>
 
     <h2 class="govuk-heading-m">Headers</h2>
-    <div class="govuk-!-margin-bottom-7">
 
+    <div class="govuk-!-margin-bottom-7">
       <h2 class="govuk-heading-m">Authorisation header</h2>
 
       <p class="govuk-body">
@@ -32,30 +27,18 @@
       <p class="govuk-body">
         When you have your bearer token, add the token to a header as follows:
       </p>
-
       <pre><code>"Authorization": "Bearer your_bearer_token"</code></pre>
     </div>
     <div class="govuk-!-margin-bottom-7">
       <h2 class="govuk-heading-m">Accept header</h2>
+
       <p class="govuk-body">
         The accept header is application/json:
       </p>
-
       <pre><code>"Accept": "application/json"</code></pre>
 
       <h2 class="govuk-heading-m">Example</h2>
-
       <pre><code class="javascript"><%= ViewModels::ApiTechDocs.curl_example "/api/certificate?certificate_number=1111-2222-3333-4444-5555" %></code></pre>
     </div>
-
-
-
   </div>
-
-
-
 </div>
-
-</div>
-
-

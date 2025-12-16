@@ -1,71 +1,66 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-one-third">
-
     <%= erb :'api_tech_docs/component__navigation' %>
   </div>
   <div class="govuk-grid-column-two-thirds">
-  <h1 class="govuk-heading-l">Fetch certificate data</h1>
-  <p class="govuk-body">
-    You can fetch the full data for an EPC or DEC using its certificate number.
-  </p>
+    <h1 class="govuk-heading-l">Fetch certificate data</h1>
+
+    <p class="govuk-body">
+      You can fetch the full data for an EPC or DEC using its certificate number.
+    </p>
 
     <div class="govuk-!-margin-bottom-7">
+      <h2 class="govuk-heading-m">Method</h2>
+      <pre><code>GET /api/certificate</code></pre>
 
-  <h2 class="govuk-heading-m">Method</h2>
-  <pre><code>GET /api/certificate</code></pre>
-  <h2 class="govuk-heading-m">Parameters</h2>
-  <h3 class="govuk-heading-s">certificate_number (required)</h3>
-  The 20-digit certificate number of the EPC or DEC.
-  For example:
+      <h2 class="govuk-heading-m">Parameters</h2>
 
+      <h3 class="govuk-heading-s">certificate_number (required)</h3>
 
-  <pre><code>?certificate_number=1111-2222-3333-4444-5555</code></pre>
+      <p class="govuk-body">The 20-digit certificate number of the EPC or DEC.</p>
+      <p class="govuk-body">For example:</p>
+      <pre><code>?certificate_number=1111-2222-3333-4444-5555</code></pre>
     </div>
     <div class="govuk-!-margin-bottom-7">
+      <h2 class="govuk-heading-m">Response</h2>
 
-    <h2 class="govuk-heading-m">Response</h2>
-
-  <p class="govuk-body">
-    If the request is successful, the response body is json with a status code of 200. The json structure and keys will vary depending on the type of certificate
-    and the schema that was used to register it, but there will always be a “data” block that wraps the certificate data:
-  </p>
-
-  <pre><code class="javascript"><%=str= <<~CODE
-              {
-                  "data": {
-                      "uprn": 012345678912,
-                      "addressLine1": "12 Example Street",
-                      "postTown": "Fulchester",
-                      "postcode": "FU1 1AB",
-                      "assessmentType": "RdSAP",
-                      ...
-                  }}````````````````
-            CODE
-         ViewModels::ApiTechDocs.markdown(str)
-  %></code></pre>
-
-  <p class="govuk-body">
-    We publish samples of the JSON schema for every EPC schema (RdSAP, SAP, CEPC etc) and schema version supported by the service.
-  </p>
-  <p class="govuk-body">  <a href="https://github.com/communitiesuk/epb-data-warehouse/tree/main/spec/fixtures/json_samples"> Click here to view the JSON samples</a>
-  </p>
+      <p class="govuk-body">
+        If the request is successful, the response body is json with a status code of 200. The json structure and keys will vary depending on the type of certificate
+        and the schema that was used to register it, but there will always be a “data” block that wraps the certificate data:
+      </p>
+      <pre><code class="javascript"><%=str= <<~CODE
+                  {
+                      "data": {
+                          "uprn": 012345678912,
+                          "addressLine1": "12 Example Street",
+                          "postTown": "Fulchester",
+                          "postcode": "FU1 1AB",
+                          "assessmentType": "RdSAP",
+                          ...
+                      }}````````````````
+                CODE
+             ViewModels::ApiTechDocs.markdown(str)
+      %></code></pre>
+      <p class="govuk-body">
+        We publish samples of the JSON schema for every EPC schema (RdSAP, SAP, CEPC etc) and schema version supported by the service.
+      </p>
+      <p class="govuk-body">  <a href="https://github.com/communitiesuk/epb-data-warehouse/tree/main/spec/fixtures/json_samples"> Click here to view the JSON samples</a>
+      </p>
     </div>
     <div class="govuk-!-margin-bottom-7">
-  <h2 class="govuk-heading-m">Error codes</h2>
+      <h2 class="govuk-heading-m">Error codes</h2>
 
-  <p class="govuk-body">If the request is not successful an HTTP error code will be returned:   </p>
-  <ul>
-    <li>404 – no certificate could be found with the certificate number </li>
+      <p class="govuk-body">If the request is not successful, an HTTP error code will be returned:   </p>
+      <ul>
+        <li>404 – no certificate could be found with the certificate number </li>
 
-    <li>400 – the certificate_number was not in the right format</li>
-  </ul>
+        <li>400 – the certificate_number was not in the right format</li>
+      </ul>
     </div>
-
     <div class="govuk-!-margin-bottom-7">
+      <h2 class="govuk-heading-m">Example</h2>
 
-    <h2 class="govuk-heading-m">Example</h2>
-
-    <pre><code class="javascript" ><%= ViewModels::ApiTechDocs.curl_example "/api/certificate?certificate_number=1111-2222-3333-4444-5555"%></code></pre>
+      <pre><code class="javascript" ><%= ViewModels::ApiTechDocs.curl_example "/api/certificate?certificate_number=1111-2222-3333-4444-5555"%></code></pre>
     </div>
   </div>
  </div>
