@@ -1,8 +1,10 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-one-third">
+
     <%= erb :'api_tech_docs/component__navigation' %>
   </div>
   <div class="govuk-grid-column-two-thirds">
+
     <div class="govuk-!-margin-bottom-7">
     <h1 class="govuk-heading-l">Download <%= @assessment_type_title %> full load <%= @file_type  %></h1>
 
@@ -13,6 +15,7 @@
     </p>
   </div>
 
+
     <div class="govuk-!-margin-bottom-7">
       <h2 class="govuk-heading-m">Method</h2>
 
@@ -22,17 +25,21 @@
     <div class="govuk-!-margin-bottom-7">
       <h2 class="govuk-heading-m">Response</h2>
 
-      <p class="govuk-body">If the request is successful, the response will return a status of 302.</p>
-      <p class="govuk-body">The response header will include the location of the file to be downloaded. </p>
-      <p class="govuk-body">The URL of the file will be generated at run time.</p>
+      <p>If the request is successful, the response will return a status of 302.</p>
+      <p>The response header will include the location of the file to be downloaded. </p>
+      <p>The URL of the file will be generated at run time.   </p>
+
+
+
       <pre><code class="javascript"><%= ViewModels::ApiTechDocs.file_download_response(@assessment_type, @file_type) %></code></pre>
     </div>
 
     <div class="govuk-!-margin-bottom-7">
       <h2 class="govuk-heading-m">Error</h2>
 
-      <p class="govuk-body">If the request is not successful an HTTP error code will be returned:.</p>
-      <p class="govuk-body">404. No file is found</p>
+      <p>If the request is not successful an HTTP error code will be returned:.</p>
+      <p>404. No file is found</p>
+
     </div>
 
     <div class="govuk-!-margin-bottom-7">
@@ -40,5 +47,6 @@
 
       <pre><code class="javascript"><%= ViewModels::ApiTechDocs.download_file_example "/api/files/#{@assessment_type}/#{@file_type}",@assessment_type%></code></pre>
     </div>
+
   </div>
 </div>
