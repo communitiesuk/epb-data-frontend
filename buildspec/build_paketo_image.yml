@@ -22,7 +22,7 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Paketo image...
-      - pack build ebpr-data-frontend-image --builder paketobuildpacks/builder-jammy-full
+      - pack build ebpr-data-frontend-image --builder paketobuildpacks/builder-jammy-full --clear-cache
 
   post_build:
     commands:
