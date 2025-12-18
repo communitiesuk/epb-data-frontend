@@ -41,25 +41,6 @@ module Controller
     HOST_NAME = "get-energy-certificate-data".freeze
     Helper::Assets.setup_cache_control(self)
 
-    configure do
-      is_development = settings.environment == :development
-
-      use Rack::Session::Cookie,
-          key: "epb_data.session",
-          secret: ENV["SESSION_SECRET"],
-          expire_after: 60 * 60, # 1 hour
-          secure: !is_development,
-          same_site: is_development ? :lax : :none,
-          httponly: true
-    end
-
-    configure :development do
-      require "sinatra/reloader"
-      register Sinatra::Reloader
-      also_reload "lib/**/*.rb"
-      set :host_authorization, { permitted_hosts: [] }
-    end
-
     before do
       set_locale
       Helper::Session.set_local(session)
