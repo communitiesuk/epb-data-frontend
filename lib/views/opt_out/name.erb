@@ -23,7 +23,7 @@
                      id="name"
                      name="name"
                      type="text"
-                     <% if params['name'] %>value="<%= params['name'] %>"<% end %>
+                     value="<%= ViewModels::OptOut.get_form_value(params, session, 'name') %>"
               >
             </div>
 

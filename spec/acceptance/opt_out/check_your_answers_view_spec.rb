@@ -60,6 +60,26 @@ describe "Acceptance::OptOutCheckYourAnswers", type: :feature do
         expect(response.body).to have_button("Submit request")
       end
 
+      it "has a change hyperlink next to 'name' field" do
+        expect(response.body).to have_css("dd.govuk-summary-list__actions a.govuk-link", text: "Change name")
+        expect(response.body).to have_link("Change", href: "/opt-out/name")
+      end
+
+      it "has a change hyperlink next to 'Relationship to the property' field" do
+        expect(response.body).to have_css("dd.govuk-summary-list__actions a.govuk-link", text: "Change owner")
+        expect(response.body).to have_link("Change", href: "/opt-out/owner")
+      end
+
+      it "has a change hyperlink next to 'Certificate number' field" do
+        expect(response.body).to have_css("dd.govuk-summary-list__actions a.govuk-link", text: "Change certificate number")
+        expect(response.body).to have_link("Change", href: "/opt-out/certificate-details")
+      end
+
+      it "has a change hyperlink next to 'Property address' field" do
+        expect(response.body).to have_css("dd.govuk-summary-list__actions a.govuk-link", text: "Change property address")
+        expect(response.body).to have_link("Change", href: "/opt-out/certificate-details")
+      end
+
       context "when the user is not authenticated" do
         before { allow(Helper::Session).to receive(:is_user_authenticated?).and_raise(Errors::AuthenticationError, "User is not authenticated") }
 

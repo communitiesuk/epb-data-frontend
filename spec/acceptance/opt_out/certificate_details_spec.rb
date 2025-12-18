@@ -13,6 +13,7 @@ describe "Acceptance::OptOutCertificateDetails", type: :feature do
           is_user_authenticated?: true,
           get_email_from_session: "test@email.com",
         )
+        allow(Helper::Session).to receive(:get_session_value).with(anything, anything).and_call_original
         allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return("yes")
         allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_occupant).and_return(nil)
         allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_name).and_return("Testy McTest")
@@ -84,11 +85,42 @@ describe "Acceptance::OptOutCertificateDetails", type: :feature do
           expect(response.location).to include("/opt-out/name")
         end
       end
+
+      context "when there is already a session" do
+        before do
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_certificate_number).and_return("1234-4567-1234-4567-1234")
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_line1).and_return("123 Fake Street")
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_line2).and_return("")
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_town).and_return("London")
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_postcode).and_return("TE57 1NG")
+        end
+
+        it "is pre filled with the correct certificate number value" do
+          expect(response.body).to have_css("div.govuk-form-group input#certificate-number[value='1234-4567-1234-4567-1234']")
+        end
+
+        it "is pre filled with the correct address line 1 value" do
+          expect(response.body).to have_css("div.govuk-form-group input#address-line1[value='123 Fake Street']")
+        end
+
+        it "is pre filled with the correct address line 2 value" do
+          expect(response.body).to have_css("div.govuk-form-group input#address-line-2[value='']")
+        end
+
+        it "is pre filled with the correct town value" do
+          expect(response.body).to have_css("div.govuk-form-group input#address-town[value='London']")
+        end
+
+        it "is pre filled with the correct postcode value" do
+          expect(response.body).to have_css("div.govuk-form-group input#address-postcode[value='TE57 1NG']")
+        end
+      end
     end
   end
 
   describe "post .get-energy-certificate-data.epb-frontend/opt-out/certificate-details" do
     before do
+      allow(Helper::Session).to receive(:get_session_value).with(anything, anything).and_call_original
       allow(Helper::Session).to receive(:set_session_value)
       allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return("yes")
       allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_name).and_return("Testy McTest")

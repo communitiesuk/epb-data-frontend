@@ -13,6 +13,7 @@ describe "Acceptance::OptOutOwner", type: :feature do
           is_user_authenticated?: true,
           get_email_from_session: "test@email.com",
         )
+        allow(Helper::Session).to receive(:get_session_value).with(anything, anything).and_call_original
       end
 
       it "returns status 200" do
@@ -31,6 +32,16 @@ describe "Acceptance::OptOutOwner", type: :feature do
       it "has the correct Continue button" do
         expect(response.body).to have_css("button[type='submit']", text: "Continue")
       end
+
+      context "when there is already a session" do
+        before do
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_name).and_return("Joe Smith")
+        end
+
+        it "is pre filled with the correct name value" do
+          expect(response.body).to have_css("div.govuk-form-group input#name[value='Joe Smith']")
+        end
+      end
     end
 
     it_behaves_like "when checking an authorisation for opt-out restricted endpoints", end_point: "name"
@@ -38,6 +49,7 @@ describe "Acceptance::OptOutOwner", type: :feature do
 
   describe "post .get-energy-certificate-data.epb-frontend/opt-out/name" do
     before do
+      allow(Helper::Session).to receive(:get_session_value).with(anything, anything).and_call_original
       allow(Helper::Session).to receive(:set_session_value)
       allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out).and_return({ owner: "yes" })
     end

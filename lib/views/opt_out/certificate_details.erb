@@ -30,7 +30,7 @@
                      name="certificate_number"
                      type="text"
                      aria-describedby="certificate-number-hint"
-                     <% if params['certificate_number'] %>value="<%= params['certificate_number'] %>"<% end %>
+                     value="<%= ViewModels::OptOut.get_form_value(params, session, 'certificate_number') %>"
               >
             </div>
           </fieldset>
@@ -55,7 +55,7 @@
                      name="address_line1"
                      type="text"
                      autocomplete="address-line1"
-                     <% if params['address_line1'] %>value="<%= params['address_line1'] %>"<% end %>
+                     value="<%= ViewModels::OptOut.get_form_value(params, session, 'address_line1') %>"
 
               >
             </div>
@@ -73,7 +73,7 @@
                      name="address_line2"
                      type="text"
                      autocomplete="address-line2"
-                     <% if params['address_line2'] %>value="<%= params['address_line2'] %>"<% end %>
+                     value="<%= ViewModels::OptOut.get_form_value(params, session, 'address_line2') %>"
               >
             </div>
             <div class="govuk-form-group">
@@ -90,7 +90,7 @@
                      name="address_town"
                      type="text"
                      autocomplete="address-level2"
-                     <% if params['address_town'] %>value="<%= params['address_town'] %>"<% end %>
+                     value="<%= ViewModels::OptOut.get_form_value(params, session, 'address_town') %>"
               >
             </div>
             <div class="govuk-form-group<% if @errors[:address_postcode] %> govuk-form-group--error<% end %>">
@@ -106,7 +106,7 @@
                      id="address-postcode"
                      name="address_postcode"
                      type="text"
-                     <% if params['address_postcode'] %>value="<%= params['address_postcode'] %>"<% end %>
+                     value="<%= ViewModels::OptOut.get_form_value(params, session, 'address_postcode') %>"
               >
             </div>
           </fieldset>
