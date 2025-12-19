@@ -31,6 +31,22 @@ describe "Acceptance::OptOutOwner", type: :feature do
     it "shows a back link and redirects to previous page" do
       expect(response.body).to have_link("Back", href: "/opt-out/reason")
     end
+
+    context "when there is session user data" do
+      before do
+        allow(Helper::Session).to receive(:delete_session_key)
+      end
+
+      it "removes the owner keys from the session" do
+        response
+        expect(Helper::Session).to have_received(:delete_session_key).with(anything, :opt_out_owner).exactly(1).times
+      end
+
+      it "removes the occupant keys from the session" do
+        response
+        expect(Helper::Session).to have_received(:delete_session_key).with(anything, :opt_out_occupant).exactly(1).times
+      end
+    end
   end
 
   describe "post .get-energy-certificate-data.epb-frontend/opt-out/owner" do

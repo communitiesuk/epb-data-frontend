@@ -59,6 +59,8 @@ module Controller
       status 200
       set_default
       @back_link_href = localised_url("/opt-out/reason")
+      Helper::Session.delete_session_key(session, :opt_out_owner)
+      Helper::Session.delete_session_key(session, :opt_out_occupant)
       erb :'opt_out/owner'
     rescue StandardError => e
       server_error(e)
