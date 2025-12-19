@@ -11,6 +11,7 @@ describe "Acceptance::OptOutReceived", type: :feature do
         allow(Helper::Session).to receive_messages(
           is_user_authenticated?: true,
           get_email_from_session: "test@email.com",
+          delete_session_key: nil,
         )
       end
 
@@ -24,6 +25,17 @@ describe "Acceptance::OptOutReceived", type: :feature do
 
       it "displays the sub heading as expected" do
         expect(response.body).to have_css("h2", text: "What happens next")
+      end
+
+      it "clears the opt-out session data" do
+        response
+        expect(Helper::Session).to have_received(:delete_session_key).with(anything, :opt_out_owner)
+        expect(Helper::Session).to have_received(:delete_session_key).with(anything, :opt_out_occupant)
+        expect(Helper::Session).to have_received(:delete_session_key).with(anything, :opt_out_name)
+        expect(Helper::Session).to have_received(:delete_session_key).with(anything, :opt_out_address_line1)
+        expect(Helper::Session).to have_received(:delete_session_key).with(anything, :opt_out_address_line2)
+        expect(Helper::Session).to have_received(:delete_session_key).with(anything, :opt_out_address_town)
+        expect(Helper::Session).to have_received(:delete_session_key).with(anything, :opt_out_address_postcode)
       end
     end
 

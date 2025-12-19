@@ -261,6 +261,14 @@ module Controller
     get "/opt-out/received" do
       status 200
       set_default
+      Helper::Session.delete_session_key(session, :opt_out_owner)
+      Helper::Session.delete_session_key(session, :opt_out_occupant)
+      Helper::Session.delete_session_key(session, :opt_out_name)
+      Helper::Session.delete_session_key(session, :opt_out_address_line1)
+      Helper::Session.delete_session_key(session, :opt_out_address_line2)
+      Helper::Session.delete_session_key(session, :opt_out_address_town)
+      Helper::Session.delete_session_key(session, :opt_out_address_postcode)
+
       erb :'opt_out/received'
     rescue StandardError => e
       server_error(e)

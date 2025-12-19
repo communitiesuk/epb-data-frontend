@@ -36,6 +36,23 @@ describe Helper::Session do
     end
   end
 
+  describe "#delete_session_key" do
+    let(:key_to_keep) { :another_key }
+
+    context "when deleting a key from the session" do
+      before do
+        session[key] = "value"
+        session[key_to_keep] = "persistent value"
+      end
+
+      it "deletes the key from the session" do
+        described_class.delete_session_key(session, key)
+        expect(session[key]).to be_nil
+        expect(session[key_to_keep]).to eq("persistent value")
+      end
+    end
+  end
+
   context "when clearing the session" do
     it "clears all values from the session" do
       session[key] = "value"

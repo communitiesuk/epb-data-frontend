@@ -19,6 +19,10 @@ module Helper
       session[key] if exists?(session, key)
     end
 
+    def self.delete_session_key(session, key)
+      session.delete(key) if exists?(session, key)
+    end
+
     def self.clear_session(session)
       session.clear
     end
