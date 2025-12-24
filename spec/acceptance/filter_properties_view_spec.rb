@@ -2,12 +2,16 @@ describe "Acceptance::FilterProperties", type: :feature do
   include RSpecFrontendServiceMixin
 
   let(:local_host) do
-    "http://get-energy-performance-data/filter-properties"
+    "http://get-energy-performance-data"
   end
 
-  let(:response) { get local_host }
+  let(:request_url) do
+    "#{local_host}/filter-properties"
+  end
 
-  let(:valid_response) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}" }
+  let(:response) { get request_url }
+
+  let(:valid_response) { post "#{request_url}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}" }
 
   let(:valid_dates) do
     "from-year=2023&from-month=January&to-year=2025&to-month=February"
@@ -77,7 +81,7 @@ describe "Acceptance::FilterProperties", type: :feature do
       end
 
       it "shows the correct title for domestic" do
-        response = get "#{local_host}?property_type=domestic"
+        response = get "#{request_url}?property_type=domestic"
         expect(response.body).to have_selector("h1", text: "Energy Performance Certificates")
       end
 
@@ -85,13 +89,13 @@ describe "Acceptance::FilterProperties", type: :feature do
         property_types = %w[non-domestic dec]
 
         property_types.each do |property_type|
-          response = get "#{local_host}?property_type=#{property_type}"
+          response = get "#{request_url}?property_type=#{property_type}"
           expect(response.body).not_to have_css("#eff-rating-section.govuk-accordion__section")
         end
       end
 
       it "shows the efficiency rating filter for domestic properties" do
-        response = get "#{local_host}?property_type=domestic"
+        response = get "#{request_url}?property_type=domestic"
         expect(response.body).to have_css("#eff-rating-section.govuk-accordion__section")
       end
 
@@ -106,7 +110,7 @@ describe "Acceptance::FilterProperties", type: :feature do
       end
 
       it "shows all efficiency ratings selected by default for domestic properties" do
-        response = get "#{local_host}?property_type=domestic"
+        response = get "#{request_url}?property_type=domestic"
         expect(response.body).to have_css("input#ratings-A[value=A][checked]")
         expect(response.body).to have_css("input#ratings-B[value=B][checked]")
         expect(response.body).to have_css("input#ratings-C[value=C][checked]")
@@ -157,7 +161,7 @@ describe "Acceptance::FilterProperties", type: :feature do
         end
 
         it "the user is redirected back the login" do
-          expect(valid_response.headers["Location"]).to eq("http://get-energy-performance-data/login")
+          expect(valid_response.headers["Location"]).to eq("#{local_host}/login")
         end
       end
     end
@@ -171,7 +175,7 @@ describe "Acceptance::FilterProperties", type: :feature do
 
       it "redirects to the request-received-confirmation with the right params" do
         expect(valid_response.status).to eq(302)
-        expect(valid_response.headers["Location"]).to eq("http://get-energy-performance-data/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&local-authority%5B%5D=Select+all&parliamentary-constituency%5B%5D=Select+all&download_count=123&email=placeholder%40email.com")
+        expect(valid_response.headers["Location"]).to eq("#{local_host}/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&local-authority%5B%5D=Select+all&parliamentary-constituency%5B%5D=Select+all&download_count=123")
       end
 
       it "does not display an error message" do
@@ -181,7 +185,7 @@ describe "Acceptance::FilterProperties", type: :feature do
     end
 
     context "when the selected dates are invalid" do
-      let(:invalid_response) { post "#{local_host}?property_type=domestic&#{invalid_dates}&#{valid_eff_rating}" }
+      let(:invalid_response) { post "#{request_url}?property_type=domestic&#{invalid_dates}&#{valid_eff_rating}" }
 
       it "returns status 400" do
         expect(invalid_response.status).to eq(400)
@@ -212,11 +216,11 @@ describe "Acceptance::FilterProperties", type: :feature do
       let(:default_area) { "postcode=&local-authority[]=Select+all&parliamentary-constituency[]=Select+all" }
       let(:default_eff_rating) { "ratings[]=A&ratings[]=B&ratings[]=C&ratings[]=D&ratings[]=E&ratings[]=F&ratings[]=G" }
       let(:default_filters) { "#{default_dates}&#{default_area}&#{default_eff_rating}" }
-      let(:valid_response_with_default_filters) { post "#{local_host}?property_type=domestic&#{default_filters}" }
+      let(:valid_response_with_default_filters) { post "#{request_url}?property_type=domestic&#{default_filters}" }
 
       it "redirects to the /download/all endpoint" do
         expect(valid_response_with_default_filters.status).to eq(302)
-        expect(valid_response_with_default_filters.headers["Location"]).to eq("http://get-energy-performance-data/download/all?property_type=domestic")
+        expect(valid_response_with_default_filters.headers["Location"]).to eq("#{local_host}/download/all?property_type=domestic")
       end
     end
 
@@ -224,17 +228,17 @@ describe "Acceptance::FilterProperties", type: :feature do
       let(:default_dates) { "from-month=January&from-year=2012&to-month=#{(Date.today << 1).strftime('%B')}&to-year=#{Date.today.year}" }
       let(:default_area) { "postcode=&local-authority[]=Select+all&parliamentary-constituency[]=Select+all" }
       let(:default_filters) { "#{default_dates}&#{default_area}" }
-      let(:valid_response_with_default_filters) { post "#{local_host}?property_type=non-domestic&#{default_filters}" }
+      let(:valid_response_with_default_filters) { post "#{request_url}?property_type=non-domestic&#{default_filters}" }
 
       it "redirects to the /download/all endpoint" do
         expect(valid_response_with_default_filters.status).to eq(302)
-        expect(valid_response_with_default_filters.headers["Location"]).to eq("http://get-energy-performance-data/download/all?property_type=non-domestic")
+        expect(valid_response_with_default_filters.headers["Location"]).to eq("#{local_host}/download/all?property_type=non-domestic")
       end
     end
 
     context "when selecting multiple councils" do
       let(:multiple_councils) { "local-authority[]=Birmingham&local-authority[]=Adur" }
-      let(:valid_response_with_multiple_councils) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{multiple_councils}" }
+      let(:valid_response_with_multiple_councils) { post "#{request_url}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{multiple_councils}" }
 
       before do
         allow(Helper::Session).to receive(:get_email_from_session).and_return("placeholder@email.com")
@@ -244,13 +248,13 @@ describe "Acceptance::FilterProperties", type: :feature do
 
       it "redirects to the request-received-confirmation with the right params" do
         expect(valid_response_with_multiple_councils.status).to eq(302)
-        expect(valid_response_with_multiple_councils.headers["Location"]).to eq("http://get-energy-performance-data/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&local-authority%5B%5D=Birmingham&local-authority%5B%5D=Adur&parliamentary-constituency%5B%5D=Select+all&download_count=123&email=placeholder%40email.com")
+        expect(valid_response_with_multiple_councils.headers["Location"]).to eq("#{local_host}/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&local-authority%5B%5D=Birmingham&local-authority%5B%5D=Adur&parliamentary-constituency%5B%5D=Select+all&download_count=123")
       end
     end
 
     context "when selecting multiple constituencies" do
       let(:multiple_constituencies) { "parliamentary-constituency[]=Ashford&parliamentary-constituency[]=Cardiff" }
-      let(:valid_response_with_multiple_constituencies) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{multiple_constituencies}" }
+      let(:valid_response_with_multiple_constituencies) { post "#{request_url}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{multiple_constituencies}" }
 
       before do
         allow(Helper::Session).to receive(:get_email_from_session).and_return("placeholder@email.com")
@@ -260,12 +264,12 @@ describe "Acceptance::FilterProperties", type: :feature do
 
       it "redirects to the request-received-confirmation with the right params" do
         expect(valid_response_with_multiple_constituencies.status).to eq(302)
-        expect(valid_response_with_multiple_constituencies.headers["Location"]).to eq("http://get-energy-performance-data/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&parliamentary-constituency%5B%5D=Ashford&parliamentary-constituency%5B%5D=Cardiff&local-authority%5B%5D=Select+all&download_count=123&email=placeholder%40email.com")
+        expect(valid_response_with_multiple_constituencies.headers["Location"]).to eq("#{local_host}/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&parliamentary-constituency%5B%5D=Ashford&parliamentary-constituency%5B%5D=Cardiff&local-authority%5B%5D=Select+all&download_count=123")
       end
     end
 
     context "when the postcode is valid" do
-      let(:valid_response_with_postcode) { post "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{valid_postcode}" }
+      let(:valid_response_with_postcode) { post "#{request_url}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{valid_postcode}" }
 
       before do
         allow(Helper::Session).to receive(:get_email_from_session).and_return("placeholder@email.com")
@@ -275,7 +279,7 @@ describe "Acceptance::FilterProperties", type: :feature do
 
       it "redirects to the request-received-confirmation with the right params" do
         expect(valid_response_with_postcode.status).to eq(302)
-        expect(valid_response_with_postcode.headers["Location"]).to eq("http://get-energy-performance-data/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&postcode=SW1A+1AA&local-authority%5B%5D=Select+all&parliamentary-constituency%5B%5D=Select+all&download_count=123&email=placeholder%40email.com")
+        expect(valid_response_with_postcode.headers["Location"]).to eq("#{local_host}/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&postcode=SW1A+1AA&local-authority%5B%5D=Select+all&parliamentary-constituency%5B%5D=Select+all&download_count=123")
       end
 
       it "displays an error message" do
@@ -288,9 +292,9 @@ describe "Acceptance::FilterProperties", type: :feature do
     context "when the postcode is invalid" do
       let(:invalid_postcodes) do
         [
-          "#{local_host}?#{valid_dates}&#{valid_eff_rating}&area-type=postcode",
-          "#{local_host}?#{valid_dates}&#{valid_eff_rating}&area-type=postcode&postcode=ABCD12345",
-          "#{local_host}?#{valid_dates}&#{valid_eff_rating}&area-type=postcode&postcode=SW1A 1A$",
+          "#{request_url}?#{valid_dates}&#{valid_eff_rating}&area-type=postcode",
+          "#{request_url}?#{valid_dates}&#{valid_eff_rating}&area-type=postcode&postcode=ABCD12345",
+          "#{request_url}?#{valid_dates}&#{valid_eff_rating}&area-type=postcode&postcode=SW1A 1A$",
         ]
       end
 
@@ -341,7 +345,7 @@ describe "Acceptance::FilterProperties", type: :feature do
 
       it "redirects to the request-received-confirmation with the right params" do
         expect(valid_response.status).to eq(302)
-        expect(valid_response.headers["Location"]).to eq("http://get-energy-performance-data/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&local-authority%5B%5D=Select+all&parliamentary-constituency%5B%5D=Select+all&download_count=123&email=placeholder%40email.com")
+        expect(valid_response.headers["Location"]).to eq("#{local_host}/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&local-authority%5B%5D=Select+all&parliamentary-constituency%5B%5D=Select+all&download_count=123")
       end
 
       it "displays an error message" do
@@ -352,7 +356,7 @@ describe "Acceptance::FilterProperties", type: :feature do
     end
 
     context "when the efficiency rating selection is invalid" do
-      let(:invalid_response) { post "#{local_host}?property_type=domestic&#{valid_dates}" }
+      let(:invalid_response) { post "#{request_url}?property_type=domestic&#{valid_dates}" }
 
       it "returns status 400" do
         expect(invalid_response.status).to eq(400)

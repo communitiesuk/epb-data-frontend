@@ -10,6 +10,10 @@ describe "Acceptance::RequestReceivedConfirmation", type: :feature do
     "ratings[]=A&ratings[]=B"
   end
 
+  before do
+    allow(Helper::Session).to receive(:get_email_from_session).and_return("placeholder@email.com")
+  end
+
   describe "get .get-energy-certificate-data.epb-frontend/request-received-confirmation" do
     context "when the referer is missing" do
       before do
