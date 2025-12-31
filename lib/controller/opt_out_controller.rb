@@ -266,6 +266,7 @@ module Controller
       Helper::Session.delete_session_key(session, :opt_out_owner)
       Helper::Session.delete_session_key(session, :opt_out_occupant)
       Helper::Session.delete_session_key(session, :opt_out_name)
+      Helper::Session.delete_session_key(session, :opt_out_certificate_number)
       Helper::Session.delete_session_key(session, :opt_out_address_line1)
       Helper::Session.delete_session_key(session, :opt_out_address_line2)
       Helper::Session.delete_session_key(session, :opt_out_address_town)
