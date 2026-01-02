@@ -24,6 +24,20 @@ describe Gateway::NotifyGateway do
     }
   end
 
+  let(:personalisation_with_empty_values) do
+    {
+      is_test: true,
+      name: "John Smith",
+      email: email_address,
+      owner_or_occupier: "Owner",
+      certificate_number: "1234-1234-1234-1234-1234",
+      address_line1: "Flat 3",
+      address_line2: "",
+      town: "",
+      postcode: "TE57 1NG",
+    }
+  end
+
   let(:send_email_api_response) do
     {
       "id": "201b576e-c09b-467b-9dfa-9c3b689ee730",
@@ -57,7 +71,19 @@ describe Gateway::NotifyGateway do
           :post,
           "https://api.notifications.service.gov.uk/v2/notifications/email",
         ).with(
-          body: '{"email_address":"sender@something.com","template_id":"f5d03031-b559-4264-8503-802ee0e78f4c","personalisation":{"is_test":true,"name":"John Smith","email":"sender@something.com","owner_or_occupier":"Owner","certificate_number":"1234-1234-1234-1234-1234","address_line1":"Flat 3","address_line2":"5 Bob Lane","town":"Testerton","postcode":"TE57 1NG"}}',
+          body: '{"email_address":"sender@something.com","template_id":"f5d03031-b559-4264-8503-802ee0e78f4c","personalisation":{"is_test":true,"name":"John Smith","email":"sender@something.com","owner_or_occupier":"Owner","certificate_number":"1234-1234-1234-1234-1234","address":"Flat 3, 5 Bob Lane, Testerton, TE57 1NG"}}',
+        )
+      end
+    end
+
+    context "when there are empty values in the address" do
+      it "sends an email with the correct personalisation" do
+        expect(gateway.send_email(template_id:, destination_email: email_address, **personalisation_with_empty_values)).to eq("201b576e-c09b-467b-9dfa-9c3b689ee730")
+        expect(WebMock).to have_requested(
+          :post,
+          "https://api.notifications.service.gov.uk/v2/notifications/email",
+        ).with(
+          body: '{"email_address":"sender@something.com","template_id":"f5d03031-b559-4264-8503-802ee0e78f4c","personalisation":{"is_test":true,"name":"John Smith","email":"sender@something.com","owner_or_occupier":"Owner","certificate_number":"1234-1234-1234-1234-1234","address":"Flat 3, TE57 1NG"}}',
         )
       end
     end

@@ -16,10 +16,7 @@ module Gateway
           email:,
           owner_or_occupier:,
           certificate_number:,
-          address_line1:,
-          address_line2:,
-          town:,
-          postcode:,
+          address: [address_line1, address_line2, town, postcode].reject(&:empty?).join(", "),
         },
       )
 
