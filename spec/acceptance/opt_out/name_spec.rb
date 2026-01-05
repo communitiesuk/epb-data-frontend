@@ -51,7 +51,6 @@ describe "Acceptance::OptOutOwner", type: :feature do
     before do
       allow(Helper::Session).to receive(:get_session_value).with(anything, anything).and_call_original
       allow(Helper::Session).to receive(:set_session_value)
-      allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out).and_return({ owner: "yes" })
     end
 
     context "when the user is authenticated" do

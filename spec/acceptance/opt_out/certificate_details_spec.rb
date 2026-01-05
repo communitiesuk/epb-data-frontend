@@ -122,8 +122,6 @@ describe "Acceptance::OptOutCertificateDetails", type: :feature do
     before do
       allow(Helper::Session).to receive(:get_session_value).with(anything, anything).and_call_original
       allow(Helper::Session).to receive(:set_session_value)
-      allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return("yes")
-      allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_name).and_return("Testy McTest")
     end
 
     context "when the user is authenticated" do
