@@ -146,6 +146,17 @@ describe "Acceptance::OptOutCheckYourAnswers", type: :feature do
         end
       end
 
+      context "when the relationship to the property is 'no'" do
+        before do
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return("no")
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_occupant).and_return("no")
+        end
+
+        it "raises MissingOptOutValues error" do
+          expect { ViewModels::OptOut.get_relationship_to_the_property(nil) }.to raise_error(Errors::MissingOptOutValues)
+        end
+      end
+
       context "when email is missing from session" do
         it "raises MissingOptOutValues error" do
           expect { ViewModels::OptOut.get_email_from_session(nil) }.to raise_error(Errors::MissingOptOutValues)
