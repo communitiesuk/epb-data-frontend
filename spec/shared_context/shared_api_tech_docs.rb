@@ -3,6 +3,7 @@ shared_context "when viewing api tech docs" do
     %w[ making-a-request
         search-certificates/domestic
         search-certificates/non-domestic
+        search-certificates/display
         search-certificates-changed
         download/domestic/csv
         download-info/domestic/csv
