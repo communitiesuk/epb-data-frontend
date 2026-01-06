@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "rack/protection"
+
 class FrontendService < Controller::BaseController
   configure do
     is_development = settings.environment == :development
@@ -11,6 +13,9 @@ class FrontendService < Controller::BaseController
         secure: !is_development,
         same_site: is_development ? :lax : :none,
         httponly: true
+
+    use Rack::Protection
+    set :protection, except: [:path_traversal]
   end
 
   configure :development do
@@ -21,6 +26,12 @@ class FrontendService < Controller::BaseController
   end
 
   use Controller::HomeController
+
+  if ENV["enable-csrf"]
+    use Rack::Protection::AuthenticityToken
+    use Rack::Protection::RemoteReferrer
+  end
+  use Controller::CookieController
   use Controller::PropertyTypeController
   use Controller::FilterPropertiesController
   use Controller::FileController
@@ -28,5 +39,6 @@ class FrontendService < Controller::BaseController
   use Controller::ApiController
   use Controller::GuidanceController
   use Controller::ApiTechDocsController
+
   use Controller::OptOutController
 end

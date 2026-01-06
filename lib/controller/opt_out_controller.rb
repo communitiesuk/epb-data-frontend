@@ -1,3 +1,5 @@
+require "rack/protection"
+
 module Controller
   class OptOutController < BaseController
     include Helper::OptOut
