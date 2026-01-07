@@ -60,6 +60,13 @@ module Controller
       redirect redirect_url
     end
 
+    configure :development do
+      require "sinatra/reloader"
+      register Sinatra::Reloader
+      also_reload "lib/**/*.rb"
+      set :host_authorization, { permitted_hosts: [] }
+    end
+
     def show(template, locals, layout = :layout)
       locals[:errors] = @errors
       erb template, layout:, locals:

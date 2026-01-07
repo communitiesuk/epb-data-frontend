@@ -18,12 +18,6 @@ class FrontendService < Controller::BaseController
     set :protection, except: [:path_traversal]
   end
 
-  configure :development do
-    require "sinatra/reloader"
-    register Sinatra::Reloader
-    also_reload "lib/**/*.rb"
-    set :host_authorization, { permitted_hosts: [] }
-  end
 
   use Controller::HomeController
 
