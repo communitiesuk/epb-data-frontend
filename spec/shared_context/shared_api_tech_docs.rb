@@ -12,6 +12,14 @@ shared_context "when viewing api tech docs" do
         download-info/non-domestic/csv
         download/non-domestic/json
         download-info/non-domestic/json
+        download/non-domestic-recommendation/json
+        download-info/non-domestic-recommendations/json
+        download/display/csv
+        download-info/display/csv
+        download/display/json
+        download-info/display/json
+        download/display-recommendation/json
+        download-info/display-recommendations/json
         codes
         codes-info]
   end
