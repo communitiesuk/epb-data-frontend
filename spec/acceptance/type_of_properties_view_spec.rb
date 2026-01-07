@@ -36,7 +36,7 @@ describe "Acceptance::TypeOfProperties", type: :feature do
 
       it "has the correct content for dec radio button" do
         expect(response.body).to have_css("label.govuk-label", text: "Display Energy Certificates")
-        expect(response.body).to have_css("div.govuk-hint", id: "dec-hint", text: "For public buildings such as schools or hospitals")
+        expect(response.body).to have_css("div.govuk-hint", id: "display-hint", text: "For public buildings such as schools or hospitals")
       end
 
       it "has the correct content for dropdown" do

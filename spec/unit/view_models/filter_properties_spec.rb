@@ -9,7 +9,7 @@ describe ViewModels::FilterProperties do
     end
 
     it "returns the correct title for domestic, non-domestic and public properties" do
-      property_types = %w[domestic non_domestic dec]
+      property_types = %w[domestic non_domestic display]
       property_types.each_with_index do |property_type, index|
         expect(view_model.page_title(property_type)).to eq(expected_titles[index])
       end
