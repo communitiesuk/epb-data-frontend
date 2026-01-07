@@ -55,7 +55,7 @@ module ViewModels
     def self.get_relationship_to_the_property(session)
       owner = Helper::Session.get_session_value(session, :opt_out_owner)
       occupant = Helper::Session.get_session_value(session, :opt_out_occupant)
-      if (occupant.nil? && owner.nil?) || (owner == "no" && occupant == "no")
+      unless occupant == "yes" || owner == "yes"
         raise Errors::MissingOptOutValues, "Failed to get relationship to the property from session opt out key. Both owner and occupant values are nil."
       end
 

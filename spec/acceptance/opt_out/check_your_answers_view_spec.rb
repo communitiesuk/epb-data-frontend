@@ -146,7 +146,7 @@ describe "Acceptance::OptOutCheckYourAnswers", type: :feature do
         end
       end
 
-      context "when the relationship to the property is 'no'" do
+      context "when the relationship to the property is 'no' or nil" do
         before do
           allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return("no")
           allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_occupant).and_return("no")

@@ -18,7 +18,6 @@ class FrontendService < Controller::BaseController
     set :protection, except: [:path_traversal]
   end
 
-
   use Controller::HomeController
 
   if ENV["enable-csrf"]
