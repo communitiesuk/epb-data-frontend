@@ -67,6 +67,24 @@ describe "Journey::SelectPropertyType", :journey, type: :feature do
     end
   end
 
+  context "when selecting display" do
+    context "when selecting a property type" do
+      before do
+        visit "#{getting_domain}/type-of-properties"
+        find("#label-display").click
+        click_on "Continue"
+      end
+
+      it "shows the correct header for the filter property page" do
+        expect(page).to have_selector("h1", text: "Display Energy Certificates")
+      end
+
+      it "passes the property type in the query string" do
+        expect(page.current_url).to include("?property_type=display")
+      end
+    end
+  end
+
   context "when not selecting a property type" do
     before do
       visit "#{getting_domain}/type-of-properties"
