@@ -14,19 +14,19 @@ describe Middleware::PermissionsPolicy do
       app
     end
 
-    it "adds the expected Permissions-Policy header to any response" do
+    it "adds the expected permissions-policy header to any response" do
       _, headers, = middleware.call(nil)
-      expect(headers["Permissions-Policy"]).to eq policy
+      expect(headers["permissions-policy"]).to eq policy
     end
 
-    it "includes the Referrer-Policy header" do
+    it "includes the referrer-policy header" do
       _, headers, = middleware.call(nil)
-      expect(headers["Referrer-Policy"]).to eq "strict-origin-when-cross-origin"
+      expect(headers["referrer-policy"]).to eq "strict-origin-when-cross-origin"
     end
 
-    it "includes the Strict-Transport-Security header" do
+    it "includes the strict-transport-security header" do
       _, headers, = middleware.call(nil)
-      expect(headers["Strict-Transport-Security"]).to eq "max-age=300; includeSubDomains; preload"
+      expect(headers["strict-transport-security"]).to eq "max-age=300; includeSubDomains; preload"
     end
 
     it "the header do not include the deprecated keys 'x-frame-options' and 'x-xss-protection'" do
@@ -45,9 +45,9 @@ describe Middleware::PermissionsPolicy do
       app
     end
 
-    it "adds the expected Permissions-Policy header to any response" do
+    it "adds the expected permissions-policy header to any response" do
       _, headers, = middleware.call(nil)
-      expect(headers["Permissions-Policy"]).to eq policy
+      expect(headers["permissions-policy"]).to eq policy
     end
   end
 
@@ -60,9 +60,9 @@ describe Middleware::PermissionsPolicy do
       app
     end
 
-    it "adds the expected Permissions-Policy header to any response" do
+    it "adds the expected permissions-policy header to any response" do
       _, headers, = middleware.call(nil)
-      expect(headers["Permissions-Policy"]).to eq policy
+      expect(headers["permissions-policy"]).to eq policy
     end
   end
 
@@ -75,9 +75,9 @@ describe Middleware::PermissionsPolicy do
       app
     end
 
-    it "does not add a Permissions-Policy header" do
+    it "does not add a permissions-policy header" do
       _, headers, = middleware.call(nil)
-      expect(headers.key?("Permissions-Policy")).to be false
+      expect(headers.key?("permissions-policy")).to be false
     end
   end
 end
