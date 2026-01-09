@@ -150,4 +150,14 @@ describe "Acceptance::FileDownload", type: :feature do
       end
     end
   end
+
+  describe "get .get-energy-certificate-data.epb-frontend/download/code" do
+    let(:response) do
+      get "http://get-energy-performance-data/download/codes"
+    end
+
+    it "redirects to the file download" do
+      expect(response.headers["location"]).to include("https://user-data.s3.us-stubbed-1.amazonaws.com/codes.csv?X-Amz-Algorithm=AWS4-HMAC")
+    end
+  end
 end
