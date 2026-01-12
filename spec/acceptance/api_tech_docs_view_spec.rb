@@ -101,5 +101,17 @@ describe "Acceptance::ApiTechnicalDocumentation", type: :feature do
         expect(response.body).to include("curl http://api.get-energy-performance-data/api")
       end
     end
+
+    context "when requesting the codes page" do
+      let(:response) { get "#{base_url}#{path}/codes" }
+
+      it "displays the download link header" do
+        expect(response.body).to have_css("h3", text: "Download in csv format")
+      end
+
+      it "displays the download link" do
+        expect(response.body).to have_link("Download codes", href: "/download/codes")
+      end
+    end
   end
 end
