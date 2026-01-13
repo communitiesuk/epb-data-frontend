@@ -68,7 +68,7 @@ module ViewModels
       str = <<~CODE
         curl #{url}  \\
         -H "Authorization: Bearer my_bearer_token"  \\
-        -H "Accept: application/json" \\
+        -H "Accept: application/json"
       CODE
       markdown(str)
     end
@@ -80,7 +80,7 @@ module ViewModels
         -H "Authorization: Bearer my_bearer_token" \\
         -H "Accept: application/json" \\
         -L  \\
-        -o 'my_#{assessment_type}_file.zip#{' '}
+        -o 'my_#{assessment_type}_file.zip'
       CODE
       markdown(str)
     end
