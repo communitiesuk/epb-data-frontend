@@ -433,11 +433,6 @@ describe "Acceptance::GuidancePage", type: :feature do
         expect(response.body).to have_link("Data protection requirements", href: "/guidance/data-protection-requirements")
       end
 
-      it "has the correct content for rate limiting section" do
-        expect(response.body).to have_css("h2", text: "Rate limiting")
-        expect(response.body).to have_css("p", text: "If you continually hit this rate limit, contact us to discuss your application design and whether it’s appropriate to raise your rate limit.")
-      end
-
       it "has the correct content for technical documentation section" do
         expect(response.body).to have_css("h2", text: "Technical documentation")
         expect(response.body).to have_link("API Technical Documentation", href: "/api-technical-documentation")

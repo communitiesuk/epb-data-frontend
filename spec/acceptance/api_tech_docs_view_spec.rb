@@ -34,6 +34,11 @@ describe "Acceptance::ApiTechnicalDocumentation", type: :feature do
         expect(response.body).to have_css("nav h3", text: "API specifications")
       end
 
+      it "has the correct content for rate limiting section" do
+        expect(response.body).to have_css("h2", text: "Rate limiting")
+        expect(response.body).to have_css("p", text: "If you continually hit this rate limit, contact us to discuss your application design and whether it’s appropriate to raise your rate limit.")
+      end
+
       it "has the expected navigation links" do
         page_urls.each do |link|
           url = "#{path}/#{link}"
