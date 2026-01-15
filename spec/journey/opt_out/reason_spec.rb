@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
+require_relative "../../shared_context/shared_opt_out_context"
+
 describe "Journey::OptOut::Reason", :journey, type: :feature do
+  include_context "when testing the opt out process"
+
   let(:url) do
     "http://get-energy-performance-data.epb-frontend:9393/opt-out"
   end
@@ -33,32 +37,42 @@ describe "Journey::OptOut::Reason", :journey, type: :feature do
 
   context "when visiting the opt out" do
     before do
-      visit url
-      find(".govuk-button").click
+      visit_opt_out_reason
     end
 
-    context "when selecting the incorrect EPC radio button" do
-      it "shows the incorrect EPC page" do
+    context "when selecting the 'other' reason" do
+      before do
+        find("#label-epc_other").click
+        click_button "Continue"
+      end
+
+      it "shows the '/owner' page" do
+        expect(page).to have_current_path("/opt-out/owner")
+        expect(page).to have_css("h1", text: "Are you the legal owner of the property")
+      end
+    end
+
+    context "when selecting the 'My EPC is incorrect' reason" do
+      before do
         find("#label-epc_incorrect").click
-        find("button").click
+        click_button "Continue"
+      end
+
+      it "shows the '/incorrect-epc' page" do
+        expect(page).to have_current_path("/opt-out/incorrect-epc")
         expect(page).to have_css("h1", text: "What to do if your EPC is incorrect")
       end
     end
 
-    context "when selecting the advised EPC radio button" do
-      it "shows the advised EPC page" do
+    context "when selecting the 'advised by someone else' reason" do
+      before do
         find("#label-epc_advised").click
-        find("button").click
-        expect(page).to have_css("h1", text: "You do not need to opt out to access grant funding")
+        click_button "Continue"
       end
-    end
 
-    context "when selecting the 'other' radio button" do
-      it "shows the owner page" do
-        find("#label-epc_other").click
-        find("button").click
-        expect(page).to have_css("h1", text: "Are you the legal owner of the property")
-        expect(page).to have_css(".govuk-radios__item #label-yes", text: "Yes")
+      it "shows the '/epc_advise' page" do
+        expect(page).to have_current_path("/opt-out/advised-by-third-party")
+        expect(page).to have_css("h1", text: "You do not need to opt out to access grant funding")
       end
     end
   end
