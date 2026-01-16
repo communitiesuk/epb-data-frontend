@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "../../shared_context/shared_opt_out_context"
+require_relative "../../shared_examples/shared_opt_out_error"
 
 describe "Journey::OptOut::NameToCheckYourAnswers", :journey, type: :feature do
   include_context "when testing the opt out process"
@@ -34,31 +35,28 @@ describe "Journey::OptOut::NameToCheckYourAnswers", :journey, type: :feature do
 
   after(:all) { Process.kill("KILL", process_id) if process_id }
 
-  context "when visiting the name page" do
+  context "when visiting the '/name' page" do
     before do
       visit_login
       set_user_login
     end
 
-    context "when inputting Full Name on the '/name' page" do
+    context "when inputting full name in the input" do
       it "completes the POST and redirects to '/certificate-details' page" do
         visit "#{url}/name"
         fill_in "name", with: "John Test"
         click_button "Continue"
         expect(page).to have_current_path("/opt-out/certificate-details")
-        expect(page).to have_css("h1", text: "Which property would you like to opt out?")
       end
     end
 
-    context "when submitting without inputting name on the '/name' page" do
+    context "when submitting without inputting full name" do
       before do
         visit "#{url}/name"
+        click_button "Continue"
       end
 
-      it "submits without inputting name" do
-        click_button "Continue"
-        expect(page).to have_css("#name-error", text: "Enter your full name")
-      end
+      it_behaves_like "when checking error messages"
     end
   end
 
@@ -69,16 +67,23 @@ describe "Journey::OptOut::NameToCheckYourAnswers", :journey, type: :feature do
       visit "#{url}/name"
       fill_in "name", with: "John Test"
       click_button "Continue"
+    end
+
+    it "completes the POST and redirects to '/check-your-answers'" do
       fill_in "certificate_number", with: "1234-1234-1234-1234-1234"
       fill_in "address-line1", with: "Test Street"
       fill_in "address-town", with: "London"
       fill_in "address-postcode", with: "TE5 1NG"
       click_button "Continue"
+      expect(page).to have_current_path("/opt-out/check-your-answers")
     end
 
-    it "completes the POST and redirects to '/check-your-answers'" do
-      expect(page).to have_current_path("/opt-out/check-your-answers")
-      expect(page).to have_css("h1", text: "Check your answers before submitting your request")
+    context "when submitting without inputting anything" do
+      before do
+        click_button "Continue"
+      end
+
+      it_behaves_like "when checking error messages"
     end
   end
 

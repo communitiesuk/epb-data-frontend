@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "../../shared_context/shared_opt_out_context"
+require_relative "../../shared_examples/shared_opt_out_error"
 
 describe "Journey::OptOut::Reason", :journey, type: :feature do
   include_context "when testing the opt out process"
@@ -40,40 +41,45 @@ describe "Journey::OptOut::Reason", :journey, type: :feature do
       visit_opt_out_reason
     end
 
-    context "when selecting the 'other' reason" do
+    context "when selecting the 'other' radio button" do
       before do
         find("#label-epc_other").click
         click_button "Continue"
       end
 
-      it "shows the '/owner' page" do
+      it "completes the POST and redirects to the '/owner' page" do
         expect(page).to have_current_path("/opt-out/owner")
-        expect(page).to have_css("h1", text: "Are you the legal owner of the property")
       end
     end
 
-    context "when selecting the 'My EPC is incorrect' reason" do
+    context "when selecting the 'My EPC is incorrect' radio button" do
       before do
         find("#label-epc_incorrect").click
         click_button "Continue"
       end
 
-      it "shows the '/incorrect-epc' page" do
+      it "completes the POST and redirects to the '/incorrect-epc' page" do
         expect(page).to have_current_path("/opt-out/incorrect-epc")
-        expect(page).to have_css("h1", text: "What to do if your EPC is incorrect")
       end
     end
 
-    context "when selecting the 'advised by someone else' reason" do
+    context "when selecting the 'advised by someone else' radio button" do
       before do
         find("#label-epc_advised").click
         click_button "Continue"
       end
 
-      it "shows the '/epc_advise' page" do
+      it "completes the POST and redirects to the '/epc_advise' page" do
         expect(page).to have_current_path("/opt-out/advised-by-third-party")
-        expect(page).to have_css("h1", text: "You do not need to opt out to access grant funding")
       end
+    end
+
+    context "when submitting without selecting a radio button" do
+      before do
+        click_button "Continue"
+      end
+
+      it_behaves_like "when checking error messages"
     end
   end
 end

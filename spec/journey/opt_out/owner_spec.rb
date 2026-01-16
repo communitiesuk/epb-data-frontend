@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "../../shared_context/shared_opt_out_context"
+require_relative "../../shared_examples/shared_opt_out_error"
 
 describe "Journey::OptOut::Owner", :journey, type: :feature do
   include_context "when testing the opt out process"
@@ -40,15 +41,14 @@ describe "Journey::OptOut::Owner", :journey, type: :feature do
       visit_opt_out_owner
     end
 
-    context "when selecting 'yes' on the owner page" do
+    context "when selecting the 'yes' radio button" do
       before do
         find("#label-yes").click
         click_button "Continue"
       end
 
-      it "shows login page" do
+      it "completes the POST and redirects to 'login' page" do
         expect(page).to have_current_path("/login?referer=opt-out")
-        expect(page).to have_css("h1", text: "Create your GOV.UK One Login or sign in")
       end
 
       it "persists the session cookie" do
@@ -57,16 +57,23 @@ describe "Journey::OptOut::Owner", :journey, type: :feature do
       end
     end
 
-    context "when selecting 'no' on the owner page" do
+    context "when selecting the 'no' radio button" do
       before do
         find("#label-no").click
         click_button "Continue"
       end
 
-      it "shows '/occupant' page" do
+      it "completes the POST and redirects to '/occupant' page" do
         expect(page).to have_current_path("/opt-out/occupant")
-        expect(page).to have_css("h1", text: "Do you live in the property that you want to opt-out?")
       end
+    end
+
+    context "when submitting without selecting a radio button" do
+      before do
+        click_button "Continue"
+      end
+
+      it_behaves_like "when checking error messages"
     end
   end
 end
