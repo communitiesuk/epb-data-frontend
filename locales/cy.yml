@@ -73,7 +73,7 @@ cy:
 
   error:
     error: "Gwall: "
-    "500":
+    500:
       heading: "Ymddiheuriadau, mae problem gyda’r gwasanaeth."
       body: "Rhowch gynnig arall arni yn nes ymlaen"
     403:
@@ -269,7 +269,7 @@ cy:
 
   opt_out:
     warning: Mae optio EPC allan er mwyn sicrhau cyllid grant yn dwyll.
-    find_epc_text: To find your EPC, use the <a href="https://www.gov.uk/find-energy-certificate">Find an energy certificate</a> service.
+    find_epc_text: To find your EPC, use the <a class="govuk-link" rel="noreferrer noopener" target="_blank" href="https://www.gov.uk/find-energy-certificate">Find an energy certificate service (opens in new tab)</a>.
 
     start_page:
       title: "Opting out an EPC"
@@ -293,7 +293,7 @@ cy:
           heading: Select a reason for opting out
     incorrect_epc:
       title: Beth i'w wneud os yw'ch EPC yn anghywir
-      paragraph_1: Os cafodd eich EPC ei chreu yn ddiweddar, dylech gysylltu â'r asesydd. Gallwch weld manylion cysylltu’r asesydd tua gwaelod <a href="https://www.gov.uk/find-energy-certificate">eich EPC</a>.
+      paragraph_1: Os cafodd eich EPC ei chreu yn ddiweddar, dylech gysylltu â'r asesydd. Gallwch weld manylion cysylltu’r asesydd tua gwaelod <a class="govuk-link" href="https://www.gov.uk/find-energy-certificate">eich EPC</a>.
       paragraph_2: Os cafodd eich EPC ei chreu ychydig yn ôl, dylech chi <a href="https://www.gov.uk/get-new-energy-certificate">sicrhau tystysgrif newydd</a>.
       note: Nid yw optio EPC allan yn ei gwneud yn annilys. Dim ond pan fyddan nhw’n dod i ben neu’n cael eu disodli gan EPC newydd y bydd EPCs yn dod yn annilys.
     advised_by_third_party:

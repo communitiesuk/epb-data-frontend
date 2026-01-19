@@ -7,6 +7,7 @@ en:
     no_disclosure: "No assessor’s declaration provided"
     disclosure_number_not_valid: "The disclosure code provided is not valid"
 
+  # TODO: Update the Welsh translation of this name in cy.yml
   service_name: "Get energy performance of buildings data"
 
   cookies:
@@ -66,8 +67,6 @@ en:
         license: "All content is available under the <a class=\"govuk-footer__link\" href=\"https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" rel=\"license\">Open Government Licence v3.0</a>, except where otherwise stated"
         copyright: "<a class=\"govuk-footer__link govuk-footer__copyright-logo\" href=\"https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/\">&copy; Crown copyright</a>"
         help: "Help"
-
-
 
   contact:
     help_desk_number: "020 3829 0748"
@@ -267,9 +266,10 @@ en:
       - October
       - November
       - December
+
   opt_out:
     warning: Opting out an EPC for the purpose of securing grant funding is fraud.
-    find_epc_text: To find your EPC, use the <a href="https://www.gov.uk/find-energy-certificate">Find an energy certificate</a> service.
+    find_epc_text: To find your EPC, use the <a class="govuk-link" rel="noreferrer noopener" target="_blank" href="https://www.gov.uk/find-energy-certificate">Find an energy certificate service (opens in new tab)</a>.
 
     start_page:
       title: "Opting out an EPC"
@@ -295,7 +295,7 @@ en:
     incorrect_epc:
       title: What to do if your EPC is incorrect
       paragraph_1: If your EPC was created recently, you should contact the assessor. You can find the contact details for the assessor near the bottom of your EPC.
-      paragraph_2: If your EPC was created a while ago, you should <a href="https://www.gov.uk/get-new-energy-certificate">get a new certificate</a>.
+      paragraph_2: If your EPC was created a while ago, you should <a class="govuk-link" href="https://www.gov.uk/get-new-energy-certificate">get a new certificate</a>.
       note: Opting out an EPC does not make it invalid. EPCs are only invalidated when they expire or when they are replaced by a new EPC.
     advised_by_third_party:
       title: You do not need to opt out to access grant funding
