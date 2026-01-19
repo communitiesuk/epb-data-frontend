@@ -85,6 +85,16 @@ describe "Journey::OptOut::NameToCheckYourAnswers", :journey, type: :feature do
 
       it_behaves_like "when checking error messages"
     end
+
+    context "when visiting the '/check-your-answers' page without certificate details" do
+      before do
+        visit "#{url}/check-your-answers"
+      end
+
+      it "redirects to '/opt-out' page" do
+        expect(page).to have_css("h1", text: "Opting out an EPC")
+      end
+    end
   end
 
   context "when visiting the '/check-your-answers' page" do
