@@ -124,15 +124,18 @@ module Controller
     get "/opt-out/name" do
       status 200
       set_default
-      erb :'opt_out/name'
-    rescue StandardError => e
-      case e
-      when Errors::AuthenticationError
-        logger.warn "Authentication error: #{e.message}"
-        redirect localised_url("/login?referer=opt-out")
-      else
-        server_error(e)
+      owner = Helper::Session.get_session_value(session, :opt_out_owner)
+      occupant = Helper::Session.get_session_value(session, :opt_out_occupant)
+
+      if owner.nil? && occupant.nil?
+        redirect localised_url("/opt-out")
       end
+
+      unless owner == "yes" || occupant == "yes"
+        redirect localised_url("/opt-out/ineligible")
+      end
+
+      erb :'opt_out/name'
     end
 
     post "/opt-out/name" do
@@ -176,14 +179,6 @@ module Controller
       status 200
       set_default
       erb :'opt_out/certificate_details'
-    rescue StandardError => e
-      case e
-      when Errors::AuthenticationError
-        logger.warn "Authentication error: #{e.message}"
-        redirect localised_url("/login?referer=opt-out")
-      else
-        server_error(e)
-      end
     end
 
     post "/opt-out/certificate-details" do

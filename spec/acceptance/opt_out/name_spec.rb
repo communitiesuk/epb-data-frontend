@@ -14,6 +14,7 @@ describe "Acceptance::OptOutOwner", type: :feature do
           get_email_from_session: "test@email.com",
         )
         allow(Helper::Session).to receive(:get_session_value).with(anything, anything).and_call_original
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return("yes")
       end
 
       it "returns status 200" do
@@ -40,6 +41,22 @@ describe "Acceptance::OptOutOwner", type: :feature do
 
         it "is pre filled with the correct name value" do
           expect(response.body).to have_css("div.govuk-form-group input#name[value='Joe Smith']")
+        end
+      end
+
+      context "when the session is not valid" do
+        before do
+          allow(Helper::Session).to receive_messages(
+            is_user_authenticated?: true,
+            get_email_from_session: "test@email.com",
+          )
+          allow(Helper::Session).to receive(:get_session_value).with(anything, anything).and_call_original
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return(nil)
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_occupant).and_return(nil)
+        end
+
+        it "redirects to the /opt-out page" do
+          expect(response.location).to eq("#{base_url}/opt-out")
         end
       end
     end
