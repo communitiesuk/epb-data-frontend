@@ -17,6 +17,29 @@ describe ViewModels::RequestReceivedConfirmation do
     end
   end
 
+  describe "#format_number" do
+    context "when count is less than 999" do
+      it "returns correct formatted count" do
+        count = 900
+        expect(view_model.format_number(count)).to eq "900"
+      end
+    end
+
+    context "when count is more than 999" do
+      it "returns the headers size" do
+        count = 1000
+        expect(view_model.format_number(count)).to eq "1,000"
+      end
+    end
+
+    context "when count is million" do
+      it "returns the headers size" do
+        count = 1_000_000
+        expect(view_model.format_number(count)).to eq "1,000,000"
+      end
+    end
+  end
+
   describe "#selected_area_type" do
     context "when the the defaults are passed" do
       it "returns the England and Wales" do

@@ -18,6 +18,11 @@ module ViewModels
       (estimated_total_bytes / bytes_on_mb).round(2)
     end
 
+    def self.format_number(number)
+      num_groups = number.to_s.chars.to_a.reverse.each_slice(3)
+      num_groups.map(&:join).join(",").reverse
+    end
+
     def self.selected_area_type(params)
       default_area = "England and Wales"
       case params["area-type"]

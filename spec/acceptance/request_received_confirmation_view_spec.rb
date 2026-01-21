@@ -77,6 +77,16 @@ describe "Acceptance::RequestReceivedConfirmation", type: :feature do
         expect(last_response.body).to have_css(".govuk-body", text: "Energy Efficiency Rating A, B")
         expect(last_response.body).to have_css(".govuk-body", text: "Your request contains 123 certificates.")
       end
+
+      context "when the request contains more than 999 certificates" do
+        before do
+          get "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&download_count=1000"
+        end
+
+        it "adds commas to the displayed number" do
+          expect(last_response.body).to have_css(".govuk-body", text: "Your request contains 1,000 certificates.")
+        end
+      end
     end
   end
 end
