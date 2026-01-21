@@ -15,29 +15,41 @@
           Use the APIs to get data on:
         </p>
         <ul class="govuk-list govuk-list--bullet">
-          <li>Domestic energy performance certificates (EPCs)</li>
-          <li>Non-domestic energy performance certificates (EPCs) and recommendation reports</li>
-          <li>Display energy certificates (DECs) and recommendation reports for public buildings</li>
+          <li>Domestic Energy Performance Certificates (EPCs)</li>
+          <li>Non-domestic Energy Performance Certificates (EPCs) and recommendation reports</li>
+          <li>Display Energy Certificates (DECs) and recommendation reports for public buildings</li>
         </ul>
       </div>
       <div class="govuk-grid-row">
-        <h2 class="govuk-heading-m govuk-!-padding-top-4">Authentication</h2>
+        <h2 class="govuk-heading-m govuk-!-padding-top-4">Technical documentation</h2>
 
+        <p class="govuk-body">
+          View <a class="govuk-link" href="/api-technical-documentation">technical documentation</a> for the APIs.
+        </p>
+
+      </div>
+      <div class="govuk-grid-row">
         <% unless Helper::Session.is_logged_in?(session) %>
-          <p class="govuk-body">
-            You need to <a class="govuk-link" href="/api/my-account">sign in</a> or <a class="govuk-link" href="/api/my-account">create an account</a> with GOV.UK One Login to receive a bearer token.
-          </p>
-          <p class="govuk-body">
-            You can find your bearer token here or under <a class="govuk-link" href="/api/my-account">My account</a> once you have signed in.
-          </p>
+          <h2 class="govuk-heading-m govuk-!-padding-top-4">How to get started</h2>
+
+          <p class="govuk-body">You need to sign in or create an account with GOV.UK One Login to receive a bearer token.</p>
+
+          <div class="govuk-button-group">
+            <a
+              href="/api/my-account"
+              role="button"
+              draggable="false"
+              class="govuk-button"
+              data-module="govuk-button" >
+              Sign in or Create account
+            </a>
+          </div>
         <% end %>
 
         <% if Helper::Session.is_logged_in?(session) %>
+          <h2 class="govuk-heading-m govuk-!-padding-top-4">Bearer token</h2>
           <dl class="govuk-summary-list govuk-!-width-full">
             <div class="govuk-summary-list__row" id='bearer-token'>
-              <dt class="govuk-summary-list__key">
-                Bearer token:
-              </dt>
               <dd class="govuk-summary-list__value" id="bearer-token-value">
                 <%= ViewModels::MyAccount.get_bearer_token(session, locals[:use_case]) %>
               </dd>
@@ -68,14 +80,10 @@
         <h2 class="govuk-heading-m govuk-!-padding-top-4">Conditions of use</h2>
 
         <p class="govuk-body">
-          Find out more about <a class="govuk-link" href="/guidance/licensing-restrictions">Licensing restrictions</a> and <a class="govuk-link" href="/guidance/data-protection-requirements">Data protection requirements</a>.
+          Find out more about <a class="govuk-link" href="/guidance/licensing-restrictions">Licensing restrictions</a> and <a class="govuk-link" href="/guidance/data-protection-requirements">Data protection</a>.
         </p>
       </div>
 
-      <div class="govuk-grid-row">
-        <h2 class="govuk-heading-m govuk-!-padding-top-4">Technical documentation</h2>
-        <p class="govuk-body"><a class="govuk-link" href="/api-technical-documentation">API Technical Documentation</a></p>
-      </div>
       <%= erb :component__get_help %>
     </div>
   </div>

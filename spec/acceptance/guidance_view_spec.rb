@@ -414,11 +414,14 @@ describe "Acceptance::GuidancePage", type: :feature do
         expect(response.body).to have_css("p", text: "Use the APIs to get data on:")
       end
 
-      it "has the correct content for authentication section" do
-        expect(response.body).to have_css("h2", text: "Authentication")
-        expect(response.body).to have_link("sign in", href: "/api/my-account")
-        expect(response.body).to have_link("create an account", href: "/api/my-account")
-        expect(response.body).to have_link("My account", href: "/api/my-account")
+      it "has the correct content for technical documentation section" do
+        expect(response.body).to have_css("h2", text: "Technical documentation")
+        expect(response.body).to have_link("technical documentation", href: "/api-technical-documentation")
+      end
+
+      it "has the correct content for how to get started section" do
+        expect(response.body).to have_css("h2", text: "How to get started")
+        expect(response.body).to have_link("Sign in or Create account", href: "/api/my-account")
       end
 
       it "has the correct content for Open API specification section" do
@@ -430,12 +433,7 @@ describe "Acceptance::GuidancePage", type: :feature do
       it "has the correct content for conditions of use section" do
         expect(response.body).to have_css("h2", text: "Conditions of use")
         expect(response.body).to have_link("Licensing restrictions", href: "/guidance/licensing-restrictions")
-        expect(response.body).to have_link("Data protection requirements", href: "/guidance/data-protection-requirements")
-      end
-
-      it "has the correct content for technical documentation section" do
-        expect(response.body).to have_css("h2", text: "Technical documentation")
-        expect(response.body).to have_link("API Technical Documentation", href: "/api-technical-documentation")
+        expect(response.body).to have_link("Data protection", href: "/guidance/data-protection-requirements")
       end
 
       it "has the Get Help or Give Feedback section" do
