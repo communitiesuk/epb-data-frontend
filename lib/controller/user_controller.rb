@@ -6,7 +6,14 @@ module Controller
       if params["referer"] == "opt-out"
         @hide_my_account = true
 
-        unless Helper::Session.get_session_value(session, :opt_out_owner) == "yes" || Helper::Session.get_session_value(session, :opt_out_occupant) == "yes"
+        owner = Helper::Session.get_session_value(session, :opt_out_owner)
+        occupant = Helper::Session.get_session_value(session, :opt_out_occupant)
+
+        if owner.nil? && occupant.nil?
+          redirect localised_url("/opt-out")
+        end
+
+        unless owner == "yes" || occupant == "yes"
           redirect localised_url("/opt-out/ineligible")
         end
       else

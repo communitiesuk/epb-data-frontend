@@ -118,6 +118,7 @@ describe "Acceptance::Login", type: :feature do
         context "when the owner is confirmed" do
           before do
             allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return("yes")
+            allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_occupant).and_return(nil)
             get "#{login_url}?referer=opt-out"
           end
 
