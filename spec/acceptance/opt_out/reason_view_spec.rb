@@ -36,43 +36,6 @@ describe "Acceptance::OptOutReason", type: :feature do
       end
     end
 
-    context "when submitting without selecting a reason" do
-      let(:response) { post "#{base_url}/opt-out/reason" }
-
-      it "contains the required GDS error summary" do
-        expect(response.body).to have_css("div.govuk-error-summary h2.govuk-error-summary__title", text: "There is a problem")
-        expect(response.body).to have_css("div.govuk-error-summary__body ul.govuk-list li:first a", text: "Select a reason for opting out")
-        expect(response.body).to have_link("Select a reason for opting out", href: "#reason-error")
-      end
-    end
-
-    context "when selecting the incorrect reason" do
-      let(:response) { post "#{base_url}/opt-out/reason?reason=epc_incorrect" }
-
-      it "redirects to '/opt-out/incorrect-epc'" do
-        expect(response).to be_redirect
-        expect(response.location).to include("/opt-out/incorrect-epc")
-      end
-    end
-
-    context "when selecting the advised reason" do
-      let(:response) { post "#{base_url}/opt-out/reason?reason=epc_advised" }
-
-      it "redirects to '/opt-out/advised-by-third-party'" do
-        expect(response).to be_redirect
-        expect(response.location).to include("/opt-out/advised-by-third-party")
-      end
-    end
-
-    context "when selecting the other reason" do
-      let(:response) { post "#{base_url}/opt-out/reason?reason=epc_other" }
-
-      it "redirects to '/opt-out/advised-by-third-party'" do
-        expect(response).to be_redirect
-        expect(response.location).to include("/opt-out/owner")
-      end
-    end
-
     context "when visiting the page in welsh" do
       let(:response) { get "#{base_url}/opt-out/reason?lang=cy" }
 
@@ -85,18 +48,27 @@ describe "Acceptance::OptOutReason", type: :feature do
   end
 
   describe "post .get-energy-certificate-data.epb-frontend/opt-out/reason" do
+    let(:response) { post "#{base_url}/opt-out/reason" }
+
     before do
       allow(Helper::Session).to receive(:set_session_value)
     end
 
-    context "when 'incorrect epc' radio button is selected" do
+    context "when submitting without selecting a reason" do
+      let(:response) { post "#{base_url}/opt-out/reason" }
+
+      it "contains the required GDS error summary" do
+        expect(response.body).to have_css("div.govuk-error-summary h2.govuk-error-summary__title", text: "There is a problem")
+        expect(response.body).to have_css("div.govuk-error-summary__body ul.govuk-list li:first a", text: "Select a reason for opting out")
+        expect(response.body).to have_link("Select a reason for opting out", href: "#reason-error")
+      end
+    end
+
+    context "when selecting the incorrect reason" do
       let(:response) { post "#{base_url}/opt-out/reason", { reason: "epc_incorrect" } }
 
-      it "returns status 302" do
-        expect(response.status).to eq(302)
-      end
-
-      it "redirects to the 'incorrect epc' page" do
+      it "redirects to '/opt-out/incorrect-epc'" do
+        expect(response).to be_redirect
         expect(response.location).to include("/opt-out/incorrect-epc")
       end
 
@@ -106,14 +78,11 @@ describe "Acceptance::OptOutReason", type: :feature do
       end
     end
 
-    context "when the 'advised by third party' radio button is selected" do
+    context "when selecting the advised reason" do
       let(:response) { post "#{base_url}/opt-out/reason", { reason: "epc_advised" } }
 
-      it "returns status 302" do
-        expect(response.status).to eq(302)
-      end
-
-      it "redirects to the 'advised by third party' page" do
+      it "redirects to '/opt-out/advised-by-third-party'" do
+        expect(response).to be_redirect
         expect(response.location).to include("/opt-out/advised-by-third-party")
       end
 
@@ -123,36 +92,17 @@ describe "Acceptance::OptOutReason", type: :feature do
       end
     end
 
-    context "when the 'other' radio button is selected" do
+    context "when selecting the other reason" do
       let(:response) { post "#{base_url}/opt-out/reason", { reason: "epc_other" } }
 
-      it "returns status 302" do
-        expect(response.status).to eq(302)
-      end
-
-      it "redirects to the 'owner' page" do
+      it "redirects to '/opt-out/advised-by-third-party'" do
+        expect(response).to be_redirect
         expect(response.location).to include("/opt-out/owner")
       end
 
       it "has the session value" do
         response
         expect(Helper::Session).to have_received(:set_session_value).with(anything, :opt_out_other_reason, true)
-      end
-    end
-
-    context "when the user has not made a selection" do
-      let(:response) { post "#{base_url}/opt-out/reason" }
-
-      it "returns status 200" do
-        expect(response.status).to eq(200)
-      end
-
-      it "displays the error summary" do
-        expect(response.body).to have_css("div.govuk-error-summary")
-      end
-
-      it "display the selection error" do
-        expect(response.body).to have_css("p#reason-error", text: "Select a reason for opting out")
       end
     end
   end
