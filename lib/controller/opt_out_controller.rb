@@ -25,10 +25,13 @@ module Controller
       set_default
       case params["reason"]
       when "epc_incorrect"
+        Helper::Session.set_session_value(session, :opt_out_incorrect_epc, true)
         redirect localised_url("/opt-out/incorrect-epc")
       when "epc_advised"
+        Helper::Session.set_session_value(session, :opt_out_advised_epc, true)
         redirect localised_url("/opt-out/advised-by-third-party")
       when "epc_other"
+        Helper::Session.set_session_value(session, :opt_out_other_reason, true)
         redirect localised_url("/opt-out/owner")
       else
         @error_form_ids << "reason-error"
@@ -42,6 +45,12 @@ module Controller
     get "/opt-out/incorrect-epc" do
       status 200
       set_default
+      incorrect_epc = Helper::Session.get_session_value(session, :opt_out_incorrect_epc)
+
+      if incorrect_epc.nil?
+        redirect localised_url("/opt-out")
+      end
+
       @back_link_href = localised_url("/opt-out/reason")
       erb :'opt_out/incorrect_epc'
     rescue StandardError => e
@@ -51,6 +60,12 @@ module Controller
     get "/opt-out/advised-by-third-party" do
       status 200
       set_default
+      advised_by_third_party = Helper::Session.get_session_value(session, :opt_out_advised_epc)
+
+      if advised_by_third_party.nil?
+        redirect localised_url("/opt-out")
+      end
+
       @back_link_href = localised_url("/opt-out/reason")
       erb :'opt_out/advised_by_third_party'
     rescue StandardError => e
@@ -60,6 +75,12 @@ module Controller
     get "/opt-out/owner" do
       status 200
       set_default
+      other_reason = Helper::Session.get_session_value(session, :opt_out_other_reason)
+
+      if other_reason.nil?
+        redirect localised_url("/opt-out")
+      end
+
       @back_link_href = localised_url("/opt-out/reason")
       Helper::Session.delete_session_key(session, :opt_out_owner)
       Helper::Session.delete_session_key(session, :opt_out_occupant)

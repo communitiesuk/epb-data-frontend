@@ -6,45 +6,68 @@ describe "Acceptance::OptOutOwner", type: :feature do
   describe "get .get-energy-certificate-data.epb-frontend/opt-out/owner" do
     let(:response) { get "#{base_url}/opt-out/owner" }
 
-    it "returns status 200" do
-      expect(response.status).to eq(200)
-    end
-
-    it "contains the correct h1 header" do
-      expect(response.body).to have_selector("h1", text: "Are you the legal owner of the property that you want to opt out?")
-    end
-
-    it "has the Yes radio button" do
-      expect(response.body).to have_css("label#label-yes", text: "Yes")
-      expect(response.body).to have_css("input#owner_yes[type='radio']", count: 1)
-    end
-
-    it "has the No radio button" do
-      expect(response.body).to have_css("label#label-no", text: "No")
-      expect(response.body).to have_css("input#owner_no[type='radio']", count: 1)
-    end
-
-    it "has the correct Continue button" do
-      expect(response.body).to have_css("button[type='submit']", text: "Continue")
-    end
-
-    it "shows a back link and redirects to previous page" do
-      expect(response.body).to have_link("Back", href: "/opt-out/reason")
-    end
-
-    context "when there is session user data" do
+    context "when there is session data" do
       before do
-        allow(Helper::Session).to receive(:delete_session_key)
+        allow(Helper::Session).to receive(:get_session_value).with(anything, anything).and_call_original
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_other_reason).and_return(true)
       end
 
-      it "removes the owner keys from the session" do
-        response
-        expect(Helper::Session).to have_received(:delete_session_key).with(anything, :opt_out_owner).exactly(1).times
+      it "returns status 200" do
+        expect(response.status).to eq(200)
       end
 
-      it "removes the occupant keys from the session" do
-        response
-        expect(Helper::Session).to have_received(:delete_session_key).with(anything, :opt_out_occupant).exactly(1).times
+      it "contains the correct h1 header" do
+        expect(response.body).to have_selector("h1", text: "Are you the legal owner of the property that you want to opt out?")
+      end
+
+      it "has the Yes radio button" do
+        expect(response.body).to have_css("label#label-yes", text: "Yes")
+        expect(response.body).to have_css("input#owner_yes[type='radio']", count: 1)
+      end
+
+      it "has the No radio button" do
+        expect(response.body).to have_css("label#label-no", text: "No")
+        expect(response.body).to have_css("input#owner_no[type='radio']", count: 1)
+      end
+
+      it "has the correct Continue button" do
+        expect(response.body).to have_css("button[type='submit']", text: "Continue")
+      end
+
+      it "shows a back link and redirects to previous page" do
+        expect(response.body).to have_link("Back", href: "/opt-out/reason")
+      end
+
+      context "when there is session user data" do
+        before do
+          allow(Helper::Session).to receive(:delete_session_key)
+        end
+
+        it "removes the owner keys from the session" do
+          response
+          expect(Helper::Session).to have_received(:delete_session_key).with(anything, :opt_out_owner).exactly(1).times
+        end
+
+        it "removes the occupant keys from the session" do
+          response
+          expect(Helper::Session).to have_received(:delete_session_key).with(anything, :opt_out_occupant).exactly(1).times
+        end
+      end
+    end
+
+    context "when there is no session data" do
+      let(:response) { get "#{base_url}/opt-out/owner" }
+
+      before do
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_other_reason).and_return(nil)
+      end
+
+      it "returns status 302" do
+        expect(response.status).to eq(302)
+      end
+
+      it "completes POST and redirects to opt-out start page" do
+        expect(response.location).to eq("#{base_url}/opt-out")
       end
     end
   end
