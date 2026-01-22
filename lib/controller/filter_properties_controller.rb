@@ -182,7 +182,8 @@ module Controller
     end
 
     def validate_postcode
-      return unless params["area-type"] == "postcode"
+      params["postcode"].strip! unless params["postcode"].nil?
+      return unless params["area-type"] == "postcode" && !(params["postcode"].nil? || params["postcode"].empty?)
 
       begin
         postcode_check = Helper::PostcodeValidator.validate(params.fetch("postcode", ""))

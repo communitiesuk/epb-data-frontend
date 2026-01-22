@@ -269,7 +269,7 @@ describe "Acceptance::FilterProperties", type: :feature do
     end
 
     context "when the postcode is valid" do
-      let(:valid_response_with_postcode) { post "#{request_url}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{valid_postcode}" }
+      let(:valid_response_with_postcode) { post "#{request_url}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&#{valid_postcode}&area-type=postcode" }
 
       before do
         allow(Helper::Session).to receive(:get_email_from_session).and_return("placeholder@email.com")
@@ -279,7 +279,7 @@ describe "Acceptance::FilterProperties", type: :feature do
 
       it "redirects to the request-received-confirmation with the right params" do
         expect(valid_response_with_postcode.status).to eq(302)
-        expect(valid_response_with_postcode.headers["Location"]).to eq("#{local_host}/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&postcode=SW1A+1AA&local-authority%5B%5D=Select+all&parliamentary-constituency%5B%5D=Select+all&download_count=123")
+        expect(valid_response_with_postcode.headers["Location"]).to eq("#{local_host}/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&postcode=SW1A+1AA&area-type=postcode&local-authority%5B%5D=Select+all&parliamentary-constituency%5B%5D=Select+all&download_count=123")
       end
 
       it "displays an error message" do
@@ -292,7 +292,7 @@ describe "Acceptance::FilterProperties", type: :feature do
     context "when the postcode is invalid" do
       let(:invalid_postcodes) do
         [
-          "#{request_url}?#{valid_dates}&#{valid_eff_rating}&area-type=postcode",
+          "#{request_url}?#{valid_dates}&#{valid_eff_rating}&area-type=postcode&postcode=A",
           "#{request_url}?#{valid_dates}&#{valid_eff_rating}&area-type=postcode&postcode=ABCD12345",
           "#{request_url}?#{valid_dates}&#{valid_eff_rating}&area-type=postcode&postcode=SW1A 1A$",
         ]
@@ -333,6 +333,27 @@ describe "Acceptance::FilterProperties", type: :feature do
           expect(invalid_response.body).to have_css("div.govuk-error-summary__body ul.govuk-list li:first a", text: error_messages[index])
           expect(invalid_response.body).to have_link(error_messages[index], href: "#area-type-section")
         end
+      end
+    end
+
+    context "when the postcode is selected, but empty" do
+      let(:valid_response_with_empty_postcode) { post "#{request_url}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&postcode=%20%20&area-type=postcode" }
+
+      before do
+        allow(Helper::Session).to receive(:get_email_from_session).and_return("placeholder@email.com")
+        allow(get_download_size_use_case).to receive(:execute).and_return(123)
+        allow(send_sns_use_case).to receive(:execute)
+      end
+
+      it "redirects to the request-received-confirmation with the right params" do
+        expect(valid_response_with_empty_postcode.status).to eq(302)
+        expect(valid_response_with_empty_postcode.headers["Location"]).to eq("#{local_host}/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&postcode=&area-type=postcode&local-authority%5B%5D=Select+all&parliamentary-constituency%5B%5D=Select+all&download_count=123")
+      end
+
+      it "displays an error message" do
+        expect(valid_response_with_empty_postcode.body).not_to include(
+          '<p id="postcode-error" class="govuk-error-message">',
+        )
       end
     end
 
