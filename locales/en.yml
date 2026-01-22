@@ -119,12 +119,12 @@ en:
     title: "How would you like to access the data?"
     download_files:
       title: "Download files"
-      description: "Download certificate data in CSV format."
+      description: "Download certificate data in CSV format. This can be opened in Microsoft Excel."
       button_text: "Download files"
     use_api:
       title: "Use a developer API"
       description: "Use an API to access certificate data."
-      button_text: "Use a developer API"
+      button_text: "Use API"
 
   property_type:
     title: "What type of certificates do you want data on?"
