@@ -132,6 +132,17 @@ describe "Acceptance::FilterProperties", type: :feature do
         expect(response.body).to have_css(".govuk-body", text: "The download will begin immediately once requested. The estimated download size is")
         expect(response.body).to have_css(".govuk-body", text: "3.5 GB")
       end
+
+      context "when the user is not authenticated" do
+        before { allow(Helper::Session).to receive(:is_user_authenticated?).and_raise(Errors::AuthenticationError, "User is not authenticated") }
+
+        after { allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true) }
+
+        it "redirects to the login page" do
+          expect(response).to be_redirect
+          expect(response.location).to eq("http://get-energy-performance-data/login/authorize")
+        end
+      end
     end
 
     context "when all filter conditions are met the session data is valid" do
@@ -160,8 +171,8 @@ describe "Acceptance::FilterProperties", type: :feature do
           allow(Helper::Session).to receive(:get_session_value).and_return(nil)
         end
 
-        it "the user is redirected back the login" do
-          expect(valid_response.headers["Location"]).to eq("#{local_host}/login")
+        it "the user is redirected back to the one login login page" do
+          expect(valid_response.headers["Location"]).to eq("#{local_host}/login/authorize")
         end
       end
     end

@@ -166,11 +166,11 @@ module Controller
 
         redirect_link =  case redirect_path
                          when "api/my-account"
-                           "/login?referer=api/my-account"
+                           "/login/authorize?referer=api/my-account"
                          when "opt-out/name"
                            "/login?referer=opt-out"
                          else
-                           "/login"
+                           "/login/authorize"
                          end
 
         redirect localised_url(redirect_link)

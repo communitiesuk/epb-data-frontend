@@ -35,7 +35,7 @@ module Controller
               erb :filter_properties, locals: { use_case: @container.get_object(:get_file_size_use_case) }
             when Errors::UserEmailNotVerified, Errors::AuthenticationError, Errors::NetworkError
               logger.warn "Authentication error: #{e.message}"
-              redirect "/login"
+              redirect "/login/authorize"
             when Errors::InvalidPropertyType
               logger.warn "Invalid property type as parameter: #{e.message}"
               server_error(e)

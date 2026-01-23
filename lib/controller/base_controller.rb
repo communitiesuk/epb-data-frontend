@@ -51,11 +51,13 @@ module Controller
     rescue Errors::AuthenticationError
       redirect_url = "/login"
 
-      if request.path == "/api/my-account"
-        redirect_url += "?referer=api/my-account"
-      elsif request.path.start_with?("/opt-out")
-        redirect_url += "?referer=opt-out"
-      end
+      redirect_url += if request.path == "/api/my-account"
+                        "/authorize?referer=api/my-account"
+                      elsif request.path.start_with?("/opt-out")
+                        "?referer=opt-out"
+                      else
+                        "/authorize"
+                      end
 
       redirect redirect_url
     end

@@ -18,7 +18,7 @@ module Controller
         error[:backtrace] = e.backtrace if e.methods.include? :backtrace
 
         @logger.error JSON.generate(error)
-        redirect "/login"
+        redirect "/login/authorize"
       else
         server_error(e)
       end
