@@ -37,7 +37,7 @@
 
           <% if locals[:count] > 0 %>
             <p class="govuk-body">
-              <%= t('request_received.count_and_size', count: ViewModels::RequestReceivedConfirmation.format_number(locals[:count]) , size: ViewModels::RequestReceivedConfirmation.count_to_size(locals[:count])) %>
+              <%= t('request_received.count_and_size', count: ViewModels::RequestReceivedConfirmation.format_number(locals[:count]) , size: ViewModels::RequestReceivedConfirmation.format_bytes(locals[:count])) %>
             </p>
           <% end %>
         </div>

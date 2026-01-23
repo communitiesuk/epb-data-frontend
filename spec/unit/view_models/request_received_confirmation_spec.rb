@@ -1,18 +1,23 @@
 describe ViewModels::RequestReceivedConfirmation do
   let(:view_model) { described_class }
 
-  describe "#count_to_size" do
+  describe "#format_bytes" do
     context "when count is passed" do
-      it "returns the estimated size" do
+      it "returns the estimated size for small numbers" do
         count = 29_279
-        expect(view_model.count_to_size(count)).to eq 28.70
+        expect(view_model.format_bytes(count)).to eq "28.7"
+      end
+
+      it "returns the estimated size for big numbers" do
+        count = 24_755_345
+        expect(view_model.format_bytes(count)).to eq "24,265.44"
       end
     end
 
     context "when count is 0" do
       it "returns the headers size" do
         count = 0
-        expect(view_model.count_to_size(count)).to eq 0
+        expect(view_model.format_bytes(count)).to eq "0.0"
       end
     end
   end
