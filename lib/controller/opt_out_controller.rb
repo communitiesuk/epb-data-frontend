@@ -110,6 +110,13 @@ module Controller
     get "/opt-out/ineligible" do
       status 200
       set_default
+      owner = Helper::Session.get_session_value(session, :opt_out_owner)
+      occupant = Helper::Session.get_session_value(session, :opt_out_occupant)
+
+      unless owner == "no" && occupant == "no"
+        redirect localised_url("/opt-out")
+      end
+
       erb :'opt_out/ineligible'
     rescue StandardError => e
       server_error(e)
