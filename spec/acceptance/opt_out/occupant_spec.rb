@@ -6,24 +6,52 @@ describe "Acceptance::OptOutOccupant", type: :feature do
   describe "get .get-energy-certificate-data.epb-frontend/opt-out/occupant" do
     let(:response) { get "#{base_url}/opt-out/occupant" }
 
-    it "returns status 200" do
-      expect(response.status).to eq(200)
+    context "when there is session data" do
+      before do
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return("no")
+      end
+
+      it "returns status 200" do
+        expect(response.status).to eq(200)
+      end
+
+      it "displays the title as expected" do
+        expect(response.body).to have_css("h1", text: "Do you live in the property that you want to opt-out?")
+      end
+
+      it "has the correct content for yes I live in the property radio button" do
+        expect(response.body).to have_css("label.govuk-label", text: "Yes")
+      end
+
+      it "has the correct content for no I do not live in the property radio button" do
+        expect(response.body).to have_css("label.govuk-label", text: "No")
+      end
+
+      it "has a continue button" do
+        expect(response.body).to have_button("Continue")
+      end
     end
 
-    it "displays the title as expected" do
-      expect(response.body).to have_css("h1", text: "Do you live in the property that you want to opt-out?")
-    end
+    context "when there is no session data" do
+      let(:response) { get "#{base_url}/opt-out/occupant" }
 
-    it "has the correct content for yes I live in the property radio button" do
-      expect(response.body).to have_css("label.govuk-label", text: "Yes")
-    end
+      before do
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return(nil)
+      end
 
-    it "has the correct content for no I do not live in the property radio button" do
-      expect(response.body).to have_css("label.govuk-label", text: "No")
-    end
+      it "returns status 302" do
+        expect(response.status).to eq(302)
+      end
 
-    it "has a continue button" do
-      expect(response.body).to have_button("Continue")
+      it "completes POST and redirects to owner" do
+        expect(response.location).to include("/opt-out/owner")
+      end
+    end
+  end
+
+  describe "post .get-energy-certificate-data.epb-frontend/opt-out/occupant" do
+    before do
+      allow(Helper::Session).to receive(:set_session_value)
     end
 
     context "when submitting without selecting whether occupant or not" do
@@ -34,12 +62,6 @@ describe "Acceptance::OptOutOccupant", type: :feature do
         expect(response.body).to have_css("div.govuk-error-summary__body ul.govuk-list li:first a", text: "Select if you live in the property")
         expect(response.body).to have_link("Select if you live in the property", href: "#occupant-error")
       end
-    end
-  end
-
-  describe "post .get-energy-certificate-data.epb-frontend/opt-out/occupant" do
-    before do
-      allow(Helper::Session).to receive(:set_session_value)
     end
 
     context "when the 'yes' radio button is selected" do

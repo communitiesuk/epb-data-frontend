@@ -118,6 +118,12 @@ module Controller
     get "/opt-out/occupant" do
       status 200
       set_default
+      owner = Helper::Session.get_session_value(session, :opt_out_owner)
+
+      unless owner == "no"
+        redirect localised_url("/opt-out/owner")
+      end
+
       @errors = {}
       erb :'opt_out/occupant'
     rescue StandardError => e
