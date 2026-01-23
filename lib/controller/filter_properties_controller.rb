@@ -32,7 +32,7 @@ module Controller
               status 400
               @errors[:data_not_found] = t("error.data_not_found")
               @error_form_ids << "filter-properties-header"
-              erb :filter_properties
+              erb :filter_properties, locals: { use_case: @container.get_object(:get_file_size_use_case) }
             when Errors::UserEmailNotVerified, Errors::AuthenticationError, Errors::NetworkError
               logger.warn "Authentication error: #{e.message}"
               redirect "/login"

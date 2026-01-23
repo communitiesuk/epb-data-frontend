@@ -8,7 +8,7 @@ module Gateway
       query_string = "date_start=#{date_start}&date_end=#{date_end}"
       query_string += council.map { |c| "&council[]=#{c}" }.join.to_s unless council.nil?
       query_string += constituency.map { |c| "&constituency[]=#{c}" }.join.to_s unless constituency.nil?
-      query_string += "&postcode=#{postcode}" unless postcode.nil?
+      query_string += "&postcode=#{postcode}" unless postcode.nil? || postcode.strip.empty?
       query_string += eff_rating.map { |c| "&efficiency_rating[]=#{c}" }.join.to_s unless eff_rating.nil?
       route = "/api/#{property_type}/count?#{query_string}"
       response =
