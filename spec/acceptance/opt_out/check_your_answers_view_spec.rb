@@ -237,7 +237,16 @@ describe "Acceptance::OptOutCheckYourAnswers", type: :feature do
       end
 
       it "calls the send opt out request email use case" do
-        expect(use_case).to have_received(:execute).with(owner_or_occupier: "Owner", name: "Testy McTest", certificate_number: "1234-1234-1234-1234-1234", address_line1: "123 Fake Street", address_line2: "", town: "London", postcode: "NW9 0OP", email: "test@email.com").once
+        expect(use_case).to have_received(:execute).with(
+          owner_or_occupier: "Owner",
+          name: "Testy McTest",
+          certificate_number: "1234-1234-1234-1234-1234",
+          address_line1: "123 Fake Street",
+          address_line2: "",
+          town: "London",
+          postcode: "NW9 0OP",
+          email: "test@email.com",
+        ).once
       end
 
       it "has the 'submitted' session value" do

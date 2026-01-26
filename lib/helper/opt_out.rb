@@ -61,6 +61,42 @@ module Helper
       Helper::Session.set_session_value(session, :opt_out_address_postcode, @address_postcode)
     end
 
+    def get_owner_or_occupier_from_session(session)
+      owner = Helper::Session.get_session_value(session, :opt_out_owner)
+      occupant = Helper::Session.get_session_value(session, :opt_out_occupant)
+
+      if owner == "yes"
+        "Owner"
+      elsif occupant == "yes"
+        "Occupant"
+      end
+    end
+
+    def get_opt_out_details_from_session(session)
+      {
+        name: Helper::Session.get_session_value(session, :opt_out_name),
+        certificate_number: Helper::Session.get_session_value(session, :opt_out_certificate_number),
+        address_line1: Helper::Session.get_session_value(session, :opt_out_address_line1),
+        address_line2: Helper::Session.get_session_value(session, :opt_out_address_line2),
+        town: Helper::Session.get_session_value(session, :opt_out_address_town),
+        postcode: Helper::Session.get_session_value(session, :opt_out_address_postcode),
+        email: Helper::Session.get_email_from_session(session),
+        owner_or_occupier: get_owner_or_occupier_from_session(session),
+      }
+    end
+
+    def send_opt_out_email_with_retries(container:, details:)
+      use_case = container.get_object(:send_opt_out_request_email_use_case)
+
+      max_retries = 3
+      max_retries.times do
+        use_case.execute(**details)
+        break
+      rescue Errors::NotifyServerError
+        nil
+      end
+    end
+
     def certificate_valid(rrn)
       valid_rrn = "^(\\d{4}-){4}\\d{4}$".freeze
       rrn.to_s.delete("-").length == 20 && Regexp.new(valid_rrn).match?(rrn)

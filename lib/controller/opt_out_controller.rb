@@ -256,30 +256,9 @@ module Controller
       set_default
 
       if params["confirmation"] == "checked"
-        name = Helper::Session.get_session_value(session, :opt_out_name)
-        certificate_number = Helper::Session.get_session_value(session, :opt_out_certificate_number)
-        address_line1 = Helper::Session.get_session_value(session, :opt_out_address_line1)
-        address_line2 = Helper::Session.get_session_value(session, :opt_out_address_line2)
-        town = Helper::Session.get_session_value(session, :opt_out_address_town)
-        postcode = Helper::Session.get_session_value(session, :opt_out_address_postcode)
-        owner = Helper::Session.get_session_value(session, :opt_out_owner)
-        occupant = Helper::Session.get_session_value(session, :opt_out_occupant)
-        email = Helper::Session.get_email_from_session(session)
+        details = get_opt_out_details_from_session(session)
 
-        owner_or_occupier = if owner == "yes"
-                              "Owner"
-                            elsif occupant == "yes"
-                              "Occupant"
-                            end
-
-        use_case = @container.get_object(:send_opt_out_request_email_use_case)
-        max_retries = 3
-        max_retries.times do
-          use_case.execute(name:, certificate_number:, address_line1:, address_line2:, town:, postcode:, email:, owner_or_occupier:)
-          break
-        rescue Errors::NotifyServerError
-          nil
-        end
+        send_opt_out_email_with_retries(container: @container, details: details)
 
         Helper::Session.set_session_value(session, :opt_out_submitted, true)
         redirect localised_url("/opt-out/received")
