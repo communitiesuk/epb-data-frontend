@@ -1,4 +1,5 @@
 require "csv"
+require "bytesize"
 
 module ViewModels
   class FilterProperties
@@ -1028,8 +1029,8 @@ module ViewModels
 
     def self.get_full_load_file_size(property_type, use_case)
       file_name = "full-load/#{property_type}-csv.zip"
-      size_in_bytes = use_case.execute(file_name: file_name)
-      (size_in_bytes.to_f / (1024 * 1024 * 1024)).round(2)
+      total_bytes_estimate = use_case.execute(file_name: file_name)
+      ByteSize.new(total_bytes_estimate.round).to_s
     end
 
     private_class_method :council_csv

@@ -24,6 +24,7 @@ end
 gem "aws-sdk-dynamodb", "~> 1.144"
 gem "aws-sdk-s3", "~> 1"
 gem "aws-sdk-sns", "~> 1"
+gem "bytesize", "~> 0.1.2"
 gem "csv"
 gem "epb-auth-tools", "~> 1.1.0"
 gem "erubis", "~> 2.7"

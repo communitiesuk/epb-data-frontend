@@ -163,7 +163,7 @@ describe ViewModels::FilterProperties do
     it "returns formatted file size" do
       property_type = "domestic"
       expect { view_model.get_full_load_file_size(property_type, get_file_size_use_case) }.not_to raise_error
-      expect(view_model.get_full_load_file_size(property_type, get_file_size_use_case)).to eq(3.35)
+      expect(view_model.get_full_load_file_size(property_type, get_file_size_use_case)).to eq("3.6 GB")
     end
   end
 end
