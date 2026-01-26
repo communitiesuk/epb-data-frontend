@@ -201,7 +201,7 @@ cy:
     requested_data_for: "You requested data for:"
     energy_eff_rating: "Energy Efficiency Rating"
     recommendations: "and recommendations"
-    count_and_size: "Your request contains <strong>%{count}</strong> certificates. The estimated download size is <strong>%{size}</strong> MB."
+    count_and_size: "Your request contains <strong>%{count}</strong> certificates. The estimated download size is <strong>%{size}</strong>"
 
   download_started:
     title: "Download started"
@@ -210,7 +210,7 @@ cy:
     recommendations: "and recommendations"
     england_and_wales: "England and Wales"
     energy_eff_ratings: "Energy Efficiency Rating A, B, C, D, E, F, G"
-    count_and_size: "Your request contains <strong>placeholder number</strong> certificates. The estimated download size is <strong>placeholder size</strong> MB."
+    count_and_size: "Your request contains <strong>placeholder number</strong> certificates. The estimated download size is <strong>placeholder size</strong>"
 
   my_account:
     title: "My account"

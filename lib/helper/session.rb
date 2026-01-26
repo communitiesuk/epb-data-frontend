@@ -34,6 +34,13 @@ module Helper
       email
     end
 
+    def self.get_download_count_from_session(session)
+      download_count = get_session_value(session, :download_count)
+      raise Errors::MissingDownloadCount unless download_count
+
+      download_count
+    end
+
     def self.get_opt_out_session_value(session, key)
       opt_out_key = get_session_value(session, :opt_out)
       opt_out_key[key]

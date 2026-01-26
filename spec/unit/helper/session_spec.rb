@@ -1,5 +1,5 @@
 describe Helper::Session do
-  let(:session) { { "email_address": "test@email.com", opt_out: { name: "Some Name", owner: "yes", certificate_number: "test_cert_number" } } }
+  let(:session) { { "email_address": "test@email.com", "download_count": 123, opt_out: { name: "Some Name", owner: "yes", certificate_number: "test_cert_number" } } }
   let(:session_with_occupant) { { "email_address": "test@email.com", opt_out: { name: "Some Name", occupant: "no" } } }
   let(:key) { :test_key }
 
@@ -65,6 +65,13 @@ describe Helper::Session do
     it "returns the email if it exists in the session" do
       email = described_class.get_email_from_session(session)
       expect(email).to eq("test@email.com")
+    end
+  end
+
+  describe "#get_download_count_from_session" do
+    it "returns the download count if it exists in the session" do
+      download_count = described_class.get_download_count_from_session(session)
+      expect(download_count).to eq(123)
     end
   end
 

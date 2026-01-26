@@ -35,11 +35,9 @@
             </ul>
           </div>
 
-          <% if locals[:count] > 0 %>
-            <p class="govuk-body">
-              <%= t('request_received.count_and_size', count: ViewModels::RequestReceivedConfirmation.format_number(locals[:count]) , size: ViewModels::RequestReceivedConfirmation.format_bytes(locals[:count])) %>
-            </p>
-          <% end %>
+          <p class="govuk-body">
+            <%= t('request_received.count_and_size', count: ViewModels::RequestReceivedConfirmation.get_formatted_download_count(locals[:download_count]) , size: ViewModels::RequestReceivedConfirmation.get_formatted_byte_size(locals[:download_count], params["property_type"])) %>.
+          </p>
         </div>
       </div>
       <%= erb :component__get_help %>

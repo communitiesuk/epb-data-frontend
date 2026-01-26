@@ -175,7 +175,7 @@ describe "Acceptance::FilterProperties", type: :feature do
 
       it "redirects to the request-received-confirmation with the right params" do
         expect(valid_response.status).to eq(302)
-        expect(valid_response.headers["Location"]).to eq("#{local_host}/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&local-authority%5B%5D=Select+all&parliamentary-constituency%5B%5D=Select+all&download_count=123")
+        expect(valid_response.headers["Location"]).to eq("#{local_host}/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&local-authority%5B%5D=Select+all&parliamentary-constituency%5B%5D=Select+all")
       end
 
       it "does not display an error message" do
@@ -248,7 +248,7 @@ describe "Acceptance::FilterProperties", type: :feature do
 
       it "redirects to the request-received-confirmation with the right params" do
         expect(valid_response_with_multiple_councils.status).to eq(302)
-        expect(valid_response_with_multiple_councils.headers["Location"]).to eq("#{local_host}/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&local-authority%5B%5D=Birmingham&local-authority%5B%5D=Adur&parliamentary-constituency%5B%5D=Select+all&download_count=123")
+        expect(valid_response_with_multiple_councils.headers["Location"]).to eq("#{local_host}/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&local-authority%5B%5D=Birmingham&local-authority%5B%5D=Adur&parliamentary-constituency%5B%5D=Select+all")
       end
     end
 
@@ -264,7 +264,7 @@ describe "Acceptance::FilterProperties", type: :feature do
 
       it "redirects to the request-received-confirmation with the right params" do
         expect(valid_response_with_multiple_constituencies.status).to eq(302)
-        expect(valid_response_with_multiple_constituencies.headers["Location"]).to eq("#{local_host}/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&parliamentary-constituency%5B%5D=Ashford&parliamentary-constituency%5B%5D=Cardiff&local-authority%5B%5D=Select+all&download_count=123")
+        expect(valid_response_with_multiple_constituencies.headers["Location"]).to eq("#{local_host}/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&parliamentary-constituency%5B%5D=Ashford&parliamentary-constituency%5B%5D=Cardiff&local-authority%5B%5D=Select+all")
       end
     end
 
@@ -279,7 +279,7 @@ describe "Acceptance::FilterProperties", type: :feature do
 
       it "redirects to the request-received-confirmation with the right params" do
         expect(valid_response_with_postcode.status).to eq(302)
-        expect(valid_response_with_postcode.headers["Location"]).to eq("#{local_host}/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&postcode=SW1A+1AA&area-type=postcode&local-authority%5B%5D=Select+all&parliamentary-constituency%5B%5D=Select+all&download_count=123")
+        expect(valid_response_with_postcode.headers["Location"]).to eq("#{local_host}/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&postcode=SW1A+1AA&area-type=postcode&local-authority%5B%5D=Select+all&parliamentary-constituency%5B%5D=Select+all")
       end
 
       it "displays an error message" do
@@ -347,7 +347,7 @@ describe "Acceptance::FilterProperties", type: :feature do
 
       it "redirects to the request-received-confirmation with the right params" do
         expect(valid_response_with_empty_postcode.status).to eq(302)
-        expect(valid_response_with_empty_postcode.headers["Location"]).to eq("#{local_host}/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&postcode=&area-type=postcode&local-authority%5B%5D=Select+all&parliamentary-constituency%5B%5D=Select+all&download_count=123")
+        expect(valid_response_with_empty_postcode.headers["Location"]).to eq("#{local_host}/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&postcode=&area-type=postcode&local-authority%5B%5D=Select+all&parliamentary-constituency%5B%5D=Select+all")
       end
 
       it "displays an error message" do
@@ -366,7 +366,7 @@ describe "Acceptance::FilterProperties", type: :feature do
 
       it "redirects to the request-received-confirmation with the right params" do
         expect(valid_response.status).to eq(302)
-        expect(valid_response.headers["Location"]).to eq("#{local_host}/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&local-authority%5B%5D=Select+all&parliamentary-constituency%5B%5D=Select+all&download_count=123")
+        expect(valid_response.headers["Location"]).to eq("#{local_host}/request-received-confirmation?property_type=domestic&from-year=2023&from-month=January&to-year=2025&to-month=February&ratings%5B%5D=A&ratings%5B%5D=B&local-authority%5B%5D=Select+all&parliamentary-constituency%5B%5D=Select+all")
       end
 
       it "displays an error message" do

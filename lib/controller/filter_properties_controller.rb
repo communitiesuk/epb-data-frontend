@@ -20,8 +20,8 @@ module Controller
           begin
             property_type = params["property_type"]
             redirect "/download/all?property_type=#{property_type}" if default_filters?(property_type)
-            count = get_download_size(params)
-            params["download_count"] = count
+            download_count = get_download_size(params)
+            Helper::Session.set_session_value(session, :download_count, download_count)
             email = Helper::Session.get_email_from_session(session)
             send_download_request(email)
             form_data = Rack::Utils.build_nested_query(params)
@@ -60,9 +60,9 @@ module Controller
 
       status 200
       @back_link_href = "/filter-properties?property_type=#{params['property_type']}"
-      count = params["download_count"].to_i
       email = Helper::Session.get_email_from_session(session)
-      erb :request_received_confirmation, locals: { count:, email: }
+      download_count = Helper::Session.get_download_count_from_session(session)
+      erb :request_received_confirmation, locals: { email:, download_count: }
     rescue StandardError => e
       server_error(e)
     end

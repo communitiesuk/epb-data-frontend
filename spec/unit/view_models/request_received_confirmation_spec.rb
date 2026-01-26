@@ -1,46 +1,86 @@
 describe ViewModels::RequestReceivedConfirmation do
   let(:view_model) { described_class }
 
-  describe "#format_bytes" do
-    context "when count is passed" do
-      it "returns the estimated size for small numbers" do
-        count = 29_279
-        expect(view_model.format_bytes(count)).to eq "28.7"
-      end
+  describe "#get_formatted_byte_size" do
+    let(:property_type) { "domestic" }
+    let(:session) { {} }
 
-      it "returns the estimated size for big numbers" do
-        count = 24_755_345
-        expect(view_model.format_bytes(count)).to eq "24,265.44"
+    before do
+      allow(Helper::Session).to receive(:get_session_value)
+                                  .with(session, :download_count)
+                                  .and_return(download_count)
+    end
+
+    context "when the download count is passed" do
+      let(:download_count) { 29_279 }
+
+      it "returns the estimated MB size" do
+        expect(view_model.get_formatted_byte_size(download_count, property_type)).to eq "28.7 MB"
       end
     end
 
-    context "when count is 0" do
-      it "returns the headers size" do
-        count = 0
-        expect(view_model.format_bytes(count)).to eq "0.0"
+    context "when the download count is 0" do
+      let(:download_count) { 0 }
+
+      it "returns only the header size" do
+        expect(view_model.get_formatted_byte_size(download_count, property_type)).to eq "1.89 kB"
+      end
+    end
+
+    context "when the download count is greater than a million" do
+      let(:download_count) { 25_100_279 }
+
+      it "returns the estimated GB size" do
+        expect(view_model.get_formatted_byte_size(download_count, property_type)).to eq "24.6 GB"
+      end
+    end
+
+    context "when the download count is greater than a billion" do
+      let(:download_count) { 4_500_002_790 }
+
+      it "returns the estimated TB size" do
+        expect(view_model.get_formatted_byte_size(download_count, property_type)).to eq "4.41 TB"
       end
     end
   end
 
-  describe "#format_number" do
+  describe "#format_number_with_commas" do
     context "when count is less than 999" do
       it "returns correct formatted count" do
         count = 900
-        expect(view_model.format_number(count)).to eq "900"
+        expect(view_model.format_number_with_commas(count)).to eq "900"
       end
     end
 
     context "when count is more than 999" do
       it "returns the headers size" do
         count = 1000
-        expect(view_model.format_number(count)).to eq "1,000"
+        expect(view_model.format_number_with_commas(count)).to eq "1,000"
       end
     end
 
     context "when count is million" do
       it "returns the headers size" do
         count = 1_000_000
-        expect(view_model.format_number(count)).to eq "1,000,000"
+        expect(view_model.format_number_with_commas(count)).to eq "1,000,000"
+      end
+    end
+  end
+
+  describe "#get_formatted_download_count" do
+    before do
+      allow(view_model).to receive(:format_number_with_commas).and_call_original
+    end
+
+    context "when the download count is passed" do
+      it "returns correct formatted count for numbers greater than 999" do
+        download_count = 29_279
+        expect(view_model.get_formatted_download_count(download_count)).to eq "29,279"
+      end
+
+      it "returns correct formatted count for numbers less than 999" do
+        download_count = 900
+        expect(view_model.get_formatted_download_count(download_count)).to eq "900"
       end
     end
   end

@@ -1,5 +1,35 @@
+require "bytesize"
+
 module ViewModels
   class RequestReceivedConfirmation < ViewModels::FilterProperties
+    HEADER_ROW_SIZE_BYTES = 1888
+    AVG_DOMESTIC_ROW_SIZE_BYTES = 980.21
+    AVG_NON_DOMESTIC_ROW_SIZE_BYTES = 392.0
+    AVG_DEC_ROW_SIZE_BYTES = 351.5
+
+    def self.get_formatted_byte_size(download_count, property_type)
+      avg_row_bytes = case property_type
+                      when "domestic"
+                        AVG_DOMESTIC_ROW_SIZE_BYTES
+                      when "non_domestic"
+                        AVG_NON_DOMESTIC_ROW_SIZE_BYTES
+                      else
+                        AVG_DEC_ROW_SIZE_BYTES
+                      end
+      total_bytes_estimate = HEADER_ROW_SIZE_BYTES + (download_count * avg_row_bytes)
+
+      ByteSize.new(total_bytes_estimate.round).to_s
+    end
+
+    def self.format_number_with_commas(number)
+      num_groups = number.to_s.chars.to_a.reverse.each_slice(3)
+      num_groups.map(&:join).join(",").reverse
+    end
+
+    def self.get_formatted_download_count(download_count)
+      format_number_with_commas(download_count)
+    end
+
     def self.selected_start_and_end_dates(params)
       from_month, from_year = params.values_at("from-month", "from-year")
       to_month, to_year = params.values_at("to-month", "to-year")
@@ -8,24 +38,6 @@ module ViewModels
       raise Errors::InvalidDateArgument unless ViewModels::FilterProperties.months.include?(to_month)
 
       "#{from_month} #{from_year} - #{to_month} #{to_year}"
-    end
-
-    def self.format_bytes(number_bytes)
-      bytes_on_mb = 1_000_000
-      header_bytes = 1888
-      avg_row_bytes = 980.21
-
-      estimated_total_bytes = header_bytes + (number_bytes * avg_row_bytes)
-      size_mb = (estimated_total_bytes / bytes_on_mb).round(2)
-
-      whole, decimal = size_mb.to_s.split(".")
-      whole = whole.reverse.scan(/\d{1,3}/).join(",").reverse
-      [whole, decimal].compact.join(".")
-    end
-
-    def self.format_number(number)
-      num_groups = number.to_s.chars.to_a.reverse.each_slice(3)
-      num_groups.map(&:join).join(",").reverse
     end
 
     def self.selected_area_type(params)

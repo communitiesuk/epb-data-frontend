@@ -105,6 +105,9 @@ module Errors
   class MissingOptOutValues < RuntimeError
   end
 
+  class MissingDownloadCount < RuntimeError
+  end
+
   class NotifySendEmailError < RuntimeError
   end
 
