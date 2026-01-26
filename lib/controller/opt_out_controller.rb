@@ -281,6 +281,7 @@ module Controller
           nil
         end
 
+        Helper::Session.set_session_value(session, :opt_out_submitted, true)
         redirect localised_url("/opt-out/received")
       else
         @error_form_ids << "confirmation-error"
@@ -294,6 +295,12 @@ module Controller
     get "/opt-out/received" do
       status 200
       set_default
+      submitted = Helper::Session.get_session_value(session, :opt_out_submitted)
+
+      if submitted.nil?
+        redirect localised_url("/opt-out/check-your-answers")
+      end
+
       session_keys = %i[opt_out_owner opt_out_occupant opt_out_name opt_out_certificate_number opt_out_address_line1 opt_out_address_line2 opt_out_address_town opt_out_address_postcode]
       session_keys.each do |session_key|
         Helper::Session.delete_session_key(session, session_key)

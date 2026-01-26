@@ -13,6 +13,7 @@ describe "Acceptance::OptOutReceived", type: :feature do
           get_email_from_session: "test@email.com",
           delete_session_key: nil,
         )
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_submitted).and_return(true)
       end
 
       it "returns status 200" do
