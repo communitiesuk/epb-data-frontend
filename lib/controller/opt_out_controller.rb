@@ -301,7 +301,7 @@ module Controller
         redirect localised_url("/opt-out/check-your-answers")
       end
 
-      session_keys = %i[opt_out_owner opt_out_occupant opt_out_name opt_out_certificate_number opt_out_address_line1 opt_out_address_line2 opt_out_address_town opt_out_address_postcode]
+      session_keys = %i[opt_out_owner opt_out_occupant opt_out_name opt_out_certificate_number opt_out_address_line1 opt_out_address_line2 opt_out_address_town opt_out_address_postcode opt_out_incorrect_epc opt_out_advised_epc opt_out_other_reason opt_out_submitted]
       session_keys.each do |session_key|
         Helper::Session.delete_session_key(session, session_key)
       end
