@@ -38,6 +38,10 @@ describe "Acceptance::OptOutReceived", type: :feature do
         expect(Helper::Session).to have_received(:delete_session_key).with(anything, :opt_out_address_line2)
         expect(Helper::Session).to have_received(:delete_session_key).with(anything, :opt_out_address_town)
         expect(Helper::Session).to have_received(:delete_session_key).with(anything, :opt_out_address_postcode)
+        expect(Helper::Session).to have_received(:delete_session_key).with(anything, :opt_out_incorrect_epc)
+        expect(Helper::Session).to have_received(:delete_session_key).with(anything, :opt_out_advised_epc)
+        expect(Helper::Session).to have_received(:delete_session_key).with(anything, :opt_out_other_reason)
+        expect(Helper::Session).to have_received(:delete_session_key).with(anything, :opt_out_submitted)
       end
     end
 
