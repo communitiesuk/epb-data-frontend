@@ -241,9 +241,6 @@ module Controller
       erb :'opt_out/check_your_answers'
     rescue StandardError => e
       case e
-      when Errors::AuthenticationError
-        logger.warn "Authentication error: #{e.message}"
-        redirect localised_url("/login?referer=opt-out")
       when Errors::MissingOptOutValues
         @logger.warn "Session values are missing when reaching /opt-out/check-your-answers: #{e.message}"
         redirect localised_url("/opt-out")
@@ -272,6 +269,15 @@ module Controller
                               "Occupant"
                             end
 
+        ViewModels::OptOut.get_full_name_from_session(session)
+        ViewModels::OptOut.get_certificate_number_from_session(session)
+        ViewModels::OptOut.get_address_detail_from_session(session, :opt_out_address_line1)
+        ViewModels::OptOut.get_address_detail_from_session(session, :opt_out_address_line2)
+        ViewModels::OptOut.get_address_detail_from_session(session, :opt_out_address_town)
+        ViewModels::OptOut.get_address_detail_from_session(session, :opt_out_address_postcode)
+        ViewModels::OptOut.get_relationship_to_the_property(session)
+        ViewModels::OptOut.get_email_from_session(session)
+
         use_case = @container.get_object(:send_opt_out_request_email_use_case)
         max_retries = 3
         max_retries.times do
@@ -289,7 +295,13 @@ module Controller
         erb :'opt_out/check_your_answers'
       end
     rescue StandardError, Errors::NotifySendEmailError => e
-      server_error(e)
+      case e
+      when Errors::MissingOptOutValues
+        @logger.warn "Session values are missing when submitting POST /opt-out/check-your-answers: #{e.message}"
+        redirect localised_url("/opt-out")
+      else
+        server_error(e)
+      end
     end
 
     get "/opt-out/received" do
