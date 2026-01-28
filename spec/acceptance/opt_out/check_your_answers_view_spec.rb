@@ -302,5 +302,44 @@ describe "Acceptance::OptOutCheckYourAnswers", type: :feature do
         expect(last_response.status).to eq(500)
       end
     end
+
+    context "when the data is missing from the session" do
+      let(:response) { post "#{base_url}/opt-out/check-your-answers", { confirmation: "checked" } }
+
+      before do
+        allow(Helper::Session).to receive_messages(
+          is_user_authenticated?: true,
+          get_email_from_session: nil,
+        )
+
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return(nil)
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_occupant).and_return(nil)
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_name).and_return(nil)
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_certificate_number).and_return(nil)
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_line1).and_return(nil)
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_line2).and_return(nil)
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_town).and_return(nil)
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_postcode).and_return(nil)
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_submitted).and_return(nil)
+
+        allow(ViewModels::OptOut).to receive(:get_relationship_to_the_property).and_call_original
+        allow(ViewModels::OptOut).to receive(:get_email_from_session).and_call_original
+        allow(ViewModels::OptOut).to receive(:get_full_name_from_session).and_call_original
+        allow(ViewModels::OptOut).to receive(:get_certificate_number_from_session).and_call_original
+        allow(ViewModels::OptOut).to receive(:get_address_detail_from_session).and_call_original
+      end
+
+      it "redirects to the opt-out start page" do
+        response
+        expect(response.status).to eq(302)
+        expect(response.location).to eq("#{base_url}/opt-out")
+      end
+
+      context "when relationship to the property is missing from session" do
+        it "raises MissingOptOutValues error" do
+          expect { ViewModels::OptOut.get_relationship_to_the_property(nil) }.to raise_error(Errors::MissingOptOutValues)
+        end
+      end
+    end
   end
 end

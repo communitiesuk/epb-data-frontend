@@ -241,9 +241,6 @@ module Controller
       erb :'opt_out/check_your_answers'
     rescue StandardError => e
       case e
-      when Errors::AuthenticationError
-        logger.warn "Authentication error: #{e.message}"
-        redirect localised_url("/login?referer=opt-out")
       when Errors::MissingOptOutValues
         @logger.warn "Session values are missing when reaching /opt-out/check-your-answers: #{e.message}"
         redirect localised_url("/opt-out")
@@ -268,7 +265,13 @@ module Controller
         erb :'opt_out/check_your_answers'
       end
     rescue StandardError, Errors::NotifySendEmailError => e
-      server_error(e)
+      case e
+      when Errors::MissingOptOutValues
+        @logger.warn "Session values are missing when submitting POST /opt-out/check-your-answers: #{e.message}"
+        redirect localised_url("/opt-out")
+      else
+        server_error(e)
+      end
     end
 
     get "/opt-out/received" do
