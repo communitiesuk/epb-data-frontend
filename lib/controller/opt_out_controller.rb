@@ -269,14 +269,8 @@ module Controller
                               "Occupant"
                             end
 
-        ViewModels::OptOut.get_full_name_from_session(session)
-        ViewModels::OptOut.get_certificate_number_from_session(session)
-        ViewModels::OptOut.get_address_detail_from_session(session, :opt_out_address_line1)
-        ViewModels::OptOut.get_address_detail_from_session(session, :opt_out_address_line2)
-        ViewModels::OptOut.get_address_detail_from_session(session, :opt_out_address_town)
-        ViewModels::OptOut.get_address_detail_from_session(session, :opt_out_address_postcode)
-        ViewModels::OptOut.get_relationship_to_the_property(session)
-        ViewModels::OptOut.get_email_from_session(session)
+        validate_session = Helper::ValidateSession.new(session)
+        validate_session.validate_missing_opt_out_session
 
         use_case = @container.get_object(:send_opt_out_request_email_use_case)
         max_retries = 3
