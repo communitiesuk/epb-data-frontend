@@ -1,0 +1,45 @@
+Count,Field name - highlighted terms defined,Definitions for Assessment
+1,CERTIFICATE_NUMBER,The unique reference number for the EPC. This number is generated when the certificate is lodged and can be used to retrieve the record from the EPB data API and the EPC register.
+2,ADDRESS1,"The first line of the property’s address, usually the building number and/or name and street name."
+3,ADDRESS2,"The second line of the property's address, usually the village town or city."
+4,ADDRESS3,"The third line of the property's address, usually the county; not always used."
+5,POSTCODE,The postcode of the property. Each postcode consists of five to seven alphanumeric characters which was created by Royal Mail. A full postcode designates an area with multiple addresses or a single delivery point.
+6,ASSET_RATING,Energy Performance Asset Rating. The CO₂ emissions from the actual building in comparison to a Standard Emission Rate. (kg CO₂/m²)
+7,ASSET_RATING_BAND,Energy Performance Asset Rating converted into an energy band/grade into a linear 'A+ to G' scale (where A+ is the most energy efficient and G the least energy efficient)
+8,PROPERTY_TYPE,Describes the type of building that is being inspected. Based on planning use class.
+9,INSPECTION_DATE,The date when information about the building was collected to prepare the EPC.
+10,LOCAL_AUTHORITY,The local authority the building is in. Uses the official ONS (Office for National Statistics) code for that local area.
+11,CONSTITUENCY,The UK parliamentary constituency the building is in. Uses the official ONS (Office for National Statistics) code for that area.
+12,LODGEMENT_DATE,The date the energy certificate was added to the Energy Performance of Buildings Register. This is called 'Lodgement'.
+13,TRANSACTION_TYPE,"States why the energy certificate was produced. This could be for a sale, rental, new build, Green Deal, ECO assessment, or another reason. If the assessor does not know the reason, it’s recorded as ‘none of the above’."
+14,NEW_BUILD_BENCHMARK,
+15,EXISTING_STOCK_BENCHMARK,The Benchmark value of existing stock for this type of building
+16,BUILDING_LEVEL,Building Complexity Level based on Energy Assessor National Occupation Standards
+17,MAIN_HEATING_FUEL,Main Heating fuel for the building is taken as the fuel which delivers the greatest total thermal output for space or water heating
+18,OTHER_FUEL_DESC,Text description of unspecified fuel type if 'Other' is selected for Main Heating Fuel
+19,SPECIAL_ENERGY_USES,Special energy uses discounted. This only appears on the Recommendations Report.
+20,RENEWABLE_SOURCES,On-site renewable energy sources. This only appears on the Advisory Report.
+21,FLOOR_AREA,"The total useful floor area is the total of all enclosed spaces measured to the internal face of the external walls, i.e. the gross floor area as measured in accordance with the guidance issued from time to time by the Royal Institute of Chartered Surveyors or by a body replacing that institution. (m2)"
+22,STANDARD_EMISSIONS,Standard Emission Rate is determined by applying a fixed improvement factor to the emissions from a reference building. (kg CO₂/m²/year).
+23,TARGET_EMISSIONS,Standard Emission Rate is determined by applying a fixed improvement factor to the emissions from a reference building. (kg CO₂/m²/year).
+24,TYPICAL_EMISSIONS,Typical Emission Rate.
+25,BUILDING_EMISSIONS,Building Emissions Rate. Annual CO₂ emissions from the building. Decimal (kg CO₂/m²)
+26,AIRCON_PRESENT,Air Conditioning System. Does the building have an air conditioning system?
+27,AIRCON_KW_RATING,Air conditioning System. Rating in kW
+28,ESTIMATED_AIRCON_KW_RATING,"Air Conditioning System. If exact rating unknown, what is the estimated total effective output rating of the air conditioning system"
+29,AC_INSPECTION_COMMISSIONED,"One of:1=Yes, inspection completed; 2=Yes, inspection commissioned; 3=No inspection completed or commissioned; 4=Not relevant; 5=Don't know"
+30,BUILDING_ENVIRONMENT,Building environment which is taken as the servicing strategy that contributes the largest proportion of the building's CO₂ emissions.
+31,ADDRESS,"Provides the address of the property, combining up to three address lines (address1, address2, and address3). The postcode is recorded separately and not included here."
+32,LOCAL_AUTHORITY_LABEL,"The name of the local authority area where the property is located. This is for general information only. For reliable identification and analysis, use the Local Authority ONS code."
+33,CONSTITUENCY_LABEL,"The name of the UK parliamentary constituency where the property is located. This is for general information only. For reliable identification and analysis, use the Constituency ONS code."
+34,POSTTOWN,The post town of the property based on the Royal Mail address database. Used for mail delivery and address matching. May differ from local authority or constituency boundaries.
+35,LODGEMENT_DATETIME,The date and time the EPC was officially lodged on the Energy Performance of Buildings Register. This timestamp determines when the certificate becomes valid. 
+36,PRIMARY_ENERGY_VALUE,Displayed on the non-domestic EPC as primary energy use (kWh/m2 per year)
+37,UPRN,"The Unique Property Reference Number is a 12-digit code that identifies the property, flat, building, or plot of land being assessed."
+38,UPRN_SOURCE,"The method of which the Unique Property Reference Number (UPRN) was added to the record. It will either say “Energy Assessor” if it was entered during the assessment, or “Address Matched” if it was added later using the government’s address-matching system. In some cases, this field may be blank or contain legacy values where UPRNs were not available or matched at the time."
+39,REPORT_TYPE,Type of assessment carried out of the building. 102: assessment using the SBEM (Simplified Building Energy Model) tool for non-domestic (non-residential) buildings.
+40,PAYBACK_TYPE,
+41,RECOMMENDATION_ITEM,Used to order the recommendations on the output EPC.
+42,RECOMMENDATION_CODE,Shorthand code to represent the recommendation.
+43,RECOMMENDATION,Description of the suggested improvement.
+44,CO2_IMPACT,Descriptor for impact on co2 (e.g. LOW)

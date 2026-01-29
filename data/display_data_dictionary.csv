@@ -1,0 +1,58 @@
+Count,Field name - highlighted terms defined,Definitions for Assessment
+1,CERTIFICATE_NUMBER,The unique reference number for the EPC. This number is generated when the certificate is lodged and can be used to retrieve the record from the EPB data API and the EPC register.
+2,ADDRESS1,"The first line of the property’s address, usually the building number and/or name and street name."
+3,ADDRESS2,"The second line of the property's address, usually the village town or city."
+4,ADDRESS3,"The third line of the property's address, usually the county; not always used."
+5,POSTCODE,The postcode of the property. Each postcode consists of five to seven alphanumeric characters which was created by Royal Mail. A full postcode designates an area with multiple addresses or a single delivery point.
+6,CURRENT_OPERATIONAL_RATING,"Current Operational Rating (OR) for this building. A numeric indicator of the amount of energy consumed during the occupation of the building over a period of 12 months. An OR is a measure of the annual (CO₂) emission per unit of area of the building caused by its consumption of energy, compared to a value that would be considered typical for the particular type of building. The numbers do not represent actual units of energy consumed; they represent comparative energy efficiency."
+7,YR1_OPERATIONAL_RATING,Operational Ratings from previous years (CO₂).
+8,YR2_OPERATIONAL_RATING,Operational Ratings from previous years (CO₂).
+9,OPERATIONAL_RATING_BAND,Current Operational Rating converted into an energy band/grade into a linear 'A to G' scale (where A is the most energy efficient and G the least energy efficient).
+10,ELECTRIC_CO2,Total CO₂ emissions from electricity. The energy used by the building is converted into an amount of carbon dioxide (CO₂). Different types of fuel emit different amounts of CO₂. Total CO₂ emissions in tonnes per year of CO₂.
+11,HEATING_CO2,Total CO₂ emissions from heating. The energy used by the building is converted into an amount of carbon dioxide (CO₂). Different types of fuel emit different amounts of CO₂. Total CO₂ emissions in tonnes per year of CO₂.
+12,RENEWABLES_CO2,Total CO₂ emissions from Renewable sources. On-Site Renewables (OSR) include technologies that generate heat or electricity from ambient sources and have zero (or near zero) CO₂ emissions. The energy they deliver reduces CO₂ emissions from the building.
+13,PROPERTY_TYPE,"Describes the kind of property such as house, flat or maisonette. "
+14,INSPECTION_DATE,The date when information about the building was collected to prepare the EPC.
+15,LOCAL_AUTHORITY,The local authority the building is in. Uses the official ONS (Office for National Statistics) code for that local area.
+16,CONSTITUENCY,The UK parliamentary constituency the building is in. Uses the official ONS (Office for National Statistics) code for that area.
+17,LODGEMENT_DATE,The date the energy certificate was added to the Energy Performance of Buildings Register. This is called 'Lodgement'.
+18,MAIN_BENCHMARK,"The benchmark is the average energy performance for a building of this type, under a number of standardised conditions for temperature, occupancy and proportion of non-electrical energy used. Under certain circumstances, these benchmarks may be adjusted according to location, occupancy and the ratio of non-electrical energy used."
+19,MAIN_HEATING_FUEL,This indicates the main type of fuel used to heat the building.
+20,OTHER_FUEL,Text description of unspecified fuel type if 'Other' is selected for Main-Heating-Fuel.
+21,SPECIAL_ENERGY_USES,"Separable energy uses. The aim of the Operational Rating is to compare the annual energy consumption of the building with that of a building typical of its type. In some cases the building may include activities that consume energy and which are not considered typical of that building type. It may be reasonable to subtract these separable energy uses in certain circumstances. In order to be able to isolate and remove the annual separable energy consumption from the total, any separable energy uses must be separately metered. This only appears on the Recommendations Report."
+22,RENEWABLE_SOURCES,On-site renewable energy sources. This only appears on the Recommendations Report.
+23,TOTAL_FLOOR_AREA,"The total enclosed floor area of the property, measured to the internal face of the external walls. The measurement follows recognised professional standards (issued by the Royal Institution of Chartered Surveyors or any successor organisation). Given in square metres (m²)."
+24,ANNUAL_THERMAL_FUEL_USAGE,Annual Energy Use (kWh/m²/year) for heating
+25,TYPICAL_THERMAL_FUEL_USAGE,Typical Energy Use (kWh/m²/year) for heating
+26,ANNUAL_ELECTRICAL_FUEL_USAGE,Annual Energy Use (kWh/m²/year) for electricity
+27,TYPICAL_ELECTRICAL_FUEL_USAGE,Typical Energy Use (kWh/m²/year) for electricity
+28,RENEWABLES_FUEL_THERMAL,Percentage of energy obtained from on-site renewable sources for heating (if any)
+29,RENEWABLES_ELECTRICAL,Percentage of energy obtained from on-site renewable sources for electricity (if any).
+30,YR1_ELECTRICITY_CO2,CO₂ emissions from electricity in previous reporting year (if any). Total CO₂ emissions in tonnes per year of CO₂.
+31,YR2_ELECTRICITY_CO2,CO₂ emissions from electricity in previous reporting year (if any). Total CO₂ emissions in tonnes per year of CO₂.
+32,YR1_HEATING_CO2,CO₂ emissions from heating in previous reporting year (if any). Total CO₂ emissions in tonnes per year of CO₂.
+33,YR2_HEATING_CO2,CO₂ emissions from heating in previous reporting year (if any). Total CO₂ emissions in tonnes per year of CO₂.
+34,YR1_RENEWABLES_CO2,CO₂ emissions from renewable sources in previous reporting year (if any). Total CO₂ emissions in tonnes per year of CO₂.
+35,YR2_RENEWABLES_CO2,CO₂ emissions from renewable sources in previous reporting year (if any). Total CO₂ emissions in tonnes per year of CO₂.
+36,AIRCON_PRESENT,Air Conditioning System. Does the building have an air conditioning system?
+37,AIRCON_KW_RATING,Air conditioning System. Rating in kW
+38,ESTIMATED_AIRCON_KW_RATING,"Air Conditioning System. If exact rating unknown, what is the estimated total effective output rating of the air conditioning system in kW."
+39,AC_INSPECTION_COMMISSIONED,"One of:1=Yes, inspection completed; 2=Yes, inspection commissioned; 3=No inspection completed or commissioned; 4=Not relevant; 5=Don't know"
+40,BUILDING_ENVIRONMENT,Building environment which is taken as the servicing strategy that contributes the largest proportion of the building's CO2 emissions.
+41,BUILDING_CATEGORY,"Building category codes. This data field may contain multiple benchmark categories. Where a building has a mix of uses that would place parts of the building in a different benchmark category, it is possible to construct a composite benchmark, e.g. a school with a swimming pool."
+42,ADDRESS,"Provides the address of the property, combining up to three address lines (address1, address2, and address3). The postcode is recorded separately and not included here."
+43,LOCAL_AUTHORITY_LABEL,"The name of the local authority area where the property is located. This is for general information only. For reliable identification and analysis, use the Local Authority ONS code."
+44,CONSTITUENCY_LABEL,"The name of the UK parliamentary constituency where the property is located. This is for general information only. For reliable identification and analysis, use the Constituency ONS code."
+45,POSTTOWN,The post town of the property based on the Royal Mail address database. Used for mail delivery and address matching. May differ from local authority or constituency boundaries.
+46,NOMINATED_DATE,The default nominated date is the assessment date. The assessor can select an alternative nominated date no later than three months after the end of the assessment period.
+47,OR_ASSESSMENT_END_DATE,Specified end date of the assessment period.
+48,LODGEMENT_DATETIME,The date and time the EPC was officially lodged on the Energy Performance of Buildings Register. This timestamp determines when the certificate becomes valid. 
+49,OCCUPANCY_LEVEL,Occupancy during the hours of operation of the building.
+50,UPRN,"The Unique Property Reference Number is a 12-digit code that identifies the property, flat, building, or plot of land being assessed."
+51,UPRN_SOURCE,"The method of which the Unique Property Reference Number (UPRN) was added to the record. It will either say “Energy Assessor” if it was entered during the assessment, or “Address Matched” if it was added later using the government’s address-matching system. In some cases, this field may be blank or contain legacy values where UPRNs were not available or matched at the time."
+52,REPORT_TYPE,Type of assessment carried out on the building. 103: Display Energy Certificate (DEC) Operational Rating assessment specifically carried out on larger properties occupied by public authorities and frequently visited by the public.
+53,PAYBACK_TYPE,TODO
+54,RECOMMENDATION_ITEM,Used to order the recommendations on the output EPC.
+55,RECOMMENDATION_CODE,Shorthand code to represent the recommendation.
+56,RECOMMENDATION,Description of the suggested improvement.
+57,CO2_IMPACT,Descriptor for impact on co2 (e.g. LOW)

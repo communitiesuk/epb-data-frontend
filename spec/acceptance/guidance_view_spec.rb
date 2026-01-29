@@ -95,6 +95,13 @@ describe "Acceptance::GuidancePage", type: :feature do
 
       it "has the correct content for documents section" do
         expect(response.body).to have_css("h2", text: "Documents")
+        expect(response.body).to have_link("Domestic EPC Data Dictionary", href: "/download/data-dictionary?property_type=domestic")
+        expect(response.body).to have_link("Non-Domestic EPC Data Dictionary", href: "/download/data-dictionary?property_type=non_domestic")
+        expect(response.body).to have_link("Display EPC Data Dictionary", href: "/download/data-dictionary?property_type=display")
+      end
+
+      it "renders the csv icon" do
+        expect(response.body).to have_css("svg")
       end
 
       it "has the Get Help or Give Feedback section" do

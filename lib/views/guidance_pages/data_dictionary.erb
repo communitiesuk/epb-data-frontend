@@ -1,7 +1,7 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
     <div class="govuk-grid-column-two-thirds">
-      <div class="govuk-grid-row">
+      <div>
         <h1 class="govuk-heading-xl">Data dictionary</h1>
 
         <p class="govuk-body">
@@ -11,11 +11,83 @@
           The data dictionary is only available for Domestic EPC data.
         </p>
       </div>
-      <div class="govuk-grid-row">
+      <div>
         <h2 class="govuk-heading-l govuk-!-padding-top-4">
           Documents
         </h2>
       </div>
+    </div>
+  </div>
+</div>
+<div class="govuk-grid-row">
+  <div>
+    <div class="govuk-grid-column-one-quarter govuk-!-margin-left-1 download_icon">
+      <%= inline_svg(
+            "/images/download.svg",
+            width: 75,
+            height: 75
+          ) %>
+    </div>
+
+    <div class="govuk-grid-column-three-quarters govuk-!-padding-top-2">
+      <a
+        class="govuk-link govuk-!-font-size-27"
+        href="/download/data-dictionary?property_type=domestic">
+        Domestic EPC Data Dictionary
+      </a>
+      <p>
+        CSV file - 18.25 kB
+      </p>
+    </div>
+  </div>
+</div>
+<div class="govuk-grid-row">
+  <div>
+    <div class="govuk-grid-column-one-quarter govuk-!-margin-left-1 download_icon">
+      <%= inline_svg(
+            "/images/download.svg",
+            width: 75,
+            height: 75
+          ) %>
+    </div>
+
+    <div class="govuk-grid-column-three-quarters govuk-!-padding-top-2">
+      <a
+        class="govuk-link govuk-!-font-size-27"
+        href="/download/data-dictionary?property_type=non_domestic">
+        Non-Domestic EPC Data Dictionary
+      </a>
+      <p class="govuk-body">
+        CSV file - 6.25 kB
+      </p>
+    </div>
+  </div>
+</div>
+<div class="govuk-grid-row">
+  <div>
+    <div class="govuk-grid-column-one-quarter govuk-!-margin-left-1 download_icon">
+      <%= inline_svg(
+            "/images/download.svg",
+            width: 75,
+            height: 75
+          ) %>
+    </div>
+
+    <div class="govuk-grid-column-three-quarters govuk-!-padding-top-2">
+      <a
+        class="govuk-link govuk-!-font-size-27"
+        href="/download/data-dictionary?property_type=display">
+        Display EPC Data Dictionary
+      </a>
+      <p class="govuk-body">
+        CSV file - 9.37 kB
+      </p>
+    </div>
+  </div>
+</div>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <div class="govuk-grid-column-two-thirds">
       <%= erb :component__get_help %>
     </div>
   </div>
