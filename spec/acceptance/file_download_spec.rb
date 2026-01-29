@@ -160,4 +160,20 @@ describe "Acceptance::FileDownload", type: :feature do
       expect(response.headers["location"]).to include("https://user-data.s3.us-stubbed-1.amazonaws.com/codes.csv?X-Amz-Algorithm=AWS4-HMAC")
     end
   end
+
+  describe "get .get-energy-certificate-data.epb-frontend/download/data-dictionary" do
+    let(:property_type) do
+      "domestic"
+    end
+
+    let(:response) do
+      get "http://get-energy-performance-data/download/data-dictionary?property_type=#{property_type}"
+    end
+
+    it "calls download_data_dictionary_csv" do
+      expect(response.status).to eq(200)
+      expect(response.headers["Content-Type"]).to include("text/csv")
+      expect(response.headers["Content-Disposition"]).to include("attachment; filename=\"domestic_data_dictionary.csv\"")
+    end
+  end
 end

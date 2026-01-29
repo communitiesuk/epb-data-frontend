@@ -103,6 +103,7 @@ en:
     download_file:
       heading: "Download file"
       file_not_found: "File not found"
+      invalid_property_type: "Invalid property type"
     data_not_found: "No certificates were found. Try different filters."
 
   accessibility_statement:

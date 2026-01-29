@@ -65,6 +65,14 @@ module Errors
     end
   end
 
+  class InvalidCsvKey < RuntimeError
+    def initialize(csv_key, file_name)
+      @csv_key = csv_key
+      @file_name = file_name
+      super("Invalid key: '#{csv_key}' in the the #{file_name}. Remove this key from the csv.")
+    end
+  end
+
   class OneloginSigningError < RuntimeError
   end
 

@@ -33,6 +33,5 @@ class FrontendService < Controller::BaseController
   use Controller::ApiController
   use Controller::GuidanceController
   use Controller::ApiTechDocsController
-
   use Controller::OptOutController
 end

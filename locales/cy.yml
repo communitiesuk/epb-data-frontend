@@ -103,6 +103,7 @@ cy:
     download_file:
       heading: "Lawrlwytho ffeil"
       file_not_found: "Nid yw'r ffeil i'w dod o"
+      invalid_property_type: "Math eiddo annilys wedi'i ddarparu"
     data_not_found: "Heb ganfod unrhyw dystysgrifau. Rhowch gynnig ar hidlwyr gwahanol."
 
   accessibility_statement:
