@@ -15,8 +15,8 @@ describe "Acceptance::SignOut", type: :feature do
     expect(response.body).to have_selector("h1", text: "You have signed out")
   end
 
-  it "the link is included" do
-    expect(response.body).to have_link("GOV.UK One Login", href: "/login")
+  it "the one login link is included" do
+    expect(response.body).to have_link("GOV.UK One Login", href: "/login/authorize?referer=api/my-account")
   end
 
   it "includes the link text" do
