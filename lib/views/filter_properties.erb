@@ -3,44 +3,52 @@
     <% unless @errors.empty? %>
       <%= erb :error_summary, locals: { error_form_ids: @error_form_ids }%>
     <% end %>
-    <div class="govuk-grid-column-full-from-desktop">
-      <div class="govuk-grid-row">
-        <h1 class="govuk-heading-xl">
-          <%= ViewModels::FilterProperties.page_title(params["property_type"]) %>
-        </h1>
+  </div>
+</div>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <h1 class="govuk-heading-xl">
+      <%= ViewModels::FilterProperties.page_title(params["property_type"]) %>
+    </h1>
+  </div>
+</div>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-!-padding-top-4 govuk-!-padding-bottom-9">
+      <h2 class="govuk-heading-l">
+        <%= t('filter_properties.download_all_data.title') %>
+      </h2>
+      <div class="govuk-!-margin-top-6 govuk-!-margin-bottom-6">
+        <p class="govuk-body">
+          <%= t('filter_properties.download_all_data.will_get_data_for') %>
+        </p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li><%= ViewModels::FilterProperties.page_title(params["property_type"]) %> <%= t('download_started.recommendations') %></li>
+          <li><%= t('filter_properties.download_all_data.countries') %></li>
+          <% previous_month = Date.today << 1 %>
+          <li><%= t('filter_properties.download_all_data.date_range', previous_month: previous_month.strftime("%B %Y")) %></li>
+        </ul>
       </div>
-    </div>
-    <div class="govuk-grid-column-two-thirds">
-        <div class="govuk-grid-row govuk-!-padding-top-4 govuk-!-padding-bottom-9">
-          <h2 class="govuk-heading-l">
-            <%= t('filter_properties.download_all_data.title') %>
-          </h2>
-          <div class="govuk-!-margin-top-6 govuk-!-margin-bottom-6">
-            <p class="govuk-body">
-              <%= t('filter_properties.download_all_data.will_get_data_for') %>
-            </p>
-            <ul class="govuk-list govuk-list--bullet">
-              <li><%= ViewModels::FilterProperties.page_title(params["property_type"]) %> <%= t('download_started.recommendations') %></li>
-              <li><%= t('filter_properties.download_all_data.countries') %></li>
-              <% previous_month = Date.today << 1 %>
-              <li><%= t('filter_properties.download_all_data.date_range', previous_month: previous_month.strftime("%B %Y")) %></li>
-            </ul>
-          </div>
-          <p class="govuk-body">
-            <%= t('filter_properties.download_all_data.file_size') %>
-            <%= "#{ViewModels::FilterProperties.get_full_load_file_size(params["property_type"], locals[:use_case])}." %>
-          </p>
-          <a
-            href="/download/all?property_type=<%= params["property_type"] %>"
-            role="button"
-            draggable="false"
-            class="govuk-button"
-            data-module="govuk-button" >
-            <%= t('filter_properties.download_all_data.button_text') %>
-          </a>
-        </div>
-      <%= erb :component__filter_options %>
-      <%= erb :component__get_help %>
+      <p class="govuk-body">
+        <%= t('filter_properties.download_all_data.file_size') %>
+        <%= "#{ViewModels::FilterProperties.get_full_load_file_size(params["property_type"], locals[:use_case])}." %>
+      </p>
+      <a
+        href="/download/all?property_type=<%= params["property_type"] %>"
+        role="button"
+        draggable="false"
+        class="govuk-button"
+        data-module="govuk-button" >
+        <%= t('filter_properties.download_all_data.button_text') %>
+      </a>
     </div>
   </div>
+</div>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= erb :component__filter_options %>
+  </div>
+</div>
+<div class="govuk-grid-row">
+  <%= erb :component__get_help %>
 </div>

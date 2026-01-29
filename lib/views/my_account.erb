@@ -1,34 +1,32 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
-    <div class="govuk-grid-column-full">
-      <div class="govuk-grid-row">
-        <h1 class="govuk-heading-xl"><%= t('my_account.title') %></h1>
+    <div>
+      <h1 class="govuk-heading-xl"><%= t('my_account.title') %></h1>
 
-        <dl class="govuk-summary-list govuk-!-width-full">
-          <div class="govuk-summary-list__row" id="email-address">
-            <dt class="govuk-summary-list__key">
-              <%= t('my_account.email_address') %>
-            </dt>
-            <dd class="govuk-summary-list__value" id="email-address-value">
-              <%= ViewModels::MyAccount.get_email_address(session) %>
-            </dd>
-            <dd class="govuk-summary-list__actions">
-              <a class="govuk-link" id="email-sign-out" href="/sign-out"><%= t('my_account.sign_out') %><span class="govuk-visually-hidden"> sign out</span></a>
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row" id='bearer-token'>
-            <dt class="govuk-summary-list__key">
-              <%= t('my_account.bearer_token') %>
-            </dt>
-            <dd class="govuk-summary-list__value" id="bearer-token-value">
-              <%= ViewModels::MyAccount.get_bearer_token(session, locals[:use_case]) %>
-            </dd>
-            <dd class="govuk-summary-list__actions">
-              <%= erb :component__copy_bearer_token %>
-            </dd>
-          </div>
-        </dl>
-      </div>
+      <dl class="govuk-summary-list govuk-!-width-full">
+        <div class="govuk-summary-list__row" id="email-address">
+          <dt class="govuk-summary-list__key">
+            <%= t('my_account.email_address') %>
+          </dt>
+          <dd class="govuk-summary-list__value" id="email-address-value">
+            <%= ViewModels::MyAccount.get_email_address(session) %>
+          </dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" id="email-sign-out" href="/sign-out"><%= t('my_account.sign_out') %><span class="govuk-visually-hidden"> sign out</span></a>
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row" id='bearer-token'>
+          <dt class="govuk-summary-list__key">
+            <%= t('my_account.bearer_token') %>
+          </dt>
+          <dd class="govuk-summary-list__value" id="bearer-token-value">
+            <%= ViewModels::MyAccount.get_bearer_token(session, locals[:use_case]) %>
+          </dd>
+          <dd class="govuk-summary-list__actions">
+            <%= erb :component__copy_bearer_token %>
+          </dd>
+        </div>
+      </dl>
     </div>
   </div>
 </div>

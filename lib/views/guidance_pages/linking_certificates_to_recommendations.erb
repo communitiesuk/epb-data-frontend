@@ -1,36 +1,33 @@
 <div class="govuk-grid-row">
-  <div class="govuk-grid-column-full">
-    <div class="govuk-grid-column-two-thirds">
-      <div class="govuk-grid-row">
-        <h1 class="govuk-heading-xl">Linking certificates to recommendations</h1>
+  <div class="govuk-grid-column-two-thirds">
+    <div>
+      <h1 class="govuk-heading-xl">Linking certificates to recommendations</h1>
+      <p class="govuk-body">
+        The method to link certificates to their recommendations varies depending on how the data is accessed:
+      </p>
+    </div>
+    <div>
+      <h2 class="govuk-heading-m govuk-!-padding-top-4">
+        CSV download
+      </h2>
 
-        <p class="govuk-body">
-          The method to link certificates to their recommendations varies depending on how the data is accessed:
-        </p>
+      <p class="govuk-body">
+        For domestic EPC and non-domestic EPC data, the certificate numbers can be used to identify certificates and to link them with their recommendations.
+      </p>
 
+      <h2 class="govuk-heading-m govuk-!-padding-top-4">
+        API
+      </h2>
 
-      </div>
-      <div class="govuk-grid-row">
-        <h2 class="govuk-heading-m govuk-!-padding-top-4">
-          CSV download
-        </h2>
-
-        <p class="govuk-body">
-          For domestic EPC and non-domestic EPC data, the certificate numbers can be used to identify certificates and to link them with their recommendations.
-        </p>
-
-        <h2 class="govuk-heading-m govuk-!-padding-top-4">
-          API
-        </h2>
-
-        <p class="govuk-body">
-          For domestic EPC data, the recommendation reports are included in the EPCs.
-        </p>
-        <p class="govuk-body">
-          For non-domestic EPC data, the certificate numbers can be used to fetch the recommendation reports.
-        </p>
-      </div>
-      <%= erb :component__get_help %>
+      <p class="govuk-body">
+        For domestic EPC data, the recommendation reports are included in the EPCs.
+      </p>
+      <p class="govuk-body">
+        For non-domestic EPC data, the certificate numbers can be used to fetch the recommendation reports.
+      </p>
     </div>
   </div>
+</div>
+<div class="govuk-grid-row">
+  <%= erb :component__get_help %>
 </div>

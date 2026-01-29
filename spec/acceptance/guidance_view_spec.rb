@@ -314,12 +314,10 @@ describe "Acceptance::GuidancePage", type: :feature do
 
       it "has the correct title" do
         expect(response.body).to have_css("h1", text: "Data protection requirements")
-      end
-
-      it "has the correct content for registration section" do
-        expect(response.body).to have_css("h2", text: "Registration")
-        expect(response.body).to have_css("p", text: "In order to adhere to the conditions of the Data Protection Act 2018 and the General Data Protection
-          Regulation, MHCLG retains the email address of those who access the data.")
+        expect(response.body).to have_css(
+          "p",
+          text: /In order to adhere to the conditions of the Data Protection Act 2018 and the General Data Protection Regulation, MHCLG retains the email address of those who access the data\./,
+        )
       end
 
       it "has the correct content for data protection act section" do

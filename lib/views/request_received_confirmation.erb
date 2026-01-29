@@ -1,46 +1,46 @@
 <div class="govuk-grid-row">
-  <div class="govuk-grid-column-full">
-    <div class="govuk-grid-column-two-thirds">
-      <div class="govuk-grid-row">
-        <div class="govuk-panel govuk-panel--confirmation">
-          <h2 class="govuk-panel__title govuk-!-padding-6">
-            <%= t('request_received.title') %>
-          </h2>
-        </div>
-        <div class="govuk-!-padding-top-8 govuk-!-padding-bottom-6">
-          <h2 class="govuk-heading-m">
-            <%= t('request_received.header') %>
-          </h2>
-          <p class="govuk-body">
-            <%= t('request_received.body', email: locals[:email]) %>
-          </p>
-          <p class="govuk-body">
-            <%= t('request_received.delivery_time') %>
-          </p>
-          <p class="govuk-body">
-            <%= t('request_received.check_spam') %>
-          </p>
-
-          <div class="govuk-!-margin-top-7 govuk-!-margin-bottom-7">
-            <p class="govuk-body">
-              <%= t('request_received.requested_data_for') %>
-            </p>
-            <ul class="govuk-list govuk-list--bullet">
-              <li><%= ViewModels::FilterProperties.page_title(params["property_type"]) %> <% if params["recommendations"] %><%= t('request_received.recommendations') %><% end %></li>
-              <li><%= ViewModels::RequestReceivedConfirmation.selected_start_and_end_dates(params) %></li>
-              <li><%= ViewModels::RequestReceivedConfirmation.selected_area_type(params) %></li>
-              <% if params["property_type"] == 'domestic' %>
-                <li><%= t('request_received.energy_eff_rating') %> <%= ViewModels::RequestReceivedConfirmation.selected_eff_ratings(params) %></li>
-              <% end %>
-            </ul>
-          </div>
-
-          <p class="govuk-body">
-            <%= t('request_received.count_and_size', count: ViewModels::RequestReceivedConfirmation.get_formatted_download_count(locals[:download_count]) , size: ViewModels::RequestReceivedConfirmation.get_formatted_byte_size(locals[:download_count], params["property_type"])) %>.
-          </p>
-        </div>
+  <div class="govuk-grid-column-two-thirds">
+    <div>
+      <div class="govuk-panel govuk-panel--confirmation">
+        <h2 class="govuk-panel__title govuk-!-padding-6">
+          <%= t('request_received.title') %>
+        </h2>
       </div>
-      <%= erb :component__get_help %>
+      <div class="govuk-!-padding-top-8 govuk-!-padding-bottom-6">
+        <h2 class="govuk-heading-m">
+          <%= t('request_received.header') %>
+        </h2>
+        <p class="govuk-body">
+          <%= t('request_received.body', email: locals[:email]) %>
+        </p>
+        <p class="govuk-body">
+          <%= t('request_received.delivery_time') %>
+        </p>
+        <p class="govuk-body">
+          <%= t('request_received.check_spam') %>
+        </p>
+
+        <div class="govuk-!-margin-top-7 govuk-!-margin-bottom-7">
+          <p class="govuk-body">
+            <%= t('request_received.requested_data_for') %>
+          </p>
+          <ul class="govuk-list govuk-list--bullet">
+            <li><%= ViewModels::FilterProperties.page_title(params["property_type"]) %> <% if params["recommendations"] %><%= t('request_received.recommendations') %><% end %></li>
+            <li><%= ViewModels::RequestReceivedConfirmation.selected_start_and_end_dates(params) %></li>
+            <li><%= ViewModels::RequestReceivedConfirmation.selected_area_type(params) %></li>
+            <% if params["property_type"] == 'domestic' %>
+              <li><%= t('request_received.energy_eff_rating') %> <%= ViewModels::RequestReceivedConfirmation.selected_eff_ratings(params) %></li>
+            <% end %>
+          </ul>
+        </div>
+
+        <p class="govuk-body">
+          <%= t('request_received.count_and_size', count: ViewModels::RequestReceivedConfirmation.get_formatted_download_count(locals[:download_count]) , size: ViewModels::RequestReceivedConfirmation.get_formatted_byte_size(locals[:download_count], params["property_type"])) %>.
+        </p>
+      </div>
     </div>
   </div>
+</div>
+<div class="govuk-grid-row">
+  <%= erb :component__get_help %>
 </div>

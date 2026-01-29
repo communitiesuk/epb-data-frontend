@@ -1,54 +1,52 @@
 <div class="govuk-grid-row">
-  <div class="govuk-grid-column-full">
-    <div class="govuk-grid-column-two-thirds">
-      <div class="govuk-grid-row govuk-!-margin-bottom-7">
-        <h1 class="govuk-heading-xl">
-          <%= t('data_access_options.title') %>
-        </h1>
-        <div class="govuk-grid-column-one-half govuk-!-padding-0 govuk-!-padding-bottom-4">
-          <div class="govuk-cookie-banner govuk-!-margin-right-5" data-nosnippet role="region" aria-label="Download files">
-            <div class="govuk-cookie-banner__message govuk-width-container govuk-!-padding-4">
-              <h2 class="govuk-cookie-banner__heading govuk-heading-m">
-                <%= t('data_access_options.download_files.title') %>
-              </h2>
-              <div class="govuk-cookie-banner__content">
-                <p class="govuk-body"><%= t('data_access_options.download_files.description') %></p>
-              </div>
-              <div class="govuk-button-group">
-                <a
-                  href="/login/authorize"
-                  role="button"
-                  draggable="false"
-                  class="govuk-button"
-                  data-module="govuk-button" >
-                  <%= t('data_access_options.download_files.button_text') %>
-                </a>
-              </div>
+  <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-!-margin-bottom-7">
+      <h1 class="govuk-heading-xl">
+        <%= t('data_access_options.title') %>
+      </h1>
+      <div class="govuk-grid-column-one-half govuk-!-padding-0 govuk-!-padding-bottom-4">
+        <div class="govuk-cookie-banner govuk-!-margin-right-5" data-nosnippet role="region" aria-label="Download files">
+          <div class="govuk-cookie-banner__message govuk-width-container govuk-!-padding-4">
+            <h2 class="govuk-cookie-banner__heading govuk-heading-m">
+              <%= t('data_access_options.download_files.title') %>
+            </h2>
+            <div class="govuk-cookie-banner__content">
+              <p class="govuk-body"><%= t('data_access_options.download_files.description') %></p>
+            </div>
+            <div class="govuk-button-group">
+              <a
+                href="/login/authorize"
+                role="button"
+                draggable="false"
+                class="govuk-button"
+                data-module="govuk-button" >
+                <%= t('data_access_options.download_files.button_text') %>
+              </a>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="govuk-grid-column-one-half govuk-!-padding-0 govuk-!-padding-bottom-4">
-          <div class="govuk-cookie-banner govuk-!-margin-right-3" data-nosnippet role="region" aria-label="Use a developer API">
-            <div class="govuk-cookie-banner__message govuk-width-container govuk-!-padding-4">
-              <h2 class="govuk-cookie-banner__heading govuk-heading-m">
-                <%= t('data_access_options.use_api.title') %>
-              </h2>
-              <div class="govuk-cookie-banner__content">
-                <p class="govuk-body">
-                  <%= t('data_access_options.use_api.description') %>
-                </p>
-              </div>
-              <div class="govuk-button-group">
-                <a
-                  href="/guidance/energy-certificate-data-apis"
-                  role="button"
-                  draggable="false"
-                  class="govuk-button"
-                  data-module="govuk-button" >
-                  <%= t('data_access_options.use_api.button_text') %>
-                </a>
-              </div>
+      <div class="govuk-grid-column-one-half govuk-!-padding-0 govuk-!-padding-bottom-4">
+        <div class="govuk-cookie-banner govuk-!-margin-right-3" data-nosnippet role="region" aria-label="Use a developer API">
+          <div class="govuk-cookie-banner__message govuk-width-container govuk-!-padding-4">
+            <h2 class="govuk-cookie-banner__heading govuk-heading-m">
+              <%= t('data_access_options.use_api.title') %>
+            </h2>
+            <div class="govuk-cookie-banner__content">
+              <p class="govuk-body">
+                <%= t('data_access_options.use_api.description') %>
+              </p>
+            </div>
+            <div class="govuk-button-group">
+              <a
+                href="/guidance/energy-certificate-data-apis"
+                role="button"
+                draggable="false"
+                class="govuk-button"
+                data-module="govuk-button" >
+                <%= t('data_access_options.use_api.button_text') %>
+              </a>
             </div>
           </div>
         </div>

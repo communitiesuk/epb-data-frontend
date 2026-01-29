@@ -1,33 +1,33 @@
 <div class="govuk-grid-row">
-  <div class="govuk-grid-column-full">
-    <div class="govuk-grid-column-two-thirds">
-      <div class="govuk-grid-row">
-        <div class="govuk-panel govuk-panel--confirmation">
-          <h2 class="govuk-panel__title govuk-!-padding-6">
-            <%= t('download_started.title') %>
-          </h2>
-        </div>
-        <div class="govuk-!-padding-top-8 govuk-!-padding-bottom-6">
-          <h2 class="govuk-heading-m">
-            <%= t('download_started.header') %>
-          </h2>
-          <p class="govuk-body">
-            <%= t('download_started.requested_data_for') %>
-          </p>
-          <ul class="govuk-list govuk-list--bullet">
-            <li> <%= ViewModels::FilterProperties.page_title(params["property_type"]) %> <%= t('download_started.recommendations') %> </li>
-            <li> <%= ViewModels::DownloadStartedConfirmation.default_end_date %> </li>
-            <li> <%= t('download_started.england_and_wales') %> </li>
-            <% if params["property_type"] == 'domestic' %>
-              <li><%= t('download_started.energy_eff_ratings') %> </li>
-            <% end %>
-          </ul>
-          <p class="govuk-body">
-            <%= t('download_started.count_and_size') %>
-          </p>
-        </div>
+  <div class="govuk-grid-column-two-thirds">
+    <div>
+      <div class="govuk-panel govuk-panel--confirmation">
+        <h2 class="govuk-panel__title govuk-!-padding-6">
+          <%= t('download_started.title') %>
+        </h2>
       </div>
-      <%= erb :component__get_help %>
+      <div class="govuk-!-padding-top-8 govuk-!-padding-bottom-6">
+        <h2 class="govuk-heading-m">
+          <%= t('download_started.header') %>
+        </h2>
+        <p class="govuk-body">
+          <%= t('download_started.requested_data_for') %>
+        </p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li> <%= ViewModels::FilterProperties.page_title(params["property_type"]) %> <%= t('download_started.recommendations') %> </li>
+          <li> <%= ViewModels::DownloadStartedConfirmation.default_end_date %> </li>
+          <li> <%= t('download_started.england_and_wales') %> </li>
+          <% if params["property_type"] == 'domestic' %>
+            <li><%= t('download_started.energy_eff_ratings') %> </li>
+          <% end %>
+        </ul>
+        <p class="govuk-body">
+          <%= t('download_started.count_and_size') %>
+        </p>
+      </div>
     </div>
   </div>
+</div>
+<div class="govuk-grid-row">
+  <%= erb :component__get_help %>
 </div>
