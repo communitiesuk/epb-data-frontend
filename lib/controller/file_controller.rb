@@ -1,6 +1,6 @@
 module Controller
   class FileController < BaseController
-    include Helper::Csv
+    include Helper::DataDictionary
 
     get "/download" do
       file_name = params["file"]
