@@ -31,6 +31,16 @@ describe Helper::Assets do
       it "returns the content of the referenced asset" do
         expect(described_class.inline_svg("/images/an_svg.svg")).to eq asset_content
       end
+
+      context "when attributes are provided" do
+        it "injects the attributes into the SVG tag" do
+          svg_content = '<svg width="100" height="100"></svg>'
+          allow(File).to receive_messages(read: svg_content, exist?: true)
+
+          result = described_class.inline_svg("/images/an_svg.svg", { class: "icon", role: "img" })
+          expect(result).to eq '<svg class="icon" role="img" width="100" height="100"></svg>'
+        end
+      end
     end
 
     context "when inlining the content of an SVG asset using #data_uri_svg" do

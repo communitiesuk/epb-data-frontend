@@ -105,8 +105,8 @@ module Helpers
     Helper::Assets.path path
   end
 
-  def inline_svg(path)
-    Helper::Assets.inline_svg path
+  def inline_svg(path, attrs = {})
+    Helper::Assets.inline_svg(path, attrs)
   end
 
   def data_uri_svg(path)
