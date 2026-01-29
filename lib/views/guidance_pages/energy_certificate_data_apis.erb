@@ -38,7 +38,7 @@
 
         <div class="govuk-button-group">
           <a
-            href="/api/my-account"
+            href="/login/authorize?referer=api/my-account"
             role="button"
             draggable="false"
             class="govuk-button"
@@ -49,7 +49,7 @@
       <% end %>
 
       <% if Helper::Session.is_logged_in?(session) %>
-        <h2 class="govuk-heading-m govuk-!-padding-top-4">Bearer token</h2>
+        <h2 class="govuk-heading-m govuk-!-padding-top-4">My Bearer token</h2>
         <dl class="govuk-summary-list govuk-!-width-full">
           <div class="govuk-summary-list__row" id='bearer-token'>
             <dd class="govuk-summary-list__value" id="bearer-token-value">
