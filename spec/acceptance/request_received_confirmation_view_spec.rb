@@ -78,10 +78,6 @@ describe "Acceptance::RequestReceivedConfirmation", type: :feature do
         expect(last_response.body).to have_css(".govuk-body", text: "January 2023 - February 2025")
         expect(last_response.body).to have_css(".govuk-body", text: "Energy Efficiency Rating A, B")
       end
-
-      it "adds commas to the displayed number" do
-        expect(last_response.body).to have_css(".govuk-body", text: "Your request contains 123,456 certificates.")
-      end
     end
 
     context "when the request received is for domestic property" do
@@ -133,6 +129,22 @@ describe "Acceptance::RequestReceivedConfirmation", type: :feature do
 
       it "raises MissingDownloadCount error" do
         expect { Helper::Session.get_download_count_from_session(nil) }.to raise_error(Errors::MissingDownloadCount)
+      end
+    end
+
+    context "when the toggle is enabled to show the counts" do
+      before do
+        Helper::Toggles.set_feature("data-front-end-show-counts", true)
+        header "Referer", "http://get-energy-performance-data/filter-properties"
+        get "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}"
+      end
+
+      after do
+        Helper::Toggles.set_feature("data-front-end-show-counts", false)
+      end
+
+      it "adds commas to the displayed number" do
+        expect(last_response.body).to have_css(".govuk-body", text: "Your request contains 123,456 certificates.")
       end
     end
   end
