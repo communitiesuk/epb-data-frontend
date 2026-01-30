@@ -162,18 +162,56 @@ describe "Acceptance::FileDownload", type: :feature do
   end
 
   describe "get .get-energy-certificate-data.epb-frontend/download/data-dictionary" do
-    let(:property_type) do
-      "domestic"
+    context "when property_type is valid" do
+      let(:property_type) do
+        "domestic"
+      end
+
+      let(:response) do
+        get "http://get-energy-performance-data/download/data-dictionary?property_type=#{property_type}"
+      end
+
+      it "calls download_data_dictionary_csv" do
+        expect(response.status).to eq(200)
+        expect(response.headers["Content-Type"]).to include("text/csv")
+        expect(response.headers["Content-Disposition"]).to include("attachment; filename=\"domestic_data_dictionary.csv\"")
+      end
     end
 
-    let(:response) do
-      get "http://get-energy-performance-data/download/data-dictionary?property_type=#{property_type}"
+    context "when property_type is missing" do
+      let(:response) do
+        get "http://get-energy-performance-data/download/data-dictionary"
+      end
+
+      it "returns 404" do
+        expect(response.status).to eq(404)
+      end
+
+      it "shows the error page" do
+        expect(response.body).to include(
+          '<h1 class="govuk-heading-xl">Page not found</h1>',
+        )
+      end
     end
 
-    it "calls download_data_dictionary_csv" do
-      expect(response.status).to eq(200)
-      expect(response.headers["Content-Type"]).to include("text/csv")
-      expect(response.headers["Content-Disposition"]).to include("attachment; filename=\"domestic_data_dictionary.csv\"")
+    context "when property_type is invalid" do
+      let(:property_type) do
+        "invalid_type"
+      end
+
+      let(:response) do
+        get "http://get-energy-performance-data/download/data-dictionary?property_type=#{property_type}"
+      end
+
+      it "returns 404" do
+        expect(response.status).to eq(404)
+      end
+
+      it "shows the error page" do
+        expect(response.body).to include(
+          '<h1 class="govuk-heading-xl">Page not found</h1>',
+        )
+      end
     end
   end
 end

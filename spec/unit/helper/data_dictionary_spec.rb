@@ -1,5 +1,17 @@
+shared_context "when identifying lmk_key in the data dictionary csv file" do
+  def include_lmk_key?(file_path:)
+    File.open(file_path, "r") do |file|
+      header = file.readline
+      headers = header.strip.split(",").map(&:strip)
+      headers.include?("LMK_KEY")
+    end
+  end
+end
+
 describe Helper::DataDictionary do
   describe "#download_data_dictionary_csv" do
+    include_context "when identifying lmk_key in the data dictionary csv file"
+
     let(:property_type) { "domestic" }
     let(:test_file_name) { "#{property_type}_data_dictionary.csv" }
     let(:test_file_path) { "/fake/path/test_file.csv" }
@@ -10,14 +22,6 @@ describe Helper::DataDictionary do
         include Helper::DataDictionary
         def send_file(*); end
       }.new
-    end
-
-    def include_lmk_key?(file_path:)
-      File.open(file_path, "r") do |file|
-        header = file.readline
-        headers = header.strip.split(",").map(&:strip)
-        return headers.include?("LMK_KEY")
-      end
     end
 
     before do
