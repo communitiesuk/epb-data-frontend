@@ -3,7 +3,7 @@ class Helper::ValidateSession
     @session = session
   end
 
-  def validate_full_name_from_session
+  def validate_full_name
     full_name = Helper::Session.get_session_value(@session, :opt_out_name)
 
     if full_name.nil?
@@ -11,7 +11,7 @@ class Helper::ValidateSession
     end
   end
 
-  def validate_certificate_number_from_session
+  def validate_certificate_number
     certificate_number = Helper::Session.get_session_value(@session, :opt_out_certificate_number)
 
     if certificate_number.nil?
@@ -19,7 +19,7 @@ class Helper::ValidateSession
     end
   end
 
-  def validate_address_from_session(key)
+  def validate_address(key)
     address_detail = Helper::Session.get_session_value(@session, key)
 
     if %i[opt_out_address_line1 opt_out_address_postcode].include?(key) && address_detail.nil?
@@ -27,7 +27,7 @@ class Helper::ValidateSession
     end
   end
 
-  def validate_email_from_session
+  def validate_email
     email = Helper::Session.get_email_from_session(@session)
 
     if email.nil?
@@ -45,13 +45,13 @@ class Helper::ValidateSession
   end
 
   def validate_missing_opt_out_session
-    validate_full_name_from_session
-    validate_certificate_number_from_session
-    validate_address_from_session(:opt_out_address_line1)
-    validate_address_from_session(:opt_out_address_line2)
-    validate_address_from_session(:opt_out_address_town)
-    validate_address_from_session(:opt_out_address_postcode)
+    validate_full_name
+    validate_certificate_number
+    validate_address(:opt_out_address_line1)
+    validate_address(:opt_out_address_line2)
+    validate_address(:opt_out_address_town)
+    validate_address(:opt_out_address_postcode)
     validate_relationship_to_the_property
-    validate_email_from_session
+    validate_email
   end
 end

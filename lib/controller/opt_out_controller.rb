@@ -269,8 +269,7 @@ module Controller
                               "Occupant"
                             end
 
-        validate_session = Helper::ValidateSession.new(session)
-        validate_session.validate_missing_opt_out_session
+        Helper::ValidateSession.new(session).validate_missing_opt_out_session
 
         use_case = @container.get_object(:send_opt_out_request_email_use_case)
         max_retries = 3
