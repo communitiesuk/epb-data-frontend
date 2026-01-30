@@ -38,13 +38,13 @@
     </div>
 
     <div class="govuk-!-margin-bottom-7">
-      <h3 class="govuk-heading-s">schema_version (optional) </h3>
+      <h3 class="govuk-heading-s">schemaVersion (optional) </h3>
 
       <p class="govuk-body">The EPC schema version</p>
       <p class="govuk-body">As the value of codes may vary between EPC schema version you can specify this value to find and exact match</p>
 
       <p class="govuk-body">For example: </p>
-      <pre><code>?schema_version=RdSAP-Schema-19.0</code></pre>
+      <pre><code>?schemaVersion=RdSAP-Schema-19.0</code></pre>
     </div>
 
     <div class="govuk-!-margin-bottom-7">
@@ -71,7 +71,7 @@
       <p class="govuk-body">
         If the request is successful, the response body is json with a status code of 200:
       </p>
-      <pre><code class="javascript"><%= ViewModels::ApiTechDocs.curl_example "/api/codes/info?code=built_form&?key=1&schema_version=RdSAP-Schema-19.0" %></code></pre>
+      <pre><code class="javascript"><%= ViewModels::ApiTechDocs.curl_example "/api/codes/info?code=built_form&?key=1&schemaVersion=RdSAP-Schema-19.0" %></code></pre>
     </div>
   </div>
 </div>
