@@ -41,5 +41,12 @@ module Controller
 
       redirect localised_url("/cookies?success=true")
     end
+
+    get "/accessibility-statement" do
+      status 200
+      @page_title = t("accessibility_statement.top_heading")
+      @back_link_href = "/"
+      erb :accessibility_statement
+    end
   end
 end
