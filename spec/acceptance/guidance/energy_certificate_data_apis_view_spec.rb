@@ -43,7 +43,7 @@ describe "Acceptance::EnergyCertificateDataApis", type: :feature do
 
       it "has the correct content for how to get started section" do
         expect(response.body).to have_css("h2", text: "How to get started")
-        expect(response.body).to have_link("Sign in or Create account", href: "/api/my-account")
+        expect(response.body).to have_link("Sign in or Create account", href: "/login/authorize?referer=api/my-account")
       end
 
       it "has the correct content for Open API specification section" do
