@@ -41,12 +41,7 @@ module Controller
       aud = "#{host_url}/authorize"
       redirect_uri = "#{frontend_url}/login/callback"
 
-      case params["referer"]
-      when "api/my-account"
-        redirect_uri += "/admin"
-      when "opt-out"
-        redirect_uri += "/opt-out"
-      end
+      Helper::Session.set_session_value(session, :referer, params["referer"])
 
       nonce = request.cookies["nonce"] || SecureRandom.hex(16)
       state = request.cookies["state"] || SecureRandom.hex(16)
@@ -76,15 +71,41 @@ module Controller
     end
 
     get "/login/callback" do
-      one_login_callback(redirect_path: "type-of-properties")
-    end
+      redirect_path = Helper::Session.get_session_value(session, :referer)
 
-    get "/login/callback/admin" do
-      one_login_callback(redirect_path: "api/my-account")
-    end
+      raise Errors::AuthenticationError, "No referer found in session" if redirect_path.nil? || redirect_path.empty?
 
-    get "/login/callback/opt-out" do
-      one_login_callback(redirect_path: "opt-out/name")
+      validate_one_login_callback
+      token_response_hash = exchange_code_for_token(callback_path: request.path)
+      Helper::Onelogin.set_user_one_login_info(container: @container, session:, token_response_hash:)
+
+      if redirect_path == "opt-out"
+        redirect_path = "opt-out/name"
+      end
+
+      redirect "/#{redirect_path}?nocache=#{Time.now.to_i}"
+    rescue StandardError => e
+      case e
+      when Errors::StateMismatch, Errors::AccessDeniedError, Errors::LoginRequiredError, Errors::InvalidGrantError
+        message =
+          e.methods.include?(:message) ? e.message : e
+
+        error = { type: e.class.name, message: }
+
+        error[:backtrace] = e.backtrace if e.methods.include? :backtrace
+
+        @logger.error JSON.generate(error)
+
+        redirect_link = redirect_path == "opt-out" ? "/login?referer=opt-out" : "/login/authorize?referer=#{redirect_path}"
+
+        redirect localised_url(redirect_link)
+      when Errors::TokenExchangeError, Errors::AuthenticationError, Errors::NetworkError
+        @logger.warn "Authentication error: #{e.message}"
+        server_error(e)
+      else
+        @logger.error "Unexpected error during login callback: #{e.message}"
+        server_error(e)
+      end
     end
 
     get "/jwks" do
@@ -145,42 +166,6 @@ module Controller
       }
       use_case = @container.get_object(:request_onelogin_token_use_case)
       use_case.execute(**use_case_args)
-    end
-
-    def one_login_callback(redirect_path:)
-      validate_one_login_callback
-      token_response_hash = exchange_code_for_token(callback_path: request.path)
-      Helper::Onelogin.set_user_one_login_info(container: @container, session:, token_response_hash:)
-      redirect "/#{redirect_path}?nocache=#{Time.now.to_i}"
-    rescue StandardError => e
-      case e
-      when Errors::StateMismatch, Errors::AccessDeniedError, Errors::LoginRequiredError, Errors::InvalidGrantError
-        message =
-          e.methods.include?(:message) ? e.message : e
-
-        error = { type: e.class.name, message: }
-
-        error[:backtrace] = e.backtrace if e.methods.include? :backtrace
-
-        @logger.error JSON.generate(error)
-
-        redirect_link =  case redirect_path
-                         when "api/my-account"
-                           "/login/authorize?referer=api/my-account"
-                         when "opt-out/name"
-                           "/login?referer=opt-out"
-                         else
-                           "/login/authorize"
-                         end
-
-        redirect localised_url(redirect_link)
-      when Errors::TokenExchangeError, Errors::AuthenticationError, Errors::NetworkError
-        @logger.warn "Authentication error: #{e.message}"
-        server_error(e)
-      else
-        @logger.error "Unexpected error during login callback: #{e.message}"
-        server_error(e)
-      end
     end
   end
 end

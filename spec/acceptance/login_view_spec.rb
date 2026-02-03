@@ -8,14 +8,6 @@ describe "Acceptance::Login", type: :feature do
     "http://get-energy-performance-data/login/callback"
   end
 
-  let(:callback_admin_url) do
-    "#{callback_url}/admin"
-  end
-
-  let(:callback_opt_out_url) do
-    "#{callback_url}/opt-out"
-  end
-
   let(:response) { get login_url }
 
   let(:onelogin_gateway) do
@@ -226,40 +218,6 @@ describe "Acceptance::Login", type: :feature do
         )
       end
     end
-
-    context "when the request is received with api/my-account referer parameter" do
-      before do
-        allow(sign_onelogin_request_test_use_case).to receive(:execute).and_return("test_signed_request")
-        get "#{login_url}/authorize?referer=api/my-account"
-      end
-
-      it "calls the use case with the correct arguments" do
-        expect(sign_onelogin_request_test_use_case).to have_received(:execute).with(
-          aud: "#{ENV['ONELOGIN_HOST_URL']}/authorize",
-          client_id: ENV["ONELOGIN_CLIENT_ID"],
-          redirect_uri: "#{last_request.scheme}://#{last_request.host_with_port}/login/callback/admin",
-          state: last_response.cookies["state"].first,
-          nonce: last_response.cookies["nonce"].first,
-        )
-      end
-    end
-
-    context "when the request is received with opt-out referer parameter" do
-      before do
-        allow(sign_onelogin_request_test_use_case).to receive(:execute).and_return("test_signed_request")
-        get "#{login_url}/authorize?referer=opt-out"
-      end
-
-      it "calls the use case with the correct arguments" do
-        expect(sign_onelogin_request_test_use_case).to have_received(:execute).with(
-          aud: "#{ENV['ONELOGIN_HOST_URL']}/authorize",
-          client_id: ENV["ONELOGIN_CLIENT_ID"],
-          redirect_uri: "#{last_request.scheme}://#{last_request.host_with_port}/login/callback/opt-out",
-          state: last_response.cookies["state"].first,
-          nonce: last_response.cookies["nonce"].first,
-        )
-      end
-    end
   end
 
   describe "get .get-energy-certificate-data.epb-frontend/login/callback" do
@@ -274,6 +232,7 @@ describe "Acceptance::Login", type: :feature do
     context "when the request is received" do
       before do
         Timecop.freeze(Time.utc(2025, 6, 25, 12, 0, 0))
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :referer).and_return("test-redirect-path")
         get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
       end
 
@@ -305,122 +264,117 @@ describe "Acceptance::Login", type: :feature do
         expect(Helper::Session).to have_received(:set_session_value).with(anything, :user_id, "e40c46c3-4636-4a8a-abd7-be72e1a525f6")
       end
 
-      it "redirects to the type of properties page" do
-        redirect_uri = URI(last_response.location)
-        expect(redirect_uri.path).to eq("/type-of-properties")
-        expect(redirect_uri.query).to eq("nocache=1750852800")
+      context "when the referer session value is set to 'type-of-properties'" do
+        before do
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :referer).and_return("type-of-properties")
+          get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
+        end
+
+        it "redirects to the type of properties page" do
+          redirect_uri = URI(last_response.location)
+          expect(redirect_uri.path).to eq("/type-of-properties")
+          expect(redirect_uri.query).to eq("nocache=1750852800")
+        end
+      end
+
+      context "when the referer session value is set to 'api/my-account'" do
+        before do
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :referer).and_return("api/my-account")
+          get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
+        end
+
+        it "redirects to the my account page" do
+          redirect_uri = URI(last_response.location)
+          expect(redirect_uri.path).to eq("/api/my-account")
+          expect(redirect_uri.query).to eq("nocache=1750852800")
+        end
+      end
+
+      context "when the referer session value is set to 'opt-out'" do
+        before do
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :referer).and_return("opt-out")
+          get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
+        end
+
+        it "redirects to the opt-out/name page" do
+          redirect_uri = URI(last_response.location)
+          expect(redirect_uri.path).to eq("/opt-out/name")
+          expect(redirect_uri.query).to eq("nocache=1750852800")
+        end
+      end
+
+      context "when the referer session value is set to 'guidance/energy-certificate-data-apis'" do
+        before do
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :referer).and_return("guidance/energy-certificate-data-apis")
+          get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
+        end
+
+        it "redirects to the guidance/energy-certificate-data-apis page" do
+          redirect_uri = URI(last_response.location)
+          expect(redirect_uri.path).to eq("/guidance/energy-certificate-data-apis")
+          expect(redirect_uri.query).to eq("nocache=1750852800")
+        end
       end
     end
 
     context "when request raises StateMismatch error" do
+      context "when the referer session value is set to 'opt-out/name'" do
+        before do
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :referer).and_return("opt-out")
+          get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=different_test_state" }
+        end
+
+        it "redirects to the one login page with the correct referer" do
+          expect(last_response.status).to eq(302)
+          expect(last_response.headers["Location"]).to eq("http://get-energy-performance-data/login?referer=opt-out")
+        end
+      end
+
+      context "when the referer session value is set to 'api/my-account'" do
+        before do
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :referer).and_return("api/my-account")
+          get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=different_test_state" }
+        end
+
+        it "redirects to the OneLogin login page with the correct referer" do
+          expect(last_response.status).to eq(302)
+          expect(last_response.headers["Location"]).to eq("http://get-energy-performance-data/login/authorize?referer=api/my-account")
+        end
+      end
+
+      context "when the referer session value is set to 'type-of-properties'" do
+        before do
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :referer).and_return("type-of-properties")
+          get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=different_test_state" }
+        end
+
+        it "redirects to the OneLogin login page with the correct referer" do
+          expect(last_response.status).to eq(302)
+          expect(last_response.headers["Location"]).to eq("http://get-energy-performance-data/login/authorize?referer=type-of-properties")
+        end
+      end
+
+      context "when the referer session value is set to 'guidance/energy-certificate-data-apis'" do
+        before do
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :referer).and_return("guidance/energy-certificate-data-apis")
+          get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=different_test_state" }
+        end
+
+        it "redirects to the OneLogin login page with the correct referer" do
+          expect(last_response.status).to eq(302)
+          expect(last_response.headers["Location"]).to eq("http://get-energy-performance-data/login/authorize?referer=guidance/energy-certificate-data-apis")
+        end
+      end
+    end
+
+    context "when the redirect_path is missing in session" do
       before do
-        get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=different_test_state" }
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :referer).and_return(nil)
+        get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
       end
 
-      it "returns status 302" do
-        expect(last_response.status).to eq(302)
-      end
-
-      it "redirects to the one login login page" do
-        expect(last_response.headers["Location"]).to eq("http://get-energy-performance-data/login/authorize")
-      end
-    end
-  end
-
-  describe "get .get-energy-certificate-data.epb-frontend/login/callback/admin" do
-    before do
-      allow(request_onelogin_token_use_case).to receive(:execute).and_return(token_response)
-      allow(get_onelogin_user_info_use_case).to receive(:execute).and_return(user_info_response)
-      allow(Helper::Onelogin).to receive(:check_one_login_errors).and_return(true)
-      allow(Helper::Session).to receive(:set_session_value)
-      allow(get_user_id_use_case).to receive(:execute).and_return("e40c46c3-4636-4a8a-abd7-be72e1a525f6")
-    end
-
-    context "when the request is received" do
-      before do
-        Timecop.freeze(Time.utc(2025, 6, 25, 12, 0, 0))
-        get callback_admin_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
-      end
-
-      after do
-        Timecop.return
-      end
-
-      it "calls the request_onelogin_token_use_case with the right arguments" do
-        expect(request_onelogin_token_use_case).to have_received(:execute).with({ code: "test_code", redirect_uri: "http://get-energy-performance-data/login/callback/admin" })
-      end
-
-      it "returns status 302" do
-        expect(last_response.status).to eq(302)
-      end
-
-      it "redirects to the my-account page" do
-        redirect_uri = URI(last_response.location)
-        expect(redirect_uri.path).to eq("/api/my-account")
-        expect(redirect_uri.query).to eq("nocache=1750852800")
-      end
-    end
-
-    context "when request raises StateMismatch error" do
-      before do
-        get callback_admin_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=different_test_state" }
-      end
-
-      it "returns status 302" do
-        expect(last_response.status).to eq(302)
-      end
-
-      it "redirects to the one login login page" do
-        expect(last_response.headers["Location"]).to eq("http://get-energy-performance-data/login/authorize?referer=api/my-account")
-      end
-    end
-  end
-
-  describe "get .get-energy-certificate-data.epb-frontend/login/callback/opt-out" do
-    before do
-      allow(request_onelogin_token_use_case).to receive(:execute).and_return(token_response)
-      allow(get_onelogin_user_info_use_case).to receive(:execute).and_return(user_info_response)
-      allow(Helper::Onelogin).to receive(:check_one_login_errors).and_return(true)
-      allow(Helper::Session).to receive(:set_session_value)
-      allow(get_user_id_use_case).to receive(:execute).and_return("e40c46c3-4636-4a8a-abd7-be72e1a525f6")
-    end
-
-    context "when the request is received" do
-      before do
-        Timecop.freeze(Time.utc(2025, 6, 25, 12, 0, 0))
-        get callback_opt_out_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
-      end
-
-      after do
-        Timecop.return
-      end
-
-      it "calls the request_onelogin_token_use_case with the right arguments" do
-        expect(request_onelogin_token_use_case).to have_received(:execute).with({ code: "test_code", redirect_uri: "http://get-energy-performance-data/login/callback/opt-out" })
-      end
-
-      it "returns status 302" do
-        expect(last_response.status).to eq(302)
-      end
-
-      it "redirects to the /opt-out/name page" do
-        redirect_uri = URI(last_response.location)
-        expect(redirect_uri.path).to eq("/opt-out/name")
-        expect(redirect_uri.query).to eq("nocache=1750852800")
-      end
-    end
-
-    context "when request raises StateMismatch error" do
-      before do
-        get callback_opt_out_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=different_test_state" }
-      end
-
-      it "returns status 302" do
-        expect(last_response.status).to eq(302)
-      end
-
-      it "redirects to the login page" do
-        expect(last_response.headers["Location"]).to eq("http://get-energy-performance-data/login?referer=opt-out")
+      it "raises an authentication error" do
+        expect(last_response.status).to eq(500)
       end
     end
   end
