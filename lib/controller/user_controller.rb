@@ -16,19 +16,9 @@ module Controller
         unless owner == "yes" || occupant == "yes"
           redirect localised_url("/opt-out/ineligible")
         end
-      else
-        @back_link_href = request.referer || "/"
       end
 
-      authorize_url = case params["referer"]
-                      when "api/my-account"
-                        "/login/authorize?referer=api/my-account"
-                      when "opt-out"
-                        "/login/authorize?referer=opt-out"
-                      else
-                        "/login/authorize"
-                      end
-
+      authorize_url = "/login/authorize?referer=opt-out"
       erb :login, locals: { authorize_url: }
     rescue StandardError => e
       server_error(e)

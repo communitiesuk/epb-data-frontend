@@ -72,14 +72,13 @@ describe "Acceptance::Login", type: :feature do
   end
 
   describe "get .get-energy-certificate-data.epb-frontend/login" do
-    context "when the request received login page is rendered" do
+    before do
+      get "#{login_url}?referer=opt-out"
+    end
+
+    context "when the login page is rendered only for opt-out" do
       it "returns status 200" do
         expect(response.status).to eq(200)
-      end
-
-      it "shows a back link" do
-        header "Referer", "/previous_page"
-        expect(response.body).to have_link("Back", href: "/previous_page")
       end
 
       it "shows the correct title and body text" do
@@ -91,88 +90,7 @@ describe "Acceptance::Login", type: :feature do
       end
 
       it "has the correct Start now button" do
-        expect(response.body).to have_link("Start now", href: "/login/authorize")
-      end
-    end
-
-    context "when the request received includes a referer" do
-      context "when referer is 'api/my-account'" do
-        before do
-          get "#{login_url}?referer=api/my-account"
-        end
-
-        it "has the correct referer for Start now button (authorize_url)" do
-          expect(last_response.body).to have_link("Start now", href: "/login/authorize?referer=api/my-account")
-        end
-      end
-
-      context "when referer is 'opt-out'" do
-        context "when the owner is confirmed" do
-          before do
-            allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return("yes")
-            allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_occupant).and_return(nil)
-            get "#{login_url}?referer=opt-out"
-          end
-
-          it "returns status 200" do
-            expect(last_response.status).to eq(200)
-          end
-
-          it "has the correct referer for Start now button (authorize_url)" do
-            expect(last_response.body).to have_link("Start now", href: "/login/authorize?referer=opt-out")
-          end
-
-          it "has the correct title" do
-            expect(last_response.body).to have_css("h1", text: "Create your GOV.UK One Login or sign in")
-          end
-
-          it "has the correct text" do
-            expect(last_response.body).to have_css("p", text: "You need to log in or sign up to make an opt out request.")
-          end
-
-          it "has no back button" do
-            expect(last_response.body).not_to have_link("Back", href: "/previous_page")
-          end
-
-          it "has no link to my account" do
-            expect(last_response.body).not_to have_link("My account", href: "/api/my-account")
-          end
-        end
-
-        context "when the occupant is confirmed" do
-          before do
-            allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return("no")
-            allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_occupant).and_return("yes")
-
-            get "#{login_url}?referer=opt-out"
-          end
-
-          it "has the correct referer for Start now button (authorize_url)" do
-            expect(last_response.body).to have_link("Start now", href: "/login/authorize?referer=opt-out")
-          end
-        end
-
-        context "when there is no owner or occupant session data" do
-          before do
-            allow(Helper::Session).to receive(:get_session_value).and_return({ name: "yes" })
-            get "#{login_url}?referer=opt-out"
-          end
-
-          it "sends them to the ineligible page" do
-            expect(last_response.headers["location"]).to include("/opt-out/ineligible")
-          end
-        end
-
-        context "when there is no session data" do
-          before do
-            allow(Helper::Session).to receive(:get_session_value).and_return(nil)
-            get "#{login_url}?referer=opt-out"
-          end
-
-          it "sends them to the start page" do
-            expect(last_response.headers["location"]).to include("http://get-energy-performance-data/opt-out")
-          end
-        end
+        expect(response.body).to have_link("Start now", href: "/login/authorize?referer=opt-out")
       end
     end
   end
