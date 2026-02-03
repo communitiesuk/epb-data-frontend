@@ -238,6 +238,7 @@ module Controller
     get "/opt-out/check-your-answers" do
       status 200
       set_default
+      Helper::ValidateSession.new(session).validate_missing_opt_out_session
       erb :'opt_out/check_your_answers'
     rescue StandardError => e
       case e

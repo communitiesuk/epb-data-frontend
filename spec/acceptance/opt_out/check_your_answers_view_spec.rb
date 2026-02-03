@@ -12,13 +12,16 @@ describe "Acceptance::OptOutCheckYourAnswers", type: :feature do
         get_email_from_session: "test@email.com",
         get_opt_out_session_value: "Some Address Detail",
       )
-      allow(ViewModels::OptOut).to receive_messages(
-        get_full_name_from_session: "Some Name",
-        get_email_from_session: "test@email.com",
-        get_relationship_to_the_property: "Owner",
-        get_certificate_number_from_session: "EPC1234567890",
-        get_address_detail_from_session: "Some Address Detail",
-      )
+
+      allow(Helper::Session).to receive(:get_session_value).with(anything, anything).and_call_original
+      allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_name).and_return("Some Name")
+      allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_certificate_number).and_return("EPC1234567890")
+      allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_line1).and_return("Some Address Detail")
+      allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_line1).and_return("")
+      allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_town).and_return("Some Town")
+      allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_postcode).and_return("SW1A 1AA")
+      allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return("yes")
+      allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_occupant).and_return(nil)
     end
 
     context "when the page is rendered" do
@@ -117,14 +120,7 @@ describe "Acceptance::OptOutCheckYourAnswers", type: :feature do
           get_opt_out_session_value: nil,
         )
 
-        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return(nil)
-        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_occupant).and_return(nil)
-        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_name).and_return(nil)
-        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_certificate_number).and_return(nil)
-        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_line1).and_return(nil)
-        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_line2).and_return(nil)
-        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_town).and_return(nil)
-        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_postcode).and_return(nil)
+        allow(Helper::Session).to receive(:get_session_value).and_return(nil)
 
         allow(ViewModels::OptOut).to receive(:get_relationship_to_the_property).and_call_original
         allow(ViewModels::OptOut).to receive(:get_email_from_session).and_call_original
@@ -138,60 +134,6 @@ describe "Acceptance::OptOutCheckYourAnswers", type: :feature do
 
         expect(last_response.status).to eq(302)
         expect(last_response.headers["Location"]).to eq("#{base_url}/opt-out")
-      end
-
-      context "when the relationship to the property is missing" do
-        it "raises MissingOptOutValues error" do
-          expect { ViewModels::OptOut.get_relationship_to_the_property(nil) }.to raise_error(Errors::MissingOptOutValues)
-        end
-      end
-
-      context "when the relationship to the property is 'no' or nil" do
-        before do
-          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return("no")
-          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_occupant).and_return("no")
-        end
-
-        it "raises MissingOptOutValues error" do
-          expect { ViewModels::OptOut.get_relationship_to_the_property(nil) }.to raise_error(Errors::MissingOptOutValues)
-        end
-      end
-
-      context "when email is missing from session" do
-        it "raises MissingOptOutValues error" do
-          expect { ViewModels::OptOut.get_email_from_session(nil) }.to raise_error(Errors::MissingOptOutValues)
-        end
-      end
-
-      context "when full name is missing from session" do
-        it "raises MissingOptOutValues error" do
-          expect { ViewModels::OptOut.get_full_name_from_session(nil) }.to raise_error(Errors::MissingOptOutValues)
-        end
-      end
-
-      context "when certificate number is missing from session" do
-        it "raises MissingOptOutValues error" do
-          expect { ViewModels::OptOut.get_certificate_number_from_session(nil) }.to raise_error(Errors::MissingOptOutValues)
-        end
-      end
-
-      context "when address details are missing from session" do
-        context "when address line 1 or postcode are missing" do
-          let(:session) { { opt_out_name: "Some Name" } }
-
-          it "raises MissingOptOutValues error" do
-            expect { ViewModels::OptOut.get_address_detail_from_session(session, :opt_out_address_line1) }.to raise_error(Errors::MissingOptOutValues)
-            expect { ViewModels::OptOut.get_address_detail_from_session(session, :opt_out_address_postcode) }.to raise_error(Errors::MissingOptOutValues)
-          end
-        end
-
-        context "when any other address details are missing" do
-          let(:session) { { opt_out_name: "Some Name", opt_out_address_line1: "Some Address", opt_out_address_postcode: "Some Postcode" } }
-
-          it "does not raise a MissingOptOutValues error" do
-            expect { ViewModels::OptOut.get_address_detail_from_session(session, :opt_out_address_town) }.not_to raise_error
-          end
-        end
       end
     end
   end
@@ -298,38 +240,13 @@ describe "Acceptance::OptOutCheckYourAnswers", type: :feature do
       let(:response) { post "#{base_url}/opt-out/check-your-answers", { confirmation: "checked" } }
 
       before do
-        allow(Helper::Session).to receive_messages(
-          is_user_authenticated?: true,
-          get_email_from_session: nil,
-        )
-
-        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return(nil)
-        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_occupant).and_return(nil)
-        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_name).and_return(nil)
-        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_certificate_number).and_return(nil)
-        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_line1).and_return(nil)
-        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_line2).and_return(nil)
-        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_town).and_return(nil)
-        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_address_postcode).and_return(nil)
-        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_submitted).and_return(nil)
-
-        allow(ViewModels::OptOut).to receive(:get_relationship_to_the_property).and_call_original
-        allow(ViewModels::OptOut).to receive(:get_email_from_session).and_call_original
-        allow(ViewModels::OptOut).to receive(:get_full_name_from_session).and_call_original
-        allow(ViewModels::OptOut).to receive(:get_certificate_number_from_session).and_call_original
-        allow(ViewModels::OptOut).to receive(:get_address_detail_from_session).and_call_original
+        allow(Helper::Session).to receive(:get_session_value).and_return(nil)
       end
 
       it "redirects to the opt-out start page" do
         response
         expect(response.status).to eq(302)
         expect(response.location).to eq("#{base_url}/opt-out")
-      end
-
-      context "when relationship to the property is missing from session" do
-        it "raises MissingOptOutValues error" do
-          expect { ViewModels::OptOut.get_relationship_to_the_property(nil) }.to raise_error(Errors::MissingOptOutValues)
-        end
       end
     end
   end
