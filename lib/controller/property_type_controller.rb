@@ -6,22 +6,7 @@ module Controller
       @back_link_href = "/data-access-options"
       erb :type_of_properties
     rescue StandardError => e
-      case e
-      when Errors::AuthenticationError
-        logger.warn "Authentication error on type of properties controller: #{e.message}"
-        send_to_sentry(e)
-        message =
-          e.methods.include?(:message) ? e.message : e
-
-        error = { type: e.class.name, message: }
-
-        error[:backtrace] = e.backtrace if e.methods.include? :backtrace
-
-        @logger.error JSON.generate(error)
-        redirect "/login/authorize"
-      else
-        server_error(e)
-      end
+      server_error(e)
     end
 
     post "/type-of-properties" do

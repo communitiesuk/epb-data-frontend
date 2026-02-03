@@ -52,10 +52,21 @@ describe "Acceptance::MyAccount", type: :feature do
         expect(response.body).to have_css("#bearer-token-value", text: "kfhbks750D0RnC2oKGsoM936wKmtd4ZcoSw489rPo4FDqQ2SYQVtVnQ4PhZ33b46YZPNZXo6r")
       end
 
-      it "redirects to /login when the bearer token is missing" do
+      it "redirects to /login/authorize when the bearer token is missing" do
         allow(ViewModels::MyAccount).to receive(:get_bearer_token).and_raise(Errors::BearerTokenMissing)
         expect(response).to be_redirect
-        expect(response.location).to include("/login?referer=api/my-account")
+        expect(response.location).to include("/login/authorize?referer=api/my-account")
+      end
+    end
+
+    context "when the user is not authenticated" do
+      before { allow(Helper::Session).to receive(:is_user_authenticated?).and_raise(Errors::AuthenticationError, "User is not authenticated") }
+
+      after { allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true) }
+
+      it "redirects to the OneLogin login page" do
+        expect(response).to be_redirect
+        expect(response.location).to eq("http://get-energy-performance-data/login/authorize?referer=api/my-account")
       end
     end
   end

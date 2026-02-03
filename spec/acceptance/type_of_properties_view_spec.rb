@@ -91,11 +91,13 @@ describe "Acceptance::TypeOfProperties", type: :feature do
     end
 
     context "when the user is not authenticated" do
-      before { allow(Helper::Session).to receive(:is_user_authenticated?).and_raise(Errors::AuthenticationError, "User is not authenticated") }
+      before do
+        allow(Helper::Session).to receive(:is_user_authenticated?).and_raise(Errors::AuthenticationError, "User is not authenticated")
+      end
 
-      it "redirects to the login page" do
+      it "redirects to the OneLogin login page" do
         expect(response).to be_redirect
-        expect(response.location).to eq("http://get-energy-performance-data/login/authorize")
+        expect(response.location).to eq("http://get-energy-performance-data/login/authorize?referer=type-of-properties")
       end
     end
   end

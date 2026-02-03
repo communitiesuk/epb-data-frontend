@@ -140,7 +140,7 @@ describe "Acceptance::FilterProperties", type: :feature do
 
         it "redirects to the login page" do
           expect(response).to be_redirect
-          expect(response.location).to eq("http://get-energy-performance-data/login/authorize")
+          expect(response.location).to eq("http://get-energy-performance-data/login/authorize?referer=filter-properties")
         end
       end
     end

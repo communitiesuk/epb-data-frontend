@@ -49,17 +49,15 @@ module Controller
       end
       raise MaintenanceMode if request.path != "/healthcheck" && Helper::Toggles.enabled?("ebp-data-frontend-maintenance-mode")
     rescue Errors::AuthenticationError
-      redirect_url = "/login"
+      login_url = if request.path.start_with?("/opt-out")
+                    "/login?referer=opt-out"
+                  elsif request.path.start_with?("/download")
+                    "/login/authorize?referer=type-of-properties"
+                  else
+                    "/login/authorize?referer=#{request.path.delete_prefix('/')}"
+                  end
 
-      redirect_url += if request.path == "/api/my-account"
-                        "/authorize?referer=api/my-account"
-                      elsif request.path.start_with?("/opt-out")
-                        "?referer=opt-out"
-                      else
-                        "/authorize"
-                      end
-
-      redirect redirect_url
+      redirect login_url
     end
 
     configure :development do

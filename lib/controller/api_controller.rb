@@ -9,7 +9,7 @@ module Controller
       case e
       when Errors::BearerTokenMissing
         logger.warn "Bearer token missing: #{e.message}"
-        redirect "/login?referer=api/my-account"
+        redirect "/login/authorize?referer=api/my-account"
       else
         logger.error "Unexpected error during /api/my-account get endpoint: #{e.message}"
         server_error(e)
