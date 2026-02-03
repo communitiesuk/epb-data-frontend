@@ -255,7 +255,7 @@ module Controller
 
       if params["confirmation"] == "checked"
         details = get_opt_out_details_from_session(session)
-
+        Helper::ValidateSession.new(session).validate_missing_opt_out_session
         send_opt_out_email_with_retries(container: @container, details: details)
 
         Helper::Session.set_session_value(session, :opt_out_submitted, true)
