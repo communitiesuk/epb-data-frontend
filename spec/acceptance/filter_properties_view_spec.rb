@@ -172,7 +172,7 @@ describe "Acceptance::FilterProperties", type: :feature do
         end
 
         it "the user is redirected back to the one login login page" do
-          expect(valid_response.headers["Location"]).to eq("#{local_host}/login/authorize")
+          expect(valid_response.headers["Location"]).to eq("#{local_host}/login/authorize?referer=filter-properties")
         end
       end
     end
