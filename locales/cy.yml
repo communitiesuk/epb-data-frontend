@@ -247,7 +247,7 @@ cy:
     requested_data_for: "You requested data for:"
     energy_eff_rating: "Energy Efficiency Rating"
     recommendations: "and recommendations"
-    count: "Your request contains <strong>%{count}</strong> certificates."
+    count: "Your request contains <strong>%{count}</strong> certificates"
     size: "The estimated download size is <strong>%{size}</strong>"
 
   download_started:
