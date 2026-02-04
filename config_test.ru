@@ -13,6 +13,18 @@ loader.setup
 
 WebMock.enable!
 
+WebMock.stub_request(:post, "https://api.notifications.service.gov.uk/v2/notifications/email")
+       .to_return(status: 200,
+                  body: {
+                    id: "759b6a24-27bd-4fd3-80db-376e4eb8c391",
+                    template: {
+                      id: ENV["NOTIFY_OPT_OUT_TEMPLATE_ID"],
+                      "version": 2,
+                      "uri": "https://api.notifications.service.gov.uk/v2/template/#{ENV['NOTIFY_OPT_OUT_TEMPLATE_ID']}",
+                    },
+                  }.to_json,
+                  headers: {})
+
 TogglesStub.enable(nil)
 OauthStub.token
 
