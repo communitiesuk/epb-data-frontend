@@ -3,9 +3,8 @@
 require_relative "../../shared_context/shared_opt_out_context"
 require_relative "../../shared_examples/shared_opt_out_error"
 
-describe "Journey::OptOut::Occupant", :journey, type: :feature do
+describe "Journey::OptOut::Name", :journey, type: :feature do
   include_context "when testing the opt out process"
-
   let(:url) do
     "http://get-energy-performance-data.epb-frontend:9393/opt-out"
   end
@@ -36,35 +35,24 @@ describe "Journey::OptOut::Occupant", :journey, type: :feature do
 
   after(:all) { Process.kill("KILL", process_id) if process_id }
 
-  context "when visiting the occupant page" do
+  context "when visiting the '/name' page" do
     before do
-      visit_opt_out_occupant
+      visit_login
+      set_user_login
     end
 
-    context "when selecting the 'yes' radio button" do
-      before do
-        find("#label-occupant_yes").click
+    context "when inputting full name in the input" do
+      it "completes the POST and redirects to '/certificate-details' page" do
+        visit "#{url}/name"
+        fill_in "name", with: "John Test"
         click_button "Continue"
-      end
-
-      it "completes the POST and redirects to 'login' page" do
-        expect(page).to have_current_path("/login?referer=opt-out")
+        expect(page).to have_current_path("/opt-out/certificate-details")
       end
     end
 
-    context "when selecting the 'no' radio button" do
+    context "when submitting without inputting full name" do
       before do
-        find("#label-occupant_no").click
-        click_button "Continue"
-      end
-
-      it "completes the POST and redirects to '/ineligible' page" do
-        expect(page).to have_current_path("/opt-out/ineligible")
-      end
-    end
-
-    context "when submitting without selecting a radio button" do
-      before do
+        visit "#{url}/name"
         click_button "Continue"
       end
 
