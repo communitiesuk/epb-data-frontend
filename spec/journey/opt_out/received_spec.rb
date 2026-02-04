@@ -35,7 +35,7 @@ describe "Journey::OptOut::Received", :journey, type: :feature do
 
   after(:all) { Process.kill("KILL", process_id) if process_id }
 
-  context "when visiting the submitting and opt-out" do
+  context "when visiting the '/check-your-answers' page and submitting an opt-out" do
     before do
       visit_login
       set_user_login
@@ -49,7 +49,7 @@ describe "Journey::OptOut::Received", :journey, type: :feature do
       click_button "Continue"
     end
 
-    it "redirects to the received page after submitting" do
+    it "redirects to the received page" do
       find(".govuk-checkboxes__item #confirmation", visible: :all).click
       click_button "Submit request"
       expect(page).to have_css("h1", text: "Request received")
