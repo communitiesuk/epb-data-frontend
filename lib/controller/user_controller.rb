@@ -5,6 +5,7 @@ module Controller
 
       if params["referer"] == "opt-out"
         @hide_my_account = true
+        @hide_banner_text = true
 
         owner = Helper::Session.get_session_value(session, :opt_out_owner)
         occupant = Helper::Session.get_session_value(session, :opt_out_occupant)
