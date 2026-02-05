@@ -81,9 +81,11 @@
     <div class="govuk-service-navigation__container">
 
       <span class="govuk-service-navigation__service-name">
-        <a href="<%= localised_url('/') %>" class="govuk-service-navigation__link">
-          <%= get_gov_header %>
-        </a>
+        <% unless @hide_my_account %>
+          <a href="<%= localised_url('/') %>" class="govuk-service-navigation__link">
+            <%= get_gov_header %>
+          </a>
+        <% end %>
       </span>
 
       <% unless @hide_my_account %>

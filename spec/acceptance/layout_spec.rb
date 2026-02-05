@@ -103,6 +103,14 @@ describe "Acceptance::Layout", type: :feature do
           expect(response.body).not_to have_link("My account", href: "/api/my-account")
         end
       end
+
+      context "when on the opt-out journey" do
+        let(:response) { get "#{local_host}/opt-out" }
+
+        it "does not show 'gov header' banner text" do
+          expect(response.body).not_to have_link "Get energy performance of buildings data"
+        end
+      end
     end
   end
 end

@@ -298,6 +298,7 @@ module Controller
       @errors = {}
       @error_form_ids = []
       @hide_my_account = true
+      @hide_banner_text = true
     end
   end
 end
