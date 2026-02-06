@@ -3,7 +3,7 @@
 require_relative "../../shared_context/shared_opt_out_context"
 require_relative "../../shared_examples/shared_opt_out_error"
 
-describe "Journey::OptOut::Occupant", :journey, type: :feature do
+describe "Journey::OptOut::Ineligible", :journey, type: :feature do
   include_context "when testing the opt out process"
 
   let(:url) do
@@ -41,17 +41,6 @@ describe "Journey::OptOut::Occupant", :journey, type: :feature do
       visit_opt_out_occupant
     end
 
-    context "when selecting the 'yes' radio button" do
-      before do
-        find("#label-occupant_yes").click
-        click_button "Continue"
-      end
-
-      it "completes the POST and redirects to 'login' page" do
-        expect(page).to have_current_path("/login?referer=opt-out")
-      end
-    end
-
     context "when selecting the 'no' radio button" do
       before do
         find("#label-occupant_no").click
@@ -63,12 +52,38 @@ describe "Journey::OptOut::Occupant", :journey, type: :feature do
       end
     end
 
+    context "when selecting the 'yes' radio button" do
+      before do
+        find("#label-occupant_yes").click
+        click_button "Continue"
+      end
+
+      it "completes the POST and redirects to 'login' page" do
+        expect(page).to have_current_path("/login?referer=opt-out")
+      end
+
+      it "persists the session cookie" do
+        browser_cookie = Capybara.current_session.driver.browser.manage.all_cookies
+        expect(browser_cookie).to include(a_hash_including(name: "epb_data.session"))
+      end
+    end
+
     context "when submitting without selecting a radio button" do
       before do
         click_button "Continue"
       end
 
       it_behaves_like "when checking error messages"
+    end
+
+    context "when visiting the '/name' page without valid session values" do
+      before do
+        visit "#{url}/name"
+      end
+
+      it "redirects to '/opt-out' page" do
+        expect(page).to have_css("h1", text: "Opting out an EPC")
+      end
     end
   end
 end

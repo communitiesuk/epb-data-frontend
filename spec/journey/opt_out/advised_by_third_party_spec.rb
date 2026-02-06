@@ -3,7 +3,7 @@
 require_relative "../../shared_context/shared_opt_out_context"
 require_relative "../../shared_examples/shared_opt_out_error"
 
-describe "Journey::OptOut::Owner", :journey, type: :feature do
+describe "Journey::OptOut::AdvisedByThirdParty", :journey, type: :feature do
   include_context "when testing the opt out process"
 
   let(:url) do
@@ -36,35 +36,19 @@ describe "Journey::OptOut::Owner", :journey, type: :feature do
 
   after(:all) { Process.kill("KILL", process_id) if process_id }
 
-  context "when visiting the owner page" do
+  context "when visiting the opt out reason page" do
     before do
-      visit_opt_out_owner
+      visit_opt_out_reason
     end
 
-    context "when selecting the 'yes' radio button" do
+    context "when selecting the 'advised by someone else' radio button" do
       before do
-        find("#label-yes").click
+        find("#label-epc_advised").click
         click_button "Continue"
       end
 
-      it "completes the POST and redirects to 'login' page" do
-        expect(page).to have_current_path("/login?referer=opt-out")
-      end
-
-      it "persists the session cookie" do
-        browser_cookie = Capybara.current_session.driver.browser.manage.all_cookies
-        expect(browser_cookie).to include(a_hash_including(name: "epb_data.session"))
-      end
-    end
-
-    context "when selecting the 'no' radio button" do
-      before do
-        find("#label-no").click
-        click_button "Continue"
-      end
-
-      it "completes the POST and redirects to '/occupant' page" do
-        expect(page).to have_current_path("/opt-out/occupant")
+      it "completes the POST and redirects to the '/epc_advise' page" do
+        expect(page).to have_current_path("/opt-out/advised-by-third-party")
       end
     end
 
@@ -76,9 +60,9 @@ describe "Journey::OptOut::Owner", :journey, type: :feature do
       it_behaves_like "when checking error messages"
     end
 
-    context "when visiting the '/check-your-answers' page without session data" do
+    context "when visiting the '/certificate-details' page without valid session values" do
       before do
-        visit "#{url}/check-your-answers"
+        visit "#{url}/certificate-details"
       end
 
       it "redirects to '/opt-out' page" do

@@ -3,8 +3,9 @@
 require_relative "../../shared_context/shared_opt_out_context"
 require_relative "../../shared_examples/shared_opt_out_error"
 
-describe "Journey::OptOut::CertificateDetails", :journey, type: :feature do
+describe "Journey::OptOut::IncorrectEPC", :journey, type: :feature do
   include_context "when testing the opt out process"
+
   let(:url) do
     "http://get-energy-performance-data.epb-frontend:9393/opt-out"
   end
@@ -35,25 +36,23 @@ describe "Journey::OptOut::CertificateDetails", :journey, type: :feature do
 
   after(:all) { Process.kill("KILL", process_id) if process_id }
 
-  context "when visiting the '/certificate-details' page" do
+  context "when visiting the opt out reason page" do
     before do
-      visit_login
-      set_user_login
-      visit "#{url}/name"
-      fill_in "name", with: "John Test"
-      click_button "Continue"
+      visit_opt_out_reason
     end
 
-    it "completes the POST and redirects to '/check-your-answers'" do
-      fill_in "certificate_number", with: "1234-1234-1234-1234-1234"
-      fill_in "address-line1", with: "Test Street"
-      fill_in "address-town", with: "London"
-      fill_in "address-postcode", with: "TE5 1NG"
-      click_button "Continue"
-      expect(page).to have_current_path("/opt-out/check-your-answers")
+    context "when selecting the 'My EPC is incorrect' radio button" do
+      before do
+        find("#label-epc_incorrect").click
+        click_button "Continue"
+      end
+
+      it "completes the POST and redirects to the '/incorrect-epc' page" do
+        expect(page).to have_current_path("/opt-out/incorrect-epc")
+      end
     end
 
-    context "when submitting without inputting anything" do
+    context "when submitting without selecting a radio button" do
       before do
         click_button "Continue"
       end
@@ -61,7 +60,7 @@ describe "Journey::OptOut::CertificateDetails", :journey, type: :feature do
       it_behaves_like "when checking error messages"
     end
 
-    context "when visiting the '/check-your-answers' page without certificate details" do
+    context "when visiting the '/check-your-answers' page without valid session values" do
       before do
         visit "#{url}/check-your-answers"
       end
