@@ -75,15 +75,15 @@ module Helper
       Helper::Session.set_session_value(session, :user_id, user_id)
     end
 
+    def self.extract_kid(tls_keys)
+      onelogin_keys = JSON.parse(tls_keys)
+      onelogin_keys["kid"]
+    end
+
     private_class_method def self.extract_private_key(tls_keys)
       onelogin_keys = JSON.parse(tls_keys)
       private_key_pem = onelogin_keys["private_key"]
       OpenSSL::PKey::RSA.new(private_key_pem)
-    end
-
-    private_class_method def self.extract_kid(tls_keys)
-      onelogin_keys = JSON.parse(tls_keys)
-      onelogin_keys["kid"]
     end
   end
 end
