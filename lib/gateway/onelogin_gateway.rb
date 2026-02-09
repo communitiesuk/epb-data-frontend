@@ -59,6 +59,19 @@ module Gateway
       raise Errors::NetworkError, "Network error during user email fetch: #{e.message}"
     end
 
+    def fetch_jwks_document
+      jwks_uri = "#{ENV['ONELOGIN_HOST_URL']}/.well-known/jwks.json"
+      conn = faraday_connection(url: jwks_uri)
+      response = conn.get
+
+      {
+        jwks: response.body,
+        cache_control: response.headers["cache-control"],
+      }
+    rescue Faraday::Error => e
+      raise Errors::NetworkError, "Network error during JWKS fetch: #{e.message}"
+    end
+
   private
 
     def faraday_connection(url:)

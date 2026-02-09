@@ -44,7 +44,7 @@ describe Gateway::OneloginGateway do
           )
       end
 
-      it "return a token hash" do
+      it "returns a token hash" do
         expect(response).to be_a(Hash)
         expect(response).to eq({ "access_token" => "test_access_token", "expires_in" => 3600, "id_token" => "test_id_token", "token_type" => "Bearer" })
       end
@@ -176,6 +176,51 @@ describe Gateway::OneloginGateway do
         expect {
           gateway.get_user_info(access_token:)
         }.to raise_error(Errors::UserEmailNotVerified, /Email not verified for user: test@example.com/)
+      end
+    end
+  end
+
+  describe "#fetch_jwks_document" do
+    let(:url) { "#{ENV['ONELOGIN_HOST_URL']}/.well-known/jwks.json" }
+
+    let(:response) { gateway.fetch_jwks_document }
+
+    context "when the response is successful" do
+      before do
+        stub_request(:get, url)
+          .to_return(
+            body: '{
+              "keys": [
+                {
+                  "kty": "RSA",
+                  "kid": "test_kid",
+                  "use": "sig",
+                  "n": "test_n",
+                  "e": "AQAB"
+                }
+              ]
+            }',
+            headers: { "Content-Type" => "application/json", "cache-control" => "max-age=3600" },
+          )
+      end
+
+      it "returns the jwks and cache-control values in a hash" do
+        expected_response = {
+          jwks: {
+            "keys" => [
+              {
+                "kty" => "RSA",
+                "kid" => "test_kid",
+                "use" => "sig",
+                "n" => "test_n",
+                "e" => "AQAB",
+              },
+            ],
+          },
+          cache_control: "max-age=3600",
+        }
+
+        expect(response).to eq(expected_response)
       end
     end
   end
