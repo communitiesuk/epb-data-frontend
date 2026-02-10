@@ -10,6 +10,44 @@ describe Domain::JwksDocument do
     }
   end
 
+  let(:private_key) do
+    tls_keys = ENV["ONELOGIN_TLS_KEYS"]
+    onelogin_keys = JSON.parse(tls_keys)
+    key_pem = onelogin_keys["private_key"]
+    OpenSSL::PKey::RSA.new(key_pem)
+  end
+
+  let(:public_key) do
+    tls_keys = ENV["ONELOGIN_TLS_KEYS"]
+    onelogin_keys = JSON.parse(tls_keys)
+    key_pem = onelogin_keys["public_key"]
+    OpenSSL::PKey::RSA.new(key_pem)
+  end
+
+  let(:payload) do
+    <<~DOC
+      {
+        "at_hash": "ZDevf74CkYWNPa8qmflQyA",
+        "sub": "urn:fdc:gov.uk:2022:VtcZjnU4Sif2oyJZola3OkN0e3Jeku1cIMN38rFlhU4",
+        "aud": "#{ENV['ONELOGIN_CLIENT_ID']}",
+        "iss": "https://oidc.integration.account.gov.uk/",
+        "vot": "Cl.Cm",
+        "exp": 1704894526,
+        "iat": 1704894406,
+        "nonce": "lZk16Vmu8-h7r8L8bFFiHJxpC3L73UBpfb68WC1Qoqg",
+        "vtm": "https://oidc.integration.account.gov.uk/trustmark",
+        "sid": "dX5xv0XgHh6yfD1xy-ss_1EDK0I",
+        "auth_time": 1704894300
+       }
+    DOC
+  end
+
+  let(:algorithm) { "RS256" }
+
+  let(:kid) do
+    "355a5c3d-7a21-4e1e-8ab9-aa14c33d83fb"
+  end
+
   let(:jwks_document) do
     body = <<~DOC
       {
@@ -71,7 +109,7 @@ describe Domain::JwksDocument do
   describe "#validate_id_token" do
     context "when the id_token is valid" do
       it "returns true" do
-        expect(domain.validate_id_token).to be_truthy
+        expect(domain.validate_id_token).to be true
       end
 
       context "when the alg does not match" do
@@ -126,6 +164,33 @@ describe Domain::JwksDocument do
 
       it "raises an Authentication error" do
         expect { domain.validate_id_token }.to raise_error(Errors::AuthenticationError, "No matching key was found in the JWKS document for the kid")
+      end
+    end
+  end
+
+  describe "verify_signature?" do
+    let(:valid_key) do
+      JWT::JWK.new(public_key)
+    end
+
+    let(:invalid_private_key) do
+      OpenSSL::PKey::RSA.generate(2048)
+    end
+
+    context "when the signature is signed with the correct private key" do
+      it "returns true if we can decode with the corresponding public key" do
+        token_response_hash[:id_token] = JWT.encode(payload, private_key, algorithm, { kid: kid })
+        expect(domain.verify_signature?(jwks_document_key: valid_key, alg: algorithm)).to be true
+      end
+    end
+
+    context "when verifying the signature with and invalid key" do
+      before do
+        token_response_hash[:id_token] = JWT.encode(payload, invalid_private_key, algorithm, { kid: kid })
+      end
+
+      it "raise an error" do
+        expect { domain.verify_signature?(jwks_document_key: public_key, alg: algorithm) }.to raise_error(Errors::AuthenticationError, /ID token signature verification failed/)
       end
     end
   end

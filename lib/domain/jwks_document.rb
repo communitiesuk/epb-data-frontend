@@ -15,18 +15,44 @@ module Domain
     end
 
     def validate_id_token
-      matching_key = check_kid_match
+      kid, alg = extract_kid_and_alg_from_id_token
+
+      matching_key = find_matching_key_in_jwks(kid)
       raise Errors::AuthenticationError, "No matching key was found in the JWKS document for the kid" if matching_key.nil?
 
-      check_alg_match(jwks_document_key: matching_key)
+      alg_match = check_alg_match(jwks_document_key: matching_key, alg:)
+      raise Errors::AuthenticationError, "The alg in the JWKS document does not match the alg in the ID token" unless alg_match
+
+      verify_signature?(jwks_document_key: matching_key, alg:)
+    end
+
+    def verify_signature?(jwks_document_key:, alg:)
+      jwk = JWT::JWK.import(jwks_document_key)
+
+      JWT.decode(@id_token, jwk.public_key, true, { algorithm: alg })
+
+      true
+    rescue StandardError => e
+      case e
+      when JWT::DecodeError
+        raise Errors::AuthenticationError, "ID token signature verification failed: #{e.message}"
+      end
     end
 
   private
 
-    def check_kid_match
-      tls_keys = ENV["ONELOGIN_TLS_KEYS"]
-      kid = Helper::Onelogin.extract_kid(tls_keys)
+    def extract_kid_and_alg_from_id_token
+      header_segment = @id_token.split(".").first
+      decoded_header = Base64.urlsafe_decode64(header_segment)
+      header = JSON.parse(decoded_header)
 
+      kid = header["kid"]
+      alg = header["alg"]
+
+      [kid, alg]
+    end
+
+    def find_matching_key_in_jwks(kid)
       jwks_keys = @jwks_document["keys"]
       matching_key = jwks_keys.find { |key| key["kid"] == kid }
 
@@ -37,9 +63,7 @@ module Domain
       end
     end
 
-    def check_alg_match(jwks_document_key:)
-      alg = ENV["ALG"]
-
+    def check_alg_match(jwks_document_key:, alg:)
       if jwks_document_key.nil?
         return false
       end
