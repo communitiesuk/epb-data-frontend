@@ -7,6 +7,7 @@ module Controller
     get "/opt-out" do
       status 200
       set_default
+
       erb :'opt_out/start'
     rescue StandardError => e
       server_error(e)
@@ -15,6 +16,7 @@ module Controller
     get "/opt-out/reason" do
       status 200
       set_default
+      @page_title = "#{t('opt_out.reason.title')} – #{t('layout.body.govuk')}"
 
       erb :'opt_out/reason'
     rescue StandardError => e
@@ -46,6 +48,7 @@ module Controller
       status 200
       set_default
       incorrect_epc = Helper::Session.get_session_value(session, :opt_out_incorrect_epc)
+      @page_title = "#{t('opt_out.incorrect_epc.title')} – #{t('layout.body.govuk')}"
 
       if incorrect_epc.nil?
         redirect localised_url("/opt-out")
@@ -61,6 +64,7 @@ module Controller
       status 200
       set_default
       advised_by_third_party = Helper::Session.get_session_value(session, :opt_out_advised_epc)
+      @page_title = "#{t('opt_out.advised_by_third_party.title')} – #{t('layout.body.govuk')}"
 
       if advised_by_third_party.nil?
         redirect localised_url("/opt-out")
@@ -76,6 +80,7 @@ module Controller
       status 200
       set_default
       other_reason = Helper::Session.get_session_value(session, :opt_out_other_reason)
+      @page_title = "#{t('opt_out.owner.title')} – #{t('layout.body.govuk')}"
 
       if other_reason.nil?
         redirect localised_url("/opt-out")
@@ -112,6 +117,7 @@ module Controller
       set_default
       owner = Helper::Session.get_session_value(session, :opt_out_owner)
       occupant = Helper::Session.get_session_value(session, :opt_out_occupant)
+      @page_title = "#{t('opt_out.ineligible.title')} – #{t('layout.body.govuk')}"
 
       unless owner == "no" && occupant == "no"
         redirect localised_url("/opt-out")
@@ -126,6 +132,7 @@ module Controller
       status 200
       set_default
       owner = Helper::Session.get_session_value(session, :opt_out_owner)
+      @page_title = "#{t('opt_out.occupant.title')} – #{t('layout.body.govuk')}"
 
       unless owner == "no"
         redirect localised_url("/opt-out/owner")
@@ -160,6 +167,7 @@ module Controller
       set_default
       owner = Helper::Session.get_session_value(session, :opt_out_owner)
       occupant = Helper::Session.get_session_value(session, :opt_out_occupant)
+      @page_title = "#{t('opt_out.name.title')} – #{t('layout.body.govuk')}"
 
       if owner.nil? && occupant.nil?
         redirect localised_url("/opt-out")
@@ -197,6 +205,7 @@ module Controller
       owner = Helper::Session.get_session_value(session, :opt_out_owner)
       occupant = Helper::Session.get_session_value(session, :opt_out_occupant)
       name = Helper::Session.get_session_value(session, :opt_out_name)
+      @page_title = "#{t('opt_out.certificate_details.title')} – #{t('layout.body.govuk')}"
 
       if owner.nil? && occupant.nil?
         redirect localised_url("/opt-out")
@@ -239,6 +248,8 @@ module Controller
       status 200
       set_default
       Helper::ValidateSession.new(session).validate_missing_opt_out_session
+      @page_title = "#{t('opt_out.check_your_answers.title')} – #{t('layout.body.govuk')}"
+
       erb :'opt_out/check_your_answers'
     rescue StandardError => e
       case e
@@ -279,6 +290,7 @@ module Controller
       status 200
       set_default
       submitted = Helper::Session.get_session_value(session, :opt_out_submitted)
+      @page_title = "#{t('opt_out.received.title')} – #{t('layout.body.govuk')}"
 
       if submitted.nil?
         redirect localised_url("/opt-out/check-your-answers")
@@ -299,6 +311,7 @@ module Controller
       @error_form_ids = []
       @hide_my_account = true
       @hide_banner_text = true
+      @page_title = "#{t('opt_out.start_page.title')} – #{t('layout.body.govuk')}"
     end
   end
 end
