@@ -21,7 +21,7 @@ module Domain
       raise Errors::AuthenticationError, "No matching key was found in the JWKS document for the kid" if matching_key.nil?
 
       alg_match = check_alg_match(jwks_document_key: matching_key, alg:)
-      raise Errors::AuthenticationError, "The alg in the JWKS document does not match the alg in the ID token" unless alg_match
+      raise Errors::AuthenticationError, "The alg in the JWKS document does not match the algorithm (alg) in the ID token" unless alg_match
 
       verify_signature?(jwks_document_key: matching_key, alg:)
     end

@@ -6,7 +6,7 @@ describe Domain::JwksDocument do
       "access_token": "SlAV32hkKG",
       "token_type": "Bearer",
       "expires_in": 180,
-      "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzcyI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg",
+      "id_token": JWT.encode(payload, private_key, algorithm, { kid: kid }),
     }
   end
 
@@ -80,7 +80,6 @@ describe Domain::JwksDocument do
           }
         ]
       }
-
     DOC
 
     JSON.parse(body)
@@ -108,35 +107,12 @@ describe Domain::JwksDocument do
 
   describe "#validate_id_token" do
     context "when the id_token is valid" do
-      it "returns true" do
-        expect(domain.validate_id_token).to be true
+      before do
+        allow(domain).to receive(:verify_signature?).and_return(true)
       end
 
-      context "when the alg does not match" do
-        let(:jwks_document) do
-          body = <<~DOC
-            {
-              "keys": [
-                {
-                  "kty": "EC",
-                  "use": "sig",
-                  "crv": "P-256",
-                  "kid": "355a5c3d-7a21-4e1e-8ab9-aa14c33d83fb",
-                  "x": "BJnIZvnzJ9D_YRu5YL8a3CXjBaa5AxlX1xSeWDLAn9k",
-                  "y": "x4FU3lRtkeDukSWVJmDuw2nHVFVIZ8_69n4bJ6ik4bQ",
-                  "alg": "ES256"
-                }
-              ]
-            }
-
-          DOC
-
-          JSON.parse(body)
-        end
-
-        it "returns false" do
-          expect(domain.validate_id_token).to be false
-        end
+      it "finds the matching public key, kid and alg in the doc" do
+        expect(domain.validate_id_token).to be true
       end
     end
 
@@ -162,10 +138,24 @@ describe Domain::JwksDocument do
         JSON.parse(body)
       end
 
-      it "raises an Authentication error" do
-        expect { domain.validate_id_token }.to raise_error(Errors::AuthenticationError, "No matching key was found in the JWKS document for the kid")
+      context "when no matching kid is found" do
+        it "raises an Authentication error" do
+          expect { domain.validate_id_token }.to raise_error(Errors::AuthenticationError, "No matching key was found in the JWKS document for the kid")
+        end
+      end
+
+      context "when no kid is found but the alg does not match" do
+        before do
+          jwks_document["keys"][0]["kid"] = kid
+        end
+
+        it "raises an Authentication error" do
+          expect { domain.validate_id_token }.to raise_error(Errors::AuthenticationError, "The alg in the JWKS document does not match the algorithm (alg) in the ID token")
+        end
       end
     end
+
+
   end
 
   describe "verify_signature?" do
