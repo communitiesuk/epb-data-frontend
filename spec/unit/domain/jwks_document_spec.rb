@@ -108,7 +108,7 @@ describe Domain::JwksDocument do
   describe "#validate_id_token" do
     context "when the id_token is valid" do
       before do
-        allow(domain).to receive(:verify_signature?).and_return(true)
+        allow(Helper::VerifyTokenSignature).to receive(:get_payload).and_return(payload)
       end
 
       it "finds the matching public key, kid and alg in the doc" do
