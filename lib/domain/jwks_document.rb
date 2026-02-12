@@ -20,27 +20,27 @@ module Domain
       kid, alg = extract_kid_and_alg_from_id_token
 
       matching_key = find_matching_key_in_jwks(kid)
-      raise Errors::AuthenticationError, "No matching key was found in the JWKS document for the kid" if matching_key.nil?
+      raise Errors::ValidationError, "No matching key was found in the JWKS document for the kid" if matching_key.nil?
 
       alg_match = check_alg_match(jwks_document_key: matching_key, alg:)
-      raise Errors::AuthenticationError, "The alg in the JWKS document does not match the algorithm (alg) in the ID token" unless alg_match
+      raise Errors::ValidationError, "The alg in the JWKS document does not match the algorithm (alg) in the ID token" unless alg_match
 
       @payload = Helper::VerifyTokenSignature.get_payload(jwks_document_key: matching_key, alg:, id_token: @id_token)
 
       unless valid_issuer?
-        raise Errors::AuthenticationError, "Invalid id token issuer"
+        raise Errors::ValidationError, "Invalid id token issuer"
       end
 
       unless valid_audience?
-        raise Errors::AuthenticationError, "Invalid id token audience"
+        raise Errors::ValidationError, "Invalid id token audience"
       end
 
       unless valid_nonce?
-        raise Errors::AuthenticationError, "Invalid id token nonce"
+        raise Errors::ValidationError, "Invalid id token nonce"
       end
 
       unless vtr_includes_vot?
-        raise Errors::AuthenticationError, "The vtr in the login authorize request does not include the vot in the id token payload"
+        raise Errors::ValidationError, "The vtr in the login authorize request does not include the vot in the id token payload"
       end
 
       true

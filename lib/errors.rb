@@ -83,6 +83,13 @@ module Errors
     end
   end
 
+  class ValidationError < RuntimeError
+    def initialize(message)
+      @message = message
+      super(message)
+    end
+  end
+
   class StateMismatch < AuthenticationError
   end
 

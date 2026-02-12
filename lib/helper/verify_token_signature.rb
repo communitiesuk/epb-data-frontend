@@ -7,9 +7,9 @@ module Helper
 
       payload
     rescue JWT::DecodeError => e
-      raise Errors::AuthenticationError, "ID token signature verification failed: #{e.message}"
+      raise Errors::ValidationError, "ID token signature verification failed: #{e.message}"
     rescue JWT::ExpiredSignature => e
-      raise Errors::AuthenticationError, "ID token has expired: #{e.message}"
+      raise Errors::ValidationError, "ID token has expired: #{e.message}"
     end
   end
 end

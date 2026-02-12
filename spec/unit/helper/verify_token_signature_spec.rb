@@ -70,7 +70,7 @@ describe Helper::VerifyTokenSignature do
 
       it "raises an Authentication error (verify_expiration)" do
         expect { helper.get_payload(jwks_document_key: jwks_key, alg: algorithm, id_token:) }
-          .to raise_error(Errors::AuthenticationError, /ID token signature verification failed/i)
+          .to raise_error(Errors::ValidationError, /ID token signature verification failed/i)
       end
     end
 
@@ -82,7 +82,7 @@ describe Helper::VerifyTokenSignature do
 
       it "raises an Authentication error (verify_iat)" do
         expect { helper.get_payload(jwks_document_key: jwks_key, alg: algorithm, id_token:) }
-          .to raise_error(Errors::AuthenticationError, /ID token signature verification failed/i)
+          .to raise_error(Errors::ValidationError, /ID token signature verification failed/i)
       end
     end
 
@@ -92,7 +92,7 @@ describe Helper::VerifyTokenSignature do
       end
 
       it "raise an error" do
-        expect { helper.get_payload(jwks_document_key: jwks_key, alg: algorithm, id_token:) }.to raise_error(Errors::AuthenticationError, /ID token signature verification failed/)
+        expect { helper.get_payload(jwks_document_key: jwks_key, alg: algorithm, id_token:) }.to raise_error(Errors::ValidationError, /ID token signature verification failed/)
       end
     end
 
@@ -103,7 +103,7 @@ describe Helper::VerifyTokenSignature do
         end
 
         it "raises an Authentication error" do
-          expect { helper.get_payload(jwks_document_key: jwks_key, alg: algorithm, id_token:) }.to raise_error(Errors::AuthenticationError, /ID token signature verification failed: Signature has expired/)
+          expect { helper.get_payload(jwks_document_key: jwks_key, alg: algorithm, id_token:) }.to raise_error(Errors::ValidationError, /ID token signature verification failed: Signature has expired/)
         end
       end
 
@@ -114,7 +114,7 @@ describe Helper::VerifyTokenSignature do
         end
 
         it "raises an Authentication error" do
-          expect { helper.get_payload(jwks_document_key: jwks_key, alg: algorithm, id_token:) }.to raise_error(Errors::AuthenticationError, /ID token signature verification failed: Invalid iat/)
+          expect { helper.get_payload(jwks_document_key: jwks_key, alg: algorithm, id_token:) }.to raise_error(Errors::ValidationError, /ID token signature verification failed: Invalid iat/)
         end
       end
     end

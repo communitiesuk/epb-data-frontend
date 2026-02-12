@@ -142,7 +142,7 @@ describe Domain::JwksDocument do
 
       context "when no matching kid is found" do
         it "raises an Authentication error" do
-          expect { domain.validate_id_token? }.to raise_error(Errors::AuthenticationError, "No matching key was found in the JWKS document for the kid")
+          expect { domain.validate_id_token? }.to raise_error(Errors::ValidationError, "No matching key was found in the JWKS document for the kid")
         end
       end
 
@@ -152,7 +152,7 @@ describe Domain::JwksDocument do
         end
 
         it "raises an Authentication error" do
-          expect { domain.validate_id_token? }.to raise_error(Errors::AuthenticationError, "The alg in the JWKS document does not match the algorithm (alg) in the ID token")
+          expect { domain.validate_id_token? }.to raise_error(Errors::ValidationError, "The alg in the JWKS document does not match the algorithm (alg) in the ID token")
         end
       end
     end
@@ -168,7 +168,7 @@ describe Domain::JwksDocument do
         end
 
         it "raises an Authentication error" do
-          expect { domain.validate_id_token? }.to raise_error(Errors::AuthenticationError, /Invalid id token issuer/)
+          expect { domain.validate_id_token? }.to raise_error(Errors::ValidationError, /Invalid id token issuer/)
         end
       end
 
@@ -178,7 +178,7 @@ describe Domain::JwksDocument do
         end
 
         it "raises an Authentication error" do
-          expect { domain.validate_id_token? }.to raise_error(Errors::AuthenticationError, /Invalid id token audience/)
+          expect { domain.validate_id_token? }.to raise_error(Errors::ValidationError, /Invalid id token audience/)
         end
       end
 
@@ -188,7 +188,7 @@ describe Domain::JwksDocument do
         end
 
         it "raises an Authentication error" do
-          expect { domain.validate_id_token? }.to raise_error(Errors::AuthenticationError, /Invalid id token nonce/)
+          expect { domain.validate_id_token? }.to raise_error(Errors::ValidationError, /Invalid id token nonce/)
         end
       end
 
@@ -198,18 +198,18 @@ describe Domain::JwksDocument do
         end
 
         it "raises an Authentication error" do
-          expect { domain.validate_id_token? }.to raise_error(Errors::AuthenticationError, /The vtr in the login authorize request does not include the vot in the id token payload/)
+          expect { domain.validate_id_token? }.to raise_error(Errors::ValidationError, /The vtr in the login authorize request does not include the vot in the id token payload/)
         end
       end
     end
 
     context "when the verification of the signature fails" do
       before do
-        allow(Helper::VerifyTokenSignature).to receive(:get_payload).and_raise(Errors::AuthenticationError, "ID token signature verification failed: Signature has expired")
+        allow(Helper::VerifyTokenSignature).to receive(:get_payload).and_raise(Errors::ValidationError, "ID token signature verification failed: Signature has expired")
       end
 
       it "raises an Authentication error" do
-        expect { domain.validate_id_token? }.to raise_error(Errors::AuthenticationError, /ID token signature verification failed: Signature has expired/)
+        expect { domain.validate_id_token? }.to raise_error(Errors::ValidationError, /ID token signature verification failed: Signature has expired/)
       end
     end
   end
