@@ -1,5 +1,40 @@
 describe Domain::JwksDocument do
-  subject(:domain) { described_class.new(response:, token_response_hash:) }
+  subject(:domain) { described_class.new(response:, token_response_hash:, nonce:, vtr:) }
+
+  let(:onelogin_tls_keys) do
+    JSON.parse(ENV.fetch("ONELOGIN_TLS_KEYS"))
+  end
+  let(:private_key) do
+    key_pem = onelogin_tls_keys["private_key"]
+    OpenSSL::PKey::RSA.new(key_pem)
+  end
+  let(:public_key) do
+    key_pem = onelogin_tls_keys["public_key"]
+    OpenSSL::PKey::RSA.new(key_pem)
+  end
+  let(:algorithm) { "RS256" }
+  let(:kid) do
+    "355a5c3d-7a21-4e1e-8ab9-aa14c33d83fb"
+  end
+  let(:payload) do
+    body = <<~DOC
+      {
+        "at_hash": "ZDevf74CkYWNPa8qmflQyA",
+        "sub": "urn:fdc:gov.uk:2022:VtcZjnU4Sif2oyJZola3OkN0e3Jeku1cIMN38rFlhU4",
+        "aud": "#{ENV['ONELOGIN_CLIENT_ID']}",
+        "iss": "https://oidc.integration.account.gov.uk/",
+        "vot": "Cl.Cm",
+        "exp": #{Time.now.to_i + 10},
+        "iat": #{Time.now.to_i - 10},
+        "nonce": "lZk16Vmu8-h7r8L8bFFiHJxpC3L73UBpfb68WC1Qoqg",
+        "vtm": "https://oidc.integration.account.gov.uk/trustmark",
+        "sid": "dX5xv0XgHh6yfD1xy-ss_1EDK0I",
+        "auth_time": #{Time.now.to_i - 20}
+       }
+    DOC
+
+    JSON.parse(body)
+  end
 
   let(:token_response_hash) do
     {
@@ -9,45 +44,6 @@ describe Domain::JwksDocument do
       "id_token": JWT.encode(payload, private_key, algorithm, { kid: kid }),
     }
   end
-
-  let(:private_key) do
-    tls_keys = ENV["ONELOGIN_TLS_KEYS"]
-    onelogin_keys = JSON.parse(tls_keys)
-    key_pem = onelogin_keys["private_key"]
-    OpenSSL::PKey::RSA.new(key_pem)
-  end
-
-  let(:public_key) do
-    tls_keys = ENV["ONELOGIN_TLS_KEYS"]
-    onelogin_keys = JSON.parse(tls_keys)
-    key_pem = onelogin_keys["public_key"]
-    OpenSSL::PKey::RSA.new(key_pem)
-  end
-
-  let(:payload) do
-    <<~DOC
-      {
-        "at_hash": "ZDevf74CkYWNPa8qmflQyA",
-        "sub": "urn:fdc:gov.uk:2022:VtcZjnU4Sif2oyJZola3OkN0e3Jeku1cIMN38rFlhU4",
-        "aud": "#{ENV['ONELOGIN_CLIENT_ID']}",
-        "iss": "https://oidc.integration.account.gov.uk/",
-        "vot": "Cl.Cm",
-        "exp": 1704894526,
-        "iat": 1704894406,
-        "nonce": "lZk16Vmu8-h7r8L8bFFiHJxpC3L73UBpfb68WC1Qoqg",
-        "vtm": "https://oidc.integration.account.gov.uk/trustmark",
-        "sid": "dX5xv0XgHh6yfD1xy-ss_1EDK0I",
-        "auth_time": 1704894300
-       }
-    DOC
-  end
-
-  let(:algorithm) { "RS256" }
-
-  let(:kid) do
-    "355a5c3d-7a21-4e1e-8ab9-aa14c33d83fb"
-  end
-
   let(:jwks_document) do
     body = <<~DOC
       {
@@ -84,6 +80,12 @@ describe Domain::JwksDocument do
 
     JSON.parse(body)
   end
+  let(:nonce) do
+    "lZk16Vmu8-h7r8L8bFFiHJxpC3L73UBpfb68WC1Qoqg"
+  end
+  let(:vtr) do
+    '["Cl.Cm"]'
+  end
 
   let(:response) { { jwks: jwks_document, cache_control: "max-age=3600" } }
 
@@ -105,18 +107,18 @@ describe Domain::JwksDocument do
     end
   end
 
-  describe "#validate_id_token" do
-    context "when the id_token is valid" do
+  describe "#validate_id_token?" do
+    context "when id token passes all validations" do
       before do
         allow(Helper::VerifyTokenSignature).to receive(:get_payload).and_return(payload)
       end
 
-      it "finds the matching public key, kid and alg in the doc" do
-        expect(domain.validate_id_token).to be true
+      it "returns true" do
+        expect(domain.validate_id_token?).to be(true)
       end
     end
 
-    context "when the id_token is not valid" do
+    context "when validating signature" do
       let(:jwks_document) do
         body = <<~DOC
           {
@@ -140,47 +142,74 @@ describe Domain::JwksDocument do
 
       context "when no matching kid is found" do
         it "raises an Authentication error" do
-          expect { domain.validate_id_token }.to raise_error(Errors::AuthenticationError, "No matching key was found in the JWKS document for the kid")
+          expect { domain.validate_id_token? }.to raise_error(Errors::AuthenticationError, "No matching key was found in the JWKS document for the kid")
         end
       end
 
-      context "when no kid is found but the alg does not match" do
+      context "when kid is found but the alg does not match" do
         before do
           jwks_document["keys"][0]["kid"] = kid
         end
 
         it "raises an Authentication error" do
-          expect { domain.validate_id_token }.to raise_error(Errors::AuthenticationError, "The alg in the JWKS document does not match the algorithm (alg) in the ID token")
+          expect { domain.validate_id_token? }.to raise_error(Errors::AuthenticationError, "The alg in the JWKS document does not match the algorithm (alg) in the ID token")
         end
       end
     end
 
-
-  end
-
-  describe "verify_signature?" do
-    let(:valid_key) do
-      JWT::JWK.new(public_key)
-    end
-
-    let(:invalid_private_key) do
-      OpenSSL::PKey::RSA.generate(2048)
-    end
-
-    context "when the signature is signed with the correct private key" do
-      it "returns true if we can decode with the corresponding public key" do
-        token_response_hash[:id_token] = JWT.encode(payload, private_key, algorithm, { kid: kid })
-        expect(domain.verify_signature?(jwks_document_key: valid_key, alg: algorithm)).to be true
-      end
-    end
-
-    context "when verifying the signature with and invalid key" do
+    context "when validating id token payload claims" do
       before do
-        token_response_hash[:id_token] = JWT.encode(payload, invalid_private_key, algorithm, { kid: kid })
+        allow(Helper::VerifyTokenSignature).to receive(:get_payload).and_return(payload)
       end
 
-      it "raise an error" do
-        expect { domain.verify_signature?(jwks_document_key: public_key, alg: algorithm) }.to raise_error(Errors::AuthenticationError, /ID token signature verification failed/)
+      context "when the id token issuer does not match" do
+        before do
+          payload["iss"] = "https://invalid-issuer.com/"
+        end
+
+        it "raises an Authentication error" do
+          expect { domain.validate_id_token? }.to raise_error(Errors::AuthenticationError, /Invalid id token issuer/)
+        end
+      end
+
+      context "when the audience claim does not match the expected client id" do
+        before do
+          payload["aud"] = "invalid-client-id"
+        end
+
+        it "raises an Authentication error" do
+          expect { domain.validate_id_token? }.to raise_error(Errors::AuthenticationError, /Invalid id token audience/)
+        end
+      end
+
+      context "when nonce value in the payload does not match the nonce in the /login/authorize request" do
+        before do
+          payload["nonce"] = "invalid-nonce-value"
+        end
+
+        it "raises an Authentication error" do
+          expect { domain.validate_id_token? }.to raise_error(Errors::AuthenticationError, /Invalid id token nonce/)
+        end
+      end
+
+      context "when vtr in the login authorize request does not match the vot in the id token payload" do
+        before do
+          payload["vot"] = "another-vot-value"
+        end
+
+        it "raises an Authentication error" do
+          expect { domain.validate_id_token? }.to raise_error(Errors::AuthenticationError, /The vtr in the login authorize request does not include the vot in the id token payload/)
+        end
+      end
+    end
+
+    context "when the verification of the signature fails" do
+      before do
+        allow(Helper::VerifyTokenSignature).to receive(:get_payload).and_raise(Errors::AuthenticationError, "ID token signature verification failed: Signature has expired")
+      end
+
+      it "raises an Authentication error" do
+        expect { domain.validate_id_token? }.to raise_error(Errors::AuthenticationError, /ID token signature verification failed: Signature has expired/)
       end
     end
   end
