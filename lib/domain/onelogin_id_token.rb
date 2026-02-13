@@ -1,5 +1,5 @@
 module Domain
-  class JwksDocument
+  class OneloginIdToken
     def initialize(response:, token_response_hash:, nonce:, vtr:)
       @response = response
       @jwks_document = response[:jwks]
@@ -16,17 +16,31 @@ module Domain
       seconds ? seconds[1].to_i : nil
     end
 
-    def validate_id_token?
+    def fetch_matching_key
       kid, alg = extract_kid_and_alg_from_id_token
 
-      matching_key = find_matching_key_in_jwks(kid)
-      raise Errors::ValidationError, "No matching key was found in the JWKS document for the kid" if matching_key.nil?
+      @matching_key = find_matching_key_in_jwks(kid)
+      raise Errors::ValidationError, "No matching key was found in the JWKS document for the kid" if @matching_key.nil?
 
-      alg_match = check_alg_match(jwks_document_key: matching_key, alg:)
+      alg_match = check_alg_match(alg:)
       raise Errors::ValidationError, "The alg in the JWKS document does not match the algorithm (alg) in the ID token" unless alg_match
 
-      @payload = Helper::VerifyTokenSignature.get_payload(jwks_document_key: matching_key, alg:, id_token: @id_token)
+      @matching_key
+    end
 
+    def verify_signature(alg:)
+      jwk = JWT::JWK.import(@matching_key)
+
+      @payload, _header = JWT.decode(@id_token, jwk.public_key, true, { algorithm: alg, verify_expiration: true, verify_iat: true })
+
+      @payload
+    rescue JWT::ExpiredSignature => e
+      raise Errors::ValidationError, "ID token has expired: #{e.message}"
+    rescue JWT::DecodeError => e
+      raise Errors::ValidationError, "ID token signature verification failed: #{e.message}"
+    end
+
+    def validate_claims
       unless valid_issuer?
         raise Errors::ValidationError, "Invalid id token issuer"
       end
@@ -63,12 +77,12 @@ module Domain
       @jwks_document["keys"].find { |key| key["kid"] == kid }
     end
 
-    def check_alg_match(jwks_document_key:, alg:)
-      if jwks_document_key.nil?
+    def check_alg_match(alg:)
+      if @matching_key.nil?
         return false
       end
 
-      jwks_document_key["alg"] == alg
+      @matching_key["alg"] == alg
     end
 
     def valid_issuer?

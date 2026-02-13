@@ -9,12 +9,6 @@ module Helper
       @expires_at = @cached_at + @ttl
     end
 
-    def get_jwks_document
-      return nil if expired?
-
-      @jwks_document
-    end
-
     def expired?
       return true if @expires_at.nil?
 

@@ -20,38 +20,6 @@ describe Helper::JwksDocumentCache do
     end
   end
 
-  describe "#get_jwks_document" do
-    context "when the cache is present" do
-      around do |example|
-        Timecop.freeze(current_time) { example.run }
-      end
-
-      before do
-        cache.jwks_document = jwks_document
-        cache.set_expires_at(ttl)
-      end
-
-      it "returns the cached JWKS document" do
-        expect(cache.get_jwks_document).to eq(jwks_document)
-      end
-    end
-
-    context "when the cache is expired" do
-      around do |example|
-        Timecop.freeze(current_time) do
-          cache.jwks_document = jwks_document
-          cache.set_expires_at(ttl)
-
-          Timecop.travel(current_time + ttl + 1) { example.run }
-        end
-      end
-
-      it "returns nil" do
-        expect(cache.get_jwks_document).to be_nil
-      end
-    end
-  end
-
   describe "#expired?" do
     context "when expires_at is nil" do
       it "returns true" do
