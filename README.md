@@ -83,7 +83,7 @@ To run the respective test suites:
    change directory into the root of the cloned folder: `$ cd epb-data-frontend`
 2. Start the web server(s) using the following command: `$ make run ARGS=config_test.ru`
 3. Open <http://get-energy-performance-data.epb-frontend:9292> in your favourite browser to
-   run the test stubs server.
+   run the test server with htpp.
 
 #### The integrated server
 
@@ -94,10 +94,10 @@ To run the respective test suites:
 
 #### Running with One Login Simulator
 
-The site uses GOV.UK One Login to manage user access
-To test this on your local host you will need to run One Login Simulator, this will mimic the authorization process and allow user to continue  
+The site uses GOV.UK One Login to manage user access.</br>
+To test this on your local host you will need to run One Login Simulator, this will mimic the authorization process and allow user access to continue.
 
 1. The run the One Login Simulator `$ make one-login`
 2. To see the configuration of the One Login Simulator `$ curl localhost:3333/config`
 
-This means the simulator is set to authorize request from made http://127.0.0.1/9292 and send callback response to same server
+This allows the simulator to authorize requests from http://127.0.0.1/9292 and send the callback response to the same domain.
