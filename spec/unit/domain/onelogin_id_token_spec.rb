@@ -71,7 +71,7 @@ describe Domain::OneloginIdToken do
       end
 
       it "returns the payload" do
-        expect(domain.verify_signature(alg: algorithm)).to eq(payload)
+        expect(domain.verify_signature).to eq(payload)
       end
     end
 
@@ -81,7 +81,7 @@ describe Domain::OneloginIdToken do
       end
 
       it "raise an error" do
-        expect { domain.verify_signature(alg: algorithm) }.to raise_error(Errors::ValidationError, /ID token signature verification failed/)
+        expect { domain.verify_signature }.to raise_error(Errors::ValidationError, /ID token signature verification failed/)
       end
     end
 
@@ -93,7 +93,7 @@ describe Domain::OneloginIdToken do
       end
 
       it "raises an Authentication error (verify_expiration)" do
-        expect { domain.verify_signature(alg: algorithm) }
+        expect { domain.verify_signature }
           .to raise_error(Errors::ValidationError, /ID token has expired: Signature has expired/i)
       end
     end
@@ -106,7 +106,7 @@ describe Domain::OneloginIdToken do
       end
 
       it "raises an Authentication error (verify_iat)" do
-        expect { domain.verify_signature(alg: algorithm) }
+        expect { domain.verify_signature }
           .to raise_error(Errors::ValidationError, /ID token signature verification failed: Invalid iat/i)
       end
     end
@@ -116,7 +116,7 @@ describe Domain::OneloginIdToken do
     context "when all claims are valid" do
       before do
         domain.fetch_matching_key
-        domain.verify_signature(alg: algorithm)
+        domain.verify_signature
       end
 
       it "returns true" do
@@ -130,7 +130,7 @@ describe Domain::OneloginIdToken do
         token_response_hash[:id_token] = JWT.encode(invalid_issuer_payload, private_key, algorithm, { kid: kid })
 
         domain.fetch_matching_key
-        domain.verify_signature(alg: algorithm)
+        domain.verify_signature
       end
 
       it "raises an Authentication error" do
@@ -144,7 +144,7 @@ describe Domain::OneloginIdToken do
         token_response_hash[:id_token] = JWT.encode(invalid_audience_payload, private_key, algorithm, { kid: kid })
 
         domain.fetch_matching_key
-        domain.verify_signature(alg: algorithm)
+        domain.verify_signature
       end
 
       it "raises an Authentication error" do
@@ -158,7 +158,7 @@ describe Domain::OneloginIdToken do
         token_response_hash[:id_token] = JWT.encode(invalid_nonce_payload, private_key, algorithm, { kid: kid })
 
         domain.fetch_matching_key
-        domain.verify_signature(alg: algorithm)
+        domain.verify_signature
       end
 
       it "raises an Authentication error" do
@@ -172,7 +172,7 @@ describe Domain::OneloginIdToken do
         token_response_hash[:id_token] = JWT.encode(invalid_vot_payload, private_key, algorithm, { kid: kid })
 
         domain.fetch_matching_key
-        domain.verify_signature(alg: algorithm)
+        domain.verify_signature
       end
 
       it "raises an Authentication error" do

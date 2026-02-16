@@ -104,7 +104,7 @@ describe UseCase::ValidateIdToken do
     context "when the verify_signature fails" do
       before do
         allow(onelogin_domain).to receive_messages(fetch_matching_key: response[:jwks]["keys"][2], extract_max_age_from_cache_control: 3600)
-        allow(onelogin_domain).to receive(:verify_signature).with(anything).and_raise(Errors::ValidationError, "ID token signature verification failed: Invalid signature")
+        allow(onelogin_domain).to receive(:verify_signature).and_raise(Errors::ValidationError, "ID token signature verification failed: Invalid signature")
         allow(onelogin_gateway).to receive(:fetch_jwks_document).and_return(response)
         allow(Domain::OneloginIdToken).to receive(:new).with(anything).and_return(onelogin_domain)
       end

@@ -28,10 +28,10 @@ module Domain
       @matching_key
     end
 
-    def verify_signature(alg:)
+    def verify_signature
       jwk = JWT::JWK.import(@matching_key)
 
-      @payload, _header = JWT.decode(@id_token, jwk.public_key, true, { algorithm: alg, verify_expiration: true, verify_iat: true })
+      @payload, _header = JWT.decode(@id_token, jwk.public_key, true, { algorithm: @matching_key["alg"], verify_expiration: true, verify_iat: true })
 
       @payload
     rescue JWT::ExpiredSignature => e

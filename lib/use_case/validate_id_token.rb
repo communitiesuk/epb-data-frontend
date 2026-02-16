@@ -21,7 +21,7 @@ module UseCase
 
       domain ||= Domain::OneloginIdToken.new(response: @cache.jwks_document, token_response_hash:, nonce:, vtr:)
       domain.fetch_matching_key
-      domain.verify_signature(alg: ENV["ALG"])
+      domain.verify_signature
       domain.validate_claims
     end
   end
