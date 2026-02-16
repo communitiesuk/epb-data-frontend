@@ -30,11 +30,15 @@ describe "Acceptance::Login", type: :feature do
     instance_double(UseCase::GetUserId)
   end
 
+  let(:validate_id_token_use_case) do
+    instance_double(UseCase::ValidateIdToken)
+  end
+
   let(:get_user_creds_gateway) do
     instance_double(Gateway::UserCredentialsGateway)
   end
 
-  let(:token_response) do
+  let(:token_response_hash) do
     {
       "access_token": "SlAV32hkKG",
       "token_type": "Bearer",
@@ -55,6 +59,7 @@ describe "Acceptance::Login", type: :feature do
     fake_container = instance_double(Container)
     allow(fake_container).to receive(:get_object).with(:sign_onelogin_request_use_case).and_return(sign_onelogin_request_test_use_case)
     allow(fake_container).to receive(:get_object).with(:request_onelogin_token_use_case).and_return(request_onelogin_token_use_case)
+    allow(fake_container).to receive(:get_object).with(:validate_id_token_use_case).and_return(validate_id_token_use_case)
     allow(fake_container).to receive(:get_object).with(:get_onelogin_user_info_use_case).and_return(get_onelogin_user_info_use_case)
     allow(fake_container).to receive(:get_object).with(:get_user_id_use_case).and_return(get_user_id_use_case)
 
@@ -140,7 +145,7 @@ describe "Acceptance::Login", type: :feature do
 
   describe "get .get-energy-certificate-data.epb-frontend/login/callback" do
     before do
-      allow(request_onelogin_token_use_case).to receive(:execute).and_return(token_response)
+      allow(request_onelogin_token_use_case).to receive(:execute).and_return(token_response_hash)
       allow(get_onelogin_user_info_use_case).to receive(:execute).and_return(user_info_response)
       allow(Helper::Onelogin).to receive(:check_one_login_errors).and_return(true)
       allow(Helper::Session).to receive(:set_session_value)
@@ -150,6 +155,7 @@ describe "Acceptance::Login", type: :feature do
     context "when the request is received" do
       before do
         Timecop.freeze(Time.utc(2025, 6, 25, 12, 0, 0))
+        Helper::Toggles.set_feature("epb-data-frontend-enable-id-token-validation", false)
         allow(Helper::Session).to receive(:get_session_value).with(anything, :referer).and_return("test-redirect-path")
         get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
       end
@@ -180,6 +186,36 @@ describe "Acceptance::Login", type: :feature do
 
       it "sets the user id into the session" do
         expect(Helper::Session).to have_received(:set_session_value).with(anything, :user_id, "e40c46c3-4636-4a8a-abd7-be72e1a525f6")
+      end
+
+      context "when the epb-data-frontend-enable-id-token-validation feature toggle is enabled" do
+        context "when id token is valid" do
+          before do
+            Helper::Toggles.set_feature("epb-data-frontend-enable-id-token-validation", true)
+            allow(validate_id_token_use_case).to receive(:execute).and_return(true)
+            get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
+          end
+
+          it "calls the validate_id_token_use_case with the right arguments" do
+            expect(validate_id_token_use_case).to have_received(:execute).with(token_response_hash:, nonce: "test_nonce")
+          end
+
+          it "passes the validation and redirects" do
+            expect(last_response.status).to eq(302)
+          end
+        end
+
+        context "when id token is invalid" do
+          before do
+            Helper::Toggles.set_feature("epb-data-frontend-enable-id-token-validation", true)
+            allow(validate_id_token_use_case).to receive(:execute).and_return(false)
+            get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
+          end
+
+          it "raises 500" do
+            expect(last_response.status).to eq(500)
+          end
+        end
       end
 
       context "when the referer session value is set to 'type-of-properties'" do

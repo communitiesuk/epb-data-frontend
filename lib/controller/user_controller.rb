@@ -63,11 +63,20 @@ module Controller
 
     get "/login/callback" do
       redirect_path = Helper::Session.get_session_value(session, :referer)
+      nonce = request.cookies["nonce"]
 
       raise Errors::AuthenticationError, "No referer found in session" if redirect_path.nil? || redirect_path.empty?
 
       validate_one_login_callback
       token_response_hash = exchange_code_for_token(callback_path: request.path)
+
+      if Helper::Toggles.enabled?("epb-data-frontend-enable-id-token-validation")
+        use_case = @container.get_object(:validate_id_token_use_case)
+        is_valid = use_case.execute(token_response_hash:, nonce:)
+
+        raise Errors::ValidationError, "ID token validation failed" unless is_valid
+      end
+
       Helper::Onelogin.set_user_one_login_info(container: @container, session:, token_response_hash:)
 
       if redirect_path == "opt-out"
@@ -90,7 +99,7 @@ module Controller
         redirect_link = redirect_path == "opt-out" ? "/login?referer=opt-out" : "/login/authorize?referer=#{redirect_path}"
 
         redirect localised_url(redirect_link)
-      when Errors::TokenExchangeError, Errors::AuthenticationError, Errors::NetworkError
+      when Errors::TokenExchangeError, Errors::AuthenticationError, Errors::NetworkError, Errors::ValidationError
         @logger.warn "Authentication error: #{e.message}"
         server_error(e)
       else
