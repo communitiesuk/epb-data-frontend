@@ -319,8 +319,8 @@ cy:
 
     start_page:
       title: "Optio EPC allan"
-      description_1: "Os mai chi yw perchennog neu feddiannydd yr eiddo, yna cewch ddewis optio allan o ddatgeliadau cyhoeddus."
-      description_2: "Mae optio allan yn atal EPCs yr eiddo rhag ymddangos yn ein canlyniadau chwilio ac yn y data swmp am EPCs sy’n cael ei gyhoeddi."
+      description_1: "Os mai chi yw perchennog neu feddiannydd yr eiddo, yna cewch ddewis optio allan o gael data EPCs ar gyfer yr eiddo wedi’i ddatgelu’n gyhoeddus."
+      description_2: "Mae optio allan yn atal EPCs eiddo rhag cael eu canfod drwy chwilio’r cyfeiriadau ar y Gofrestr EPCs ac yn y data EPCs sydd wedi’i gyhoeddi."
       description_3: "Mae’n dal yn bosibl dod o hyd i EPCs sydd wedi’u optio allan ar y gofrestr drwy ddefnyddio rhif y dystysgrif."
       opt_out_guidance:
         link: "Gweld y canllawiau"
@@ -350,7 +350,7 @@ cy:
       radio_no: "Nage"
       note: "Os ydych chi’n landlord, gall optio EPC allan atal tenant rhag cael mynediad at wybodaeth y mae’n dibynnu arni."
       continue: "Parhau"
-      error: "Select whether you are the legal owner"
+      error: "Dewiswch ai chi yw’r perchennog cyfreithiol"
 
     ineligible:
       title: "Dydych chi ddim yn gymwys i optio allan"
@@ -366,7 +366,7 @@ cy:
           heading: "Dewiswch a ydych chi’n byw yn yr eiddo"
 
     name:
-      title: "What is your full name?"
+      title: "Beth yw’ch enw llawn?"
       label: "Enw Llawn"
       error:
         empty: "Rhowch eich enw llawn"
@@ -389,7 +389,7 @@ cy:
         too_long_error: "Rhaid i linell 2 y cyfeiriad fod yn 255 neu lai o gymeriadau"
       town:
         title: "Tref neu ddinas (dewisol)"
-        too_long_error: Town or city must be 255 characters or less
+        too_long_error: "Rhaid i’r dref neu’r ddinas fod yn 255 neu lai o gymeriadau "
       postcode:
         title: "Cod post"
         error: "Rhowch god post dilys"
