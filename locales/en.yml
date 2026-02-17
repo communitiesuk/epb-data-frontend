@@ -7,7 +7,6 @@ en:
     no_disclosure: "No assessor’s declaration provided"
     disclosure_number_not_valid: "The disclosure code provided is not valid"
 
-  # TODO: Update the Welsh translation of this name in cy.yml
   service_name: "Get energy performance of buildings data"
 
   cookies:
@@ -78,7 +77,7 @@ en:
       body: "Try again later."
     403:
       heading: "Access Forbidden"
-      body: "You don't have permissions to access this page."
+      body: "You don’t have permissions to access this page."
     404:
       heading: "Page not found"
       intro: "If you typed the web address, check it is correct."
@@ -267,33 +266,33 @@ en:
     copy_bearer_token: "Copy"
 
   login:
-    title: Get energy performance of buildings data
-    paragraph_1: If you’ve used other government services for example, to <strong>file a Self Assessment tax return</strong> or <strong>apply for or renew a passport</strong>, you can use the same login details here.
-    paragraph_2: If you don’t have a One Login, you can create one when you start.
+    title: "Get energy performance of buildings data"
+    paragraph_1: "If you’ve used other government services for example, to <strong>file a Self Assessment tax return</strong> or <strong>apply for or renew a passport</strong>, you can use the same login details here."
+    paragraph_2: "If you don’t have a One Login, you can create one when you start."
     opt_out:
-      title: Create your GOV.UK One Login or sign in
-      paragraph_1: You need to log in or sign up to make an opt out request.
+      title: "Create your GOV.UK One Login or sign in"
+      paragraph_1: "You need to log in or sign up to make an opt out request."
 
-  api_guidance:
-    title: "Using energy certificate data APIs"
-    header: "Information to help developers use energy certificate data APIs"
-    data_available:
-      title: "Data available"
-      description: "Use the APIs to get data on:"
-      domestic: "Domestic Energy Performance Certificates"
-      non-domestic: "Non-domestic Energy Performance Certificates and recommendation reports"
-      dec: "Display Energy Certificates and recommendation reports for public buildings"
-    authentication:
-      title: "Authentication"
-      logged_out_description: "You'll need to <a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">sign in</a> to GOV.UK One Login to get a bearer token. If you do not have a GOV.UK One Login, you can <a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">create an account</a>."
-      logged_in_description: "<a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">View your account</a> to see your bearer token"
-    rate_limiting:
-      title: "Rate limiting"
-    conditions_of_use:
-      title: "Conditions of use"
-    technical_documentation:
-      title: "Technical documentation"
-      link: "<a class=\"govuk-link\" href=\"https://api-docs.epcregisters.net/\" rel=\"license\">View technical documentation</a>"
+#  api_guidance:
+#    title: "Using energy certificate data APIs"
+#    header: "Information to help developers use energy certificate data APIs"
+#    data_available:
+#      title: "Data available"
+#      description: "Use the APIs to get data on:"
+#      domestic: "Domestic Energy Performance Certificates"
+#      non-domestic: "Non-domestic Energy Performance Certificates and recommendation reports"
+#      dec: "Display Energy Certificates and recommendation reports for public buildings"
+#    authentication:
+#      title: "Authentication"
+#      logged_out_description: "You’ll need to <a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">sign in</a> to GOV.UK One Login to get a bearer token. If you do not have a GOV.UK One Login, you can <a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">create an account</a>."
+#      logged_in_description: "<a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">View your account</a> to see your bearer token"
+#    rate_limiting:
+#      title: "Rate limiting"
+#    conditions_of_use:
+#      title: "Conditions of use"
+#    technical_documentation:
+#      title: "Technical documentation"
+#      link: "<a class=\"govuk-link\" href=\"https://api-docs.epcregisters.net/\" rel=\"license\">View technical documentation</a>"
 
   signed_out:
     title: "You have signed out"
@@ -315,7 +314,7 @@ en:
       - December
 
   opt_out:
-    warning: Opting out an EPC for the purpose of securing grant funding is fraud.
+    warning: "Opting out an EPC for the purpose of securing grant funding is fraud."
     find_epc_text: To find your EPC, use the <a class="govuk-link" href="https://www.gov.uk/find-energy-certificate">Find an energy certificate service</a>.
 
     start_page:
@@ -329,91 +328,91 @@ en:
       continue: "Continue"
 
     reason:
-      title: Why would you like to opt out your EPC?
-      continue: Continue
+      title: "Why would you like to opt out your EPC?"
+      continue: "Continue"
       radio:
-        incorrect: My EPC is incorrect
-        advised: I have been advised by someone else
-        other: Other / Prefer not to say
+        incorrect: "My EPC is incorrect"
+        advised: "I have been advised by someone else"
+        other: "Other / Prefer not to say"
       error:
         invalid_reason_selection:
-          heading: Select a reason for opting out
+          heading: "Select a reason for opting out"
 
     incorrect_epc:
-      title: What to do if your EPC is incorrect
-      paragraph_1: If your EPC was created recently, you should contact the assessor. You can find the contact details for the assessor near the bottom of your EPC.
+      title: "What to do if your EPC is incorrect"
+      paragraph_1: "If your EPC was created recently, you should contact the assessor. You can find the contact details for the assessor near the bottom of your EPC."
       paragraph_2: If your EPC was created a while ago, you should <a class="govuk-link" href="https://www.gov.uk/get-new-energy-certificate">get a new certificate</a>.
-      note: Opting out an EPC does not make it invalid. EPCs are only invalidated when they expire or when they are replaced by a new EPC.
+      note: "Opting out an EPC does not make it invalid. EPCs are only invalidated when they expire or when they are replaced by a new EPC."
     advised_by_third_party:
-      title: You do not need to opt out to access grant funding
+      title: "You do not need to opt out to access grant funding"
     owner:
-      title: Are you the legal owner of the property that you want to opt out?
+      title: "Are you the legal owner of the property that you want to opt out?"
       radio_yes: "Yes"
       radio_no: "No"
-      note: If you are a landlord, opting out an EPC may prevent a tenant from accessing information they rely upon.
-      continue: Continue
-      error: Select whether you are the legal owner
+      note: "If you are a landlord, opting out an EPC may prevent a tenant from accessing information they rely upon."
+      continue: "Continue"
+      error: "Select whether you are the legal owner"
     ineligible:
-      title: You are not eligible to opt out
-      paragraph_1: You must own or live in the property to opt-out an EPC.
+      title: "You are not eligible to opt out"
+      paragraph_1: "You must own or live in the property to opt-out an EPC."
 
     occupant:
-      title: Do you live in the property that you want to opt-out?
+      title: "Do you live in the property that you want to opt-out?"
       radio:
         occupant_yes: "Yes"
         occupant_no: "No"
       error:
         invalid_occupant_selection:
-          heading: Select if you live in the property
+          heading: "Select if you live in the property"
 
     name:
-      title: What is your full name?
-      label: Full name
+      title: "What is your full name?"
+      label: "Full name"
       error:
-        empty: Enter your full name
-        too_long: Full name must be 255 characters or less
-      continue: Continue
+        empty: "Enter your full name"
+        too_long: "Full name must be 255 characters or less"
+      continue: "Continue"
 
     certificate_details:
-      title: Which property would you like to opt out?
-      address_title: Address
+      title: "Which property would you like to opt out?"
+      address_title: "Address"
       certificate_number:
-        title: Certificate number
+        title: "Certificate number"
         hint: This can be found near the top of your EPC, for example 1234-5678-2345-6789-0123. To find your EPC, use the <a class="govuk-link" rel="noreferrer noopener" target="_blank" href="https://www.gov.uk/find-energy-certificate">Find an energy certificate service (opens in new tab)</a>.
-        error: Enter a valid certificate number
+        error: "Enter a valid certificate number"
       address_line1:
-        title: Address line 1
-        error: Enter the first line of your address
-        too_long_error: Address line 1 must be 255 characters or less
+        title: "Address line 1"
+        error: "Enter the first line of your address"
+        too_long_error: "Address line 1 must be 255 characters or less"
       address_line2:
-        title: Address line 2 (optional)
-        too_long_error: Address line 2 must be 255 characters or less
+        title: "Address line 2 (optional)"
+        too_long_error: "Address line 2 must be 255 characters or less"
       town:
-        title: Town or city (optional)
-        too_long_error: Town or city must be 255 characters or less
+        title: "Town or city (optional)"
+        too_long_error: "Town or city must be 255 characters or less"
       postcode:
-        title: Postcode
-        error: Enter a valid postcode
+        title: "Postcode"
+        error: "Enter a valid postcode"
 
     check_your_answers:
-      title: Check your answers before submitting your request
+      title: "Check your answers before submitting your request"
       personal_details:
-        title: Personal details
-        name: Name
-        email: Email address
-        relationship_to_property: Relationship to the property
+        title: "Personal details"
+        name: "Name"
+        email: "Email address"
+        relationship_to_property: "Relationship to the property"
       property_details:
-        title: Property details
-        address: Property address
-        certificate_number: Certificate number
+        title: "Property details"
+        address: "Property address"
+        certificate_number: "Certificate number"
       confirmation:
-        title: Confirmation
-        body: I confirm that these details are correct
-        error: You must check the box to submit the request
-      submit: Submit request
+        title: "Confirmation"
+        body: "I confirm that these details are correct"
+        error: "You must check the box to submit the request"
+      submit: "Submit request"
 
     received:
-      title: Request received
-      sub_heading: What happens next
-      description_1: Your request may take up to <strong>10 working days.</strong>
-      description_2: You will receive an email once your request has been completed.
+      title: "Request received"
+      sub_heading: "What happens next"
+      description_1: "Your request may take up to <strong>10 working days.</strong>"
+      description_2: "You will receive an email once your request has been completed."

@@ -7,7 +7,6 @@ cy:
     no_disclosure: "Dim datganiad asesydd wedi’i ddarparu"
     disclosure_number_not_valid: "Nid yw’r cod datgelu a roddwyd yn ddilys"
 
-  #TODO: update translation
   service_name: "Cael data perfformiad ynni adeiladau"
 
   cookies:
@@ -58,7 +57,7 @@ cy:
       my_account: "Fy nghyfrif"
       feedback_intro: "Mae hwn yn wasanaeth newydd - eich"
       feedback_link_content: "adborth"
-      feedback_outro: "fydd yn ein helpu i'w wella."
+      feedback_outro: "fydd yn ein helpu i’w wella."
       footer:
         heading: "Dolenni cymorth"
         accessibility_statement: "Hygyrchedd"
@@ -78,7 +77,7 @@ cy:
       body: "Rhowch gynnig arall arni yn nes ymlaen"
     403:
       heading: "Mynediad Gwaharddedig"
-      body: "Nid oes gennych ganiatâd i gyrchu'r dudalen hon."
+      body: "Nid oes gennych ganiatâd i gyrchu’r dudalen hon."
     404:
       heading: "Y tudalen heb ei ganfod"
       intro: "Os gwnaethoch chi deipio’r cyfeiriad gwe, gwiriwch ei fod yn gywir."
@@ -102,8 +101,8 @@ cy:
       postcode_wrong_format: "Rhowch god post dilys yn y DU yn y ffurf CF10 1EP"
     download_file:
       heading: "Lawrlwytho ffeil"
-      file_not_found: "Nid yw'r ffeil i'w dod o"
-      invalid_property_type: "Math eiddo annilys wedi'i ddarparu"
+      file_not_found: "Nid yw’r ffeil i’w dod o"
+      invalid_property_type: "Math eiddo annilys wedi’i ddarparu"
     data_not_found: "Heb ganfod unrhyw dystysgrifau. Rhowch gynnig ar hidlwyr gwahanol."
 
   accessibility_statement:
@@ -159,7 +158,7 @@ cy:
     try_later: "Byddwch yn gallu defnyddio’r gwasanaeth yn nes ymlaen."
     help_desk:
       need_support: "%{link} os oes arnoch chi angen cymorth i ddod o hyd i dystysgrif neu adroddiad ynni."
-      link: "Cysylltwch â'n desg gymorth"
+      link: "Cysylltwch â’n desg gymorth"
 
   data_access_options:
     title: "How would you like to access the data?"
@@ -176,7 +175,7 @@ cy:
     title: "What type of certificates do you want data on?"
     radio_selects:
       domestic:
-        text: "Energy Performance Certificates"
+        text: "Domestic Energy Performance Certificates"
         hint: "For domestic properties such as houses or flats"
       non-domestic:
         text: "Non-domestic Energy Performance Certificates"
@@ -267,37 +266,37 @@ cy:
     copy_bearer_token: "Copy"
 
   login:
-    title: Get energy performance of buildings data
-    paragraph_1: If you’ve used other government services for example, to <strong>file a Self Assessment tax return</strong> or <strong>apply for or renew a passport</strong>, you can use the same login details here.
-    paragraph_2: If you don’t have a One Login, you can create one when you start.
+    title: "Cael data perfformiad ynni adeiladau"
+    paragraph_1: "Os ydych chi wedi defnyddio gwasanaethau eraill y llywodraeth er enghraifft, i <strong>ffeilio ffurflen dreth Hunanasesu</strong> neu <strong>wneud cais am basbort</strong>, gallwch ddefnyddio’r un manylion mewngofnodi yma."
+    paragraph_2: "Os nad oes One Login gennych, gallwch greu un pan fyddwch chi’n dechrau."
     opt_out:
-      title: Create your GOV.UK One Login or sign in
-      paragraph_1: You need to log in or sign up to make an opt out request.
+      title: "Creu eich GOV.UK One Login neu fewngofnodi"
+      paragraph_1: "Mae angen ichi fewngofnodi neu gofrestru i wneud cais am optio allan."
 
-  api_guidance:
-    title: "Using energy certificate data APIs"
-    header: "Information to help developers use energy certificate data APIs"
-    data_available:
-      title: "Data available"
-      description: "Use the APIs to get data on:"
-      domestic: "Domestic Energy Performance Certificates"
-      non-domestic: "Non-domestic Energy Performance Certificates and recommendation reports"
-      dec: "Display Energy Certificates and recommendation reports for public buildings"
-    authentication:
-      title: "Authentication"
-      logged_out_description: "You'll need to <a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">sign in</a> to GOV.UK One Login to get a bearer token. If you do not have a GOV.UK One Login, you can <a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">create an account</a>."
-      logged_in_description: "<a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">View your account</a> to see your bearer token"
-    rate_limiting:
-      title: "Rate limiting"
-    conditions_of_use:
-      title: "Conditions of use"
-    technical_documentation:
-      title: "Technical documentation"
-      link: "<a class=\"govuk-link\" href=\"https://api-docs.epcregisters.net/\" rel=\"license\">View technical documentation</a>"
+#  api_guidance:
+#    title: "Using energy certificate data APIs"
+#    header: "Information to help developers use energy certificate data APIs"
+#    data_available:
+#      title: "Data available"
+#      description: "Use the APIs to get data on:"
+#      domestic: "Domestic Energy Performance Certificates"
+#      non-domestic: "Non-domestic Energy Performance Certificates and recommendation reports"
+#      dec: "Display Energy Certificates and recommendation reports for public buildings"
+#    authentication:
+#      title: "Authentication"
+#      logged_out_description: "You’ll need to <a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">sign in</a> to GOV.UK One Login to get a bearer token. If you do not have a GOV.UK One Login, you can <a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">create an account</a>."
+#      logged_in_description: "<a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">View your account</a> to see your bearer token"
+#    rate_limiting:
+#      title: "Rate limiting"
+#    conditions_of_use:
+#      title: "Conditions of use"
+#    technical_documentation:
+#      title: "Technical documentation"
+#      link: "<a class=\"govuk-link\" href=\"https://api-docs.epcregisters.net/\" rel=\"license\">View technical documentation</a>"
 
   signed_out:
     title: "Rydych chi wedi allgofnodi"
-    link: "I fynd yn ôl, mewngofnodwch i'n gwasanaeth gan ddefnyddio"
+    link: "I fynd yn ôl, mewngofnodwch i’n gwasanaeth gan ddefnyddio"
 
   date:
     months:
@@ -315,105 +314,105 @@ cy:
       - Rhagfyr
 
   opt_out:
-    warning: Mae optio EPC allan er mwyn sicrhau cyllid grant yn dwyll.
-    find_epc_text: To find your EPC, use the <a class="govuk-link" href="https://www.gov.uk/find-energy-certificate">Find an energy certificate service</a>.
+    warning: "Mae optio EPC allan er mwyn sicrhau cyllid grant yn dwyll."
+    find_epc_text: I ddod o hyd i’ch EPC, defnyddiwch y gwasanaeth <a href=" https://www.gov.uk/dod-o-hyd-i-dystysgrif-ynni >Dod o hyd i dystysgrif ynni</a>.
 
     start_page:
-      title: "Opting out an EPC"
-      description_1: "If you are the owner or occupier of a property then you can choose to opt out of having EPC data for the property disclosed publicly."
-      description_2: "Opting out stops a property’s EPCs from being found using address search on the EPC Register and in published EPC data."
-      description_3: "EPCs that have been opted out can still be found on the Register using the certificate number."
+      title: "Optio EPC allan"
+      description_1: "Os mai chi yw perchennog neu feddiannydd yr eiddo, yna cewch ddewis optio allan o ddatgeliadau cyhoeddus."
+      description_2: "Mae optio allan yn atal EPCs yr eiddo rhag ymddangos yn ein canlyniadau chwilio ac yn y data swmp am EPCs sy’n cael ei gyhoeddi."
+      description_3: "Mae’n dal yn bosibl dod o hyd i EPCs sydd wedi’u optio allan ar y gofrestr drwy ddefnyddio rhif y dystysgrif."
       opt_out_guidance:
-        link: "View the guidance"
-        text: " to learn more."
+        link: "Gweld y canllawiau"
+        text: " i gael rhagor o wybodaeth."
       continue: "Parhau"
 
     reason:
-      title: Pam hoffech chi optio’ch EPC allan?
-      continue: Parhau
+      title: "Pam hoffech chi optio’ch EPC allan?"
+      continue: "Parhau"
       radio:
-        incorrect: Mae fy EPC yn anghywir
-        advised: Rhywun arall sydd wedi dweud wrtha i
-        other: Arall / Gwell gen i beidio â dweud
+        incorrect: "Mae fy EPC yn anghywir"
+        advised: "Rhywun arall sydd wedi dweud wrtha i"
+        other: "Arall / Gwell gen i beidio â dweud"
       error:
         invalid_reason_selection:
-          heading: Select a reason for opting out
+          heading: "Dewiswch reswm dros optio allan"
     incorrect_epc:
-      title: Beth i'w wneud os yw'ch EPC yn anghywir
-      paragraph_1: Os cafodd eich EPC ei chreu yn ddiweddar, dylech gysylltu â'r asesydd. Gallwch weld manylion cysylltu’r asesydd tua gwaelod <a class="govuk-link" href="https://www.gov.uk/find-energy-certificate">eich EPC</a>.
+      title: "Beth i’w wneud os yw’ch EPC yn anghywir"
+      paragraph_1: Os cafodd eich EPC ei chreu yn ddiweddar, dylech gysylltu â’r asesydd. Gallwch weld manylion cysylltu’r asesydd tua gwaelod <a class="govuk-link" href="https://www.gov.uk/find-energy-certificate">eich EPC</a>.
       paragraph_2: Os cafodd eich EPC ei chreu ychydig yn ôl, dylech chi <a href="https://www.gov.uk/get-new-energy-certificate">sicrhau tystysgrif newydd</a>.
-      note: Nid yw optio EPC allan yn ei gwneud yn annilys. Dim ond pan fyddan nhw’n dod i ben neu’n cael eu disodli gan EPC newydd y bydd EPCs yn dod yn annilys.
+      note: "Nid yw optio EPC allan yn ei gwneud yn annilys. Dim ond pan fyddan nhw’n dod i ben neu’n cael eu disodli gan EPC newydd y bydd EPCs yn dod yn annilys."
     advised_by_third_party:
-      title: Does dim angen ichi optio allan er mwyn gael gafael ar gyllid grant
+      title: "Does dim angen ichi optio allan er mwyn gael gafael ar gyllid grant"
     owner:
-      title: Ai chi yw perchennog cyfreithiol yr eiddo yr hoffech ei optio allan?
-      radio_yes: Ie
-      radio_no: Nage
-      note: Os ydych chi'n landlord, gall optio EPC allan atal tenant rhag cael mynediad at wybodaeth y mae’n dibynnu arni.
-      continue: Parhau
-      error: Select whether you are the legal owner
+      title: "Ai chi yw perchennog cyfreithiol yr eiddo yr hoffech ei optio allan?"
+      radio_yes: "Ie"
+      radio_no: "Nage"
+      note: "Os ydych chi’n landlord, gall optio EPC allan atal tenant rhag cael mynediad at wybodaeth y mae’n dibynnu arni."
+      continue: "Parhau"
+      error: "Select whether you are the legal owner"
 
     ineligible:
-      title: Dydych chi ddim yn gymwys i optio allan
-      paragraph_1: Rhaid i chi fod yn berchen ar yr eiddo neu'n byw ynddo er mwyn optio EPC allan.
+      title: "Dydych chi ddim yn gymwys i optio allan"
+      paragraph_1: "Rhaid i chi fod yn berchen ar yr eiddo neu’n byw ynddo er mwyn optio EPC allan."
 
     occupant:
-      title: Ydych chi'n byw yn yr eiddo yr hoffech ei optio allan?
+      title: "Ydych chi’n byw yn yr eiddo yr hoffech ei optio allan?"
       radio:
         occupant_yes: "Ie"
         occupant_no: "Nage"
       error:
         invalid_occupant_selection:
-          heading: Select if you live in the property
+          heading: "Dewiswch a ydych chi’n byw yn yr eiddo"
 
     name:
-      title: What is your full name?
-      label: Full name
+      title: "What is your full name?"
+      label: "Enw Llawn"
       error:
-        empty: Enter your full name
-        too_long: Full name must be 255 characters or less
-      continue: Parhau
+        empty: "Rhowch eich enw llawn"
+        too_long: "Rhaid i’r enw llawn fod yn 255 neu lai o gymeriadau"
+      continue: "Parhau"
 
     certificate_details:
-      title: Which property would you like to opt out?
-      address_title: Cyfeiriad
+      title: "Pa eiddo hoffech chi ei optio allan?"
+      address_title: "Cyfeiriad"
       certificate_number:
-        title: Rhif y dystysgrif
+        title: "Rhif y dystysgrif"
         hint: Mae hwn i’w weld tua brig eich EPC, er enghraifft 1234-5678-2345-6789-0123. To find your EPC, use the <a class="govuk-link" rel="noreferrer noopener" target="_blank" href="https://www.gov.uk/find-energy-certificate">Find an energy certificate service (opens in new tab)</a>.
-        error: Enter a valid certificate number
+        error: "Rhowch rif tystysgrif dilys"
       address_line1:
-        title: Address line 1
-        error: Enter the first line of your address
-        too_long_error: Address line 1 must be 255 characters or less
+        title: "Llinell 1 y cyfeiriad"
+        error: "Rhowch linell gyntaf eich cyfeiriad"
+        too_long_error: "Rhaid i linell 1 y cyfeiriad fod yn 255 neu lai o gymeriadau"
       address_line2:
-        title: Address line 2 (optional)
-        too_long_error: Address line 2 must be 255 characters or less
+        title: "Llinell 2 y cyfeiriad (dewisol)"
+        too_long_error: "Rhaid i linell 2 y cyfeiriad fod yn 255 neu lai o gymeriadau"
       town:
-        title: Tref neu ddinas (optional)
+        title: "Tref neu ddinas (dewisol)"
         too_long_error: Town or city must be 255 characters or less
       postcode:
-        title: Cod post
-        error: Enter a valid postcode
+        title: "Cod post"
+        error: "Rhowch god post dilys"
 
     check_your_answers:
-      title: Gwiriwch eich atebion cyn cyflwyno'ch cais
+      title: "Gwiriwch eich atebion cyn cyflwyno’ch cais"
       personal_details:
-        title: Manylion personol
-        name: Enw
-        email: Cyfeiriad ebost
-        relationship_to_property: Relationship to the property
+        title: "Manylion personol"
+        name: "Enw"
+        email: "Cyfeiriad ebost"
+        relationship_to_property: "Eich perthynas â’r eiddo"
       property_details:
-        title: Manylion yr eiddo
-        address: Property address
-        certificate_number: Rhif y dystysgrif
+        title: "Manylion yr eiddo"
+        address: "Cyfeiriad yr eiddo"
+        certificate_number: "Rhif y dystysgrif"
       confirmation:
-        title: Confirmation
-        body: I confirm that these details are correct
-        error: You must check the box to submit the request
-      submit: Cyflwyno’r cais
+        title: "Cadarnhad"
+        body: "Rwy’n cadarnhau bod y manylion hyn yn gywir"
+        error: "Rhaid ichi dicio’r blwch er mwyn cyflwyno’r cais"
+      submit: "Cyflwyno’r cais"
 
     received:
-      title: Y cais wedi dod i law
-      sub_heading: Beth sy'n digwydd nesaf
-      description_1: Gall eich cais gymryd hyd at <strong>10 diwrnod gwaith.</strong>
-      description_2: Fe gewch chi neges ebost pan fydd eich cais wedi'i gwblhau.
+      title: "Y cais wedi dod i law"
+      sub_heading: "Beth sy’n digwydd nesaf"
+      description_1: "Gall eich cais gymryd hyd at <strong>10 diwrnod gwaith.</strong>"
+      description_2: "Fe gewch chi neges ebost pan fydd eich cais wedi’i gwblhau."
