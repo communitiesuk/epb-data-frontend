@@ -1,0 +1,33 @@
+.autocomplete__selected-list,
+[id$="__list"] {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+
+}
+
+button.autocomplete__remove-option {
+  text-align: left;
+  display: inline-flex;
+  align-items: center;
+  margin-top: 8px;
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+button.autocomplete__remove-option strong {
+  flex-shrink: 0;
+  margin-right: 8px;
+  line-height: 1.2;
+}
+
+.autocomplete__active-filters-label {
+  display: block;
+  margin-bottom: 8px;
+  margin-top: 8px;
+}
+
+.autocomplete__clear-all-link {
+  display: inline-block;
+  margin-top: 20px;
+}
