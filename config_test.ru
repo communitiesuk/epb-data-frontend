@@ -25,6 +25,30 @@ WebMock.stub_request(:post, "https://api.notifications.service.gov.uk/v2/notific
                   }.to_json,
                   headers: {})
 
+WebMock.stub_request(:post, "http://localhost:3333/token")
+       .to_return(
+         status: 200,
+         body: {
+           access_token: "test-access-token",
+           id_token: "test-id-token",
+           token_type: "Bearer",
+           expires_in: 3600,
+         }.to_json,
+         headers: { "Content-Type" => "application/json" },
+       )
+
+WebMock.stub_request(:get, "http://localhost:3333/userinfo")
+       .with(headers: { "Authorization" => /Bearer .+/ })
+       .to_return(
+         status: 200,
+         body: {
+           sub: "test-sub",
+           email: "test@example.com",
+           email_verified: true,
+         }.to_json,
+         headers: { "Content-Type" => "application/json" },
+       )
+
 TogglesStub.enable(nil)
 OauthStub.token
 
