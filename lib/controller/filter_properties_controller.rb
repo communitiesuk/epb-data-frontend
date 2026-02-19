@@ -8,6 +8,9 @@ module Controller
         params["ratings"] ||= %w[A B C D E F G] unless request.post?
         status 200
 
+        property_type = params["property_type"]
+        raise Errors::InvalidPropertyType unless %w[domestic non_domestic display].include? property_type
+
         if request.post?
           validate_date
           validate_area
@@ -16,36 +19,33 @@ module Controller
         end
 
         if request.post? && @errors.empty?
-
-          begin
-            property_type = params["property_type"]
-            redirect "/download/all?property_type=#{property_type}" if default_filters?(property_type)
-            download_count = get_download_size(params)
-            Helper::Session.set_session_value(session, :download_count, download_count)
-            email = Helper::Session.get_email_from_session(session)
-            send_download_request(email)
-            form_data = Rack::Utils.build_nested_query(params)
-            redirect "/request-received-confirmation?#{form_data}"
-          rescue StandardError => e
-            case e
-            when Errors::FilteredDataNotFound
-              status 400
-              @errors[:data_not_found] = t("error.data_not_found")
-              @error_form_ids << "filter-properties-header"
-              erb :filter_properties, locals: { use_case: @container.get_object(:get_file_size_use_case) }
-            when Errors::UserEmailNotVerified, Errors::AuthenticationError, Errors::NetworkError
-              logger.warn "Authentication error: #{e.message}"
-              redirect "/login/authorize?referer=filter-properties"
-            when Errors::InvalidPropertyType
-              logger.warn "Invalid property type as parameter: #{e.message}"
-              server_error(e)
-            else
-              logger.error "Unexpected error during filter_properties post: #{e.message}"
-              server_error(e)
-            end
-          end
+          property_type = params["property_type"]
+          redirect "/download/all?property_type=#{property_type}" if default_filters?(property_type)
+          download_count = get_download_size(params)
+          Helper::Session.set_session_value(session, :download_count, download_count)
+          email = Helper::Session.get_email_from_session(session)
+          send_download_request(email)
+          form_data = Rack::Utils.build_nested_query(params)
+          redirect "/request-received-confirmation?#{form_data}"
         else
           erb :filter_properties, locals: { use_case: @container.get_object(:get_file_size_use_case) }
+        end
+      rescue StandardError => e
+        case e
+        when Errors::FilteredDataNotFound
+          status 400
+          @errors[:data_not_found] = t("error.data_not_found")
+          @error_form_ids << "filter-properties-header"
+          erb :filter_properties, locals: { use_case: @container.get_object(:get_file_size_use_case) }
+        when Errors::UserEmailNotVerified, Errors::AuthenticationError, Errors::NetworkError
+          logger.warn "Authentication error: #{e.message}"
+          redirect "/login/authorize?referer=filter-properties"
+        when Errors::InvalidPropertyType
+          logger.warn "Invalid property type as parameter: #{e.message}"
+          server_error(e)
+        else
+          logger.error "Unexpected error during filter_properties: #{e.message}"
+          server_error(e)
         end
       end
 

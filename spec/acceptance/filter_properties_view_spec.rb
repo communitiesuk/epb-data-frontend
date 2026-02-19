@@ -9,7 +9,7 @@ describe "Acceptance::FilterProperties", type: :feature do
     "#{local_host}/filter-properties"
   end
 
-  let(:response) { get request_url }
+  let(:response) { get "#{request_url}?property_type=domestic" }
 
   let(:valid_response) { post "#{request_url}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}" }
 
@@ -81,7 +81,6 @@ describe "Acceptance::FilterProperties", type: :feature do
       end
 
       it "shows the correct title for domestic" do
-        response = get "#{request_url}?property_type=domestic"
         expect(response.body).to have_selector("h1", text: "Energy Performance Certificates")
       end
 
@@ -95,7 +94,6 @@ describe "Acceptance::FilterProperties", type: :feature do
       end
 
       it "shows the efficiency rating filter for domestic properties" do
-        response = get "#{request_url}?property_type=domestic"
         expect(response.body).to have_css("#eff-rating-section.govuk-accordion__section")
       end
 
@@ -235,15 +233,15 @@ describe "Acceptance::FilterProperties", type: :feature do
       end
     end
 
-    context "when selecting default non-domestic filters" do
+    context "when selecting default non_domestic filters" do
       let(:default_dates) { "from-month=January&from-year=2012&to-month=#{(Date.today << 1).strftime('%B')}&to-year=#{Date.today.year}" }
       let(:default_area) { "postcode=&local-authority[]=Select+all&parliamentary-constituency[]=Select+all" }
       let(:default_filters) { "#{default_dates}&#{default_area}" }
-      let(:valid_response_with_default_filters) { post "#{request_url}?property_type=non-domestic&#{default_filters}" }
+      let(:valid_response_with_default_filters) { post "#{request_url}?property_type=non_domestic&#{default_filters}" }
 
       it "redirects to the /download/all endpoint" do
         expect(valid_response_with_default_filters.status).to eq(302)
-        expect(valid_response_with_default_filters.headers["Location"]).to eq("#{local_host}/download/all?property_type=non-domestic")
+        expect(valid_response_with_default_filters.headers["Location"]).to eq("#{local_host}/download/all?property_type=non_domestic")
       end
     end
 
@@ -303,9 +301,9 @@ describe "Acceptance::FilterProperties", type: :feature do
     context "when the postcode is invalid" do
       let(:invalid_postcodes) do
         [
-          "#{request_url}?#{valid_dates}&#{valid_eff_rating}&area-type=postcode&postcode=A",
-          "#{request_url}?#{valid_dates}&#{valid_eff_rating}&area-type=postcode&postcode=ABCD12345",
-          "#{request_url}?#{valid_dates}&#{valid_eff_rating}&area-type=postcode&postcode=SW1A 1A$",
+          "#{request_url}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&area-type=postcode&postcode=A",
+          "#{request_url}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&area-type=postcode&postcode=ABCD12345",
+          "#{request_url}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}&area-type=postcode&postcode=SW1A 1A$",
         ]
       end
 

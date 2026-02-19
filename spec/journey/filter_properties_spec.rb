@@ -126,4 +126,12 @@ describe "Journey::FilterProperties", :journey, type: :feature do
       end
     end
   end
+
+  context "when navigating to the filter properties page with invalid property type in the params" do
+    before do
+      visit "#{domain}/filter-properties?property_type=invalid"
+    end
+
+    it_behaves_like "when checking 500 error message"
+  end
 end
