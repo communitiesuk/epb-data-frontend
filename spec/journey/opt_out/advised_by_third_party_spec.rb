@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "../../shared_context/shared_opt_out_context"
-require_relative "../../shared_examples/shared_opt_out_error"
+require_relative "../../shared_examples/shared_error"
 
 describe "Journey::OptOut::AdvisedByThirdParty", :journey, type: :feature do
   include_context "when testing the opt out process"

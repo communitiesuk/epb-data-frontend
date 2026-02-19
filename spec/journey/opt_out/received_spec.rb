@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 require_relative "../../shared_context/shared_opt_out_context"
-require_relative "../../shared_examples/shared_opt_out_error"
+require_relative "../../shared_examples/shared_error"
+require_relative "../../shared_context/shared_journey_context"
 
 describe "Journey::OptOut::Received", :journey, type: :feature do
+  include_context "when setting up journey tests"
   include_context "when testing the opt out process"
+
   let(:url) do
     "http://get-energy-performance-data.epb-frontend:9393/opt-out"
   end
@@ -63,7 +66,7 @@ describe "Journey::OptOut::Received", :journey, type: :feature do
 
           context "when visiting the '/name' page" do
             before do
-              set_user_login
+              set_oauth_cookies
               visit "#{url}/name"
             end
 

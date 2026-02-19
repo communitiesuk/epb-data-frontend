@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 require_relative "../../shared_context/shared_opt_out_context"
-require_relative "../../shared_examples/shared_opt_out_error"
+require_relative "../../shared_examples/shared_error"
+require_relative "../../shared_context/shared_journey_context"
 
 describe "Journey::OptOut::CheckYourAnswers", :journey, type: :feature do
+  include_context "when setting up journey tests"
   include_context "when testing the opt out process"
+
   let(:url) do
     "http://get-energy-performance-data.epb-frontend:9393/opt-out"
   end
@@ -38,7 +41,7 @@ describe "Journey::OptOut::CheckYourAnswers", :journey, type: :feature do
   context "when visiting the '/check-your-answers' page" do
     before do
       visit_login
-      set_user_login
+      set_oauth_cookies
       visit "#{url}/name"
       fill_in "name", with: "John Test"
       click_button "Continue"
@@ -62,7 +65,7 @@ describe "Journey::OptOut::CheckYourAnswers", :journey, type: :feature do
       visit_opt_out_occupant
       find("#label-occupant_yes").click
       click_button "Continue"
-      set_user_login
+      set_oauth_cookies
       visit "#{url}/name"
       click_button "Continue"
       click_button "Continue"
