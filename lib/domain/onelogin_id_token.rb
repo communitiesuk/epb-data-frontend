@@ -63,10 +63,7 @@ module Domain
   private
 
     def extract_kid_and_alg_from_id_token
-      header_segment = @id_token.split(".").first
-      decoded_header = Base64.urlsafe_decode64(header_segment)
-      header = JSON.parse(decoded_header)
-
+      _payload, header = JWT.decode(@id_token, nil, false)
       kid = header["kid"]
       alg = header["alg"]
 
