@@ -11,7 +11,7 @@ shared_context "when setting up journey tests" do
     visit domain
     set_oauth_cookies
     find("a.govuk-button--start", text: "Start now").click
-    click_link "Download files"
+    visit "#{domain}/type-of-properties"
   end
 
   def uncheck_efficiency_ratings(ratings: %w[A B C D E F G])
