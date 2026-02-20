@@ -26,25 +26,9 @@ describe "Journey::CookiesOnOurService", :journey, type: :feature do
   process_id = nil
 
   before(:all) do
-    process =
-      IO.popen(
-        [
-          "rackup",
-          "config_test.ru",
-          "-q",
-          "-o",
-          "127.0.0.1",
-          "-p",
-          "9393",
-          { err: %i[child out] },
-        ],
-      )
+    process = IO.popen(["rackup", "config_test.ru", "-q", "-o", "127.0.0.1", "-p", "9393", { err: %i[child out] }])
     process_id = process.pid
-
-    # Wait until the Puma server has started up before commencing tests
-    loop do
-      break if process.readline.include?("Listening on http://127.0.0.1:9393")
-    end
+    loop { break if process.readline.include?("Listening on http://127.0.0.1:9393") }
   end
 
   after(:all) { Process.kill("KILL", process_id) if process_id }

@@ -112,7 +112,7 @@ describe "Journey::FilterProperties", :journey, type: :feature do
           click_on "Download selected"
         end
 
-        it_behaves_like "when checking error messages"
+        it_behaves_like "when checking GDS error messages"
       end
 
       context "when none of the efficiency ratings is selected" do
@@ -122,7 +122,7 @@ describe "Journey::FilterProperties", :journey, type: :feature do
           click_on "Download selected"
         end
 
-        it_behaves_like "when checking error messages"
+        it_behaves_like "when checking GDS error messages"
       end
     end
   end
@@ -132,6 +132,6 @@ describe "Journey::FilterProperties", :journey, type: :feature do
       visit "#{domain}/filter-properties?property_type=invalid"
     end
 
-    it_behaves_like "when checking 500 error message"
+    it_behaves_like "when checking 404 error message"
   end
 end

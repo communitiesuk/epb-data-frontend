@@ -73,7 +73,7 @@ describe "Journey::OptOut::Ineligible", :journey, type: :feature do
         click_button "Continue"
       end
 
-      it_behaves_like "when checking error messages"
+      it_behaves_like "when checking GDS error messages"
     end
 
     context "when visiting the '/name' page without valid session values" do

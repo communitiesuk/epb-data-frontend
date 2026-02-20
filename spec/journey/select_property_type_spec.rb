@@ -1,40 +1,32 @@
 # frozen_string_literal: true
 
+require_relative "../shared_context/shared_journey_context"
+require_relative "../shared_examples/shared_error"
+
 describe "Journey::SelectPropertyType", :journey, type: :feature do
-  let(:getting_domain) do
+  include_context "when setting up journey tests"
+
+  let(:domain) do
     "http://get-energy-performance-data.epb-frontend:9393"
   end
 
   process_id = nil
 
   before(:all) do
-    process =
-      IO.popen(
-        [
-          "rackup",
-          "config_test.ru",
-          "-q",
-          "-o",
-          "127.0.0.1",
-          "-p",
-          "9393",
-          { err: %i[child out] },
-        ],
-      )
+    process = IO.popen(["rackup", "config_test.ru", "-q", "-o", "127.0.0.1", "-p", "9393", { err: %i[child out] }])
     process_id = process.pid
-
-    # Wait until the Puma server has started up before commencing tests
-    loop do
-      break if process.readline.include?("Listening on http://127.0.0.1:9393")
-    end
+    loop { break if process.readline.include?("Listening on http://127.0.0.1:9393") }
   end
 
   after(:all) { Process.kill("KILL", process_id) if process_id }
 
-  context "when selecting domestic" do
+  before do
+    visit_type_of_properties
+  end
+
+  context "when selecting domestic radio button" do
     context "when selecting a property type" do
       before do
-        visit "#{getting_domain}/type-of-properties"
         find("#label-domestic").click
         click_on "Continue"
       end
@@ -49,10 +41,9 @@ describe "Journey::SelectPropertyType", :journey, type: :feature do
     end
   end
 
-  context "when selecting non-domestic" do
+  context "when selecting non-domestic radio button" do
     context "when selecting a property type" do
       before do
-        visit "#{getting_domain}/type-of-properties"
         find("#label-non-domestic").click
         click_on "Continue"
       end
@@ -62,7 +53,7 @@ describe "Journey::SelectPropertyType", :journey, type: :feature do
       end
 
       it "passes the property type in the query string" do
-        expect(page.current_url).to include("?property_type=non_domestic")
+        expect(page.current_url).to include("?property_type=non-domestic")
       end
     end
   end
@@ -70,7 +61,6 @@ describe "Journey::SelectPropertyType", :journey, type: :feature do
   context "when selecting display" do
     context "when selecting a property type" do
       before do
-        visit "#{getting_domain}/type-of-properties"
         find("#label-display").click
         click_on "Continue"
       end
@@ -85,14 +75,11 @@ describe "Journey::SelectPropertyType", :journey, type: :feature do
     end
   end
 
-  context "when not selecting a property type" do
+  context "when not selecting any property type" do
     before do
-      visit "#{getting_domain}/type-of-properties"
       click_on "Continue"
     end
 
-    it "shows the error message" do
-      expect(page).to have_content(/There is a problem/)
-    end
+    it_behaves_like "when checking GDS error messages"
   end
 end

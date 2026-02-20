@@ -75,7 +75,7 @@ describe "Journey::OptOut::Received", :journey, type: :feature do
                 click_button "Continue"
               end
 
-              it_behaves_like "when checking error messages"
+              it_behaves_like "when checking GDS error messages"
             end
 
             context "when inputting full name in the input" do
@@ -93,7 +93,7 @@ describe "Journey::OptOut::Received", :journey, type: :feature do
                   click_button "Continue"
                 end
 
-                it_behaves_like "when checking error messages"
+                it_behaves_like "when checking GDS error messages"
               end
 
               context "when visiting the '/certificate-details' page" do
