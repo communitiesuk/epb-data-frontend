@@ -56,7 +56,7 @@ describe "Acceptance::TypeOfProperties", type: :feature do
       end
 
       let(:non_domestic_response) do
-        post "http://get-energy-performance-data/type-of-properties", { property_type: "non_domestic" }
+        post "http://get-energy-performance-data/type-of-properties", { property_type: "non-domestic" }
       end
 
       it "routes to the domestic page with the domestic property_type param" do
@@ -64,9 +64,9 @@ describe "Acceptance::TypeOfProperties", type: :feature do
         expect(domestic_response.location).to include("/filter-properties?property_type=domestic")
       end
 
-      it "routes to the non_domestic page with the non_domestic property_type param" do
+      it "routes to the non-domestic page with the non-domestic property_type param" do
         expect(non_domestic_response).to be_redirect
-        expect(non_domestic_response.location).to include("/filter-properties?property_type=non_domestic")
+        expect(non_domestic_response.location).to include("/filter-properties?property_type=non-domestic")
       end
     end
 

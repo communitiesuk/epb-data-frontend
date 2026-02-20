@@ -141,6 +141,20 @@ describe "Acceptance::FilterProperties", type: :feature do
           expect(response.location).to eq("http://get-energy-performance-data/login/authorize?referer=filter-properties")
         end
       end
+
+      context "when invalid property type is provided" do
+        before { get "#{request_url}?property_type=invalid-type" }
+
+        it "returns status 404" do
+          expect(last_response.status).to eq(404)
+        end
+
+        it "shows the error page" do
+          expect(last_response.body).to include(
+            '<h1 class="govuk-heading-xl">Page not found</h1>',
+          )
+        end
+      end
     end
 
     context "when all filter conditions are met the session data is valid" do
@@ -233,15 +247,15 @@ describe "Acceptance::FilterProperties", type: :feature do
       end
     end
 
-    context "when selecting default non_domestic filters" do
+    context "when selecting default non-domestic filters" do
       let(:default_dates) { "from-month=January&from-year=2012&to-month=#{(Date.today << 1).strftime('%B')}&to-year=#{Date.today.year}" }
       let(:default_area) { "postcode=&local-authority[]=Select+all&parliamentary-constituency[]=Select+all" }
       let(:default_filters) { "#{default_dates}&#{default_area}" }
-      let(:valid_response_with_default_filters) { post "#{request_url}?property_type=non_domestic&#{default_filters}" }
+      let(:valid_response_with_default_filters) { post "#{request_url}?property_type=non-domestic&#{default_filters}" }
 
       it "redirects to the /download/all endpoint" do
         expect(valid_response_with_default_filters.status).to eq(302)
-        expect(valid_response_with_default_filters.headers["Location"]).to eq("#{local_host}/download/all?property_type=non_domestic")
+        expect(valid_response_with_default_filters.headers["Location"]).to eq("#{local_host}/download/all?property_type=non-domestic")
       end
     end
 

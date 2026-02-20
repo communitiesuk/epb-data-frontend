@@ -9,22 +9,24 @@ module Controller
         status 200
 
         property_type = params["property_type"]
-        raise Errors::InvalidPropertyType unless %w[domestic non_domestic display].include? property_type
+        raise Errors::InvalidPropertyType unless property_type_valid?(property_type)
 
         if request.post?
           validate_date
           validate_area
           validate_postcode
-          validate_ratings if params["property_type"] == "domestic"
+          validate_ratings if property_type == "domestic"
         end
 
         if request.post? && @errors.empty?
-          property_type = params["property_type"]
           redirect "/download/all?property_type=#{property_type}" if default_filters?(property_type)
+
           download_count = get_download_size(params)
+          raise Errors::FilteredDataNotFound if download_count.zero?
+
           Helper::Session.set_session_value(session, :download_count, download_count)
-          email = Helper::Session.get_email_from_session(session)
-          send_download_request(email)
+          email_address = Helper::Session.get_email_from_session(session)
+          send_download_request(email_address)
           form_data = Rack::Utils.build_nested_query(params)
           redirect "/request-received-confirmation?#{form_data}"
         else
@@ -41,8 +43,13 @@ module Controller
           logger.warn "Authentication error: #{e.message}"
           redirect "/login/authorize?referer=filter-properties"
         when Errors::InvalidPropertyType
-          logger.warn "Invalid property type as parameter: #{e.message}"
-          server_error(e)
+          @page_title = "#{t('error.error')}#{
+            t('error.download_file.heading')
+          } – #{t('error.download_file.invalid_property_type')} – #{
+            t('layout.body.govuk')
+          }"
+          status 404
+          erb :error_page_404
         else
           logger.error "Unexpected error during filter_properties: #{e.message}"
           server_error(e)
@@ -58,13 +65,27 @@ module Controller
     get "/request-received-confirmation" do
       check_referral
 
+      property_type = params["property_type"]
+      raise Errors::InvalidPropertyType unless property_type_valid?(property_type)
+
       status 200
-      @back_link_href = "/filter-properties?property_type=#{params['property_type']}"
+      @back_link_href = "/filter-properties?property_type=#{property_type}"
       email = Helper::Session.get_email_from_session(session)
       download_count = Helper::Session.get_download_count_from_session(session)
       erb :request_received_confirmation, locals: { email:, download_count: }
     rescue StandardError => e
-      server_error(e)
+      case e
+      when Errors::InvalidPropertyType
+        @page_title = "#{t('error.error')}#{
+          t('error.download_file.heading')
+        } – #{t('error.download_file.invalid_property_type')} – #{
+          t('layout.body.govuk')
+        }"
+        status 404
+      else
+        logger.error "Unexpected error during filter_properties: #{e.message}"
+        server_error(e)
+      end
     end
 
     get "/download-started-confirmation" do
@@ -93,15 +114,11 @@ module Controller
       halt 403, erb(:error_page_403)
     end
 
-    def is_property_type_valid?(property_type)
-      %w[domestic non_domestic display].include?(property_type)
-    end
-
     def get_download_size(params_data)
       use_case = @container.get_object(:get_download_size_use_case)
       date_start = ViewModels::FilterProperties.start_date_from_inputs(params_data["from-year"], params_data["from-month"]).to_s
       date_end = ViewModels::FilterProperties.end_date_from_inputs(params_data["to-year"], params_data["to-month"]).to_s
-      property_type = params_data["property_type"] if is_property_type_valid?(params_data["property_type"])
+      property_type = params_data["property_type"] if property_type_valid?(params_data["property_type"])
 
       council = if params_data["local-authority"] != ["Select all"] && params_data["area-type"] == "local-authority"
                   params_data[params_data["area-type"]]
@@ -134,8 +151,9 @@ module Controller
       area_value = params[params["area-type"]]
       date_start = ViewModels::FilterProperties.start_date_from_inputs(params["from-year"], params["from-month"])
       date_end = ViewModels::FilterProperties.end_date_from_inputs(params["to-year"], params["to-month"])
+      property_type = params["property_type"] if property_type_valid?(params["property_type"])
       use_case_args = {
-        property_type: params["property_type"],
+        property_type:,
         date_start:,
         date_end:,
         area_type: params["area-type"],

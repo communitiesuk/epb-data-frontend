@@ -95,7 +95,7 @@ describe "Acceptance::RequestReceivedConfirmation", type: :feature do
     context "when the request received is for non-domestic property" do
       before do
         header "Referer", "http://get-energy-performance-data/filter-properties"
-        get "#{local_host}?property_type=non_domestic&#{valid_dates}&#{valid_eff_rating}"
+        get "#{local_host}?property_type=non-domestic&#{valid_dates}&#{valid_eff_rating}"
       end
 
       it "shows the correct value for the size of the file" do
@@ -113,6 +113,23 @@ describe "Acceptance::RequestReceivedConfirmation", type: :feature do
       it "shows the correct value for the size of the file" do
         expect(last_response.status).to eq(200)
         expect(last_response.body).to have_css(".govuk-body", text: "The estimated download size is 43.4 MB.")
+      end
+    end
+
+    context "when the request received with invalid property type" do
+      before do
+        header "Referer", "http://get-energy-performance-data/filter-properties"
+        get "#{local_host}?property_type=invalid&#{valid_dates}&#{valid_eff_rating}"
+      end
+
+      it "returns status 404" do
+        expect(last_response.status).to eq(404)
+      end
+
+      it "shows the error page" do
+        expect(last_response.body).to include(
+          '<h1 class="govuk-heading-xl">Page not found</h1>',
+        )
       end
     end
 

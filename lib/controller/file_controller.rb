@@ -22,6 +22,8 @@ module Controller
 
     get "/download/all" do
       property_type = params["property_type"]
+      raise Errors::InvalidPropertyType unless property_type_valid?(property_type)
+
       s3_url = @container.get_object(:get_presigned_url_use_case).execute(file_name: "full-load/#{property_type}-csv.zip")
       redirect s3_url
     rescue StandardError => e
@@ -30,6 +32,13 @@ module Controller
         @page_title = "#{t('error.error')}#{
           t('error.download_file.heading')
         } – #{t('error.download_file.file_not_found')} – #{
+          t('layout.body.govuk')
+        }"
+        status 404
+      when Errors::InvalidPropertyType
+        @page_title = "#{t('error.error')}#{
+          t('error.download_file.heading')
+        } – #{t('error.download_file.invalid_property_type')} – #{
           t('layout.body.govuk')
         }"
         status 404
@@ -57,7 +66,7 @@ module Controller
 
     get "/download/data-dictionary" do
       property_type = params["property_type"]
-      raise Errors::InvalidPropertyType unless %w[domestic non_domestic display].include? property_type
+      raise Errors::InvalidPropertyType unless property_type_valid?(property_type)
 
       download_data_dictionary_csv(property_type: property_type)
     rescue StandardError => e

@@ -9,6 +9,7 @@ require_relative "../helper/toggles"
 module Controller
   class BaseController < Sinatra::Base
     RESTRICTED_PATHS = %w[/type-of-properties /api/my-account /filter-properties /download /download/all /opt-out/name /opt-out/check-your-answers /opt-out/received /opt-out/certificate-details].freeze
+    VALID_PROPERTY_TYPES = %w[domestic non-domestic display].freeze
 
     helpers Helpers
     attr_reader :toggles
@@ -116,6 +117,10 @@ module Controller
       return false unless ENV["LOCAL_SESSION"].nil?
 
       RESTRICTED_PATHS.include?(request.path) || false
+    end
+
+    def property_type_valid?(property_type)
+      VALID_PROPERTY_TYPES.include?(property_type)
     end
   end
 end

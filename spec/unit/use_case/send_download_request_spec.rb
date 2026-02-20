@@ -52,10 +52,5 @@ describe UseCase::SendDownloadRequest do
       use_case.execute(**use_case_args)
       expect(sns_gateway).to have_received(:send_message).with(test_topic_arn, expected_gateway_args).exactly(1).times
     end
-
-    it "handles invalid property_type arguments" do
-      use_case_args.merge!(property_type: "invalid")
-      expect { use_case.execute(**use_case_args) }.to raise_error(Errors::InvalidPropertyType)
-    end
   end
 end

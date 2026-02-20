@@ -1,7 +1,5 @@
 class CertificateCountStub
   def self.fetch(date_start:, date_end:, property_type:, council: nil, constituency: nil, postcode: nil, return_count: 25, eff_rating: %w[A B C D E F G])
-    if property_type == "non_domestic" then property_type = "non-domestic" end
-
     query_string = "date_start=#{date_start}&date_end=#{date_end}"
     query_string += council.map { |c| "&council[]=#{c}" }.join.to_s unless council.nil?
     query_string += constituency.map { |c| "&constituency[]=#{c}" }.join.to_s unless constituency.nil?

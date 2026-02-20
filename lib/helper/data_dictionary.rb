@@ -6,6 +6,8 @@ module Helper
     CONTENT_TYPE = "text/csv".freeze
 
     def download_data_dictionary_csv(property_type:)
+      property_type = "non_domestic" if property_type == "non-domestic"
+
       file_name = "#{property_type}_data_dictionary.csv"
       file_path = File.expand_path(File.join(DATA_DIR, file_name))
 

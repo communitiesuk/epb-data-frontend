@@ -11,7 +11,7 @@ module ViewModels
       avg_row_bytes = case property_type
                       when "domestic"
                         AVG_DOMESTIC_ROW_SIZE_BYTES
-                      when "non_domestic"
+                      when "non-domestic"
                         AVG_NON_DOMESTIC_ROW_SIZE_BYTES
                       else
                         AVG_DEC_ROW_SIZE_BYTES
