@@ -378,7 +378,7 @@ cy:
       address_title: "Cyfeiriad"
       certificate_number:
         title: "Rhif y dystysgrif"
-        hint: Mae hwn i’w weld tua brig eich EPC, er enghraifft 1234-5678-2345-6789-0123. To find your EPC, use the <a class="govuk-link" rel="noreferrer noopener" target="_blank" href="https://www.gov.uk/find-energy-certificate">Find an energy certificate service (opens in new tab)</a>.
+        hint: Mae hwn i’w weld tua brig eich EPC, er enghraifft 1234-5678-2345-6789-0123. I ddod o hyd i'ch EPC, defnyddiwch y gwasanaeth <a class="govuk-link" rel="noreferrer noopener" target="_blank" href="https://www.gov.uk/find-energy-certificate">Dod o hyd i dystysgrif ynni (agor mewn tab newydd)</a>.
         error: "Rhowch rif tystysgrif dilys"
       address_line1:
         title: "Llinell 1 y cyfeiriad"
