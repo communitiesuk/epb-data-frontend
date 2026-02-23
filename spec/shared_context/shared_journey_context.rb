@@ -14,6 +14,12 @@ shared_context "when setting up journey tests" do
     visit "#{domain}/type-of-properties"
   end
 
+  def visit_filter_properties
+    visit_type_of_properties
+    find("#label-domestic").click
+    click_button "Continue"
+  end
+
   def uncheck_efficiency_ratings(ratings: %w[A B C D E F G])
     ratings.each do |rating|
       checkbox = find("#ratings-#{rating}", visible: :all)
