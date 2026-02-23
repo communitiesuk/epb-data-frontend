@@ -42,4 +42,24 @@ describe "Journey::FilterProperties", :journey, type: :feature do
 
     it_behaves_like "when checking 404 error message"
   end
+
+  context "when navigating to request received page after requesting data download" do
+    context "when visiting directly with no valid referer" do
+      before do
+        visit "#{domain}/request-received-confirmation?property_type=domestic"
+      end
+
+      it "forbids access" do
+        expect(page).to have_css("h1", text: "Access Forbidden")
+      end
+    end
+
+    context "when navigating from the filter properties page with invalid property type" do
+      before do
+        navigate_with_referer("/request-received-confirmation?property_type=invalid")
+      end
+
+      it_behaves_like "when checking 404 error message"
+    end
+  end
 end

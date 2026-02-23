@@ -20,6 +20,10 @@ shared_context "when setting up journey tests" do
     click_button "Continue"
   end
 
+  def navigate_with_referer(path)
+    page.execute_script("window.location.href = '#{path}'")
+  end
+
   def uncheck_efficiency_ratings(ratings: %w[A B C D E F G])
     ratings.each do |rating|
       checkbox = find("#ratings-#{rating}", visible: :all)
