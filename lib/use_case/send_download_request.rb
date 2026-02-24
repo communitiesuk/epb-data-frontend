@@ -6,6 +6,8 @@ module UseCase
     end
 
     def execute(property_type:, date_start:, date_end:, area_type:, area_value:, efficiency_ratings:, include_recommendations:, email_address:)
+      property_type = "non_domestic" if property_type == "non-domestic"
+
       download_request_message = {
         property_type: property_type,
         date_start: date_start,

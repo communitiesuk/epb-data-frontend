@@ -52,5 +52,39 @@ describe UseCase::SendDownloadRequest do
       use_case.execute(**use_case_args)
       expect(sns_gateway).to have_received(:send_message).with(test_topic_arn, expected_gateway_args).exactly(1).times
     end
+
+    context "when request is for non-domestic property type" do
+      let(:use_case_args) do
+        {
+          date_start: "2024-01-01",
+          date_end: "2025-01-31",
+          email_address: "epbtest@mctesty.com",
+          property_type: "non-domestic",
+          area_type: "parliamentary-constituency",
+          area_value: %w[Bath Chorley],
+          include_recommendations: true,
+          efficiency_ratings: %w[A],
+        }
+      end
+
+      let(:expected_gateway_args) do
+        {
+          area: {
+            "parliamentary-constituency": %w[Bath Chorley],
+          },
+          date_end: "2025-01-31",
+          date_start: "2024-01-01",
+          efficiency_ratings: %w[A],
+          email_address: "epbtest@mctesty.com",
+          include_recommendations: true,
+          property_type: "non_domestic",
+        }
+      end
+
+      it "transforms the property type to match the expected value for the gateway" do
+        use_case.execute(**use_case_args)
+        expect(sns_gateway).to have_received(:send_message).with(test_topic_arn, expected_gateway_args).exactly(1).times
+      end
+    end
   end
 end
