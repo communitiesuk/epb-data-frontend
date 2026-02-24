@@ -19,7 +19,7 @@
                 <%= ViewModels::OptOut.get_full_name_from_session(session) %>
               </dd>
               <dd class="govuk-summary-list__actions">
-                <a class="govuk-link" href="/opt-out/name">Change<span class="govuk-visually-hidden"> name</span></a>
+                <a class="govuk-link" href="/opt-out/name"><%= t('opt_out.check_your_answers.change') %><span class="govuk-visually-hidden"> name</span></a>
               </dd>
             </div>
             <div class="govuk-summary-list__row">
@@ -38,7 +38,7 @@
                 <%= ViewModels::OptOut.get_relationship_to_the_property(session) %>
               </dd>
               <dd class="govuk-summary-list__actions">
-                <a class="govuk-link" href="/opt-out/owner">Change<span class="govuk-visually-hidden"> owner</span></a>
+                <a class="govuk-link" href="/opt-out/owner"><%= t('opt_out.check_your_answers.change') %><span class="govuk-visually-hidden"> owner</span></a>
               </dd>
             </div>
           </dl>
@@ -56,7 +56,7 @@
                 <%= ViewModels::OptOut.get_certificate_number_from_session(session) %>
               </dd>
               <dd class="govuk-summary-list__actions">
-                <a class="govuk-link" href="/opt-out/certificate-details">Change<span class="govuk-visually-hidden"> certificate number</span></a>
+                <a class="govuk-link" href="/opt-out/certificate-details"><%= t('opt_out.check_your_answers.change') %><span class="govuk-visually-hidden"> certificate number</span></a>
               </dd>
             </div>
             <div class="govuk-summary-list__row">
@@ -70,7 +70,7 @@
                 <p class="govuk-body"><%= ViewModels::OptOut.get_address_detail_from_session(session, :opt_out_address_postcode) %></p>
               </dd>
               <dd class="govuk-summary-list__actions">
-                <a class="govuk-link" href="/opt-out/certificate-details">Change<span class="govuk-visually-hidden"> property address</span></a>
+                <a class="govuk-link" href="/opt-out/certificate-details"><%= t('opt_out.check_your_answers.change') %><span class="govuk-visually-hidden"> property address</span></a>
               </dd>
             </div>
           </dl>

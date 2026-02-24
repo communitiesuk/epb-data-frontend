@@ -340,7 +340,7 @@ en:
 
     incorrect_epc:
       title: "What to do if your EPC is incorrect"
-      paragraph_1: "If your EPC was created recently, you should contact the assessor. You can find the contact details for the assessor near the bottom of your EPC."
+      paragraph_1: If your EPC was created recently, you should contact the assessor. You can find the contact details for the assessor near the bottom of <a class="govuk-link" href="https://www.gov.uk/find-energy-certificate">your EPC</a>.
       paragraph_2: If your EPC was created a while ago, you should <a class="govuk-link" href="https://www.gov.uk/get-new-energy-certificate">get a new certificate</a>.
       note: "Opting out an EPC does not make it invalid. EPCs are only invalidated when they expire or when they are replaced by a new EPC."
     advised_by_third_party:
@@ -396,6 +396,7 @@ en:
 
     check_your_answers:
       title: "Check your answers before submitting your request"
+      change: "Change"
       personal_details:
         title: "Personal details"
         name: "Name"
