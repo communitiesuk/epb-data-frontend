@@ -70,12 +70,10 @@ module Controller
       validate_one_login_callback
       token_response_hash = exchange_code_for_token(callback_path: request.path)
 
-      if Helper::Toggles.enabled?("epb-data-frontend-enable-id-token-validation")
-        use_case = @container.get_object(:validate_id_token_use_case)
-        is_valid = use_case.execute(token_response_hash:, nonce:)
+      use_case = @container.get_object(:validate_id_token_use_case)
+      is_valid = use_case.execute(token_response_hash:, nonce:)
 
-        raise Errors::ValidationError, "ID token validation failed" unless is_valid
-      end
+      raise Errors::ValidationError, "ID token validation failed" unless is_valid
 
       Helper::Onelogin.set_user_one_login_info(container: @container, session:, token_response_hash:)
 

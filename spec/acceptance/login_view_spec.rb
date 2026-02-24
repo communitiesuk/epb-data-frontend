@@ -148,6 +148,7 @@ describe "Acceptance::Login", type: :feature do
       allow(request_onelogin_token_use_case).to receive(:execute).and_return(token_response_hash)
       allow(get_onelogin_user_info_use_case).to receive(:execute).and_return(user_info_response)
       allow(Helper::Onelogin).to receive(:check_one_login_errors).and_return(true)
+      allow(validate_id_token_use_case).to receive(:execute).and_return(true)
       allow(Helper::Session).to receive(:set_session_value)
       allow(get_user_id_use_case).to receive(:execute).and_return("e40c46c3-4636-4a8a-abd7-be72e1a525f6")
     end
@@ -155,66 +156,55 @@ describe "Acceptance::Login", type: :feature do
     context "when the request is received" do
       before do
         Timecop.freeze(Time.utc(2025, 6, 25, 12, 0, 0))
-        Helper::Toggles.set_feature("epb-data-frontend-enable-id-token-validation", false)
         allow(Helper::Session).to receive(:get_session_value).with(anything, :referer).and_return("test-redirect-path")
-        get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
       end
 
       after do
         Timecop.return
       end
 
-      it "calls the request_onelogin_token_use_case with the right arguments" do
-        expect(request_onelogin_token_use_case).to have_received(:execute).with({ code: "test_code", redirect_uri: "http://get-energy-performance-data/login/callback" })
-      end
-
-      it "returns status 302" do
-        expect(last_response.status).to eq(302)
-      end
-
-      it "calls the check_one_login_errors method" do
-        expect(Helper::Onelogin).to have_received(:check_one_login_errors).with({ code: "test_code", state: "test_state" })
-      end
-
-      it "calls set_session_value for the email address" do
-        expect(Helper::Session).to have_received(:set_session_value).with(anything, :email_address, "test@email.com")
-      end
-
-      it "calls the get user id use case" do
-        expect(get_user_id_use_case).to have_received(:execute).with("urn:fdc:gov.uk:2022:56P4CMsGh_02YOlWpd8PAOI-2sVlB2nsNU7mcLZYhYw=")
-      end
-
-      it "sets the user id into the session" do
-        expect(Helper::Session).to have_received(:set_session_value).with(anything, :user_id, "e40c46c3-4636-4a8a-abd7-be72e1a525f6")
-      end
-
-      context "when the epb-data-frontend-enable-id-token-validation feature toggle is enabled" do
-        context "when id token is valid" do
-          before do
-            Helper::Toggles.set_feature("epb-data-frontend-enable-id-token-validation", true)
-            allow(validate_id_token_use_case).to receive(:execute).and_return(true)
-            get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
-          end
-
-          it "calls the validate_id_token_use_case with the right arguments" do
-            expect(validate_id_token_use_case).to have_received(:execute).with(token_response_hash:, nonce: "test_nonce")
-          end
-
-          it "passes the validation and redirects" do
-            expect(last_response.status).to eq(302)
-          end
+      context "when id token is valid" do
+        before do
+          get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
         end
 
-        context "when id token is invalid" do
-          before do
-            Helper::Toggles.set_feature("epb-data-frontend-enable-id-token-validation", true)
-            allow(validate_id_token_use_case).to receive(:execute).and_return(false)
-            get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
-          end
+        it "calls the request_onelogin_token_use_case with the right arguments" do
+          expect(request_onelogin_token_use_case).to have_received(:execute).with({ code: "test_code", redirect_uri: "http://get-energy-performance-data/login/callback" })
+        end
 
-          it "raises 500" do
-            expect(last_response.status).to eq(500)
-          end
+        it "passes the validation and redirects" do
+          expect(last_response.status).to eq(302)
+        end
+
+        it "calls the check_one_login_errors method" do
+          expect(Helper::Onelogin).to have_received(:check_one_login_errors).with({ code: "test_code", state: "test_state" })
+        end
+
+        it "calls the validate_id_token_use_case with the right arguments" do
+          expect(validate_id_token_use_case).to have_received(:execute).with(token_response_hash:, nonce: "test_nonce")
+        end
+
+        it "calls set_session_value for the email address" do
+          expect(Helper::Session).to have_received(:set_session_value).with(anything, :email_address, "test@email.com")
+        end
+
+        it "calls the get user id use case" do
+          expect(get_user_id_use_case).to have_received(:execute).with("urn:fdc:gov.uk:2022:56P4CMsGh_02YOlWpd8PAOI-2sVlB2nsNU7mcLZYhYw=")
+        end
+
+        it "sets the user id into the session" do
+          expect(Helper::Session).to have_received(:set_session_value).with(anything, :user_id, "e40c46c3-4636-4a8a-abd7-be72e1a525f6")
+        end
+      end
+
+      context "when id token is invalid" do
+        before do
+          allow(validate_id_token_use_case).to receive(:execute).and_return(false)
+          get callback_url, { code: "test_code", state: "test_state" }, { "HTTP_COOKIE" => "nonce=test_nonce; state=test_state" }
+        end
+
+        it "raises 500" do
+          expect(last_response.status).to eq(500)
         end
       end
 
