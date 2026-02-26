@@ -63,7 +63,7 @@ describe "Acceptance::FilterProperties", type: :feature do
       allow(ViewModels::FilterProperties).to receive(:get_full_load_file_size).and_return("3.5 GB")
     end
 
-    context "when the data access options page is rendered" do
+    context "when the page is rendered" do
       before do
         Timecop.freeze(Time.utc(2025, 4, 1))
       end

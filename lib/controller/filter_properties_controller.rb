@@ -21,12 +21,12 @@ module Controller
         if request.post? && @errors.empty?
           redirect "/download/all?property_type=#{property_type}" if default_filters?(property_type)
 
-          download_count = get_download_size(params)
+          download_count = get_download_size(params, property_type:)
           raise Errors::FilteredDataNotFound if download_count.zero?
 
           Helper::Session.set_session_value(session, :download_count, download_count)
           email_address = Helper::Session.get_email_from_session(session)
-          send_download_request(email_address)
+          send_download_request(email_address:, property_type:)
           form_data = Rack::Utils.build_nested_query(params)
           redirect "/request-received-confirmation?#{form_data}"
         else
@@ -114,11 +114,10 @@ module Controller
       halt 403, erb(:error_page_403)
     end
 
-    def get_download_size(params_data)
+    def get_download_size(params_data, property_type:)
       use_case = @container.get_object(:get_download_size_use_case)
       date_start = ViewModels::FilterProperties.start_date_from_inputs(params_data["from-year"], params_data["from-month"]).to_s
       date_end = ViewModels::FilterProperties.end_date_from_inputs(params_data["to-year"], params_data["to-month"]).to_s
-      property_type = params_data["property_type"] if property_type_valid?(params_data["property_type"])
 
       council = if params_data["local-authority"] != ["Select all"] && params_data["area-type"] == "local-authority"
                   params_data[params_data["area-type"]]
@@ -147,11 +146,11 @@ module Controller
       use_case.execute(**use_case_args)
     end
 
-    def send_download_request(email_address)
+    def send_download_request(email_address:, property_type:)
       area_value = params[params["area-type"]]
       date_start = ViewModels::FilterProperties.start_date_from_inputs(params["from-year"], params["from-month"])
       date_end = ViewModels::FilterProperties.end_date_from_inputs(params["to-year"], params["to-month"])
-      property_type = params["property_type"] if property_type_valid?(params["property_type"])
+
       use_case_args = {
         property_type:,
         date_start:,
