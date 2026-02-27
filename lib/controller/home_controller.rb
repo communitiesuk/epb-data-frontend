@@ -6,8 +6,9 @@ module Controller
 
     get "/data-access-options" do
       status 200
-      @page_title = t("data_access_options.title")
+      @page_title = "#{t('data_access_options.title')} – #{t('layout.body.govuk')}"
       @back_link_href = "/"
+
       erb :data_access_options
     end
 
@@ -44,8 +45,9 @@ module Controller
 
     get "/accessibility-statement" do
       status 200
-      @page_title = t("accessibility_statement.top_heading")
+      @page_title = "#{t('accessibility_statement.top_heading')} – #{t('layout.body.govuk')}"
       @back_link_href = "/"
+
       erb :accessibility_statement
     end
   end

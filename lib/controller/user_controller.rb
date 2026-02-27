@@ -2,6 +2,7 @@ module Controller
   class UserController < BaseController
     get "/login" do
       status 200
+      @page_title = "#{t('login.title')} – #{t('layout.body.govuk')}"
 
       if params["referer"] == "opt-out"
         @hide_my_account = true
@@ -125,6 +126,8 @@ module Controller
 
     get "/signed-out" do
       status 200
+      @page_title = "#{t('signed_out.title')} – #{t('layout.body.govuk')}"
+
       erb :signed_out
     end
 

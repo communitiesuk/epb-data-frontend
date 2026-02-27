@@ -3,6 +3,7 @@ module Controller
     get "/api/my-account" do
       status 200
       @back_link_href = request.referer || "/"
+      @page_title = "#{t('my_account.title')} – #{t('layout.body.govuk')}"
 
       erb :my_account, locals: { use_case: @container.get_object(:get_user_token_use_case) }
     rescue StandardError => e

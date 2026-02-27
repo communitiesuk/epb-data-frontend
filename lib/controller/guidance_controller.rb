@@ -4,6 +4,7 @@ module Controller
       status 200
       @back_link_href = request.referer || "/"
       @hide_guidance_text = true
+      @page_title = "#{t('guidance.title')} – #{t('layout.body.govuk')}"
 
       erb :guidance
     end
@@ -12,6 +13,8 @@ module Controller
       status 200
       @back_link_href = request.referer || "/"
       @hide_guidance_text = true
+      @page_title = "#{t('data_dictionary.title')} – #{t('layout.body.govuk')}"
+
       erb :'guidance_pages/data_dictionary'
     end
 
@@ -19,6 +22,8 @@ module Controller
       status 200
       @back_link_href = request.referer || "/"
       @hide_guidance_text = true
+      @page_title = "#{t('linking_certificates_to_recommendations.title')} – #{t('layout.body.govuk')}"
+
       erb :'guidance_pages/linking_certificates_to_recommendations'
     end
 
@@ -26,6 +31,8 @@ module Controller
       status 200
       @back_link_href = request.referer || "/"
       @hide_guidance_text = true
+      @page_title = "#{t('how_the_data_is_produced.title')} – #{t('layout.body.govuk')}"
+
       erb :'guidance_pages/how_the_data_is_produced'
     end
 
@@ -33,6 +40,8 @@ module Controller
       status 200
       @back_link_href = request.referer || "/"
       @hide_guidance_text = true
+      @page_title = "#{t('changes_to_the_format_and_methodology.title')} – #{t('layout.body.govuk')}"
+
       erb :'guidance_pages/changes_to_the_format_and_methodology'
     end
 
@@ -40,6 +49,8 @@ module Controller
       status 200
       @back_link_href = request.referer || "/"
       @hide_guidance_text = true
+      @page_title = "#{t('licensing_restrictions.title')} – #{t('layout.body.govuk')}"
+
       erb :'guidance_pages/licensing_restrictions'
     end
 
@@ -47,6 +58,8 @@ module Controller
       status 200
       @back_link_href = request.referer || "/"
       @hide_guidance_text = true
+      @page_title = "#{t('data_protection_requirements.title')} – #{t('layout.body.govuk')}"
+
       erb :'guidance_pages/data_protection_requirements'
     end
 
@@ -54,12 +67,15 @@ module Controller
       status 200
       @back_link_href = request.referer || "/"
       @hide_guidance_text = true
+      @page_title = "#{t('data_limitations.title')} – #{t('layout.body.govuk')}"
+
       erb :'guidance_pages/data_limitations'
     end
 
     get "/guidance/energy-certificate-data-apis" do
       status 200
       @back_link_href = request.referer || "/"
+      @page_title = "#{t('energy_certificate_data_apis.title')} – #{t('layout.body.govuk')}"
 
       erb :'guidance_pages/energy_certificate_data_apis', locals: { use_case: @container.get_object(:get_user_token_use_case) }
     rescue StandardError => e

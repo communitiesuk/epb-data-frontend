@@ -4,6 +4,8 @@ module Controller
       status 200
       @errors = {}
       @back_link_href = "/data-access-options"
+      @page_title = "#{t('property_type.title')} – #{t('layout.body.govuk')}"
+
       erb :type_of_properties
     rescue StandardError => e
       server_error(e)

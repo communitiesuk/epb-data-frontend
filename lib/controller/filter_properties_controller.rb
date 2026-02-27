@@ -5,11 +5,14 @@ module Controller
         @errors = {}
         @error_form_ids = []
         @back_link_href = "/type-of-properties"
-        params["ratings"] ||= %w[A B C D E F G] unless request.post?
-        status 200
 
         property_type = params["property_type"]
         raise Errors::InvalidPropertyType unless property_type_valid?(property_type)
+
+        @page_title = "#{t("filter_properties.#{property_type}_title")} – #{t('layout.body.govuk')}"
+        status 200
+
+        params["ratings"] ||= %w[A B C D E F G] unless request.post?
 
         if request.post?
           validate_date
@@ -64,6 +67,7 @@ module Controller
 
     get "/request-received-confirmation" do
       check_referral
+      @page_title = "#{t('request_received.title')} – #{t('layout.body.govuk')}"
 
       property_type = params["property_type"]
       raise Errors::InvalidPropertyType unless property_type_valid?(property_type)
