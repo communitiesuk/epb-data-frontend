@@ -4,7 +4,7 @@
   </div>
   <div class="govuk-grid-column-two-thirds">
     <div class="govuk-!-margin-bottom-7">
-    <h1 class="govuk-heading-l">Download <%= @assessment_type_title %> full load <%= @file_type  %></h1>
+    <h1 class="govuk-heading-l"><%= t('api-technical-documentation.download_file.title', assessment_type: @assessment_type_title, file_type: @file_type) %></h1>
 
     <p class="govuk-body">
       Download a zip file of the full data set of <%= @assessment_type_title %> EPCs as series of <%= @file_type  %> files by year.

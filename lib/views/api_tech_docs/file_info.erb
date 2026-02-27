@@ -4,7 +4,7 @@
   </div>
   <div class="govuk-grid-column-two-thirds">
     <div class="govuk-!-margin-bottom-7">
-      <h1 class="govuk-heading-l">Fetch information about <%= @assessment_type_title %> full load <%= @file_type  %></h1>
+      <h1 class="govuk-heading-l"><%= t('api-technical-documentation.download_info.title', assessment_type: @assessment_type_title, file_type: @file_type) %></h1>
 
       <p class="govuk-body">
         Returns the size of the zip file to be downloaded and the date it was last created

@@ -8,9 +8,9 @@ module ViewModels
       when "domestic"
         I18n.t("filter_properties.domestic_title")
       when "non-domestic"
-        I18n.t("filter_properties.non_domestic_title")
+        I18n.t("filter_properties.non-domestic_title")
       when "display"
-        I18n.t("filter_properties.dec_title")
+        I18n.t("filter_properties.display_title")
       else
         ""
       end

@@ -191,8 +191,8 @@ en:
 
   filter_properties:
     domestic_title: "Domestic Energy Performance Certificates"
-    non_domestic_title: "Non-domestic Energy Performance Certificates"
-    dec_title: "Display Energy Certificates"
+    non-domestic_title: "Non-domestic Energy Performance Certificates"
+    display_title: "Display Energy Certificates"
     download_all_data:
       title: "Download all data"
       will_get_data_for: "You will get data for:"
@@ -264,6 +264,53 @@ en:
     bearer_token: "Bearer token (for developers)"
     sign_out: "Sign out"
     copy_bearer_token: "Copy"
+
+  guidance:
+    title: "Guidance"
+
+  data_dictionary:
+    title: "Data dictionary"
+
+  linking_certificates_to_recommendations:
+    title: "Linking certificates to recommendations"
+
+  how_the_data_is_produced:
+    title: "How the data is produced"
+
+  changes_to_the_format_and_methodology:
+    title: "Changes to the format and methodology"
+
+  data_limitations:
+    title: "Data limitations and exclusions"
+
+  licensing_restrictions:
+    title: "Licensing restrictions"
+
+  data_protection_requirements:
+    title: "Data protection requirements"
+
+  energy_certificate_data_apis:
+    title: "Energy certificate data APIs"
+
+  api-technical-documentation:
+    overview:
+      title: "Energy certificate data API documentation"
+    making_a_request:
+      title: "Making a request"
+    fetch_certificate_data:
+      title: "Fetch certificate data"
+    fetch_epc_codes:
+      title: "Fetch EPC codes"
+    fetch_epc_codes_information:
+      title: "Fetch EPC codes information"
+    search_certificates:
+      title: "Search for %{assessment_type} certificates"
+    deltas:
+      title: "Search for certificates that have changed"
+    download_file:
+      title: "Download %{assessment_type} full load %{file_type}"
+    download_info:
+      title: "Fetch information about %{assessment_type} full load %{file_type}"
 
   login:
     title: "Get energy performance of buildings data"
