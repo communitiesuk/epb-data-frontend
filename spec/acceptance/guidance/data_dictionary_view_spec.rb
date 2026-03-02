@@ -24,6 +24,10 @@ describe "Acceptance::DataDictionary", type: :feature do
         expect(response.body).to have_css("h1", text: "Data dictionary")
       end
 
+      it "displays the tab value the same as the main title value" do
+        expect(response.body).to include("Data dictionary – GOV.UK")
+      end
+
       it "has the correct content under the title" do
         expect(response.body).to have_css("p", text: "The data dictionary provides an explanation for every variable included in the dataset, as well as information on the data source and caveats.")
         expect(response.body).to have_css("p", text: "The data dictionary is only available for Domestic EPC data.")

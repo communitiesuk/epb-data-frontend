@@ -24,6 +24,10 @@ describe "Acceptance::TypeOfProperties", type: :feature do
         expect(response.body).to have_css("h1", text: "What type of certificates do you want data on?")
       end
 
+      it "displays the tab value the same as the main title value" do
+        expect(response.body).to include("What type of certificates do you want data on? – GOV.UK")
+      end
+
       it "has the correct content for epc radio button" do
         expect(response.body).to have_css("label.govuk-label", text: "Energy Performance Certificates")
         expect(response.body).to have_css("div.govuk-hint", id: "domestic-item-hint", text: "For domestic properties such as houses or flats")

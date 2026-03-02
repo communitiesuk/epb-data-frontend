@@ -28,6 +28,10 @@ describe "Acceptance::DataProtectionRequirements", type: :feature do
         )
       end
 
+      it "displays the tab value the same as the main title value" do
+        expect(response.body).to include("Data protection requirements – GOV.UK")
+      end
+
       it "has the correct content for data protection act section" do
         expect(response.body).to have_css("h2", text: "Data Protection Act 2018")
         expect(response.body).to have_link("Information Commissioner's Office", href: "https://ico.org.uk/")

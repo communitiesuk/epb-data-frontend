@@ -24,6 +24,31 @@ shared_context "when viewing api tech docs" do
         codes-info]
   end
 
+  def page_titles = [
+    "Making a request",
+    "Search for domestic certificates",
+    "Search for non domestic certificates",
+    "Search for display certificates",
+    "Search for certificates that have changed",
+    "Download domestic full load csv",
+    "Fetch information about domestic full load csv",
+    "Download domestic full load json",
+    "Fetch information about domestic full load json",
+    "Fetch information about non domestic full load csv",
+    "Download non domestic full load json",
+    "Fetch information about non domestic full load json",
+    "Download non domestic recommendation full load json",
+    "Fetch information about non domestic recommendations full load json",
+    "Download display full load csv",
+    "Fetch information about display full load csv",
+    "Download display full load json",
+    "Fetch information about display full load json",
+    "Download display recommendation full load json",
+    "Fetch information about display recommendations full load json",
+    "Fetch EPC codes",
+    "Fetch EPC codes information",
+  ]
+
   def end_points
     page_urls.excluding ["making-a-request"]
   end

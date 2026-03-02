@@ -27,6 +27,10 @@ describe "Acceptance::MyAccount", type: :feature do
         expect(response.body).to have_css("h1", text: "My account")
       end
 
+      it "displays the tab value the same as the main title value" do
+        expect(response.body).to include("My account – GOV.UK")
+      end
+
       it "shows the email address table row" do
         expect(response.body).to have_css("#email-address.govuk-summary-list__row")
       end

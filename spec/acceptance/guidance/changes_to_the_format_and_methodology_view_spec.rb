@@ -24,6 +24,10 @@ describe "Acceptance::ChangesToTheMethodAndMethodology", type: :feature do
         expect(response.body).to have_css("h1", text: "Changes to the format and methodology")
       end
 
+      it "displays the tab value the same as the main title value" do
+        expect(response.body).to include("Changes to the format and methodology – GOV.UK")
+      end
+
       it "has the correct content for certificate changes section" do
         expect(response.body).to have_css("h2", text: "Certificate changes")
         expect(response.body).to have_css("p", text: "There have been multiple version changes which affect how domestic and non-domestic EPCs and DECs are formatted.")

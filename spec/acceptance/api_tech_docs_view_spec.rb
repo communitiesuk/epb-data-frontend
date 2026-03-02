@@ -21,6 +21,10 @@ describe "Acceptance::ApiTechnicalDocumentation", type: :feature do
         expect(response.body).to have_css("h1", text: "Energy certificate data API documentation")
       end
 
+      it "displays the tab value the same as the main header value" do
+        expect(response.body).to include("Energy certificate data API documentation – GOV.UK</title>")
+      end
+
       it "has the navigation component" do
         expect(response.body).to have_css("nav.app-subnav")
       end
@@ -52,6 +56,13 @@ describe "Acceptance::ApiTechnicalDocumentation", type: :feature do
         page_urls.each do |link|
           response = get "#{base_url}#{path}/#{link}"
           expect(response.status).to eq(200)
+        end
+      end
+
+      it "displays the tab value the same as the main header value for pages" do
+        page_urls.each_with_index do |link, index|
+          response = get "#{base_url}#{path}/#{link}"
+          expect(response.body).to include("#{page_titles[index]} – GOV.UK</title>")
         end
       end
 
@@ -101,7 +112,7 @@ describe "Acceptance::ApiTechnicalDocumentation", type: :feature do
         expect(response.body).to have_css("code", text: "http://api.get-energy-performance-data")
       end
 
-      it "show the correc curl command to API" do
+      it "show the correct curl command to API" do
         response = get "#{base_url}#{path}/making-a-request"
         expect(response.body).to include("curl http://api.get-energy-performance-data/api")
       end

@@ -24,6 +24,10 @@ describe "Acceptance::HowTheDataIsProduced", type: :feature do
         expect(response.body).to have_css("h1", text: "How the data is produced")
       end
 
+      it "displays the tab value the same as the main title value" do
+        expect(response.body).to include("How the data is produced – GOV.UK")
+      end
+
       it "has the correct content for section titles" do
         expect(response.body).to have_css("h2", text: "Why energy certificates are created")
         expect(response.body).to have_css("h2", text: "How energy certificates are produced")

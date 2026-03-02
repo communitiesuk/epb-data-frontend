@@ -72,6 +72,10 @@ describe "Acceptance::RequestReceivedConfirmation", type: :feature do
         expect(last_response.body).to have_selector("p.govuk-body", text: "This may take a few minutes to be delivered to your inbox.")
       end
 
+      it "displays the tab value the same as the main title value" do
+        expect(last_response.body).to include("Request received – GOV.UK")
+      end
+
       it "shows correct content for the requested data" do
         expect(last_response.body).to have_css(".govuk-body", text: "You requested data for:")
         expect(last_response.body).to have_css(".govuk-body", text: "Energy Performance Certificates")

@@ -24,6 +24,10 @@ describe "Acceptance::Guidance", type: :feature do
         expect(response.body).to have_css("h1", text: "Guidance")
       end
 
+      it "displays the tab value the same as the main title value" do
+        expect(response.body).to include("Guidance – GOV.UK")
+      end
+
       it "has the correct content under the title" do
         expect(response.body).to have_css("p", text: "You can use these resources to help you understand and use energy certificate data.")
       end

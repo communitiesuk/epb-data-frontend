@@ -24,6 +24,10 @@ describe "Acceptance::DataLimitations", type: :feature do
         expect(response.body).to have_css("h1", text: "Data limitations and exclusions")
       end
 
+      it "displays the tab value the same as the main title value" do
+        expect(response.body).to include("Data limitations and exclusions – GOV.UK")
+      end
+
       it "has the correct section titles" do
         expect(response.body).to have_css("h2", text: "Representativeness")
         expect(response.body).to have_css("h2", text: "Date availability")

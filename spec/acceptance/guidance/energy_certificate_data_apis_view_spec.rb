@@ -27,6 +27,10 @@ describe "Acceptance::EnergyCertificateDataApis", type: :feature do
         expect(response.body).to have_css("h1", text: "Energy certificate data APIs")
       end
 
+      it "displays the tab value the same as the main title value" do
+        expect(response.body).to include("Energy certificate data APIs – GOV.UK")
+      end
+
       it "has the correct content under the title" do
         expect(response.body).to have_css("p", text: "Learn about the APIs we offer for software developers and how you can connect to them.")
       end

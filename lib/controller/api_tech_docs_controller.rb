@@ -39,7 +39,7 @@ module Controller
 
     get "/api-technical-documentation/download/:title/:file_type" do
       set_headers
-      @assessment_type_title = params["title"]
+      @assessment_type_title = params["title"].gsub("-", " ")
       @assessment_type = params["title"]
       @file_type = params["file_type"]
       @page_title = "#{t('api-technical-documentation.download_file.title', assessment_type: @assessment_type_title, file_type: @file_type)} – #{t('layout.body.govuk')}"
@@ -49,7 +49,7 @@ module Controller
 
     get "/api-technical-documentation/download-info/:title/:file_type" do
       set_headers
-      @assessment_type_title = params["title"]
+      @assessment_type_title = params["title"].gsub("-", " ")
       @assessment_type = params["title"]
       @file_type = params["file_type"]
       @page_title = "#{t('api-technical-documentation.download_info.title', assessment_type: @assessment_type_title, file_type: @file_type)} – #{t('layout.body.govuk')}"

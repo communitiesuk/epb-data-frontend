@@ -24,6 +24,10 @@ describe "Acceptance::LinkingCertificatesToRecommendations", type: :feature do
         expect(response.body).to have_css("h1", text: "Linking certificates to recommendations")
       end
 
+      it "displays the tab value the same as the main title value" do
+        expect(response.body).to include("Linking certificates to recommendations – GOV.UK")
+      end
+
       it "has the correct content under the title" do
         expect(response.body).to have_css("p", text: "The method to link certificates to their recommendations varies depending on how the data is accessed:")
       end

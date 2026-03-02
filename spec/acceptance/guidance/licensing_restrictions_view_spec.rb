@@ -24,6 +24,10 @@ describe "Acceptance::LicensingRestrictions", type: :feature do
         expect(response.body).to have_css("h1", text: "Licensing restrictions")
       end
 
+      it "displays the tab value the same as the main title value" do
+        expect(response.body).to include("Licensing restrictions – GOV.UK")
+      end
+
       it "has the correct content for non-address data section" do
         expect(response.body).to have_css("h2", text: "Non-Address Data")
         expect(response.body).to have_link("Open Government Licence v3.0", href: "http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/")

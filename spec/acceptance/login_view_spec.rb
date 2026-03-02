@@ -94,6 +94,10 @@ describe "Acceptance::Login", type: :feature do
         expect(response.body).to have_selector("p.govuk-body", text: "If you don’t have a One Login, you can create one when you start.")
       end
 
+      it "displays the tab value the same as the main title value" do
+        expect(response.body).to include("Create your GOV.UK One Login or sign in – GOV.UK")
+      end
+
       it "has the correct Start now button" do
         expect(response.body).to have_link("Start now", href: "/login/authorize?referer=opt-out")
       end

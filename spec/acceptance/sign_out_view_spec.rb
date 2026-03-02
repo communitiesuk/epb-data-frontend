@@ -15,6 +15,10 @@ describe "Acceptance::SignOut", type: :feature do
     expect(response.body).to have_selector("h1", text: "You have signed out")
   end
 
+  it "displays the tab value the same as the main title value" do
+    expect(response.body).to include("You have signed out – GOV.UK")
+  end
+
   it "the one login link is included" do
     expect(response.body).to have_link("GOV.UK One Login", href: "/login/authorize?referer=api/my-account")
   end

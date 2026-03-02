@@ -18,6 +18,10 @@ describe "Acceptance::AccessibilityStatement", type: :feature do
         expect(response.body).to have_css("h2.govuk-heading-l", text: "Preparation of this accessibility statement")
       end
 
+      it "displays the tab value the same as the main title value" do
+        expect(response.body).to include("Accessibility statement – GOV.UK")
+      end
+
       it "displays the accessibility statement contents" do
         expect(response.body).to include(
           "The Ministry of Housing, Communities and Local Government is committed to making its website accessible",

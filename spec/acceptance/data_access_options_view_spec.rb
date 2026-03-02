@@ -21,6 +21,10 @@ describe "Acceptance::DataAccessOptions", type: :feature do
         expect(response.body).to have_selector("h1", text: "How would you like to access the data?")
       end
 
+      it "displays the tab value the same as the main title value" do
+        expect(response.body).to include("How would you like to access the data? – GOV.UK")
+      end
+
       it "has the correct content for download files option" do
         expect(response.body).to have_selector("h2.govuk-heading-m", text: "Download files")
         expect(response.body).to have_selector("p.govuk-body", text: "Download certificate data in CSV format.")
