@@ -313,12 +313,10 @@ cy:
       title: "Fetch information about %{assessment_type} full load %{file_type}"
 
   login:
-    title: "Cael data perfformiad ynni adeiladau"
-    paragraph_1: "Os ydych chi wedi defnyddio gwasanaethau eraill y llywodraeth er enghraifft, i <strong>ffeilio ffurflen dreth Hunanasesu</strong> neu <strong>wneud cais am basbort</strong>, gallwch ddefnyddio’r un manylion mewngofnodi yma."
-    paragraph_2: "Os nad oes One Login gennych, gallwch greu un pan fyddwch chi’n dechrau."
-    opt_out:
-      title: "Creu eich GOV.UK One Login neu fewngofnodi"
-      paragraph_1: "Mae angen ichi fewngofnodi neu gofrestru i wneud cais am optio allan."
+    title: "Creu eich GOV.UK One Login neu fewngofnodi"
+    paragraph_1: "Mae angen ichi fewngofnodi neu gofrestru i wneud cais am optio allan."
+    paragraph_2: "Os ydych chi wedi defnyddio gwasanaethau eraill y llywodraeth er enghraifft, i <strong>ffeilio ffurflen dreth Hunanasesu</strong> neu <strong>wneud cais am basbort</strong>, gallwch ddefnyddio’r un manylion mewngofnodi yma."
+    paragraph_3: "Os nad oes One Login gennych, gallwch greu un pan fyddwch chi’n dechrau."
 
 #  api_guidance:
 #    title: "Using energy certificate data APIs"
