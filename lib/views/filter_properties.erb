@@ -23,7 +23,7 @@
           <%= t('filter_properties.download_all_data.will_get_data_for') %>
         </p>
         <ul class="govuk-list govuk-list--bullet">
-          <li><%= ViewModels::FilterProperties.page_title(params["property_type"]) %> <%= t('download_started.recommendations') %></li>
+          <li><%= ViewModels::FilterProperties.page_title(params["property_type"]) %> <%= t('filter_properties.download_all_data.recommendations') %></li>
           <li><%= t('filter_properties.download_all_data.countries') %></li>
           <% previous_month = Date.today << 1 %>
           <li><%= t('filter_properties.download_all_data.date_range', previous_month: previous_month.strftime("%B %Y")) %></li>

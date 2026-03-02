@@ -92,12 +92,6 @@ module Controller
       end
     end
 
-    get "/download-started-confirmation" do
-      status 200
-      @back_link_href = "/filter-properties?property_type=#{params['property_type']}"
-      erb :download_started_confirmation
-    end
-
   private
 
     def check_referral
