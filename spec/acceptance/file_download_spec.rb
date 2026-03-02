@@ -103,22 +103,6 @@ describe "Acceptance::FileDownload", type: :feature do
       it "redirects to full-load file download" do
         expect(response.headers["location"]).to include("https://user-data.s3.us-stubbed-1.amazonaws.com/full-load/#{property_type}-csv.zip?X-Amz-Algorithm=AWS4-HMAC")
       end
-
-      context "when the request received with invalid property type" do
-        before do
-          get "#{local_host}?property_type=invalid"
-        end
-
-        it "returns status 404" do
-          expect(last_response.status).to eq(404)
-        end
-
-        it "shows the error page" do
-          expect(last_response.body).to include(
-            '<h1 class="govuk-heading-xl">Page not found</h1>',
-          )
-        end
-      end
     end
 
     context "when user is not authenticated" do
@@ -165,6 +149,22 @@ describe "Acceptance::FileDownload", type: :feature do
 
       it "raises a 404" do
         expect(response.status).to eq(404)
+      end
+    end
+
+    context "when the request received with invalid property type" do
+      before do
+        get "#{local_host}?property_type=invalid"
+      end
+
+      it "returns status 404" do
+        expect(last_response.status).to eq(404)
+      end
+
+      it "shows the error page" do
+        expect(last_response.body).to include(
+          '<h1 class="govuk-heading-xl">Page not found</h1>',
+        )
       end
     end
   end
