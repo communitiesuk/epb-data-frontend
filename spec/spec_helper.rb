@@ -47,6 +47,7 @@ ENV["NOTIFY_OPT_OUT_EMAIL_RECIPIENT"] = "opt-outs@example.com"
 ENV["NOTIFY_DATA_API_KEY"] = "optoutrequest-658d1738-b6c2-426b-9215-a7a9b30ad44f-ec9bd43e-bf9b-41ef-9e11-43318a7d8c72"
 ENV["PUBLISHED_DWH_API_URL"] = "http://api.get-energy-performance-data"
 ENV["ALG"] = "RS256"
+ENV["KMS_KEY_ID"] = "test-kms-key-id"
 
 I18n.load_path = Dir[File.join(File.dirname(__FILE__), "/../locales", "*.yml")]
 I18n.enforce_available_locales = true
