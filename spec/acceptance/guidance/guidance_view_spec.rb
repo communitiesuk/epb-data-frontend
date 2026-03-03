@@ -20,12 +20,12 @@ describe "Acceptance::Guidance", type: :feature do
         expect(response.body).to have_link("Back", href: "/")
       end
 
-      it "has the correct title" do
+      it "has the correct header" do
         expect(response.body).to have_css("h1", text: "Guidance")
       end
 
-      it "displays the tab value the same as the main title value" do
-        expect(response.body).to include("Guidance – GOV.UK")
+      it "displays the title the same as the main header value" do
+        expect(response.body).to have_title "Guidance – GOV.UK"
       end
 
       it "has the correct content under the title" do

@@ -17,12 +17,12 @@ describe "Acceptance::DataAccessOptions", type: :feature do
         expect(response.body).to have_link "Back", href: "/"
       end
 
-      it "shows the correct title" do
+      it "shows the correct header" do
         expect(response.body).to have_selector("h1", text: "How would you like to access the data?")
       end
 
-      it "displays the tab value the same as the main title value" do
-        expect(response.body).to include("How would you like to access the data? – GOV.UK")
+      it "displays the title the same as the main header value" do
+        expect(response.body).to have_title "How would you like to access the data? – GOV.UK"
       end
 
       it "has the correct content for download files option" do

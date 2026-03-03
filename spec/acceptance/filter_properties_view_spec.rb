@@ -80,12 +80,12 @@ describe "Acceptance::FilterProperties", type: :feature do
         expect(response.body).to have_link "Back", href: "/type-of-properties"
       end
 
-      it "shows the correct title for domestic" do
+      it "shows the correct header for domestic" do
         expect(response.body).to have_selector("h1", text: "Energy Performance Certificates")
       end
 
-      it "displays the tab value the same as the main title value" do
-        expect(response.body).to include("Energy Performance Certificates – GOV.UK")
+      it "displays the title the same as the main header value" do
+        expect(response.body).to have_title "Energy Performance Certificates – GOV.UK"
       end
 
       it "does not show the efficiency rating filter for non-domestic and public properties" do

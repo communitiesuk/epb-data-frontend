@@ -67,13 +67,13 @@ describe "Acceptance::RequestReceivedConfirmation", type: :feature do
         expect(last_response.body).to have_link "Back", href: "/filter-properties?property_type=domestic"
       end
 
-      it "the title to be correct" do
+      it "has correct header" do
         expect(last_response.body).to have_selector("h2", text: "Request received")
         expect(last_response.body).to have_selector("p.govuk-body", text: "This may take a few minutes to be delivered to your inbox.")
       end
 
-      it "displays the tab value the same as the main title value" do
-        expect(last_response.body).to include("Request received – GOV.UK")
+      it "displays the title the same as the main header value" do
+        expect(last_response.body).to have_title "Request received – GOV.UK"
       end
 
       it "shows correct content for the requested data" do

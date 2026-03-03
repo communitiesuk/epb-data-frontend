@@ -20,12 +20,12 @@ describe "Acceptance::DataLimitations", type: :feature do
         expect(response.body).to have_link("Back", href: "/")
       end
 
-      it "has the correct title" do
+      it "has the correct header" do
         expect(response.body).to have_css("h1", text: "Data limitations and exclusions")
       end
 
-      it "displays the tab value the same as the main title value" do
-        expect(response.body).to include("Data limitations and exclusions – GOV.UK")
+      it "displays the title the same as the main header value" do
+        expect(response.body).to have_title "Data limitations and exclusions – GOV.UK"
       end
 
       it "has the correct section titles" do

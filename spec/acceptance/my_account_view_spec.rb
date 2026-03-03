@@ -23,12 +23,12 @@ describe "Acceptance::MyAccount", type: :feature do
         expect(response.body).to have_link("Back", href: "/previous_page")
       end
 
-      it "has the correct page title" do
+      it "has the correct page header" do
         expect(response.body).to have_css("h1", text: "My account")
       end
 
-      it "displays the tab value the same as the main title value" do
-        expect(response.body).to include("My account – GOV.UK")
+      it "displays the title the same as the main header value" do
+        expect(response.body).to have_title "My account – GOV.UK"
       end
 
       it "shows the email address table row" do

@@ -86,7 +86,7 @@ describe "Acceptance::Login", type: :feature do
         expect(response.status).to eq(200)
       end
 
-      it "shows the correct title and body text" do
+      it "shows the correct header and body text" do
         expect(response.body).to have_selector("h1", text: "Create your GOV.UK One Login or sign in")
         expect(response.body).to have_selector("p.govuk-body", text: "If you’ve used other government services for example, to file a Self Assessment tax return or apply for or renew a passport, you can use the same login details here.")
         expect(response.body).to have_selector("strong", text: "Self Assessment tax return")
@@ -94,8 +94,8 @@ describe "Acceptance::Login", type: :feature do
         expect(response.body).to have_selector("p.govuk-body", text: "If you don’t have a One Login, you can create one when you start.")
       end
 
-      it "displays the tab value the same as the main title value" do
-        expect(response.body).to include("Create your GOV.UK One Login or sign in – GOV.UK")
+      it "displays the title the same as the main header value" do
+        expect(response.body).to have_title "Create your GOV.UK One Login or sign in – GOV.UK"
       end
 
       it "has the correct Start now button" do

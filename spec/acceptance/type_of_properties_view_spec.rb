@@ -20,12 +20,12 @@ describe "Acceptance::TypeOfProperties", type: :feature do
         expect(response.body).to have_link "Back", href: "/data-access-options"
       end
 
-      it "has the correct form title" do
+      it "has the correct form header" do
         expect(response.body).to have_css("h1", text: "What type of certificates do you want data on?")
       end
 
-      it "displays the tab value the same as the main title value" do
-        expect(response.body).to include("What type of certificates do you want data on? – GOV.UK")
+      it "displays the title the same as the main header value" do
+        expect(response.body).to have_title "What type of certificates do you want data on? – GOV.UK"
       end
 
       it "has the correct content for epc radio button" do

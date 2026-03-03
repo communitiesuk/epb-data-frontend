@@ -20,12 +20,12 @@ describe "Acceptance::ChangesToTheMethodAndMethodology", type: :feature do
         expect(response.body).to have_link("Back", href: "/")
       end
 
-      it "has the correct title" do
+      it "has the correct header" do
         expect(response.body).to have_css("h1", text: "Changes to the format and methodology")
       end
 
-      it "displays the tab value the same as the main title value" do
-        expect(response.body).to include("Changes to the format and methodology – GOV.UK")
+      it "displays the title the same as the main header value" do
+        expect(response.body).to have_title "Changes to the format and methodology – GOV.UK"
       end
 
       it "has the correct content for certificate changes section" do

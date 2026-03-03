@@ -17,7 +17,7 @@ describe "Acceptance::ApiTechnicalDocumentation", type: :feature do
         expect(response.status).to eq(200)
       end
 
-      it "has the correct title" do
+      it "has the correct header" do
         expect(response.body).to have_css("h1", text: "Energy certificate data API documentation")
       end
 
@@ -59,10 +59,10 @@ describe "Acceptance::ApiTechnicalDocumentation", type: :feature do
         end
       end
 
-      it "displays the tab value the same as the main header value for pages" do
+      it "displays the title the same as the main header value for pages" do
         page_urls.each_with_index do |link, index|
           response = get "#{base_url}#{path}/#{link}"
-          expect(response.body).to include("#{page_titles[index]} – GOV.UK</title>")
+          expect(response.body).to have_title "#{page_titles[index]} – GOV.UK"
         end
       end
 
