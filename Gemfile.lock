@@ -318,6 +318,7 @@ PLATFORMS
 
 DEPENDENCIES
   aws-sdk-dynamodb (~> 1.144)
+  aws-sdk-kms (~> 1)
   aws-sdk-s3 (~> 1)
   aws-sdk-sns (~> 1)
   bytesize (~> 0.1.2)

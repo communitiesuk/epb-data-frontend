@@ -1,7 +1,9 @@
 require "aws-sdk-dynamodb"
 
 describe Gateway::UserCredentialsGateway do
-  subject(:gateway) { described_class.new(dynamo_db_client:) }
+  subject(:gateway) { described_class.new(dynamo_db_client:, kms_gateway:) }
+
+  let(:kms_gateway) { instance_double(Gateway::KmsGateway) }
 
   let(:dynamo_db_client) do
     Aws::DynamoDB::Client.new(
@@ -12,6 +14,14 @@ describe Gateway::UserCredentialsGateway do
 
   let(:user_id) do
     "e40c46c3-4636-4a8a-abd7-be72e1a525f6"
+  end
+
+  let(:sub_id) do
+    "mock-sub-id"
+  end
+
+  let(:email) do
+    "test@email.com"
   end
 
   describe "#insert_user" do
@@ -29,7 +39,7 @@ describe Gateway::UserCredentialsGateway do
               "S": "D0RnC2oKGsoM936wKmtd4ZcoSw489rPo4FDqQ2SYQVtVnQ4PhZ33b46YZPNZXo6r",
             },
             "OneLoginSub": {
-              "S": "mock-sub-id",
+              "S": sub_id,
             },
           },
           "TableName": "test_users_table",
@@ -42,6 +52,7 @@ describe Gateway::UserCredentialsGateway do
           uuid: user_id,
           alphanumeric: "D0RnC2oKGsoM936wKmtd4ZcoSw489rPo4FDqQ2SYQVtVnQ4PhZ33b46YZPNZXo6r",
         )
+
         WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com")
           .with(body: expected_put_item_body,
                 headers: {
@@ -55,7 +66,76 @@ describe Gateway::UserCredentialsGateway do
       end
 
       it "returns the new UserId" do
-        expect(gateway.insert_user("mock-sub-id")).to eq(user_id)
+        expect(gateway.insert_user(one_login_sub: sub_id, email: email)).to eq(user_id)
+      end
+
+      context "when the 'epb-frontend-data-allow-email-encryption' toggle is disabled" do
+        before do
+          allow(kms_gateway).to receive(:encrypt)
+          gateway.insert_user(one_login_sub: sub_id, email: email)
+        end
+
+        it "does not attempt to encrypt the email" do
+          expect(kms_gateway).not_to have_received(:encrypt)
+        end
+      end
+
+      context "when the 'epb-frontend-data-allow-email-encryption' toggle is enabled" do
+        let(:encrypted_email) { "encrypted-email" }
+        let(:expected_put_item_body_with_email) do
+          {
+            "Item": {
+              "UserId": {
+                "S": user_id,
+              },
+              "CreatedAt": {
+                "S": Time.utc(2025, 6, 25, 12, 32),
+              },
+              "BearerToken": {
+                "S": "D0RnC2oKGsoM936wKmtd4ZcoSw489rPo4FDqQ2SYQVtVnQ4PhZ33b46YZPNZXo6r",
+              },
+              "OneLoginSub": {
+                "S": sub_id,
+              },
+              "EmailAddress": {
+                "S": encrypted_email,
+              },
+            },
+            "TableName": "test_users_table",
+          }.to_json
+        end
+
+        before do
+          Helper::Toggles.set_feature("epb-frontend-data-allow-email-encryption", true)
+          allow(kms_gateway).to receive(:encrypt).with(email).and_return(encrypted_email)
+
+          Timecop.freeze(Time.utc(2025, 6, 25, 12, 32, 0))
+
+          allow(SecureRandom).to receive_messages(
+            uuid: user_id,
+            alphanumeric: "D0RnC2oKGsoM936wKmtd4ZcoSw489rPo4FDqQ2SYQVtVnQ4PhZ33b46YZPNZXo6r",
+          )
+          WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com")
+                 .with(body: expected_put_item_body_with_email,
+                       headers: {
+                         "X-Amz-Target" => "DynamoDB_20120810.PutItem",
+                       })
+                 .to_return(status: 200, body: "{}")
+        end
+
+        after do
+          Timecop.return
+          Helper::Toggles.set_feature("epb-frontend-data-allow-email-encryption", false)
+        end
+
+        it "encrypts the email using KmsGateway" do
+          gateway.insert_user(one_login_sub: sub_id, email: email)
+          expect(kms_gateway).to have_received(:encrypt).with(email).once
+        end
+
+        it "inserts the user and returns the userId" do
+          expect(gateway.insert_user(one_login_sub: sub_id, email: email)).to eq(user_id)
+        end
       end
     end
   end
@@ -67,7 +147,7 @@ describe Gateway::UserCredentialsGateway do
           "FilterExpression":
             "OneLoginSub = :sub",
           "ExpressionAttributeValues": {
-            ":sub": { "S": "mock-sub-id" },
+            ":sub": { "S": sub_id },
           },
           "TableName": "test_users_table",
         }.to_json
@@ -78,7 +158,7 @@ describe Gateway::UserCredentialsGateway do
           "Items" => [
             {
               "UserId" => { "S" => user_id },
-              "OneLoginSub" => { "S" => "mock-sub-id" },
+              "OneLoginSub" => { "S" => sub_id },
               "CreatedAt" => { "S" => Time.now.to_s },
               "BearerToken" => { "S" => "the-bearer-token" },
             },
@@ -97,7 +177,7 @@ describe Gateway::UserCredentialsGateway do
       end
 
       it "returns the UserId" do
-        expect(gateway.get_user("mock-sub-id")).to eq(user_id)
+        expect(gateway.get_user(sub_id)).to eq(user_id)
       end
     end
 
@@ -150,7 +230,7 @@ describe Gateway::UserCredentialsGateway do
         {
           "Item" => {
             "UserId" => { "S" => user_id },
-            "OneLoginSub" => { "S" => "mock-sub-id" },
+            "OneLoginSub" => { "S" => sub_id },
             "CreatedAt" => { "S" => Time.now.to_s },
             "BearerToken" => { "S" => "the-bearer-token" },
           },

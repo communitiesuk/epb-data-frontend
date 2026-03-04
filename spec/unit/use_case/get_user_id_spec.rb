@@ -11,11 +11,11 @@ describe UseCase::GetUserId do
     before do
       allow(user_credentials_gateway).to receive(:get_user).and_return("mock-user-id")
       allow(user_credentials_gateway).to receive(:insert_user)
-      use_case.execute("one-sub")
+      use_case.execute(one_login_sub: "one-sub", email: "test@email.com")
     end
 
     it "returns the user_id" do
-      expect(use_case.execute("one-sub")).to eq("mock-user-id")
+      expect(use_case.execute(one_login_sub: "one-sub", email: "test@email.com")).to eq("mock-user-id")
     end
 
     it "calls get_user on the gateway" do
@@ -33,11 +33,11 @@ describe UseCase::GetUserId do
         get_user: nil,
         insert_user: "new-user-id",
       )
-      use_case.execute("another-sub")
+      use_case.execute(one_login_sub: "another-sub", email: "test@email.com")
     end
 
     it "returns the user_id" do
-      expect(use_case.execute("another-sub")).to eq("new-user-id")
+      expect(use_case.execute(one_login_sub: "another-sub", email: "test@email.com")).to eq("new-user-id")
     end
 
     it "calls get_user on the gateway" do
@@ -45,7 +45,7 @@ describe UseCase::GetUserId do
     end
 
     it "inserts an user" do
-      expect(user_credentials_gateway).to have_received(:insert_user).with("another-sub").exactly(:once)
+      expect(user_credentials_gateway).to have_received(:insert_user).with(email: "test@email.com", one_login_sub: "another-sub").exactly(:once)
     end
   end
 end

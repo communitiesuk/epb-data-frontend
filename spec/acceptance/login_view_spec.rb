@@ -172,7 +172,7 @@ describe "Acceptance::Login", type: :feature do
         end
 
         it "calls the request_onelogin_token_use_case with the right arguments" do
-          expect(request_onelogin_token_use_case).to have_received(:execute).with({ code: "test_code", redirect_uri: "http://get-energy-performance-data/login/callback" })
+          expect(request_onelogin_token_use_case).to have_received(:execute).with(code: "test_code", redirect_uri: "http://get-energy-performance-data/login/callback")
         end
 
         it "passes the validation and redirects" do
@@ -180,7 +180,7 @@ describe "Acceptance::Login", type: :feature do
         end
 
         it "calls the check_one_login_errors method" do
-          expect(Helper::Onelogin).to have_received(:check_one_login_errors).with({ code: "test_code", state: "test_state" })
+          expect(Helper::Onelogin).to have_received(:check_one_login_errors).with(code: "test_code", state: "test_state")
         end
 
         it "calls the validate_id_token_use_case with the right arguments" do
@@ -192,7 +192,7 @@ describe "Acceptance::Login", type: :feature do
         end
 
         it "calls the get user id use case" do
-          expect(get_user_id_use_case).to have_received(:execute).with("urn:fdc:gov.uk:2022:56P4CMsGh_02YOlWpd8PAOI-2sVlB2nsNU7mcLZYhYw=")
+          expect(get_user_id_use_case).to have_received(:execute).with(email: "test@email.com", one_login_sub: "urn:fdc:gov.uk:2022:56P4CMsGh_02YOlWpd8PAOI-2sVlB2nsNU7mcLZYhYw=")
         end
 
         it "sets the user id into the session" do

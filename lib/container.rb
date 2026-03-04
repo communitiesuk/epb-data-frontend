@@ -18,7 +18,8 @@ class Container
     sns_gateway = Gateway::SnsGateway.new
     certificate_count_gateway = Gateway::CertificateCountGateway.new(count_api_client)
     onelogin_gateway = Gateway::OneloginGateway.new
-    user_credentials_gateway = Gateway::UserCredentialsGateway.new
+    kms_gateway = Gateway::KmsGateway.new
+    user_credentials_gateway = Gateway::UserCredentialsGateway.new(kms_gateway: kms_gateway)
     notify_gateway = Gateway::NotifyGateway.new(notify_client)
 
     send_download_request_use_case = UseCase::SendDownloadRequest.new(sns_gateway:, topic_arn: ENV["SEND_DOWNLOAD_TOPIC_ARN"])

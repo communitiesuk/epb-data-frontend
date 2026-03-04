@@ -2,14 +2,15 @@ require "aws-sdk-dynamodb"
 
 module Gateway
   class UserCredentialsGateway
-    def initialize(dynamo_db_client: nil)
+    def initialize(kms_gateway:, dynamo_db_client: nil)
+      @kms_gateway = kms_gateway
       table_name = ENV["EPB_DATA_USER_CREDENTIAL_TABLE_NAME"]
       client = dynamo_db_client || get_dynamo_db_client
       @dynamo_resource = Aws::DynamoDB::Resource.new(client: client)
       @table = @dynamo_resource.table(table_name)
     end
 
-    def insert_user(one_login_sub)
+    def insert_user(one_login_sub:, email:)
       user_id = SecureRandom.uuid
       new_user = {
         "UserId" => user_id,
@@ -17,6 +18,11 @@ module Gateway
         "BearerToken" => SecureRandom.alphanumeric(64),
         "OneLoginSub" => one_login_sub,
       }
+
+      if Helper::Toggles.enabled?("epb-frontend-data-allow-email-encryption")
+        encrypted_email = @kms_gateway.encrypt(email)
+        new_user.merge!("EmailAddress" => encrypted_email)
+      end
 
       @table.put_item(
         item: new_user,
