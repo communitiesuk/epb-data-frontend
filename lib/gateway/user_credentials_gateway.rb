@@ -30,6 +30,20 @@ module Gateway
       user_id
     end
 
+    def update_user_email(user_id:, email:)
+      user = @table.get_item(key: { "UserId" => user_id }).item
+      updated_user = user.dup
+
+      if Helper::Toggles.enabled?("epb-frontend-data-allow-email-encryption")
+        encrypted_email = @kms_gateway.encrypt(email)
+        updated_user.merge!("EmailAddress" => encrypted_email)
+      end
+
+      @table.put_item(
+        item: updated_user,
+      )
+    end
+
     def get_user(one_login_sub)
       response = @table.scan(
         filter_expression: "OneLoginSub = :sub",

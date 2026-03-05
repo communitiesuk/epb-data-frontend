@@ -140,6 +140,88 @@ describe Gateway::UserCredentialsGateway do
     end
   end
 
+  describe "#update_user" do
+    before do
+      WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
+       .with(headers: { "X-Amz-Target" => "DynamoDB_20120810.GetItem" })
+       .to_return(
+         status: 200,
+         body: {
+           "Item" => {
+             "UserId" => { "S" => user_id },
+             "OneLoginSub" => { "S" => "sub_abcdef123" },
+             "BearerToken" => { "S" => "token123" },
+             "CreatedAt" => { "S" => "2025-03-05T11:00:00Z" },
+           },
+         }.to_json,
+         headers: { "Content-Type" => "application/x-amz-json-1.0" },
+       )
+      WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
+             .with(headers: { "X-Amz-Target" => "DynamoDB_20120810.PutItem" })
+             .to_return(status: 200, body: "", headers: {})
+    end
+
+    context "when the 'epb-frontend-data-allow-email-encryption' toggle is enabled" do
+      let(:encrypted_email) { "encrypted-email" }
+
+      before do
+        allow(kms_gateway).to receive(:encrypt).with(email).and_return(encrypted_email)
+        Helper::Toggles.set_feature("epb-frontend-data-allow-email-encryption", true)
+      end
+
+      after do
+        Helper::Toggles.set_feature("epb-frontend-data-allow-email-encryption", false)
+      end
+
+      it "updates the email into the user credentials table" do
+        expected_body = {
+          "Item" => {
+            "UserId" => { "S" => user_id },
+            "OneLoginSub" => { "S" => "sub_abcdef123" },
+            "BearerToken" => { "S" => "token123" },
+            "CreatedAt" => { "S" => "2025-03-05T11:00:00Z" },
+            "EmailAddress" => { "S" => encrypted_email },
+          },
+          "TableName" => ENV["EPB_DATA_USER_CREDENTIAL_TABLE_NAME"] || "test_users_table",
+        }.to_json
+
+        gateway.update_user_email(user_id:, email:)
+
+        expect(WebMock).to have_requested(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
+          .with(
+            body: expected_body,
+            headers: { "X-Amz-Target" => "DynamoDB_20120810.PutItem" },
+          )
+      end
+    end
+
+    context "when the 'epb-frontend-data-allow-email-encryption' toggle is disabled" do
+      let(:encrypted_email) { "encrypted-email" }
+
+      before do
+        allow(kms_gateway).to receive(:encrypt).with(email).and_return(encrypted_email)
+        Helper::Toggles.set_feature("epb-frontend-data-allow-email-encryption", false)
+      end
+
+      it "updates the email into the user credentials table" do
+        expected_body = {
+          "Item" => {
+            "UserId" => { "S" => user_id },
+            "OneLoginSub" => { "S" => "sub_abcdef123" },
+            "BearerToken" => { "S" => "token123" },
+            "CreatedAt" => { "S" => "2025-03-05T11:00:00Z" },
+          },
+          "TableName" => ENV["EPB_DATA_USER_CREDENTIAL_TABLE_NAME"] || "test_users_table",
+        }.to_json
+
+        gateway.update_user_email(user_id:, email:)
+
+        expect(WebMock).to have_requested(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
+          .with(body: expected_body)
+      end
+    end
+  end
+
   describe "#get_user" do
     context "when getting an existing user" do
       let(:expected_query_body) do

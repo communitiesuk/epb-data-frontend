@@ -8,14 +8,17 @@ describe UseCase::GetUserId do
   end
 
   context "when the user exists" do
+    let(:user_id) { "mock-user-id" }
+
     before do
-      allow(user_credentials_gateway).to receive(:get_user).and_return("mock-user-id")
+      allow(user_credentials_gateway).to receive(:get_user).and_return(user_id)
       allow(user_credentials_gateway).to receive(:insert_user)
+      allow(user_credentials_gateway).to receive(:update_user_email)
       use_case.execute(one_login_sub: "one-sub", email: "test@email.com")
     end
 
     it "returns the user_id" do
-      expect(use_case.execute(one_login_sub: "one-sub", email: "test@email.com")).to eq("mock-user-id")
+      expect(use_case.execute(one_login_sub: "one-sub", email: "test@email.com")).to eq(user_id)
     end
 
     it "calls get_user on the gateway" do
@@ -25,6 +28,10 @@ describe UseCase::GetUserId do
     it "does not call insert_user on the gateway" do
       expect(user_credentials_gateway).not_to have_received(:insert_user)
     end
+
+    it "calls update_user_email on the gateway" do
+      expect(user_credentials_gateway).to have_received(:update_user_email).with(user_id:, email: "test@email.com").exactly(:once)
+    end
   end
 
   context "when the user does not exist" do
@@ -33,6 +40,7 @@ describe UseCase::GetUserId do
         get_user: nil,
         insert_user: "new-user-id",
       )
+      allow(user_credentials_gateway).to receive(:update_user_email)
       use_case.execute(one_login_sub: "another-sub", email: "test@email.com")
     end
 
@@ -46,6 +54,10 @@ describe UseCase::GetUserId do
 
     it "inserts an user" do
       expect(user_credentials_gateway).to have_received(:insert_user).with(email: "test@email.com", one_login_sub: "another-sub").exactly(:once)
+    end
+
+    it "does not call update_user_email on the gateway" do
+      expect(user_credentials_gateway).not_to have_received(:update_user_email)
     end
   end
 end
