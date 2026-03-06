@@ -306,6 +306,17 @@ describe "Acceptance::Login", type: :feature do
       end
     end
 
+    context "when user email fails to be encrypted and request raises KmsEncryptionError" do
+      before do
+        allow(Helper::Onelogin).to receive(:set_user_one_login_info).and_raise(Errors::KmsEncryptionError, "Failed to encrypt the email")
+        get callback_url, { code: "test_code", state: "test_state" }, { "rack.session" => { nonce: "test_nonce", state: "test_state", referer: "test-redirect-path" } }
+      end
+
+      it "raises 500 error" do
+        expect(last_response.status).to eq(500)
+      end
+    end
+
     context "when the redirect_path is missing in session" do
       before do
         get callback_url, { code: "test_code", state: "test_state" }, { "rack.session" => { nonce: "test_nonce", state: "test_state" } }

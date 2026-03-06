@@ -90,9 +90,7 @@ module Controller
           e.methods.include?(:message) ? e.message : e
 
         error = { type: e.class.name, message: }
-
         error[:backtrace] = e.backtrace if e.methods.include? :backtrace
-
         @logger.error JSON.generate(error)
 
         redirect_link = redirect_path == "opt-out" ? "/login?referer=opt-out" : "/login/authorize?referer=#{redirect_path}"

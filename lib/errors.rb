@@ -129,6 +129,12 @@ module Errors
   class NotifyServerError < RuntimeError
   end
 
+  class KmsEncryptionError < RuntimeError
+  end
+
+  class KmsDecryptionError < RuntimeError
+  end
+
   module DoNotReport
   end
 end

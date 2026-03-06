@@ -13,6 +13,8 @@ module Gateway
         plaintext: email,
       )
       Base64.strict_encode64(response.ciphertext_blob)
+    rescue Aws::KMS::Errors::ServiceError => e
+      raise Errors::KmsEncryptionError, "Failed to encrypt: #{e.message}"
     end
 
     def decrypt(ciphertext)
@@ -21,6 +23,8 @@ module Gateway
         ciphertext_blob: Base64.strict_decode64(ciphertext),
       )
       response.plaintext
+    rescue Aws::KMS::Errors::ServiceError => e
+      raise Errors::KmsDecryptionError, "Failed to decrypt: #{e.message}"
     end
 
   private

@@ -33,6 +33,28 @@ describe Gateway::KmsGateway do
     it "returns the encrypted email as a base64 encoded string" do
       expect(gateway.encrypt(email)).to eq(encrypted_email)
     end
+
+    context "when encryption fails" do
+      before do
+        WebMock.stub_request(:post, "https://kms.eu-west-2.amazonaws.com/")
+               .with(headers: { "X-Amz-Target" => "TrentService.Encrypt" })
+               .to_return(
+                 status: 400,
+                 headers: { "Content-Type" => "application/x-amz-json-1.1" },
+                 body: {
+                   "__type" => "InvalidKeyException",
+                   "message" => "Failed to encrypt the email",
+                 }.to_json,
+               )
+      end
+
+      it "raises an error" do
+        expect { gateway.encrypt(email) }.to raise_error(
+          Errors::KmsEncryptionError,
+          /Failed to encrypt: Failed to encrypt the email/,
+        )
+      end
+    end
   end
 
   describe "#decrypt" do
@@ -51,6 +73,28 @@ describe Gateway::KmsGateway do
 
     it "returns the original email" do
       expect(gateway.decrypt(encrypted_email)).to eq(email)
+    end
+
+    context "when decryption fails" do
+      before do
+        WebMock.stub_request(:post, "https://kms.eu-west-2.amazonaws.com/")
+               .with(headers: { "X-Amz-Target" => "TrentService.Decrypt" })
+               .to_return(
+                 status: 400,
+                 headers: { "Content-Type" => "application/x-amz-json-1.1" },
+                 body: {
+                   "__type" => "InvalidCiphertextException",
+                   "message" => "Failed to decrypt the email",
+                 }.to_json,
+               )
+      end
+
+      it "raises an error" do
+        expect { gateway.decrypt(encrypted_email) }.to raise_error(
+          Errors::KmsDecryptionError,
+          /Failed to decrypt: Failed to decrypt the email/,
+        )
+      end
     end
   end
 end
