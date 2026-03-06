@@ -12,17 +12,15 @@ module Gateway
 
     def insert_user(one_login_sub:, email:)
       user_id = SecureRandom.uuid
+      encrypted_email = @kms_gateway.encrypt(email)
+
       new_user = {
         "UserId" => user_id,
         "CreatedAt" => Time.now.to_s,
         "BearerToken" => SecureRandom.alphanumeric(64),
         "OneLoginSub" => one_login_sub,
+        "EmailAddress" => encrypted_email,
       }
-
-      if Helper::Toggles.enabled?("epb-frontend-data-allow-email-encryption")
-        encrypted_email = @kms_gateway.encrypt(email)
-        new_user.merge!("EmailAddress" => encrypted_email)
-      end
 
       @table.put_item(
         item: new_user,
@@ -34,10 +32,8 @@ module Gateway
       user = @table.get_item(key: { "UserId" => user_id }).item
       updated_user = user.dup
 
-      if Helper::Toggles.enabled?("epb-frontend-data-allow-email-encryption")
-        encrypted_email = @kms_gateway.encrypt(email)
-        updated_user.merge!("EmailAddress" => encrypted_email)
-      end
+      encrypted_email = @kms_gateway.encrypt(email)
+      updated_user.merge!("EmailAddress" => encrypted_email)
 
       @table.put_item(
         item: updated_user,
