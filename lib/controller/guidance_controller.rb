@@ -76,8 +76,12 @@ module Controller
       status 200
       @back_link_href = request.referer || "/"
       @page_title = "#{t('energy_certificate_data_apis.title')} – #{t('layout.body.govuk')}"
+      get_user_info_use_case = @container.get_object(:get_user_info_use_case)
 
-      erb :'guidance_pages/energy_certificate_data_apis', locals: { use_case: @container.get_object(:get_user_token_use_case) }
+      user_id = Helper::Session.get_session_value(session, :user_id)
+      user_info = get_user_info_use_case.execute(user_id)
+
+      erb :'guidance_pages/energy_certificate_data_apis', locals: { user_info: }
     rescue StandardError => e
       logger.error "Unexpected error during /guidance/energy-certificate-data-apis get endpoint: #{e.message}"
       server_error(e)

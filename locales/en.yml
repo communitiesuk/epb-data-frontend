@@ -256,6 +256,11 @@ en:
     bearer_token: "Bearer token (for developers)"
     sign_out: "Sign out"
     copy_bearer_token: "Copy"
+    opt_out_enabled_text: "You have opted out of email notifications about changes to the service."
+    opt_out_disabled_text:  "You may get email notifications about changes to the service."
+    opt_out_enable: "Opt-in"
+    opt_out_disable: "Opt-out"
+    email_notifications: "Email notifications"
 
   guidance:
     title: "Guidance"

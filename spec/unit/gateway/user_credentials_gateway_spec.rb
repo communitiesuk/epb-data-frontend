@@ -45,6 +45,9 @@ describe Gateway::UserCredentialsGateway do
             "EmailAddress": {
               "S": encrypted_email,
             },
+            "OptOut": {
+              "BOOL": false,
+            },
           },
           "TableName": "test_users_table",
         }.to_json
@@ -81,50 +84,108 @@ describe Gateway::UserCredentialsGateway do
     end
   end
 
-  describe "#update_user" do
+  describe "#update_user_email" do
     let(:encrypted_email) { "encrypted-email" }
 
-    before do
-      allow(kms_gateway).to receive(:encrypt).with(email).and_return(encrypted_email)
+    context "when the user is missing the EmailAddress information" do
+      let(:user_missing_email_body) do
+        {
+          "Item" => {
+            "UserId" => { "S" => user_id },
+            "OneLoginSub" => { "S" => "sub_abcdef123" },
+            "BearerToken" => { "S" => "token123" },
+            "CreatedAt" => { "S" => "2025-03-05T11:00:00Z" },
+          },
+        }
+      end
 
-      WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
-       .with(headers: { "X-Amz-Target" => "DynamoDB_20120810.GetItem" })
-       .to_return(
-         status: 200,
-         body: {
-           "Item" => {
-             "UserId" => { "S" => user_id },
-             "OneLoginSub" => { "S" => "sub_abcdef123" },
-             "BearerToken" => { "S" => "token123" },
-             "CreatedAt" => { "S" => "2025-03-05T11:00:00Z" },
-           },
-         }.to_json,
-         headers: { "Content-Type" => "application/x-amz-json-1.0" },
-       )
-      WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
-             .with(headers: { "X-Amz-Target" => "DynamoDB_20120810.PutItem" })
-             .to_return(status: 200, body: "", headers: {})
+      before do
+        allow(kms_gateway).to receive(:encrypt).with(email).and_return(encrypted_email)
+
+        WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
+         .with(headers: { "X-Amz-Target" => "DynamoDB_20120810.GetItem" })
+         .to_return(
+           status: 200,
+           body: user_missing_email_body.to_json,
+           headers: { "Content-Type" => "application/x-amz-json-1.0" },
+         )
+        WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
+               .with(headers: { "X-Amz-Target" => "DynamoDB_20120810.PutItem" })
+               .to_return(status: 200, body: "", headers: {})
+      end
+
+      it "updates the email into the user credentials table" do
+        expected_body = {
+          "Item" => {
+            "UserId" => { "S" => user_id },
+            "OneLoginSub" => { "S" => "sub_abcdef123" },
+            "BearerToken" => { "S" => "token123" },
+            "CreatedAt" => { "S" => "2025-03-05T11:00:00Z" },
+            "EmailAddress" => { "S" => encrypted_email },
+            "OptOut" => { "BOOL": false },
+          },
+          "TableName" => ENV["EPB_DATA_USER_CREDENTIAL_TABLE_NAME"] || "test_users_table",
+        }.to_json
+
+        gateway.update_user_email(user_id:, email:)
+
+        expect(WebMock).to have_requested(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
+                             .with(
+                               body: expected_body,
+                               headers: { "X-Amz-Target" => "DynamoDB_20120810.PutItem" },
+                             )
+      end
     end
 
-    it "updates the email into the user credentials table" do
-      expected_body = {
-        "Item" => {
-          "UserId" => { "S" => user_id },
-          "OneLoginSub" => { "S" => "sub_abcdef123" },
-          "BearerToken" => { "S" => "token123" },
-          "CreatedAt" => { "S" => "2025-03-05T11:00:00Z" },
-          "EmailAddress" => { "S" => encrypted_email },
-        },
-        "TableName" => ENV["EPB_DATA_USER_CREDENTIAL_TABLE_NAME"] || "test_users_table",
-      }.to_json
+    context "when the user is missing the OptOut information" do
+      let(:user_missing_email_body) do
+        {
+          "Item" => {
+            "UserId" => { "S" => user_id },
+            "OneLoginSub" => { "S" => "sub_abcdef123" },
+            "BearerToken" => { "S" => "token123" },
+            "CreatedAt" => { "S" => "2025-03-05T11:00:00Z" },
+            "EmailAddress" => { "S" => encrypted_email },
+          },
+        }
+      end
 
-      gateway.update_user_email(user_id:, email:)
+      before do
+        allow(kms_gateway).to receive(:encrypt).with(email).and_return(encrypted_email)
 
-      expect(WebMock).to have_requested(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
-                           .with(
-                             body: expected_body,
-                             headers: { "X-Amz-Target" => "DynamoDB_20120810.PutItem" },
-                           )
+        WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
+               .with(headers: { "X-Amz-Target" => "DynamoDB_20120810.GetItem" })
+               .to_return(
+                 status: 200,
+                 body: user_missing_email_body.to_json,
+                 headers: { "Content-Type" => "application/x-amz-json-1.0" },
+               )
+        WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
+               .with(headers: { "X-Amz-Target" => "DynamoDB_20120810.PutItem" })
+               .to_return(status: 200, body: "", headers: {})
+      end
+
+      it "updates the OptOut with the default into the user credentials table" do
+        expected_body = {
+          "Item" => {
+            "UserId" => { "S" => user_id },
+            "OneLoginSub" => { "S" => "sub_abcdef123" },
+            "BearerToken" => { "S" => "token123" },
+            "CreatedAt" => { "S" => "2025-03-05T11:00:00Z" },
+            "EmailAddress" => { "S" => encrypted_email },
+            "OptOut" => { "BOOL": false },
+          },
+          "TableName" => ENV["EPB_DATA_USER_CREDENTIAL_TABLE_NAME"] || "test_users_table",
+        }.to_json
+
+        gateway.update_user_email(user_id:, email:)
+
+        expect(WebMock).to have_requested(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
+                             .with(
+                               body: expected_body,
+                               headers: { "X-Amz-Target" => "DynamoDB_20120810.PutItem" },
+                             )
+      end
     end
   end
 
@@ -251,6 +312,85 @@ describe Gateway::UserCredentialsGateway do
         expect {
           gateway.get_user_token(user_id)
         }.to raise_error(Errors::BearerTokenMissing)
+      end
+    end
+  end
+
+  describe "#get_user_info" do
+    let(:expected_query_body) do
+      {
+        "Key": {
+          "UserId": { "S": user_id },
+        },
+        "TableName": "test_users_table",
+      }.to_json
+    end
+
+    context "when getting user info for an opted-out user" do
+      let(:query_response) do
+        {
+          "Item" => {
+            "UserId" => { "S" => user_id },
+            "OneLoginSub" => { "S" => sub_id },
+            "CreatedAt" => { "S" => Time.now.to_s },
+            "BearerToken" => { "S" => "the-bearer-token" },
+            "OptOut" => { "BOOL" => true },
+          },
+        }.to_json
+      end
+
+      before do
+        WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com")
+               .with(body: expected_query_body,
+                     headers: {
+                       "X-Amz-Target" => "DynamoDB_20120810.GetItem",
+                     })
+               .to_return(status: 200, body: query_response)
+      end
+
+      it "returns the BearerToken and OptOut info" do
+        expect(gateway.get_user_info(user_id)).to eq({ bearer_token: "the-bearer-token", opt_out: true })
+      end
+    end
+
+    context "when getting user info for an user missing opt-out value" do
+      let(:query_response_no_opt_out) do
+        {
+          "Item" => {
+            "UserId" => { "S" => user_id },
+            "OneLoginSub" => { "S" => sub_id },
+            "CreatedAt" => { "S" => Time.now.to_s },
+            "BearerToken" => { "S" => "the-bearer-token" },
+          },
+        }.to_json
+      end
+
+      before do
+        WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com")
+               .with(body: expected_query_body,
+                     headers: {
+                       "X-Amz-Target" => "DynamoDB_20120810.GetItem",
+                     })
+               .to_return(status: 200, body: query_response_no_opt_out)
+      end
+
+      it "returns the BearerToken and expected OptOut info" do
+        expect(gateway.get_user_info(user_id)).to eq({ bearer_token: "the-bearer-token", opt_out: false })
+      end
+    end
+
+    context "when the user is missing" do
+      it "raises Errors::UserMissing if the user is missing" do
+        WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com")
+               .with(body: expected_query_body,
+                     headers: {
+                       "X-Amz-Target" => "DynamoDB_20120810.GetItem",
+                     })
+               .to_return(status: 200, body: {}.to_json)
+
+        expect {
+          gateway.get_user_info(user_id)
+        }.to raise_error(Errors::UserMissing)
       end
     end
   end

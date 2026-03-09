@@ -20,6 +20,7 @@ module Gateway
         "BearerToken" => SecureRandom.alphanumeric(64),
         "OneLoginSub" => one_login_sub,
         "EmailAddress" => encrypted_email,
+        "OptOut" => false,
       }
 
       @table.put_item(
@@ -34,6 +35,7 @@ module Gateway
 
       encrypted_email = @kms_gateway.encrypt(email)
       updated_user.merge!("EmailAddress" => encrypted_email)
+      updated_user.merge!("OptOut" => false) if updated_user["OptOut"].nil?
 
       @table.put_item(
         item: updated_user,
@@ -62,6 +64,20 @@ module Gateway
       raise Errors::BearerTokenMissing unless response.item
 
       response.item["BearerToken"]
+    end
+
+    def get_user_info(user_id)
+      response = @table.get_item(
+        key: {
+          "UserId" => user_id,
+        },
+      )
+      raise Errors::UserMissing unless response.item
+
+      {
+        bearer_token: response.item["BearerToken"],
+        opt_out: response.item["OptOut"] || false,
+      }
     end
 
   private

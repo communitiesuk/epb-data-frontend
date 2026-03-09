@@ -74,8 +74,15 @@ describe "Acceptance::EnergyCertificateDataApis", type: :feature do
 
     context "when user is authenticated" do
       before do
-        allow(Helper::Session).to receive_messages(is_logged_in?: true)
-        allow(ViewModels::MyAccount).to receive(:get_bearer_token).and_return("kfhbks750D0RnC2oKGsoM936wKmtd4ZcoSw489rPo4FDqQ2SYQVtVnQ4PhZ33b46YZPNZXo6r")
+        allow(Helper::Session).to receive_messages(
+          is_logged_in?: true,
+          get_session_value: "user_id",
+        )
+
+        allow(ViewModels::MyAccount).to receive_messages(
+          get_bearer_token: "kfhbks750D0RnC2oKGsoM936wKmtd4ZcoSw489rPo4FDqQ2SYQVtVnQ4PhZ33b46YZPNZXo6r",
+          get_opt_out: false,
+        )
       end
 
       after do

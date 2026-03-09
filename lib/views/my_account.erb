@@ -20,10 +20,23 @@
             <%= t('my_account.bearer_token') %>
           </dt>
           <dd class="govuk-summary-list__value" id="bearer-token-value">
-            <%= ViewModels::MyAccount.get_bearer_token(session, locals[:use_case]) %>
+            <%= ViewModels::MyAccount.get_bearer_token(locals[:user_info]) %>
           </dd>
           <dd class="govuk-summary-list__actions">
             <%= erb :component__copy_bearer_token %>
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row" id='opt-out'>
+          <dt class="govuk-summary-list__key">
+            <%= t('my_account.email_notifications') %>
+          </dt>
+          <dd class="govuk-summary-list__value" id="opt-out-value">
+            <%= ViewModels::MyAccount.get_opt_out_description(locals[:user_info]) %>
+          </dd>
+          <dd class="govuk-summary-list__actions">
+            <%= erb :component__opt_out_status_toggle, locals: {
+              is_opted_out: ViewModels::MyAccount.get_opt_out(locals[:user_info])
+            } %>
           </dd>
         </div>
       </dl>

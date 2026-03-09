@@ -1,0 +1,8 @@
+<%
+    action_label = locals[:is_opted_out] ? t('my_account.opt_out_enable') : t('my_account.opt_out_disable')
+    toggle_url = "/api/my-account/toggle-email-notifications"
+%>
+
+<a href="<%= toggle_url %>" class="govuk-link" id="opt-out-toggle-link">
+  <%= action_label %><span class="govuk-visually-hidden"></span>
+</a>

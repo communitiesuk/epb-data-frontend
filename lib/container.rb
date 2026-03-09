@@ -29,7 +29,7 @@ class Container
     request_onelogin_token_use_case = UseCase::RequestOneloginToken.new(onelogin_gateway:)
     get_onelogin_user_info_use_case = UseCase::GetOneloginUserInfo.new(onelogin_gateway:)
     get_user_id_use_case = UseCase::GetUserId.new(user_credentials_gateway:)
-    get_user_token_use_case = UseCase::GetUserToken.new(user_credentials_gateway:)
+    get_user_info_use_case = UseCase::GetUserInfo.new(user_credentials_gateway:)
     get_file_size_use_case = UseCase::GetFileSize.new(gateway: Gateway::S3Gateway.new, bucket_name: ENV["AWS_S3_USER_DATA_BUCKET_NAME"])
     send_opt_out_request_email_use_case = UseCase::SendOptOutRequestEmail.new(notify_gateway:)
     validate_id_token_use_case = UseCase::ValidateIdToken.new(onelogin_gateway:, cache: Helper::JwksDocumentCache.new)
@@ -41,7 +41,7 @@ class Container
       request_onelogin_token_use_case:,
       get_onelogin_user_info_use_case:,
       get_user_id_use_case:,
-      get_user_token_use_case:,
+      get_user_info_use_case:,
       get_file_size_use_case:,
       send_opt_out_request_email_use_case:,
       validate_id_token_use_case:,

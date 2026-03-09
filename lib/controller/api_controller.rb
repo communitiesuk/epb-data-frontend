@@ -5,7 +5,12 @@ module Controller
       @back_link_href = request.referer || "/"
       @page_title = "#{t('my_account.title')} – #{t('layout.body.govuk')}"
 
-      erb :my_account, locals: { use_case: @container.get_object(:get_user_token_use_case) }
+      get_user_info_use_case = @container.get_object(:get_user_info_use_case)
+
+      user_id = Helper::Session.get_session_value(session, :user_id)
+      user_info = get_user_info_use_case.execute(user_id)
+
+      erb :my_account, locals: { user_info: }
     rescue StandardError => e
       case e
       when Errors::BearerTokenMissing

@@ -117,6 +117,9 @@ module Errors
   class BearerTokenMissing < RuntimeError
   end
 
+  class UserMissing < RuntimeError
+  end
+
   class MissingOptOutValues < RuntimeError
   end
 

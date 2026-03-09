@@ -53,7 +53,7 @@
         <dl class="govuk-summary-list govuk-!-width-full">
           <div class="govuk-summary-list__row" id='bearer-token'>
             <dd class="govuk-summary-list__value" id="bearer-token-value">
-              <%= ViewModels::MyAccount.get_bearer_token(session, locals[:use_case]) %>
+              <%= ViewModels::MyAccount.get_bearer_token(locals[:user_info]) %>
             </dd>
             <dd class="govuk-summary-list__actions">
               <%= erb :component__copy_bearer_token %>
