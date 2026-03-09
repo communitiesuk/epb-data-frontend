@@ -76,9 +76,11 @@ module Controller
 
       raise Errors::ValidationError, "ID token validation failed" unless is_valid
 
-      Helper::Onelogin.set_user_one_login_info(container: @container, session:, token_response_hash:)
+      is_opt_out = redirect_path == "opt-out"
 
-      if redirect_path == "opt-out"
+      Helper::Onelogin.set_user_one_login_info(container: @container, session:, token_response_hash:, is_opt_out:)
+
+      if is_opt_out
         redirect_path = "opt-out/name"
       end
 

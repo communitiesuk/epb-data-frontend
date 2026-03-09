@@ -108,4 +108,80 @@ describe Helper::Onelogin, type: :helper do
       end
     end
   end
+
+  describe "#set_user_one_login_info" do
+    let(:token_response_hash) do
+      {
+        "access_token": "SlAV32hkKG",
+        "token_type": "Bearer",
+        "expires_in": 180,
+        "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzcyI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg",
+      }.transform_keys(&:to_s)
+    end
+
+    let(:container) do
+      instance_double(Container)
+    end
+
+    let(:session) do
+      { nonce: "" }
+    end
+
+    let(:get_onelogin_user_info_use_case) do
+      instance_double(UseCase::GetOneloginUserInfo)
+    end
+
+    let(:user_info) do
+      { email: "test@example.com", email_verified: true, sub: "urn:fdc:gov.uk:2022:56P4CMsGh_02YOlWpd8PAOI-2sVlB2nsNU7mcLZYhYw=" }
+    end
+
+    let(:onelogin_gateway) do
+      instance_double(Gateway::OneloginGateway)
+    end
+
+    let(:get_user_id_use_case) do
+      instance_double(UseCase::GetUserId)
+    end
+
+    before do
+      allow(container).to receive(:get_object).with(:get_onelogin_user_info_use_case).and_return(get_onelogin_user_info_use_case)
+      allow(container).to receive(:get_object).with(:get_user_id_use_case).and_return(get_user_id_use_case)
+      allow(get_onelogin_user_info_use_case).to receive(:execute).and_return(user_info)
+      allow(get_user_id_use_case).to receive(:execute).and_return("mock-user-token")
+      allow(Helper::Session).to receive(:set_session_value)
+    end
+
+    it "calls the GetUserId use case" do
+      described_class.set_user_one_login_info(container:, session:, token_response_hash:)
+      expect(get_user_id_use_case).to have_received(:execute).once
+    end
+
+    it "calls the GetOneloginUserInfo use case" do
+      described_class.set_user_one_login_info(container:, session:, token_response_hash:)
+      expect(get_onelogin_user_info_use_case).to have_received(:execute).once
+    end
+
+    it "sets the session with the user's email" do
+      described_class.set_user_one_login_info(container:, session:, token_response_hash:)
+      expect(Helper::Session).to have_received(:set_session_value).with(session, :email_address, user_info[:email]).once
+    end
+
+    it "sets the session with the user's token id" do
+      described_class.set_user_one_login_info(container:, session:, token_response_hash:)
+      expect(Helper::Session).to have_received(:set_session_value).with(session, :id_token, token_response_hash["id_token"]).once
+    end
+
+    it "sets the session with the user's user_id" do
+      described_class.set_user_one_login_info(container:, session:, token_response_hash:)
+      expect(Helper::Session).to have_received(:set_session_value).with(session, :user_id, "mock-user-token").once
+    end
+
+    context "when the session is set for users of the opt out" do
+      it "sets the session without making a call to dynamo db" do
+        described_class.set_user_one_login_info(container:, session:, token_response_hash:, is_opt_out: true)
+        expect(get_user_id_use_case).to have_received(:execute).exactly(0).times
+        expect(Helper::Session).to have_received(:set_session_value).with(session, :user_id, nil).once
+      end
+    end
+  end
 end

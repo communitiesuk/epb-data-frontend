@@ -245,6 +245,10 @@ describe "Acceptance::Login", type: :feature do
           expect(redirect_uri.path).to eq("/opt-out/name")
           expect(redirect_uri.query).to eq("nocache=1750852800")
         end
+
+        it "does not generate a user id from dynamo db" do
+          expect(get_user_id_use_case).not_to have_received(:execute)
+        end
       end
 
       context "when the referer session value is set to 'guidance/energy-certificate-data-apis'" do

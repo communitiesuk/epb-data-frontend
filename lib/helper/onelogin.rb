@@ -63,12 +63,12 @@ module Helper
       use_case.execute(access_token:)
     end
 
-    def self.set_user_one_login_info(container:, session:, token_response_hash:)
+    def self.set_user_one_login_info(container:, session:, token_response_hash:, is_opt_out: false)
       access_token = token_response_hash["access_token"]
       id_token = token_response_hash["id_token"]
       use_case = container.get_object(:get_onelogin_user_info_use_case)
       user_info = Helper::Onelogin.fetch_user_info(access_token:, use_case:)
-      user_id = container.get_object(:get_user_id_use_case).execute(one_login_sub: user_info[:sub], email: user_info[:email])
+      user_id = is_opt_out ? nil : container.get_object(:get_user_id_use_case).execute(one_login_sub: user_info[:sub], email: user_info[:email])
 
       Helper::Session.set_session_value(session, :email_address, user_info[:email])
       Helper::Session.set_session_value(session, :id_token, id_token)
