@@ -54,7 +54,8 @@ module ViewModels
              "values": [
                {
                  "value": "Detached",
-                 "schemaVersion": "RdSAP-Schema-17.0"
+                 "schemaVersion": "RdSAP-Schema-17.0",
+                 "assessment_type": "RdSAP"#{'   '}
                }
              ]
            }
