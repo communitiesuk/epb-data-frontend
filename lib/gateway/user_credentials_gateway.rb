@@ -83,8 +83,9 @@ module Gateway
   private
 
     def get_dynamo_db_client
-      case ENV["APP_ENV"]
-      when "local", nil
+      if Aws.config.dig(:dynamodb, :client)
+        Aws.config[:dynamodb][:client]
+      elsif ["local", nil].include?(ENV["APP_ENV"])
         Aws::DynamoDB::Client.new(stub_responses: true)
       else
         Aws::DynamoDB::Client.new(region: "eu-west-2")

@@ -5,6 +5,7 @@ require "zeitwerk"
 require "webmock"
 require "active_support"
 require "webmock/rspec"
+require "aws-sdk-dynamodb"
 
 loader = Zeitwerk::Loader.new
 loader.push_dir("#{__dir__}/lib/")
@@ -36,6 +37,40 @@ CertificateCountStub.fetch(date_start: "2024-05-01", date_end: default_end_date,
 CertificateCountStub.fetch(date_start: "2024-05-01", date_end: default_end_date, constituency: %w[Ashford Barking], property_type: "domestic")
 CertificateCountStub.fetch(date_start: "2012-01-01", date_end: default_end_date, postcode: "LS1 4AP", return_count: 135, property_type: "domestic")
 CertificateCountStub.fetch_any
+
+dynamodb_user = {
+  "UserId" => "user_id",
+  "OneLoginSub" => "sub_abcdef123",
+  "BearerToken" => "token123",
+  "CreatedAt" => "2025-03-05T11:00:00Z",
+  "EmailAddress" => "encrypted-email",
+  "OptOut" => false,
+}
+
+stubbed_dynamodb_client = Aws::DynamoDB::Client.new(stub_responses: true)
+
+stubbed_dynamodb_client.stub_responses(
+  :get_item,
+  lambda { |_context| # ignore params completely
+    { item: dynamodb_user }
+  },
+)
+
+stubbed_dynamodb_client.stub_responses(:put_item, lambda { |context|
+  # Convert AttributeValue → simple Ruby values
+  item = context.params[:item].transform_values do |av|
+    case av
+    when Hash
+      av[:s] || av[:bool] || av[:n] || (av[:null] && nil)
+    else
+      av
+    end
+  end
+  dynamodb_user.merge!(item)
+  { attributes: {} }
+})
+
+Aws.config[:dynamodb] = { client: stubbed_dynamodb_client }
 
 sns_message =
   {
