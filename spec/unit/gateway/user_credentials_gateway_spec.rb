@@ -394,4 +394,106 @@ describe Gateway::UserCredentialsGateway do
       end
     end
   end
+
+  describe "#toggle_user_opt_out" do
+    let(:expected_query_body) do
+      {
+        "Key": {
+          "UserId": { "S": user_id },
+        },
+        "TableName": "test_users_table",
+      }.to_json
+    end
+
+    before do
+      WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com")
+             .with(body: expected_put_item_body,
+                   headers: {
+                     "X-Amz-Target" => "DynamoDB_20120810.PutItem",
+                   })
+             .to_return(status: 200, body: "{}")
+      WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com")
+                     .with(body: expected_query_body,
+                           headers: {
+                             "X-Amz-Target" => "DynamoDB_20120810.GetItem",
+                           })
+                     .to_return(status: 200, body: query_response)
+    end
+
+    context "when toggling user opt-out value for an opted-out user" do
+      let(:query_response) do
+        {
+          "Item" => {
+            "UserId" => { "S" => "user_id" },
+            "OneLoginSub" => { "S" => "sub_abcdef123" },
+            "BearerToken" => { "S" => "token123" },
+            "CreatedAt" => { "S" => "2025-03-05T11:00:00Z" },
+            "EmailAddress" => { "S" => "encrypted_email" },
+            "OptOut" => { "BOOL" => true },
+          },
+        }.to_json
+      end
+
+      let(:expected_put_item_body) do
+        {
+          "Item" => {
+            "UserId" => { "S" => "user_id" },
+            "OneLoginSub" => { "S" => "sub_abcdef123" },
+            "BearerToken" => { "S" => "token123" },
+            "CreatedAt" => { "S" => "2025-03-05T11:00:00Z" },
+            "EmailAddress" => { "S" => "encrypted_email" },
+            "OptOut" => { "BOOL": false },
+          },
+          "TableName" => ENV["EPB_DATA_USER_CREDENTIAL_TABLE_NAME"] || "test_users_table",
+        }.to_json
+      end
+
+      it "updates the user opt-out value with false" do
+        gateway.toggle_user_opt_out(user_id)
+        expect(WebMock).to have_requested(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
+          .with(
+            body: expected_put_item_body,
+            headers: { "X-Amz-Target" => "DynamoDB_20120810.PutItem" },
+          )
+      end
+    end
+
+    context "when toggling user opt-out value for an opted-in user" do
+      let(:query_response) do
+        {
+          "Item" => {
+            "UserId" => { "S" => "user_id" },
+            "OneLoginSub" => { "S" => "sub_abcdef123" },
+            "BearerToken" => { "S" => "token123" },
+            "CreatedAt" => { "S" => "2025-03-05T11:00:00Z" },
+            "EmailAddress" => { "S" => "encrypted_email" },
+            "OptOut" => { "BOOL" => false },
+          },
+        }.to_json
+      end
+
+      let(:expected_put_item_body) do
+        {
+          "Item" => {
+            "UserId" => { "S" => "user_id" },
+            "OneLoginSub" => { "S" => "sub_abcdef123" },
+            "BearerToken" => { "S" => "token123" },
+            "CreatedAt" => { "S" => "2025-03-05T11:00:00Z" },
+            "EmailAddress" => { "S" => "encrypted_email" },
+            "OptOut" => { "BOOL": true },
+          },
+          "TableName" => ENV["EPB_DATA_USER_CREDENTIAL_TABLE_NAME"] || "test_users_table",
+        }.to_json
+      end
+
+      it "updates the user opt-out value with true" do
+        gateway.toggle_user_opt_out(user_id)
+        expect(WebMock).to have_requested(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
+                             .with(
+                               body: expected_put_item_body,
+                               headers: { "X-Amz-Target" => "DynamoDB_20120810.PutItem" },
+                             )
+      end
+    end
+  end
 end

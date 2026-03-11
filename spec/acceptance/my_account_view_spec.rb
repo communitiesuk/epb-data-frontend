@@ -85,5 +85,14 @@ describe "Acceptance::MyAccount", type: :feature do
         expect(response.location).to eq("http://get-energy-performance-data/login/authorize?referer=api/my-account")
       end
     end
+
+    context "when changing the status of the user notification emails" do
+      let(:response) { get "#{local_host}/toggle-email-notifications" }
+
+      it "redirects to the my-account page" do
+        expect(response).to be_redirect
+        expect(response.location).to eq("http://get-energy-performance-data/api/my-account")
+      end
+    end
   end
 end

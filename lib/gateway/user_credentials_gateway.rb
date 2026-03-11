@@ -6,8 +6,7 @@ module Gateway
       @kms_gateway = kms_gateway
       table_name = ENV["EPB_DATA_USER_CREDENTIAL_TABLE_NAME"]
       client = dynamo_db_client || get_dynamo_db_client
-      @dynamo_resource = Aws::DynamoDB::Resource.new(client: client)
-      @table = @dynamo_resource.table(table_name)
+      @table = Aws::DynamoDB::Table.new(table_name, client:)
     end
 
     def insert_user(one_login_sub:, email:)
@@ -78,6 +77,18 @@ module Gateway
         bearer_token: response.item["BearerToken"],
         opt_out: response.item["OptOut"] || false,
       }
+    end
+
+    def toggle_user_opt_out(user_id)
+      user = @table.get_item(key: { "UserId" => user_id }).item
+
+      updated_user = user.dup
+      current_opt_out = updated_user["OptOut"] || false
+      updated_user.merge!("OptOut" => !current_opt_out)
+
+      @table.put_item(
+        item: updated_user,
+      )
     end
 
   private

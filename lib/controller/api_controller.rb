@@ -1,5 +1,12 @@
 module Controller
   class ApiController < Controller::BaseController
+    get "/api/my-account/toggle-email-notifications" do
+      toggle_email_notifications_use_case = @container.get_object(:toggle_email_notifications_use_case)
+      user_id = Helper::Session.get_session_value(session, :user_id)
+      toggle_email_notifications_use_case.execute(user_id)
+      redirect "/api/my-account"
+    end
+
     get "/api/my-account" do
       status 200
       @back_link_href = request.referer || "/"
