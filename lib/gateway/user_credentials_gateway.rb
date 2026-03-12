@@ -66,6 +66,8 @@ module Gateway
     end
 
     def get_user_info(user_id)
+      raise Errors::UserMissing if user_id.nil?
+
       response = @table.get_item(
         key: {
           "UserId" => user_id,

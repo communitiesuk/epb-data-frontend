@@ -7,8 +7,28 @@ describe "Acceptance::MyAccount", type: :feature do
 
   let(:response) { get local_host }
 
+  let(:get_user_info_use_case) do
+    instance_double(UseCase::GetUserInfo)
+  end
+
+  let(:toggle_email_notifications_use_case) do
+    instance_double(UseCase::ToggleUserEmailNotifications)
+  end
+
+  let(:app) do
+    fake_container = instance_double(Container)
+    allow(fake_container).to receive(:get_object).with(:get_user_info_use_case).and_return(get_user_info_use_case)
+    allow(fake_container).to receive(:get_object).with(:toggle_email_notifications_use_case).and_return(toggle_email_notifications_use_case)
+
+    Rack::Builder.new do
+      use Rack::Session::Cookie, secret: "test" * 16
+      run Controller::ApiController.new(container: fake_container)
+    end
+  end
+
   describe "get .get-energy-certificate-data.epb-frontend/api/my-account" do
     before do
+      allow(get_user_info_use_case).to receive(:execute).and_return({ bearer_token: "mock_value", opt_out: false })
       allow(Helper::Session).to receive_messages(is_user_authenticated?: true, get_email_from_session: "test@email.com")
       allow(ViewModels::MyAccount).to receive_messages(
         get_bearer_token: "kfhbks750D0RnC2oKGsoM936wKmtd4ZcoSw489rPo4FDqQ2SYQVtVnQ4PhZ33b46YZPNZXo6r",
@@ -88,6 +108,10 @@ describe "Acceptance::MyAccount", type: :feature do
 
     context "when changing the status of the user notification emails" do
       let(:response) { get "#{local_host}/toggle-email-notifications" }
+
+      before do
+        allow(toggle_email_notifications_use_case).to receive(:execute)
+      end
 
       it "redirects to the my-account page" do
         expect(response).to be_redirect
