@@ -16,24 +16,34 @@ module Helper
     end
 
     def validate_address_line1
+      form_id = "address-line1-error"
       if @address_line1.empty?
-        @error_form_ids << "address-line1-error"
+        @error_form_ids << form_id
         @errors[:address_line1] = t("opt_out.certificate_details.address_line1.error")
+      elsif Helper::Form.has_tag?(@address_line1)
+        @error_form_ids << form_id
+        @errors[:address_line1] = t("opt_out.error.invalid_text")
       elsif @address_line1.length > 255
-        @error_form_ids << "address-line1-error"
+        @error_form_ids << form_id
         @errors[:address_line1] = t("opt_out.certificate_details.address_line1.too_long_error")
       end
     end
 
     def validate_address_line2
-      if @address_line2.length > 255
+      if Helper::Form.has_tag?(@address_line2)
+        @error_form_ids << "address-line2-error"
+        @errors[:address_line2] = t("opt_out.error.invalid_text")
+      elsif @address_line2.length > 255
         @error_form_ids << "address-line2-error"
         @errors[:address_line2] = t("opt_out.certificate_details.address_line2.too_long_error")
       end
     end
 
     def validate_address_town
-      if @address_town.length > 255
+      if Helper::Form.has_tag?(@address_town)
+        @error_form_ids << "address-town-error"
+        @errors[:address_town] = t("opt_out.error.invalid_text")
+      elsif @address_town.length > 255
         @error_form_ids << "address-town-error"
         @errors[:address_town] = t("opt_out.certificate_details.town.too_long_error")
       end

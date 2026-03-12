@@ -126,6 +126,22 @@ describe "Acceptance::OptOutOwner", type: :feature do
           expect(response.body).to have_css("p#name-error", text: /Full name must be 255 characters or less/)
         end
       end
+
+      context "when the input includes html tags" do
+        let(:response) { post "#{base_url}/opt-out/name", { name: "<h1>Testy McTest</h1>" } }
+
+        it "returns status 200" do
+          expect(response.status).to eq(200)
+        end
+
+        it "displays the error summary" do
+          expect(response.body).to have_css("div.govuk-error-summary")
+        end
+
+        it "displays the invalid text error" do
+          expect(response.body).to have_css("p#name-error", text: /Invalid text/)
+        end
+      end
     end
   end
 end

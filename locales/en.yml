@@ -358,6 +358,8 @@ en:
   opt_out:
     warning: "Opting out an EPC for the purpose of securing grant funding is fraud."
     find_epc_text: To find your EPC, use the <a class="govuk-link" href="https://www.gov.uk/find-energy-certificate">Find an energy certificate service</a>.
+    error:
+      invalid_text: "Invalid text"
 
     start_page:
       title: "Opting out an EPC"

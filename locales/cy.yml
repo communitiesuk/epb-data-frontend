@@ -359,6 +359,8 @@ cy:
   opt_out:
     warning: "Mae optio EPC allan er mwyn sicrhau cyllid grant yn dwyll."
     find_epc_text: I ddod o hyd i’ch EPC, defnyddiwch y gwasanaeth <a href="https://www.gov.uk/dod-o-hyd-i-dystysgrif-ynni">Dod o hyd i dystysgrif ynni</a>.
+    error:
+      invalid_text: "Testun annilys"
 
     start_page:
       title: "Optio EPC allan"
