@@ -6,10 +6,6 @@ describe "Acceptance::EnergyCertificateDataApis", type: :feature do
     let(:response) { get "#{base_url}/guidance/energy-certificate-data-apis" }
 
     context "when the start page is rendered" do
-      before do
-        allow(Helper::Session).to receive_messages(is_user_authenticated?: false)
-      end
-
       it "returns status 200" do
         expect(response.status).to eq(200)
       end
@@ -75,7 +71,6 @@ describe "Acceptance::EnergyCertificateDataApis", type: :feature do
     context "when user is authenticated" do
       before do
         allow(Helper::Session).to receive_messages(
-          is_logged_in?: true,
           get_session_value: "user_id",
         )
 

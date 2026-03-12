@@ -31,7 +31,7 @@
 
     </div>
     <div>
-      <% unless Helper::Session.is_logged_in?(session) %>
+      <% unless locals[:valid_user_info] %>
         <h2 class="govuk-heading-m govuk-!-padding-top-4">How to get started</h2>
 
         <p class="govuk-body">You need to sign in or create an account with GOV.UK One Login to receive a bearer token.</p>
@@ -48,7 +48,7 @@
         </div>
       <% end %>
 
-      <% if Helper::Session.is_logged_in?(session) %>
+      <% if locals[:valid_user_info] %>
         <h2 class="govuk-heading-m govuk-!-padding-top-4">My Bearer token</h2>
         <dl class="govuk-summary-list govuk-!-width-full">
           <div class="govuk-summary-list__row" id='bearer-token'>

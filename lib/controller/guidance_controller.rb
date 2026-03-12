@@ -78,10 +78,13 @@ module Controller
       @page_title = "#{t('energy_certificate_data_apis.title')} – #{t('layout.body.govuk')}"
       get_user_info_use_case = @container.get_object(:get_user_info_use_case)
 
+      # Even if the user is logged in, the `user_id` may be missing. Just check for
+      # that value to be valid.
       user_id = Helper::Session.get_session_value(session, :user_id)
-      user_info = get_user_info_use_case.execute(user_id)
+      user_info = user_id.nil? ? {} : get_user_info_use_case.execute(user_id)
+      valid_user_info = user_info != {}
 
-      erb :'guidance_pages/energy_certificate_data_apis', locals: { user_info: }
+      erb :'guidance_pages/energy_certificate_data_apis', locals: { valid_user_info:, user_info: }
     rescue StandardError => e
       logger.error "Unexpected error during /guidance/energy-certificate-data-apis get endpoint: #{e.message}"
       server_error(e)

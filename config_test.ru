@@ -85,6 +85,21 @@ sns_message =
   }
 SnsClientStub.fetch(message: sns_message)
 
+class TestSessionInjector
+  def initialize(app)
+    @app = app
+  end
+
+  def call(env)
+    session = env["rack.session"] ||= {}
+    session[:user_id] = "user_id" unless session[:user_id]
+    session[:email_address] = "test@example.com" unless session[:email_address]
+    @app.call(env)
+  end
+end
+
+use TestSessionInjector
+
 ENV["SCRIPT_NONCE"] = SecureRandom.random_number(16**10).to_s(16).rjust(10, "0") if ENV["SCRIPT_NONCE"].nil?
 
 ENV["STAGE"] = "test"

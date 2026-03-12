@@ -44,7 +44,6 @@ module Controller
 
     before do
       set_locale
-      Helper::Session.set_local(session)
       if is_restricted?
         Helper::Session.is_user_authenticated?(session)
       end
@@ -114,8 +113,6 @@ module Controller
     end
 
     def is_restricted?
-      return false unless ENV["LOCAL_SESSION"].nil?
-
       RESTRICTED_PATHS.include?(request.path) || false
     end
 

@@ -17,7 +17,7 @@ describe "Journey::UseApi", :journey, type: :feature do
 
   after(:all) { Process.kill("KILL", process_id) if process_id }
 
-  context "when visiting the '/use-api' page" do
+  context "when visiting the '/guidance/energy-certificate-data-apis' page" do
     before do
       visit domain
       set_oauth_cookies
