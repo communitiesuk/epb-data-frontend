@@ -28,13 +28,13 @@ describe ViewModels::MyAccount do
 
   describe "#opt_out_description" do
     it "returns the opt-out disabled text" do
-      opt_out = view_model.get_opt_out_description({ bearer_token: "mock-bearer-token", opt_out: false })
-      expect(opt_out).to eq("You may get email notifications about changes to the service.")
+      opt_out_description = view_model.get_opt_out_description({ bearer_token: "mock-bearer-token", opt_out: false })
+      expect(opt_out_description).to eq("You may get email notifications about changes to the service.")
     end
 
     it "returns the opt-out enabled text" do
-      opt_out = view_model.get_opt_out_description({ bearer_token: "mock-bearer-token", opt_out: true })
-      expect(opt_out).to eq("You have opted out of email notifications about changes to the service.")
+      opt_out_description = view_model.get_opt_out_description({ bearer_token: "mock-bearer-token", opt_out: true })
+      expect(opt_out_description).to eq("You have opted out of email notifications about changes to the service.")
     end
   end
 

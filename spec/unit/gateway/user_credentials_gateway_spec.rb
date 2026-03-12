@@ -87,6 +87,10 @@ describe Gateway::UserCredentialsGateway do
   describe "#update_user_email" do
     let(:encrypted_email) { "encrypted-email" }
 
+    before do
+      allow(kms_gateway).to receive(:encrypt).with(email).and_return(encrypted_email)
+    end
+
     context "when the user is missing the EmailAddress information" do
       let(:user_missing_email_body) do
         {
@@ -100,8 +104,6 @@ describe Gateway::UserCredentialsGateway do
       end
 
       before do
-        allow(kms_gateway).to receive(:encrypt).with(email).and_return(encrypted_email)
-
         WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
          .with(headers: { "X-Amz-Target" => "DynamoDB_20120810.GetItem" })
          .to_return(
@@ -138,7 +140,7 @@ describe Gateway::UserCredentialsGateway do
     end
 
     context "when the user is missing the OptOut information" do
-      let(:user_missing_email_body) do
+      let(:user_missing_opt_out_body) do
         {
           "Item" => {
             "UserId" => { "S" => user_id },
@@ -151,13 +153,11 @@ describe Gateway::UserCredentialsGateway do
       end
 
       before do
-        allow(kms_gateway).to receive(:encrypt).with(email).and_return(encrypted_email)
-
         WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
                .with(headers: { "X-Amz-Target" => "DynamoDB_20120810.GetItem" })
                .to_return(
                  status: 200,
-                 body: user_missing_email_body.to_json,
+                 body: user_missing_opt_out_body.to_json,
                  headers: { "Content-Type" => "application/x-amz-json-1.0" },
                )
         WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
@@ -353,7 +353,7 @@ describe Gateway::UserCredentialsGateway do
       end
     end
 
-    context "when getting user info for an user missing opt-out value" do
+    context "when getting user info for a user missing opt-out value" do
       let(:query_response_no_opt_out) do
         {
           "Item" => {
