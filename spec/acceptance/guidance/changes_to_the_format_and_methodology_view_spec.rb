@@ -55,6 +55,11 @@ describe "Acceptance::ChangesToTheMethodAndMethodology", type: :feature do
       it "does not render content for guidance under the Get Help section" do
         expect(response.body).not_to have_content("Visit the guidance page for information on:")
       end
+
+      it "has the correct content for email notifications section" do
+        expect(response.body).to have_css("h2", text: "Email Notifications")
+        expect(response.body).to have_css("p", text: "If the service is updated or changed, registered users may get an email explaining what has changed. You can opt out of email notifications at any time.")
+      end
     end
   end
 end
