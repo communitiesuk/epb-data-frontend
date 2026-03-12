@@ -1,4 +1,7 @@
 en:
+
+  service_name: "Get energy performance of buildings data"
+
   validation_errors:
     captcha_error: "Please verify that you’re a human and try again."
 
@@ -6,8 +9,6 @@ en:
     not_recorded: "Not recorded"
     no_disclosure: "No assessor’s declaration provided"
     disclosure_number_not_valid: "The disclosure code provided is not valid"
-
-  service_name: "Get energy performance of buildings data"
 
   cookies:
     title: "Cookies on our service"

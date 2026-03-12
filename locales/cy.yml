@@ -1,4 +1,6 @@
 cy:
+  service_name: "Cael data perfformiad ynni adeiladau"
+
   validation_errors:
     captcha_error: "Profwch mai rhywun dynol sydd yna a rhoi cynnig arall arni"
 
@@ -6,8 +8,6 @@ cy:
     not_recorded: "Heb eu cofnodi"
     no_disclosure: "Dim datganiad asesydd wedi’i ddarparu"
     disclosure_number_not_valid: "Nid yw’r cod datgelu a roddwyd yn ddilys"
-
-  service_name: "Cael data perfformiad ynni adeiladau"
 
   cookies:
     title: "Cwcis ar ein gwasanaeth ni"
