@@ -380,14 +380,16 @@ describe Gateway::UserCredentialsGateway do
     end
 
     context "when the user is missing" do
-      it "raises Errors::UserMissing" do
+      before do
         WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com")
                .with(body: expected_query_body,
                      headers: {
                        "X-Amz-Target" => "DynamoDB_20120810.GetItem",
                      })
                .to_return(status: 200, body: {}.to_json)
+      end
 
+      it "raises Errors::UserMissing" do
         expect {
           gateway.get_user_info(user_id)
         }.to raise_error(Errors::UserMissing)
