@@ -32,8 +32,8 @@ describe "Acceptance::MyAccount", type: :feature do
       allow(Helper::Session).to receive_messages(is_user_authenticated?: true, get_email_from_session: "test@email.com")
       allow(ViewModels::MyAccount).to receive_messages(
         get_bearer_token: "kfhbks750D0RnC2oKGsoM936wKmtd4ZcoSw489rPo4FDqQ2SYQVtVnQ4PhZ33b46YZPNZXo6r",
-        get_opt_out: false,
-        get_opt_out_description: "Currently opted out",
+        unsubscribed?: false,
+        get_subscription_description: "You will get emails about changes to the service.",
       )
     end
 
@@ -80,12 +80,12 @@ describe "Acceptance::MyAccount", type: :feature do
         expect(response.body).to have_css("#bearer-token-value", text: "kfhbks750D0RnC2oKGsoM936wKmtd4ZcoSw489rPo4FDqQ2SYQVtVnQ4PhZ33b46YZPNZXo6r")
       end
 
-      it "shows the opt out text" do
-        expect(response.body).to have_css("#opt-out-value", text: "Currently opted out")
+      it "shows the subscribed status text" do
+        expect(response.body).to have_css("#subscription-value", text: "You will get emails about changes to the service.")
       end
 
-      it "shows the opt out toggle link" do
-        expect(response.body).to have_link("Opt-out", href: "/api/my-account/toggle-email-notifications", id: "opt-out-toggle-link")
+      it "shows the subscribe toggle link as Unsubscribe" do
+        expect(response.body).to have_link("Unsubscribe", href: "/api/my-account/toggle-email-notifications", id: "subscription-toggle-link")
       end
 
       it "shows the delete your account section" do

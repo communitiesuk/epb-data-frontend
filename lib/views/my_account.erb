@@ -30,12 +30,12 @@
           <dt class="govuk-summary-list__key">
             <%= t('my_account.email_notifications') %>
           </dt>
-          <dd class="govuk-summary-list__value" id="opt-out-value">
-            <%= ViewModels::MyAccount.get_opt_out_description(locals[:user_info]) %>
+          <dd class="govuk-summary-list__value" id="subscription-value">
+            <%= ViewModels::MyAccount.get_subscription_description(locals[:user_info]) %>
           </dd>
           <dd class="govuk-summary-list__actions">
-            <%= erb :component__opt_out_status_toggle, locals: {
-              is_opted_out: ViewModels::MyAccount.get_opt_out(locals[:user_info])
+            <%= erb :component__subscription_status_toggle, locals: {
+              is_unsubscribed: ViewModels::MyAccount.unsubscribed?(locals[:user_info])
             } %>
           </dd>
         </div>

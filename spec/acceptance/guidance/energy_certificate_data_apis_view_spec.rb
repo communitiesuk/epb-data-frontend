@@ -76,7 +76,7 @@ describe "Acceptance::EnergyCertificateDataApis", type: :feature do
 
         allow(ViewModels::MyAccount).to receive_messages(
           get_bearer_token: "kfhbks750D0RnC2oKGsoM936wKmtd4ZcoSw489rPo4FDqQ2SYQVtVnQ4PhZ33b46YZPNZXo6r",
-          get_opt_out: false,
+          unsubscribed?: false,
         )
       end
 

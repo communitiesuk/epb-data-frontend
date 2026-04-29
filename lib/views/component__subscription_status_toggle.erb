@@ -1,0 +1,8 @@
+<%
+    action_label = locals[:is_unsubscribed] ? t('my_account.resubscribe_link_text') : t('my_account.unsubscribe_link_text')
+    toggle_url = "/api/my-account/toggle-email-notifications"
+%>
+
+<a href="<%= toggle_url %>" class="govuk-link" id="subscription-toggle-link">
+  <%= action_label %><span class="govuk-visually-hidden"></span>
+</a>

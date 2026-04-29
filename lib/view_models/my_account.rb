@@ -8,15 +8,15 @@ module ViewModels
       user_info[:bearer_token]
     end
 
-    def self.get_opt_out(user_info)
+    def self.unsubscribed?(user_info)
       user_info[:opt_out]
     end
 
-    def self.get_opt_out_description(user_info)
-      if get_opt_out(user_info)
-        I18n.t("my_account.opt_out_enabled_text")
+    def self.get_subscription_description(user_info)
+      if unsubscribed?(user_info)
+        I18n.t("my_account.unsubscribed_status_text")
       else
-        I18n.t("my_account.opt_out_disabled_text")
+        I18n.t("my_account.subscribed_status_text")
       end
     end
   end

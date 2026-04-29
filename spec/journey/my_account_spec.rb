@@ -42,19 +42,19 @@ describe "Journey::MyAccount", :journey, type: :feature do
       expect(page).to have_button("Copied", wait: 5)
     end
 
-    it "displays opt-out email notifications link" do
-      expect(page).to have_selector("#opt-out-toggle-link", text: "Opt-out")
+    it "displays unsubscribe email notifications link" do
+      expect(page).to have_selector("#subscription-toggle-link", text: "Unsubscribe")
     end
 
     it "displays the email notifications status description" do
-      expect(page).to have_selector("#opt-out-value", text: "You may get email notifications about changes to the service.")
+      expect(page).to have_selector("#subscription-value", text: "You will get emails about changes to the service.")
     end
 
-    context "when clicking the 'Opt-out' link" do
+    context "when clicking the 'Unsubscribe' link" do
       it "updates email notifications status and link" do
-        click_link("opt-out-toggle-link")
-        expect(page).to have_selector("#opt-out-toggle-link", text: "Opt-in")
-        expect(page).to have_selector("#opt-out-value", text: "You have opted out of email notifications about changes to the service.")
+        click_link("subscription-toggle-link")
+        expect(page).to have_selector("#subscription-toggle-link", text: "Resubscribe")
+        expect(page).to have_selector("#subscription-value", text: "You have unsubscribed from emails about changes to the service.")
       end
     end
   end

@@ -19,22 +19,22 @@ describe ViewModels::MyAccount do
     end
   end
 
-  describe "#get_opt_out" do
+  describe "#unsubscribed?" do
     it "returns the opt-out value from the user info" do
-      opt_out = view_model.get_opt_out({ bearer_token: "mock-bearer-token", opt_out: false })
-      expect(opt_out).to be false
+      unsubscribed_status = view_model.unsubscribed?({ bearer_token: "mock-bearer-token", opt_out: false })
+      expect(unsubscribed_status).to be false
     end
   end
 
-  describe "#opt_out_description" do
-    it "returns the opt-out disabled text" do
-      opt_out_description = view_model.get_opt_out_description({ bearer_token: "mock-bearer-token", opt_out: false })
-      expect(opt_out_description).to eq("You may get email notifications about changes to the service.")
+  describe "#get_subscription_description" do
+    it "returns the subscribed status text" do
+      get_subscription_description = view_model.get_subscription_description({ bearer_token: "mock-bearer-token", opt_out: false })
+      expect(get_subscription_description).to eq("You will get emails about changes to the service.")
     end
 
-    it "returns the opt-out enabled text" do
-      opt_out_description = view_model.get_opt_out_description({ bearer_token: "mock-bearer-token", opt_out: true })
-      expect(opt_out_description).to eq("You have opted out of email notifications about changes to the service.")
+    it "returns the unsubscribed status text" do
+      get_subscription_description = view_model.get_subscription_description({ bearer_token: "mock-bearer-token", opt_out: true })
+      expect(get_subscription_description).to eq("You have unsubscribed from emails about changes to the service.")
     end
   end
 
