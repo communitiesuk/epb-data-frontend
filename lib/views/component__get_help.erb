@@ -1,30 +1,30 @@
 <div class="govuk-grid-column-two-thirds">
   <h2 class="govuk-heading-m govuk-!-padding-top-9">
-    Get help or give feedback
+    <%=t('get_help.heading') %>
   </h2>
 
   <% unless @hide_guidance_text %>
-    <p class="govuk-body">
-      <a class="govuk-link" href="/guidance">Visit the guidance page</a> for information on:
+    <p>
+      <a class="govuk-link" href="/guidance"><%=t('get_help.guidance.cta') %></a> <%=t('get_help.guidance.for_help') %>
     </p>
 
     <ul class="govuk-list govuk-list--bullet govuk-!-margin-left-5">
-      <li>what the data contains</li>
-      <li>data methodology and limitations</li>
-      <li>using the developer API</li>
-      <li>licensing restrictions</li>
+      <li><%=t('get_help.guidance.body')[0] %></li>
+      <li><%=t('get_help.guidance.body')[1] %></li>
+      <li><%=t('get_help.guidance.body')[2] %></li>
+      <li><%=t('get_help.guidance.body')[3] %></li>
     </ul>
   <% end %>
 
-  <p class="govuk-body">
-    For enquiries about the data, please contact the Ministry of Housing, Communities and Local Government (MHCLG)
-  </p>
-
-  <p class="govuk-body">
-    <a class="govuk-link" href="mailto:mhclg.digital-services@communities.gov.uk?subject=EPB - ">mhclg.digital-services@communities.gov.uk</a>
+  <p>
+    <%=t('get_help.enquiries') %>
   </p>
 
   <p>
-    If you would like to give feedback to help us improve this service, please use our <a class="govuk-link" href="https://forms.office.com/Pages/ResponsePage.aspx?id=EGg0v32c3kOociSi7zmVqHoHbhsFaRhKtJNsRmvj1SVUQ0JSSTAxMVBKQVZCODgyOUYzSTU5VUJRRS4u">feedback form</a>.
+    <a class="govuk-link" href="mailto:<%=t('contact_email') %>?subject=EPB - "><%=t('contact_email') %></a>
+  </p>
+
+  <p>
+    <%=t('get_help.feedback.text', link: '<a class="govuk-link" href="' + t('feedback_form') + '">' + t('get_help.feedback.cta') + "</a>.") %>
   </p>
 </div>

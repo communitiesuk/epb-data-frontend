@@ -4,16 +4,16 @@
       <div class="govuk-grid-row">
         <h1 class="govuk-heading-xl"><%= t('opt_out.incorrect_epc.title') %></h1>
 
-        <p class="govuk-body">
-          <%= t('opt_out.incorrect_epc.paragraph_1') %>
+        <p>
+          <%=t('opt_out.incorrect_epc.recent.text', link: '<a class="govuk-link" href="' + t('register_find_url') + '">' + t('opt_out.incorrect_epc.recent.cta') + "</a>.") %>
         </p>
 
-        <p class="govuk-body">
-          <%= t('opt_out.find_epc_text') %>
+        <p>
+          <%=t('opt_out.find_epc.text', link: '<a class="govuk-link" href="' + t('register_find_url') + '">' + t('opt_out.find_epc.cta') + "</a>.") %>
         </p>
 
-        <p class="govuk-body">
-          <%= t('opt_out.incorrect_epc.paragraph_2') %>
+        <p>
+          <%=t('opt_out.incorrect_epc.not_recent.text', link: '<a class="govuk-link" href="' + t('register_get_url') + '">' + t('opt_out.incorrect_epc.not_recent.cta') + "</a>.") %>
         </p>
 
         <div class="govuk-inset-text">

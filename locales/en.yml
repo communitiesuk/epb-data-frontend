@@ -1,6 +1,11 @@
 en:
-
   service_name: "Get energy performance of buildings data"
+
+  contact_email: "mhclg.digital-services@communities.gov.uk"
+  register_find_url: https://www.gov.uk/find-energy-certificate
+  register_get_url: https://www.gov.uk/get-new-energy-certificate
+  feedback_form: https://forms.office.com/Pages/ResponsePage.aspx?id=EGg0v32c3kOociSi7zmVqHoHbhsFaRhKtJNsRmvj1SVUQ0JSSTAxMVBKQVZCODgyOUYzSTU5VUJRRS4u
+  help_desk_number: "020 3829 0748"
 
   validation_errors:
     captcha_error: "Please verify that you’re a human and try again."
@@ -64,12 +69,11 @@ en:
         accessibility_statement: "Accessibility"
         cookies: "Cookies"
         feedback: "Give feedback"
-        license: "All content is available under the <a class=\"govuk-footer__link\" href=\"https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" rel=\"license\">Open Government Licence v3.0</a>, except where otherwise stated"
-        copyright: "<a class=\"govuk-footer__link govuk-footer__copyright-logo\" href=\"https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/\">&copy; Crown copyright</a>"
+        license:
+          text: "All content is available under the %{link}, except where otherwise stated"
+          cta: "Open Government Licence v3.0"
+        copyright: "Crown copyright"
         help: "Help"
-
-  contact:
-    help_desk_number: "020 3829 0748"
 
   error:
     error: "Error: "
@@ -129,9 +133,8 @@ en:
       text: "If you need information on this website in a different format like accessible PDF, large print, easy read, audio recording or braille:"
       contact_list:
         email_label: "Email:"
-        email_address: "mhclg.digital-services@communities.gov.uk"
         email_subject: "EPB"
-        telephone: "Telephone: 020 3829 0748"
+        telephone: "Telephone:"
     reporting_heading: "Reporting accessibility problems with this website"
     reporting_paragraph_before_link: "We’re always looking to improve the accessibility of this website. If you find any problems not listed on this page or think we’re not meeting accessibility requirements please"
     reporting_paragraph_link_text: "give feedback"
@@ -155,6 +158,45 @@ en:
     help_desk:
       need_support: "%{link} if you need support to find an energy certificate or report."
       link: "Contact our helpdesk"
+
+  start_page:
+    service_for: "This service is for researchers and product developers to get bulk data on:"
+    domestic: "Energy Performance Certificates for domestic properties"
+    non_domestic: "Energy Performance Certificates for non-domestic properties"
+    public_buildings: "Display Energy Certificates for public buildings"
+    visit_register:
+      visit: "If you need to find an energy certificate for an individual property, %{link}"
+      cta: "visit the Energy Performance Certificate Register"
+    visit_scottish_register:
+      visit: "This data covers England and Wales. For data in Scotland, %{link}"
+      url: https://www.scottishepcregister.org.uk/
+      cta: "visit the Scottish Energy Performance Certificate Register"
+    expired_replaced: "The data includes certificates which may have expired or been replaced."
+    how_to_use:
+      heading: "How you can use this service"
+      use: "You can use this service to:"
+      csv: "download bulk certificate data in CSV format (Microsoft Excel)"
+      api: "access certificate data using a developer API"
+      need_cert: "If you need an energy certificate to sell or rent out a property, %{link}"
+    what_you_will_need:
+      heading: "What you will need"
+      one_login: "You will need to sign in or create an account with GOV.UK One Login to download bulk certificate data."
+      cta: "Start now"
+
+  get_help:
+    heading: "Get help or give feedback"
+    guidance:
+      cta: "Visit the guidance page"
+      for_help: "for information on:"
+      body:
+        - "what the data contains"
+        - "data methodology and limitations"
+        - "using the developer API"
+        - "licensing restrictions"
+    enquiries: "For enquiries about the data, please contact the Ministry of Housing, Communities and Local Government (MHCLG)"
+    feedback:
+      text: "If you would like to give feedback to help us improve this service, please use our %{link}"
+      cta: "feedback form"
 
   data_access_options:
     title: "How would you like to access the data?"
@@ -374,7 +416,9 @@ en:
 
   opt_out:
     warning: "Opting out an EPC for the purpose of securing grant funding is fraud."
-    find_epc_text: To find your EPC, use the <a class="govuk-link" href="https://www.gov.uk/find-energy-certificate">Find an energy certificate service</a>.
+    find_epc:
+      text: "To find your EPC, use the %{link}"
+      cta: "Find an energy certificate service"
     error:
       invalid_text: "Invalid text"
 
@@ -401,8 +445,12 @@ en:
 
     incorrect_epc:
       title: "What to do if your EPC is incorrect"
-      paragraph_1: If your EPC was created recently, you should contact the assessor. You can find the contact details for the assessor near the bottom of <a class="govuk-link" href="https://www.gov.uk/find-energy-certificate">your EPC</a>.
-      paragraph_2: If your EPC was created a while ago, you should <a class="govuk-link" href="https://www.gov.uk/get-new-energy-certificate">get a new certificate</a>.
+      recent:
+        text: "If your EPC was created recently, you should contact the assessor. You can find the contact details for the assessor near the bottom of %{link}"
+        cta: "your EPC"
+      not_recent:
+        text: "If your EPC was created a while ago, you should %{link}"
+        cta: "get a new certificate"
       note: "Opting out an EPC does not make it invalid. EPCs are only invalidated when they expire or when they are replaced by a new EPC."
     advised_by_third_party:
       title: "You do not need to opt out to access grant funding"
@@ -439,7 +487,9 @@ en:
       address_title: "Address"
       certificate_number:
         title: "Certificate number"
-        hint: This can be found near the top of your EPC, for example 1234-5678-2345-6789-0123. To find your EPC, use the <a class="govuk-link" rel="noreferrer noopener" target="_blank" href="https://www.gov.uk/find-energy-certificate">Find an energy certificate service (opens in new tab)</a>.
+        hint:
+          text: "This can be found near the top of your EPC, for example 1234-5678-2345-6789-0123. To find your EPC, use the %{link}"
+          cta: "Find an energy certificate service (opens in new tab)"
         error: "Enter a valid certificate number"
       address_line1:
         title: "Address line 1"

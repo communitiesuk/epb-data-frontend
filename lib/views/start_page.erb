@@ -4,57 +4,54 @@
       <h1 class="govuk-heading-xl"><%=t('service_name') %></h1>
 
       <p>
-        This service is for researchers and product developers to get bulk data on:
+        <%=t('start_page.service_for') %>
       </p>
 
       <ul class="govuk-list govuk-list--bullet">
-        <li>Energy Performance Certificates for domestic properties</li>
-        <li>Energy Performance Certificates for non-domestic properties</li>
-        <li>Display Energy Certificates for public buildings</li>
+        <li><%=t('start_page.domestic') %></li>
+        <li><%=t('start_page.non_domestic') %></li>
+        <li><%=t('start_page.public_buildings') %></li>
       </ul>
 
       <p>
-        If you need to find an energy certificate for an individual property,
-        <a class="govuk-link" href="https://www.gov.uk/find-energy-certificate">visit the Energy Performance Certificate Register</a>.
+        <%=t('start_page.visit_register.visit', link: '<a class="govuk-link" href="' + t('register_find_url') + '">' + t('start_page.visit_register.cta') + "</a>.") %>
       </p>
 
       <p>
-        This data covers England and Wales. For data in Scotland,
-        <a class="govuk-link" href="https://www.scottishepcregister.org.uk/">visit the Scottish Energy Performance Certificate Register</a>.
+        <%=t('start_page.visit_scottish_register.visit', link: '<a class="govuk-link" href="' + t('start_page.visit_scottish_register.url') + '">' + t('start_page.visit_scottish_register.cta') + "</a>.") %>
       </p>
 
       <p>
-        The data includes certificates which may have expired or been replaced.
+        <%=t('start_page.expired_replaced') %>
       </p>
     </div>
 
     <div>
       <h2 class="govuk-heading-m govuk-!-padding-top-2">
-        How you can use this service
+        <%=t('start_page.how_to_use.heading') %>
       </h2>
 
       <p>
-        You can use this service to:
+        <%=t('start_page.how_to_use.use') %>
       </p>
 
       <ul class="govuk-list govuk-list--bullet">
-        <li>download bulk certificate data in CSV format (Microsoft Excel)</li>
-        <li>access certificate data using a developer API</li>
+        <li><%=t('start_page.how_to_use.csv') %></li>
+        <li><%=t('start_page.how_to_use.api') %></li>
       </ul>
 
       <p>
-        If you need an energy certificate to sell or rent out a property,
-        <a class="govuk-link" href="https://www.gov.uk/find-energy-certificate">visit the Energy Performance Certificate Register</a>.
+        <%=t('start_page.how_to_use.need_cert', link: '<a class="govuk-link" href="' + t('register_find_url') + '">' + t('start_page.visit_register.cta') + "</a>.") %>
       </p>
     </div>
 
     <div>
       <h2 class="govuk-heading-m govuk-!-padding-top-2">
-        What you will need
+        <%=t('start_page.what_you_will_need.heading') %>
       </h2>
 
-      <p class="govuk-body">
-        You will need to sign in or create an account with GOV.UK One Login to download bulk certificate data.
+      <p>
+        <%=t('start_page.what_you_will_need.one_login') %>
       </p>
 
       <a
@@ -63,7 +60,7 @@
         draggable="false"
         class="govuk-button govuk-button--start govuk-!-margin-top-2 govuk-!-margin-bottom-8"
         data-module="govuk-button">
-        Start now
+        <%=t('start_page.what_you_will_need.cta') %>
         <svg
           class="govuk-button__start-icon"
           xmlns="http://www.w3.org/2000/svg"
