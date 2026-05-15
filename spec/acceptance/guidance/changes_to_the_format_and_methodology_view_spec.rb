@@ -30,9 +30,8 @@ describe "Acceptance::ChangesToTheMethodAndMethodology", type: :feature do
 
       it "has the correct content for certificate changes section" do
         expect(response.body).to have_css("h2", text: "Certificate changes")
-        expect(response.body).to have_css("p", text: "There have been multiple version changes which affect how domestic and non-domestic EPCs and DECs are formatted.")
-        expect(response.body).to have_css("p", text: "You can find JSON Schema describing the different certificate versions on GitHub.")
-        expect(response.body).to have_link("GitHub", href: "https://github.com/communitiesuk/epb-data-warehouse/tree/main/spec/fixtures/json_samples")
+        expect(response.body).to have_css("p", text: "There have been multiple schema version changes which affect how the data for domestic and non-domestic EPCs and DECs are formatted.")
+        expect(response.body).to have_link("JSON samples for each of the different certificate versions", href: "https://github.com/communitiesuk/epb-data-warehouse/tree/main/spec/fixtures/json_samples")
       end
 
       it "has the correct content for regulatory changes section" do
