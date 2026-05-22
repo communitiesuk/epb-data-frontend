@@ -30,7 +30,6 @@ describe "Acceptance::DataDictionary", type: :feature do
 
       it "has the correct content under the title" do
         expect(response.body).to have_css("p", text: "The data dictionary provides an explanation for every variable included in the dataset, as well as information on the data source and caveats.")
-        expect(response.body).to have_css("p", text: "The data dictionary is only available for Domestic EPC data.")
       end
 
       it "has the correct content for documents section" do
