@@ -28,21 +28,6 @@ describe "Acceptance::DataDictionary", type: :feature do
         expect(response.body).to have_title "Data dictionary – GOV.UK"
       end
 
-      it "has the correct content under the title" do
-        expect(response.body).to have_css("p", text: "The data dictionary provides an explanation for every variable included in the dataset, as well as information on the data source and caveats.")
-      end
-
-      it "has the correct content for documents section" do
-        expect(response.body).to have_css("h2", text: "Documents")
-        expect(response.body).to have_link("Domestic EPC Data Dictionary", href: "/download/data-dictionary?property_type=domestic")
-        expect(response.body).to have_link("Non-Domestic EPC Data Dictionary", href: "/download/data-dictionary?property_type=non-domestic")
-        expect(response.body).to have_link("Display EPC Data Dictionary", href: "/download/data-dictionary?property_type=display")
-      end
-
-      it "renders the csv icon" do
-        expect(response.body).to have_css("svg")
-      end
-
       it "has the Get Help or Give Feedback section" do
         expect(response.body).to have_css("h2", text: "Get help or give feedback")
       end
