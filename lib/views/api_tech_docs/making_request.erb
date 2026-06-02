@@ -6,11 +6,11 @@
     <div class="govuk-!-margin-bottom-7">
       <h1 class="govuk-heading-l">Making a request</h1>
 
-      <p class="govuk-body">
+      <p>
         The base URL
       </p>
       <pre><code><%= ViewModels::ApiTechDocs.base_url %></code></pre>
-      <p class="govuk-body">
+      <p>
         Requests should be GET requests, with all parameters specified in the query string of the URL.  You should not send any request body.
       </p>
     </div>
@@ -20,11 +20,11 @@
     <div class="govuk-!-margin-bottom-7">
       <h2 class="govuk-heading-m">Authorisation header</h2>
 
-      <p class="govuk-body">
-        The authorisation header is a bearer token that can be found on your <a class="govuk-link" href="../api/my-account">my account</a> page when you are logged in to the service.<br/>
+      <p>
+        The authorisation header is a bearer token that can be found on your <a href="../api/my-account">my account</a> page when you are logged in to the service.<br/>
         You must include an authorisation header.
       </p>
-      <p class="govuk-body">
+      <p>
         When you have your bearer token, add the token to a header as follows:
       </p>
       <pre><code>"Authorization": "Bearer your_bearer_token"</code></pre>
@@ -32,7 +32,7 @@
     <div class="govuk-!-margin-bottom-7">
       <h2 class="govuk-heading-m">Accept header</h2>
 
-      <p class="govuk-body">
+      <p>
         The accept header is application/json:
       </p>
       <pre><code>"Accept": "application/json"</code></pre>

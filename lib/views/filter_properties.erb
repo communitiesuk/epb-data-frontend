@@ -19,7 +19,7 @@
         <%= t('filter_properties.download_all_data.title') %>
       </h2>
       <div class="govuk-!-margin-top-6 govuk-!-margin-bottom-6">
-        <p class="govuk-body">
+        <p>
           <%= t('filter_properties.download_all_data.will_get_data_for') %>
         </p>
         <ul class="govuk-list govuk-list--bullet">
@@ -29,7 +29,7 @@
           <li><%= t('filter_properties.download_all_data.date_range', previous_month: previous_month.strftime("%B %Y")) %></li>
         </ul>
       </div>
-      <p class="govuk-body">
+      <p>
         <%= t('filter_properties.download_all_data.file_size') %>
         <%= "#{ViewModels::FilterProperties.get_full_load_file_size(params["property_type"], locals[:use_case])}." %>
       </p>

@@ -12,15 +12,15 @@
       } %>
     <% end %>
     <h1 class="govuk-heading-xl"><%= t("cookies.title") %></h1>
-    <p class="govuk-body"><%= t("cookies.intro") %></p>
+    <p><%= t("cookies.intro") %></p>
 
     <div class="govuk-inset-text">
-      <p class="govuk-body"><%=t("cookies.dont_worry") %></p>
+      <p><%=t("cookies.dont_worry") %></p>
     </div>
 
     <h2 class="govuk-heading-l"><%= t("cookies.measure.title") %></h2>
-    <p class="govuk-body"><%= t("cookies.measure.analytics") %></p>
-    <p class="govuk-body"><%= t("cookies.measure.list.title") %></p>
+    <p><%= t("cookies.measure.analytics") %></p>
+    <p><%= t("cookies.measure.list.title") %></p>
 
     <ul class="govuk-list govuk-list--bullet">
       <li><%= t("cookies.measure.list.1") %></li>
@@ -28,7 +28,7 @@
       <li><%= t("cookies.measure.list.3") %></li>
     </ul>
 
-    <p class="govuk-body"><%= t("cookies.dont_worry_again") %></p>
+    <p><%= t("cookies.dont_worry_again") %></p>
 
     <form id="cookies-consent-form" action="" method="post">
       <%= erb :component__csrf_tag %>

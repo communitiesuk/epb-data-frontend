@@ -5,7 +5,7 @@
 
   <% unless @hide_guidance_text %>
     <p>
-      <a class="govuk-link" href="/guidance"><%=t('get_help.guidance.cta') %></a> <%=t('get_help.guidance.for_help') %>
+      <a href="/guidance"><%=t('get_help.guidance.cta') %></a> <%=t('get_help.guidance.for_help') %>
     </p>
 
     <ul class="govuk-list govuk-list--bullet govuk-!-margin-left-5">
@@ -21,10 +21,10 @@
   </p>
 
   <p>
-    <a class="govuk-link" href="mailto:<%=t('contact_email') %>?subject=EPB - "><%=t('contact_email') %></a>
+    <a href="mailto:<%=t('contact_email') %>?subject=EPB - "><%=t('contact_email') %></a>
   </p>
 
   <p>
-    <%=t('get_help.feedback.text', link: '<a class="govuk-link" href="' + t('feedback_form') + '">' + t('get_help.feedback.cta') + "</a>.") %>
+    <%=t('get_help.feedback.text', link: '<a href="' + t('feedback_form') + '">' + t('get_help.feedback.cta') + "</a>.") %>
   </p>
 </div>

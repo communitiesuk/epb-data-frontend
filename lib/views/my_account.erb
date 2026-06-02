@@ -12,7 +12,7 @@
             <%= ViewModels::MyAccount.get_email_address(session) %>
           </dd>
           <dd class="govuk-summary-list__actions">
-            <a class="govuk-link" id="email-sign-out" href="/sign-out"><%= t('my_account.sign_out') %><span class="govuk-visually-hidden"> sign out</span></a>
+            <a id="email-sign-out" href="/sign-out"><%= t('my_account.sign_out') %><span class="govuk-visually-hidden"> sign out</span></a>
           </dd>
         </div>
         <div class="govuk-summary-list__row" id='bearer-token'>
@@ -45,15 +45,15 @@
         <%= t('my_account.delete_account.header') %>
       </h2>
 
-      <p class="govuk-body">
+      <p>
         <%= t('my_account.delete_account.body')[0] %>
       </p>
 
-      <p class="govuk-body">
+      <p>
         <%= t('my_account.delete_account.body')[1] %>
       </p>
 
-      <p class="govuk-body">
+      <p>
         <%= t('my_account.delete_account.body')[2] %>
       </p>
 

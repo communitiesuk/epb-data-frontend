@@ -6,10 +6,10 @@
     <div class="govuk-!-margin-bottom-7">
       <h1 class="govuk-heading-l"><%= t('api-technical-documentation.deltas.title') %></h1>
 
-      <p class="govuk-body">
+      <p>
       Search for a EPCS that have changed within a specific date
       </p>
-      <p class="govuk-body"> Changes to EPCs will only be recorded as changed from either of the following event types:</p>
+      <p> Changes to EPCs will only be recorded as changed from either of the following event types:</p>
       <ul>
           <li><em class="javascript">removed</em> - An EPC that is no longer published</li>
           <li><em class="javascript"> address_id_updated</em> - An EPC whose UPRN has been updated</li>
@@ -29,24 +29,24 @@
     <div class="govuk-!-margin-bottom-7">
       <h3 class="govuk-heading-s">date_start (required)   </h3>
 
-      <p class="govuk-body">Start date of the date range to retrieve, in the format YYY-MM-DD.  </p>
+      <p>Start date of the date range to retrieve, in the format YYY-MM-DD.  </p>
 
-      <p class="govuk-body">For example: </p>
+      <p>For example: </p>
       <pre><code>?date_start=2020-11-06</code></pre>
     </div>
 
     <div class="govuk-!-margin-bottom-7">
       <h3 class="govuk-heading-s">date_end (required)   </h3>
 
-      <p class="govuk-body">End date of the date range to retrieve, in the format YYY-MM-DD.  </p>
-      <p class="govuk-body">For example: </p>
+      <p>End date of the date range to retrieve, in the format YYY-MM-DD.  </p>
+      <p>For example: </p>
       <pre><code>?date_end=2020-11-06</code></pre>
     </div>
 
     <div class="govuk-!-margin-bottom-7">
       <h2 class="govuk-heading-m">Response</h2>
 
-      <p class="govuk-body">
+      <p>
         If the request is successful, the response body is json with a status code of 200:
       </p>
       <pre><code class="javascript"><%=  ViewModels::ApiTechDocs.delta_response %></code></pre>
@@ -55,7 +55,7 @@
     <div class="govuk-!-margin-bottom-7">
       <h2 class="govuk-heading-m">Error codes</h2>
 
-      <p class="govuk-body">If the request is not successful, an HTTP error code will be returned:</p>
+      <p>If the request is not successful, an HTTP error code will be returned:</p>
       <ul>
         <li>400 – one or more of the required parameters was missing or one of the parameters was not in the right format.  The response body will include a json error message that explains the specific error.</li>
         <li>404 – no certificate changes found that match the parameters of the query </li>

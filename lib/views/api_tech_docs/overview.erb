@@ -5,29 +5,29 @@
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-l">Energy certificate data API documentation</h1>
 
-      <p class="govuk-body">
+      <p>
         This documentation is for developers interested in using the Energy Certificate Data API to access Energy Performance Certificate (EPC) and Display Energy Certificate (DEC) data for buildings in England and Wales.
       </p>
-      <p class="govuk-body">
-        Developers can also use our <a class="govuk-link" href="/api-documentation/index.html">OpenAPI</a> file with tools such as <a class="govuk-link" href="https://swagger.io/">Swagger</a> and <a class="govuk-link" href="https://github.com/Redocly/redoc">Redoc</a> to assist with using the REST API.
+      <p>
+        Developers can also use our <a href="/api-documentation/index.html">OpenAPI</a> file with tools such as <a href="https://swagger.io/">Swagger</a> and <a href="https://github.com/Redocly/redoc">Redoc</a> to assist with using the REST API.
       </p>
 
 
       <div class="govuk-!-margin-bottom-7">
         <h2 class="govuk-heading-m govuk-!-padding-top-4">Rate limiting</h2>
 
-        <p class="govuk-body">
+        <p>
           We limit the number of requests each application can make. This protects our service against excessive use and Denial-of-Service attacks and encourages you to use our API endpoints efficiently.
           We set limits based on anticipated loads and peaks. Our standard limit is 6000 requests every 5 minutes per application.
         </p>
-        <p class="govuk-body">
+        <p>
           If you reach this limit, you’ll get a response with an HTTP status of 429 (Too Many Requests).
           If a 429 response is received, we recommend that your code should stop making additional API requests for a short period of time before retrying.
         </p>
-        <p class="govuk-body">
+        <p>
           Our rate limits are designed to encourage real-time interactions. As such we advise software developers to avoid batching requests if they wish to avoid being rate limited.
         </p>
-        <p class="govuk-body">
+        <p>
           If you continually hit this rate limit, contact us to discuss your application design and whether it’s appropriate to raise your rate limit.
         </p>
       </div>

@@ -10,18 +10,18 @@
         <h2 class="govuk-heading-m">
           <%= t('request_received.header') %>
         </h2>
-        <p class="govuk-body">
+        <p>
           <%= t('request_received.body', email: locals[:email]) %>
         </p>
-        <p class="govuk-body">
+        <p>
           <%= t('request_received.delivery_time') %>
         </p>
-        <p class="govuk-body">
+        <p>
           <%= t('request_received.check_spam') %>
         </p>
 
         <div class="govuk-!-margin-top-7 govuk-!-margin-bottom-7">
-          <p class="govuk-body">
+          <p>
             <%= t('request_received.requested_data_for') %>
           </p>
           <ul class="govuk-list govuk-list--bullet">
@@ -34,7 +34,7 @@
           </ul>
         </div>
 
-        <p class="govuk-body">
+        <p>
          <% if Helper::Toggles.enabled?("data-front-end-show-counts") %>
             <%= t('request_received.count', count: ViewModels::RequestReceivedConfirmation.get_formatted_download_count(locals[:download_count])) %>.
           <% end %>
