@@ -17,7 +17,7 @@ shared_examples "when checking the rendering of data passed to a guidance page" 
     end
 
     it "has the correct header" do
-      expect(response.body).to have_css("h1", text: "#{title}")
+      expect(response.body).to have_css("h1", text: title.to_s)
     end
 
     it "displays the title the same as the main header value" do

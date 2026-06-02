@@ -24,7 +24,6 @@ describe "Acceptance::DataAccessOptions", type: :feature do
       it "displays the title the same as the main header value" do
         expect(response.body).to have_title "How would you like to access the data? – GOV.UK"
       end
-
     end
   end
 end
