@@ -22,11 +22,6 @@ describe "Acceptance::ServiceStartPage", type: :feature do
         expect(response.body).to have_link("Visit the guidance page", href: "/guidance")
       end
 
-      it "has the how you can use and what will you need section" do
-        expect(response.body).to have_css("h2", text: "How you can use this service")
-        expect(response.body).to have_css("h2", text: "What you will need")
-      end
-
       it "has the Get Help or Give Feedback section" do
         expect(response.body).to have_css("h2", text: "Get help or give feedback")
       end

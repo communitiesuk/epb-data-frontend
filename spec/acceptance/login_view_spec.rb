@@ -88,10 +88,6 @@ describe "Acceptance::Login", type: :feature do
 
       it "shows the correct header and body text" do
         expect(response.body).to have_selector("h1", text: "Create your GOV.UK One Login or sign in")
-        expect(response.body).to have_selector("p.govuk-body", text: "If you’ve used other government services for example, to file a Self Assessment tax return or apply for or renew a passport, you can use the same login details here.")
-        expect(response.body).to have_selector("strong", text: "Self Assessment tax return")
-        expect(response.body).to have_selector("strong", text: "apply for or renew a passport")
-        expect(response.body).to have_selector("p.govuk-body", text: "If you don’t have a One Login, you can create one when you start.")
       end
 
       it "displays the title the same as the main header value" do

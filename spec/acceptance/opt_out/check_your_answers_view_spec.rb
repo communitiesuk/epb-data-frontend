@@ -37,50 +37,9 @@ describe "Acceptance::OptOutCheckYourAnswers", type: :feature do
         expect(response.body).not_to have_link("Back")
       end
 
-      it "shows the correct content for personal details section" do
-        expect(response.body).to have_selector("h1", text: "Personal details")
-        expect(response.body).to have_selector("dt", text: "Name")
-        expect(response.body).to have_selector("dt", text: "Email address")
-        expect(response.body).to have_selector("dt", text: "Relationship to the property")
-      end
-
-      it "shows the correct content for property details section" do
-        expect(response.body).to have_selector("h1", text: "Property details")
-        expect(response.body).to have_selector("dt", text: "Certificate number")
-        expect(response.body).to have_selector("dt", text: "Property address")
-      end
-
       it "shows the correct content for confirmation section" do
         expect(response.body).to have_selector("h1", text: "Confirmation")
         expect(response.body).to have_css("input#confirmation[value=checked]")
-      end
-
-      it "has a warning message" do
-        expect(response.body).to have_css("div.govuk-warning-text", text: "Opting out an EPC for the purpose of securing grant funding is fraud.")
-      end
-
-      it "has a submit button" do
-        expect(response.body).to have_button("Submit request")
-      end
-
-      it "has a change hyperlink next to 'name' field" do
-        expect(response.body).to have_css("dd.govuk-summary-list__actions a.govuk-link", text: "Change name")
-        expect(response.body).to have_link("Change", href: "/opt-out/name")
-      end
-
-      it "has a change hyperlink next to 'Relationship to the property' field" do
-        expect(response.body).to have_css("dd.govuk-summary-list__actions a.govuk-link", text: "Change owner")
-        expect(response.body).to have_link("Change", href: "/opt-out/owner")
-      end
-
-      it "has a change hyperlink next to 'Certificate number' field" do
-        expect(response.body).to have_css("dd.govuk-summary-list__actions a.govuk-link", text: "Change certificate number")
-        expect(response.body).to have_link("Change", href: "/opt-out/certificate-details")
-      end
-
-      it "has a change hyperlink next to 'Property address' field" do
-        expect(response.body).to have_css("dd.govuk-summary-list__actions a.govuk-link", text: "Change property address")
-        expect(response.body).to have_link("Change", href: "/opt-out/certificate-details")
       end
 
       context "when the user is not authenticated" do

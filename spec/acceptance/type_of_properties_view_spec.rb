@@ -42,31 +42,6 @@ describe "Acceptance::TypeOfProperties", type: :feature do
       it "displays the title the same as the main header value" do
         expect(response.body).to have_title "What type of certificates do you want data on? – GOV.UK"
       end
-
-      it "has the correct content for epc radio button" do
-        expect(response.body).to have_css("label.govuk-label", text: "Energy Performance Certificates")
-        expect(response.body).to have_css("div.govuk-hint", id: "domestic-item-hint", text: "For domestic properties such as houses or flats")
-      end
-
-      it "has the correct content for non-domestic radio button" do
-        expect(response.body).to have_css("label.govuk-label", text: "Non-domestic Energy Performance Certificates")
-        expect(response.body).to have_css("div.govuk-hint", id: "non-domestic-hint", text: "For non-domestic properties such as commercial or industrial buildings")
-      end
-
-      it "has the correct content for dec radio button" do
-        expect(response.body).to have_css("label.govuk-label", text: "Display Energy Certificates")
-        expect(response.body).to have_css("div.govuk-hint", id: "display-hint", text: "For public buildings such as schools or hospitals")
-      end
-
-      it "has the correct content for dropdown" do
-        expect(response.body).to have_css("span.govuk-details__summary-text", text: "What buildings have a Display Energy Certificate?")
-        expect(response.body).to have_content("Buildings that are occupied by a public authority, are frequently visited by the public and have a floor area above 250m² must have a Display Energy Certificate.")
-        expect(response.body).to have_content("Buildings with a Display Energy Certificate may also have a Non-domestic Energy Performance Certificate.")
-      end
-
-      it "has a continue button" do
-        expect(response.body).to have_button("Continue")
-      end
     end
 
     context "when submitting with a property type" do

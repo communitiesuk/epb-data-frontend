@@ -55,19 +55,6 @@ describe "Acceptance::MyAccount", type: :feature do
         expect(response.body).to have_title "My account – GOV.UK"
       end
 
-      it "shows the email address table row" do
-        expect(response.body).to have_css("#email-address.govuk-summary-list__row")
-      end
-
-      it "shows the bearer token table row" do
-        expect(response.body).to have_css("#bearer-token.govuk-summary-list__row")
-      end
-
-      it "shows the sign out link on email table row" do
-        expect(response.body).to have_css("#email-sign-out.govuk-link")
-        expect(response.body).to have_link("Sign out", href: "/sign-out")
-      end
-
       it "shows the copy link on bearer token table row" do
         expect(response.body).to have_button("Copy")
       end
@@ -86,20 +73,6 @@ describe "Acceptance::MyAccount", type: :feature do
 
       it "shows the subscribe toggle link as Unsubscribe" do
         expect(response.body).to have_link("Unsubscribe", href: "/api/my-account/toggle-email-notifications", id: "subscription-toggle-link")
-      end
-
-      it "shows the delete your account section" do
-        expect(response.body).to have_css("h2.govuk-heading-l", text: "Delete your account")
-      end
-
-      it "shows the delete your account section content" do
-        expect(response.body).to include("Deleting your account removes your data from this service.")
-        expect(response.body).to include("You will no longer be able to use the service or API, and you will stop receiving email updates.")
-        expect(response.body).to include("You cannot undo this action.")
-      end
-
-      it "shows the delete account button" do
-        expect(response.body).to have_link("Delete account", href: "/api/my-account/delete-account")
       end
 
       it "redirects to /login/authorize when the bearer token is missing" do

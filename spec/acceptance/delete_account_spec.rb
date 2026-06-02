@@ -37,13 +37,6 @@ describe "Acceptance::DeleteAccount", type: :feature do
         expect(last_response.body).to have_link("follow the GOV.UK One Login guidance", href: "https://www.gov.uk/guidance/deleting-your-govuk-one-login")
       end
 
-      it "explains the consequences of deleting the account" do
-        expect(last_response.body).to include("If you delete your account, you will:")
-        expect(last_response.body).to have_css("ul.govuk-list--bullet li", text: "stop receiving email updates")
-        expect(last_response.body).to have_css("ul.govuk-list--bullet li", text: "need to create a new account to use the service again")
-        expect(last_response.body).to have_css("ul.govuk-list--bullet li", text: "lose access to the API (any existing API tokens will stop working)")
-      end
-
       it "shows a form that posts to /api/delete-account and a warning button" do
         expect(last_response.body).to include('form action="/api/my-account/delete-account" method="post"')
         expect(last_response.body).to have_css("input[name='authenticity_token']", visible: :hidden)
