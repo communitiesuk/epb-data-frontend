@@ -138,7 +138,8 @@ module ViewModels
                 "constituency": "Manchester Rusholme",
                 "currentEnergyEfficiencyBand": "D",
                 "registrationDate": "2021-08-11",
-                "uprn": 10094703381
+                "uprn": 10094703381,
+                "schemaType": "RdSAP-Schema-20.0.0" 
               },
               {
                 "certificateNumber": "1111-2222-3333-4444-5555",
@@ -175,7 +176,8 @@ module ViewModels
                 "currentEnergyEfficiencyBand": "D",
                 "registrationDate": "2021-08-11T00:00:00.000+00:00",
                 "uprn": 10094703381
-                relatedRrn": "1111-2222-3333-4444-5556"
+                "relatedRrn": "1111-2222-3333-4444-5556"
+                "schemaType": "CEPC-8.0.0"
               },
               {
                 "certificateNumber": "1111-2222-3333-4444-5557",
