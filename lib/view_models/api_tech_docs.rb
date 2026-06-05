@@ -139,7 +139,7 @@ module ViewModels
                 "currentEnergyEfficiencyBand": "D",
                 "registrationDate": "2021-08-11",
                 "uprn": 10094703381,
-                "schemaType": "RdSAP-Schema-20.0.0" 
+                "schemaType": "RdSAP-Schema-20.0.0"
               },
               {
                 "certificateNumber": "1111-2222-3333-4444-5555",

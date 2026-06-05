@@ -46,7 +46,7 @@ describe ViewModels::FilterProperties do
   describe "#councils" do
     it "returns the correct list of councils" do
       expected_councils = [
-        "Aberafan Maesteg",
+        "Adur",
         "Barnsley",
         "Nottingham",
       ]
@@ -54,11 +54,11 @@ describe ViewModels::FilterProperties do
     end
 
     it "returns 348 councils" do
-      expect(view_model.councils.length).to eq 344
+      expect(view_model.councils.length).to eq 318
     end
 
     it "has no dupes" do
-      expect(view_model.councils.uniq.length).to eq 344
+      expect(view_model.councils.uniq.length).to eq 318
     end
   end
 
@@ -73,11 +73,11 @@ describe ViewModels::FilterProperties do
     end
 
     it "returns 596 rows" do
-      expect(view_model.parliamentary_constituencies.length).to eq 591
+      expect(view_model.parliamentary_constituencies.length).to eq 575
     end
 
     it "has no dupes" do
-      expect(view_model.parliamentary_constituencies.uniq.length).to eq 591
+      expect(view_model.parliamentary_constituencies.uniq.length).to eq 575
     end
   end
 

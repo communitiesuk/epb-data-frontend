@@ -73,15 +73,12 @@ module ViewModels
 
     def self.council_csv
       <<~HEREDOC
-        Aberafan Maesteg
         Adur
-        Alyn and Deeside
         Amber Valley
         Arun
         Ashfield
         Ashford
         Babergh
-        Bangor Aberconwy
         Barking and Dagenham
         Barnet
         Barnsley
@@ -96,7 +93,6 @@ module ViewModels
         Blackburn with Darwen
         Blackpool
         Blaenau Gwent
-        Blaenau Gwent and Rhymney
         Bolsover
         Bolton
         Boston
@@ -105,7 +101,6 @@ module ViewModels
         Bradford
         Braintree
         Breckland
-        "Brecon, Radnor and Cwm Tawe"
         Brent
         Brentwood
         Bridgend
@@ -119,7 +114,6 @@ module ViewModels
         Buckinghamshire
         Burnley
         Bury
-        Caerfyrddin
         Caerphilly
         Calderdale
         Cambridge
@@ -127,15 +121,10 @@ module ViewModels
         Cannock Chase
         Canterbury
         Cardiff
-        Cardiff East
-        Cardiff North
-        Cardiff South and Penarth
-        Cardiff West
         Carmarthenshire
         Castle Point
         Central Bedfordshire
         Ceredigion
-        Ceredigion Preseli
         Charnwood
         Chelmsford
         Cheltenham
@@ -146,8 +135,6 @@ module ViewModels
         Chichester
         Chorley
         City of London
-        Clwyd East
-        Clwyd North
         Colchester
         Conwy
         Cornwall
@@ -167,7 +154,6 @@ module ViewModels
         Dorset
         Dover
         Dudley
-        Dwyfor Meirionnydd
         Ealing
         Eastbourne
         East Cambridgeshire
@@ -195,7 +181,6 @@ module ViewModels
         Gedling
         Gloucester
         Gosport
-        Gower
         Gravesham
         Great Yarmouth
         Greenwich
@@ -242,7 +227,6 @@ module ViewModels
         Lichfield
         Lincoln
         Liverpool
-        Llanelli
         Luton
         Maidstone
         Maldon
@@ -252,9 +236,7 @@ module ViewModels
         Medway
         Melton
         Merthyr Tydfil
-        Merthyr Tydfil and Aberdare
         Merton
-        Mid and South Pembrokeshire
         Mid Devon
         Middlesbrough
         Mid Suffolk
@@ -262,8 +244,6 @@ module ViewModels
         Milton Keynes
         Mole Valley
         Monmouthshire
-        Montgomeryshire and Glyndwr
-        Neath and Swansea East
         Neath Port Talbot
         Newark and Sherwood
         Newcastle-under-Lyme
@@ -271,8 +251,6 @@ module ViewModels
         New Forest
         Newham
         Newport
-        Newport East
-        Newport West and Islwyn
         North Devon
         North East Derbyshire
         North East Lincolnshire
@@ -297,7 +275,6 @@ module ViewModels
         Pendle
         Peterborough
         Plymouth
-        Pontypridd
         Portsmouth
         Powys
         Preston
@@ -306,7 +283,6 @@ module ViewModels
         Redcar and Cleveland
         Redditch
         Reigate and Banstead
-        Rhondda and Ogmore
         Rhondda Cynon Taf
         Ribble Valley
         Richmond upon Thames
@@ -359,7 +335,6 @@ module ViewModels
         Sutton
         Swale
         Swansea
-        Swansea West
         Swindon
         Tameside
         Tamworth
@@ -415,7 +390,6 @@ module ViewModels
         Wychavon
         Wyre
         Wyre Forest
-        Ynys Môn
         York
       HEREDOC
     end
@@ -468,7 +442,6 @@ module ViewModels
         Blackley and Middleton South
         Blackpool North and Fleetwood
         Blackpool South
-        Blaenau Gwent
         Blaenau Gwent and Rhymney
         Blaydon and Consett
         Blyth and Ashington
@@ -520,18 +493,15 @@ module ViewModels
         Cambridge
         Cannock Chase
         Canterbury
-        Cardiff
         Cardiff East
         Cardiff North
         Cardiff South and Penarth
         Cardiff West
         Carlisle
-        Carmarthenshire
         Carshalton and Wallington
         Castle Point
         Central Devon
         Central Suffolk and North Ipswich
-        Ceredigion
         Ceredigion Preseli
         Chatham and Aylesford
         Cheadle
@@ -557,7 +527,6 @@ module ViewModels
         Colchester
         Colne Valley
         Congleton
-        Conwy
         Corby and East Northamptonshire
         Coventry East
         Coventry North West
@@ -572,7 +541,6 @@ module ViewModels
         Darlington
         Dartford
         Daventry
-        Denbighshire
         Derby North
         Derbyshire Dales
         Derby South
@@ -620,7 +588,6 @@ module ViewModels
         Feltham and Heston
         Filton and Bradley Stoke
         Finchley and Golders Green
-        Flintshire
         Folkestone and Hythe
         Forest of Dean
         Frome and East Somerset
@@ -642,7 +609,6 @@ module ViewModels
         Great Yarmouth
         Greenwich and Woolwich
         Guildford
-        Gwynedd
         Hackney North and Stoke Newington
         Hackney South and Shoreditch
         Halesowen
@@ -687,7 +653,6 @@ module ViewModels
         Ilford North
         Ilford South
         Ipswich
-        Isle of Anglesey
         Isle of Wight East
         Isle of Wight West
         Islington North
@@ -745,7 +710,6 @@ module ViewModels
         Melksham and Devizes
         Melton and Syston
         Meriden and Solihull East
-        Merthyr Tydfil
         Merthyr Tydfil and Aberdare
         Mid and South Pembrokeshire
         Mid Bedfordshire
@@ -765,7 +729,6 @@ module ViewModels
         Montgomeryshire and Glyndwr
         Morecambe and Lunesdale
         Neath and Swansea East
-        Neath Port Talbot
         Newark
         Newbury
         Newcastle-under-Lyme
@@ -774,7 +737,6 @@ module ViewModels
         Newcastle upon Tyne North
         New Forest East
         New Forest West
-        Newport
         Newport East
         Newport West and Islwyn
         Newton Abbot
@@ -818,7 +780,6 @@ module ViewModels
         Oxford East
         Oxford West and Abingdon
         Peckham
-        Pembrokeshire
         Pendle and Clitheroe
         Penistone and Stocksbridge
         Penrith and Solway
@@ -831,7 +792,6 @@ module ViewModels
         Poplar and Limehouse
         Portsmouth North
         Portsmouth South
-        Powys
         Preston
         Putney
         Queen's Park and Maida Vale
@@ -843,7 +803,6 @@ module ViewModels
         Redditch
         Reigate
         Rhondda and Ogmore
-        Rhondda Cynon Taf
         Ribble Valley
         Richmond and Northallerton
         Richmond Park
@@ -937,7 +896,6 @@ module ViewModels
         Sussex Weald
         Sutton and Cheam
         Sutton Coldfield
-        Swansea
         Swansea West
         Swindon North
         Swindon South
@@ -1013,6 +971,7 @@ module ViewModels
         Ynys Môn
         York Central
         York Outer
+
       HEREDOC
     end
 
