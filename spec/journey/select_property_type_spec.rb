@@ -36,7 +36,7 @@ describe "Journey::SelectPropertyType", :journey, type: :feature do
       end
 
       it "passes the property type in the query string" do
-        expect(page.current_url).to include("?property_type=domestic")
+        expect(page).to have_current_path "/filter-properties?property_type=domestic"
       end
     end
   end
@@ -53,7 +53,7 @@ describe "Journey::SelectPropertyType", :journey, type: :feature do
       end
 
       it "passes the property type in the query string" do
-        expect(page.current_url).to include("?property_type=non-domestic")
+        expect(page).to have_current_path "/filter-properties?property_type=non-domestic"
       end
     end
   end
@@ -70,7 +70,7 @@ describe "Journey::SelectPropertyType", :journey, type: :feature do
       end
 
       it "passes the property type in the query string" do
-        expect(page.current_url).to include("?property_type=display")
+        expect(page).to have_current_path "/filter-properties?property_type=display"
       end
     end
   end

@@ -20,6 +20,7 @@ shared_context "when testing the opt out process" do
     visit_opt_out_owner
     find("#label-yes").click
     click_button "Continue"
+    find "h1", text: "Create your GOV.UK One Login or sign in"
   end
 
   def set_opt_out_reason_other

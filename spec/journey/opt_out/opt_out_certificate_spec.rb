@@ -81,6 +81,7 @@ describe "Journey::OptOut::OptOutCertificate", :journey, type: :feature do
       visit_opt_out_occupant
       find("#label-occupant_yes").click
       click_button "Continue"
+      find "h1", text: "Create your GOV.UK One Login or sign in"
       set_oauth_cookies
       visit "#{url}/name"
       set_name

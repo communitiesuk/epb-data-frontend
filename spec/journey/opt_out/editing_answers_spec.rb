@@ -51,6 +51,7 @@ describe "Journey::OptOut::EditingAnswers", :journey, type: :feature do
         click_link "Change name"
         fill_in "name", with: "New Tester"
         click_button "Continue"
+        page.find "h1", text: "Which property would you like to opt out?"
         click_button "Continue"
         expect(page).to have_css(".govuk-summary-list__row #full-name-value", text: "New Tester")
       end
@@ -65,9 +66,11 @@ describe "Journey::OptOut::EditingAnswers", :journey, type: :feature do
       it "updates on the summary page" do
         find("#label-occupant_yes").click
         click_button "Continue"
+        page.find "h1", text: "Create your GOV.UK One Login or sign in"
         set_oauth_cookies
         visit "#{url}/name"
         click_button "Continue"
+        page.find "h1", text: "Which property would you like to opt out?"
         click_button "Continue"
         expect(page).to have_css(".govuk-summary-list__row #property-relationship-value", text: "Occupant")
       end

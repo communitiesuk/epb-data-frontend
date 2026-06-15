@@ -10,14 +10,15 @@ shared_context "when setting up journey tests" do
   def visit_type_of_properties
     visit domain
     set_oauth_cookies
-    find("a.govuk-button--start", text: "Start now").click
     visit "#{domain}/type-of-properties"
+    find "h1", text: "What type of certificates do you want data on?"
   end
 
   def visit_filter_properties
     visit_type_of_properties
     find("#label-domestic").click
     click_button "Continue"
+    find "h1", text: "Domestic Energy Performance Certificates"
   end
 
   def navigate_with_referer(path)
