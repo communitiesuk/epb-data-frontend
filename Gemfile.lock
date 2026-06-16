@@ -161,7 +161,7 @@ GEM
       racc
     prism (1.9.0)
     public_suffix (7.0.5)
-    puma (6.6.1)
+    puma (7.2.1)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.1.21)
@@ -334,7 +334,7 @@ DEPENDENCIES
   nokogiri (~> 1.19.3)
   notifications-ruby-client (~> 6.3)
   ostruct (~> 0.6.3)
-  puma (~> 6.4)
+  puma (~> 7.2)
   rack (~> 3.1.21)
   rack-contrib (~> 2.5.0)
   rack-test (~> 2.1.0)
