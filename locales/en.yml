@@ -171,7 +171,7 @@ en:
       visit: "This data covers England and Wales. For data in Scotland, %{link}"
       url: https://www.scottishepcregister.org.uk/
       cta: "visit the Scottish Energy Performance Certificate Register"
-    expired_replaced: "The data includes certificates which may have expired or been replaced."
+    expired_replaced: "The data includes certificates registered since 2012, which may have expired or been replaced."
     how_to_use:
       heading: "How you can use this service"
       use: "You can use this service to:"
