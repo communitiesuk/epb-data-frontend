@@ -45,10 +45,10 @@ describe ViewModels::FilterProperties do
 
   describe "#councils" do
     it "returns the correct list of councils" do
-      expected_councils = [
-        "Adur",
-        "Barnsley",
-        "Nottingham",
+      expected_councils = %w[
+        Adur
+        Barnsley
+        Nottingham
       ]
       expect(view_model.councils).to include(*expected_councils)
     end

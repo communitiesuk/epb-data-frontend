@@ -30,7 +30,7 @@ describe "Acceptance::ApiTechnicalDocumentation", type: :feature do
       end
 
       it "the navigation has a link to each page" do
-        expect(response.body).to have_css("ul.app-subnav__section li", count: 25)
+        expect(response.body).to have_css("ul.app-subnav__section li", count: 26)
       end
 
       it "the navigation has a 2 sections" do

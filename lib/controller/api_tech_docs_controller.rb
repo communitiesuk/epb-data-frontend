@@ -71,6 +71,13 @@ module Controller
       erb :'api_tech_docs/codes_info'
     end
 
+    get "/api-technical-documentation/deltas" do
+      set_headers
+      @page_title = "#{t('api-technical-documentation.fetch_epc_codes_information.title')} – #{t('layout.body.govuk')}"
+
+      erb :'api_tech_docs/deltas'
+    end
+
   private
 
     def set_headers
