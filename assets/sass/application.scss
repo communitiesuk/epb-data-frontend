@@ -1,5 +1,5 @@
 $govuk-global-styles: true;
-$govuk-assets-path: '';
+$govuk-assets-path: "";
 
 @import "./node_modules/govuk-frontend/dist/govuk/index";
 @import "./assets/components/analytics";
@@ -7,7 +7,7 @@ $govuk-assets-path: '';
 @import "./assets/components/recaptcha";
 @import "./assets/components/print";
 @import "./assets/components/toggle-to-welsh";
-@import './node_modules/accessible-autocomplete/dist/accessible-autocomplete.min';
+@import "./node_modules/accessible-autocomplete/dist/accessible-autocomplete.min";
 @import "./assets/components/top-right-nav-link";
 @import "./assets/components/copy-bearer-token";
 @import "./assets/components/test-banner";
