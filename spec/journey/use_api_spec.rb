@@ -19,7 +19,10 @@ describe "Journey::UseApi", :journey, type: :feature do
     before do
       visit domain
       click_link "Start now"
-      click_link "Use API"
+      within_fieldset "How would you like to access the data?" do
+        choose "Use a developer API", allow_label_click: true
+      end
+      click_button "Continue"
     end
 
     it "displays the correct content" do

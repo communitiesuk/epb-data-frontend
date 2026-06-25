@@ -44,7 +44,9 @@ describe "Acceptance::DataAccessOptions", type: :feature do
       it "contains the required GDS error summary" do
         response = post "http://get-energy-performance-data/data-access-options"
         expect(response.status).to eq(200)
-        expect(response.body).to have_selector("h1", text: "How would you like to access the data?")
+        expect(response.body).to have_css("div.govuk-error-summary h2.govuk-error-summary__title", text: "There is a problem")
+        expect(response.body).to have_css("div.govuk-error-summary__body ul.govuk-list li:first a", text: "Select how you would like to access the data")
+        expect(response.body).to have_link("Select how you would like to access the data", href: "#data_access_options-error")
       end
     end
   end

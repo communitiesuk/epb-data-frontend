@@ -93,7 +93,7 @@ en:
       service_link: "check if there is a new certificate"
     error_summary_header: "There is a problem"
     invalid_data_access_selection:
-      heading: "Select how would you like to access the data?"
+      heading: "Select how you would like to access the data"
     invalid_property_selection:
       heading: "Select a type of certificate"
       body: "There are too many results. %{link}."
@@ -202,14 +202,14 @@ en:
 
   data_access_options:
     title: "How would you like to access the data?"
-    download_files:
-      title: "Download files"
-      description: "Download certificate data in CSV format."
-      button_text: "Download files"
-    use_api:
-      title: "Use a developer API"
-      description: "Use an API to access certificate data."
-      button_text: "Use API"
+    radio_selects:
+      download:
+        text: "Download files"
+        hint: "Download certificate data in a CSV format"
+      api:
+        text: "Use a developer API"
+        hint: "Use an API to access certificate data"
+    submit: "Continue"
 
   property_type:
     title: "What type of certificates do you want data on?"

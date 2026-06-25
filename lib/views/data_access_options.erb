@@ -1,56 +1,45 @@
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-    <div class="govuk-!-margin-bottom-7">
-      <h1 class="govuk-heading-xl">
-        <%= t('data_access_options.title') %>
+<% unless @errors.empty? %>
+  <%= erb :error_summary, locals: { error_form_ids: @error_form_ids }%>
+<% end %>
+
+<form method="post">
+  <%= erb :component__csrf_tag %>
+  <fieldset class="govuk-fieldset" aria-describedby="data_access_options-error">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+      <h1 class="govuk-fieldset__heading govuk-!-padding-bottom-4">
+        <%= t("data_access_options.title") %>
       </h1>
-      <div class="govuk-grid-column-one-half govuk-!-padding-0 govuk-!-padding-bottom-4">
-        <div class="govuk-cookie-banner govuk-!-margin-right-5" data-nosnippet role="region" aria-label="Download files">
-          <div class="govuk-cookie-banner__message govuk-width-container govuk-!-padding-4">
-            <h2 class="govuk-cookie-banner__heading govuk-heading-m">
-              <%= t('data_access_options.download_files.title') %>
-            </h2>
-            <div class="govuk-cookie-banner__content">
-              <p><%= t('data_access_options.download_files.description') %></p>
-            </div>
-            <div class="govuk-button-group">
-              <a
-                href="/login/authorize?referer=type-of-properties"
-                role="button"
-                draggable="false"
-                class="govuk-button"
-                data-module="govuk-button" >
-                <%= t('data_access_options.download_files.button_text') %>
-              </a>
-            </div>
+    </legend>
+    <div class="govuk-form-group<% if @errors[:property_type] %> govuk-form-group--error<% end %>">
+      <input type="hidden" name="lang" value="<%= I18n.locale.to_s %>" />
+      <% if @errors[:data_access_options] %>
+        <p id="data_access_options-error" class="govuk-error-message">
+          <%= @errors[:data_access_options] %>
+        </p>
+      <% end %>
+      <div class="govuk-radios" data-module="govuk-radios">
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="download-access_type-radio" name="access_type" type="radio" value="download" aria-describedby="download-access_type-hint">
+          <label class="govuk-label govuk-radios__label" for="download-access_type-radio">
+            <%= t("data_access_options.radio_selects.download.text") %>
+          </label>
+          <div id="download-access_type-hint" class="govuk-hint govuk-radios__hint">
+            <%= t("data_access_options.radio_selects.download.hint") %>
           </div>
         </div>
-      </div>
-
-      <div class="govuk-grid-column-one-half govuk-!-padding-0 govuk-!-padding-bottom-4">
-        <div class="govuk-cookie-banner govuk-!-margin-right-3" data-nosnippet role="region" aria-label="Use a developer API">
-          <div class="govuk-cookie-banner__message govuk-width-container govuk-!-padding-4">
-            <h2 class="govuk-cookie-banner__heading govuk-heading-m">
-              <%= t('data_access_options.use_api.title') %>
-            </h2>
-            <div class="govuk-cookie-banner__content">
-              <p>
-                <%= t('data_access_options.use_api.description') %>
-              </p>
-            </div>
-            <div class="govuk-button-group">
-              <a
-                href="/guidance/energy-certificate-data-apis"
-                role="button"
-                draggable="false"
-                class="govuk-button"
-                data-module="govuk-button" >
-                <%= t('data_access_options.use_api.button_text') %>
-              </a>
-            </div>
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="api-access_type-radio" name="access_type" type="radio" value="api" aria-describedby="api-access_type-hint">
+          <label class="govuk-label govuk-radios__label" for="api-access_type-radio">
+            <%= t("data_access_options.radio_selects.api.text") %>
+          </label>
+          <div id="api-access_type-hint" class="govuk-hint govuk-radios__hint">
+            <%= t("data_access_options.radio_selects.api.hint") %>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
+    <button class="govuk-button" data-module="govuk-button" type="submit">
+      <%= t("data_access_options.submit") %>
+    </button>
+  </fieldset>
+</form>
