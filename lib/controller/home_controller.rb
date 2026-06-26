@@ -4,14 +4,6 @@ module Controller
       status 200
     end
 
-    get "/data-access-options" do
-      status 200
-      @page_title = "#{t('data_access_options.title')} – #{t('layout.body.govuk')}"
-      @back_link_href = "/"
-
-      erb :data_access_options
-    end
-
     get "/api-healthcheck" do
       uri = URI("#{ENV['EPB_DATA_WAREHOUSE_API_URL']}/healthcheck")
       response = Net::HTTP.get_response(uri)

@@ -26,6 +26,7 @@ class FrontendService < Controller::BaseController
     use Rack::Protection::RemoteReferrer
   end
   use Controller::CookieController
+  use Controller::DataAccessController
   use Controller::PropertyTypeController
   use Controller::FilterPropertiesController
   use Controller::FileController

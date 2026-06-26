@@ -92,6 +92,8 @@ en:
       body: "A new certificate may have replaced it. You can "
       service_link: "check if there is a new certificate"
     error_summary_header: "There is a problem"
+    invalid_data_access_selection:
+      heading: "Select how would you like to access the data?"
     invalid_property_selection:
       heading: "Select a type of certificate"
       body: "There are too many results. %{link}."
@@ -126,7 +128,7 @@ en:
     paragraph_3:
       text_before_link: ""
       link_text: "AbilityNet"
-      link_url:  "https://mcmw.abilitynet.org.uk/"
+      link_url: "https://mcmw.abilitynet.org.uk/"
       text_after_link: "has advice on making your device easier to use if you have a disability."
     contact_heading: "Feedback and contact information"
     contact_paragraph:
@@ -139,7 +141,7 @@ en:
     reporting_paragraph_before_link: "We’re always looking to improve the accessibility of this website. If you find any problems not listed on this page or think we’re not meeting accessibility requirements please"
     reporting_paragraph_link_text: "give feedback"
     enforcement_heading: "Enforcement procedure"
-    enforcement_paragraph: "The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the ‘accessibility regulations’). If you’re not happy with how we respond to your complaint, <a class=\"govuk-link\" href=\"https://www.equalityadvisoryservice.com/\">contact the Equality Advisory and Support Service (EASS)</a>."
+    enforcement_paragraph: 'The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the ‘accessibility regulations’). If you’re not happy with how we respond to your complaint, <a class="govuk-link" href="https://www.equalityadvisoryservice.com/">contact the Equality Advisory and Support Service (EASS)</a>.'
     technical_heading: "Technical information about this website’s accessibility"
     technical_paragraph: "The Ministry of Housing, Communities and Local Government is committed to making its website accessible, in accordance with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018."
     compliance_heading: "Compliance status"
@@ -286,7 +288,7 @@ en:
     energy_eff_rating: "Energy Efficiency Rating"
     recommendations: "and recommendations"
     count: "Your request contains <strong>%{count}</strong> certificates"
-    size:  "The estimated download size is <strong>%{size}</strong>"
+    size: "The estimated download size is <strong>%{size}</strong>"
 
   my_account:
     title: "My account"
@@ -311,7 +313,7 @@ en:
     title: "Delete your account"
     body:
       - "This will permanently delete the account information stored by this service. This includes your email address and any saved preferences."
-      - "This will not delete your GOV.UK One Login account. To delete your One Login account, <a href=\"https://www.gov.uk/guidance/deleting-your-govuk-one-login\">follow the GOV.UK One Login guidance</a>"
+      - 'This will not delete your GOV.UK One Login account. To delete your One Login account, <a href="https://www.gov.uk/guidance/deleting-your-govuk-one-login">follow the GOV.UK One Login guidance</a>'
       - "If you delete your account, you will:"
     consequences:
       - "stop receiving email updates"
@@ -374,26 +376,26 @@ en:
     paragraph_2: "If you’ve used other government services for example, to <strong>file a Self Assessment tax return</strong> or <strong>apply for or renew a passport</strong>, you can use the same login details here."
     paragraph_3: "If you don’t have a One Login, you can create one when you start."
 
-#  api_guidance:
-#    title: "Using energy certificate data APIs"
-#    header: "Information to help developers use energy certificate data APIs"
-#    data_available:
-#      title: "Data available"
-#      description: "Use the APIs to get data on:"
-#      domestic: "Domestic Energy Performance Certificates"
-#      non-domestic: "Non-domestic Energy Performance Certificates and recommendation reports"
-#      dec: "Display Energy Certificates and recommendation reports for public buildings"
-#    authentication:
-#      title: "Authentication"
-#      logged_out_description: "You’ll need to <a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">sign in</a> to GOV.UK One Login to get a bearer token. If you do not have a GOV.UK One Login, you can <a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">create an account</a>."
-#      logged_in_description: "<a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">View your account</a> to see your bearer token"
-#    rate_limiting:
-#      title: "Rate limiting"
-#    conditions_of_use:
-#      title: "Conditions of use"
-#    technical_documentation:
-#      title: "Technical documentation"
-#      link: "<a class=\"govuk-link\" href=\"https://api-docs.epcregisters.net/\" rel=\"license\">View technical documentation</a>"
+  #  api_guidance:
+  #    title: "Using energy certificate data APIs"
+  #    header: "Information to help developers use energy certificate data APIs"
+  #    data_available:
+  #      title: "Data available"
+  #      description: "Use the APIs to get data on:"
+  #      domestic: "Domestic Energy Performance Certificates"
+  #      non-domestic: "Non-domestic Energy Performance Certificates and recommendation reports"
+  #      dec: "Display Energy Certificates and recommendation reports for public buildings"
+  #    authentication:
+  #      title: "Authentication"
+  #      logged_out_description: "You’ll need to <a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">sign in</a> to GOV.UK One Login to get a bearer token. If you do not have a GOV.UK One Login, you can <a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">create an account</a>."
+  #      logged_in_description: "<a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">View your account</a> to see your bearer token"
+  #    rate_limiting:
+  #      title: "Rate limiting"
+  #    conditions_of_use:
+  #      title: "Conditions of use"
+  #    technical_documentation:
+  #      title: "Technical documentation"
+  #      link: "<a class=\"govuk-link\" href=\"https://api-docs.epcregisters.net/\" rel=\"license\">View technical documentation</a>"
 
   signed_out:
     title: "You have been signed out"

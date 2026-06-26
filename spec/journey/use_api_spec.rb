@@ -3,8 +3,6 @@
 require_relative "../shared_context/shared_journey_context"
 
 describe "Journey::UseApi", :journey, type: :feature do
-  include_context "when setting up journey tests"
-
   let(:domain) { "http://get-energy-performance-data.epb-frontend:9393" }
 
   process_id = nil
@@ -20,9 +18,8 @@ describe "Journey::UseApi", :journey, type: :feature do
   context "when visiting the '/guidance/energy-certificate-data-apis' page" do
     before do
       visit domain
-      set_oauth_cookies
-      find("a.govuk-button--start", text: "Start now").click
-      visit "#{domain}/guidance/energy-certificate-data-apis"
+      click_link "Start now"
+      click_link "Use API"
     end
 
     it "displays the correct content" do

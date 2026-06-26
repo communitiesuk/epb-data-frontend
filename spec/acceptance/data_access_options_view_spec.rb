@@ -25,5 +25,27 @@ describe "Acceptance::DataAccessOptions", type: :feature do
         expect(response.body).to have_title "How would you like to access the data? – GOV.UK"
       end
     end
+
+    context "when submitting with an access type" do
+      it "routes to the login page with a /property-types referer if Download files is selected" do
+        response = post "http://get-energy-performance-data/data-access-options", { access_type: "download" }
+        expect(response.status).to eq(302)
+        expect(response.location).to eq "http://get-energy-performance-data/login/authorize?referer=type-of-properties"
+      end
+
+      it "routes to the api page if Use a developer API is selected" do
+        response = post "http://get-energy-performance-data/data-access-options", { access_type: "api" }
+        expect(response.status).to eq(302)
+        expect(response.location).to eq "http://get-energy-performance-data/guidance/energy-certificate-data-apis"
+      end
+    end
+
+    context "when submitting without an access type" do
+      it "contains the required GDS error summary" do
+        response = post "http://get-energy-performance-data/data-access-options"
+        expect(response.status).to eq(200)
+        expect(response.body).to have_selector("h1", text: "How would you like to access the data?")
+      end
+    end
   end
 end

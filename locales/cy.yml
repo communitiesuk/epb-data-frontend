@@ -92,6 +92,8 @@ cy:
       body: "Efallai ei bod wedi’i disodli gan dystysgrif newydd. Gallwch "
       service_link: "wirio a oes tystysgrif newydd"
     error_summary_header: "Mae yna broblem"
+    invalid_data_access_selection:
+      heading: "Select how would you like to access the data?"
     invalid_property_selection:
       heading: "Gormod o ganlyniadau ar gyfer y cyfeiriad hwn"
       body: "Mae gormod o ganlyniadau. %{link}."
@@ -139,7 +141,7 @@ cy:
     reporting_paragraph_before_link: "Rydyn ni bob amser yn chwilio am ffyrdd i wella hygyrchedd y wefan hon. Os gwelwch chi unrhyw broblemau sydd heb eu rhestru ar y tudalen hwn neu os nad ydych yn credu ein bod yn bodloni’r gofynion ynglŷn â hygyrchedd,"
     reporting_paragraph_link_text: "rhowch adborth"
     enforcement_heading: "Gweithdrefn orfodi"
-    enforcement_paragraph: "Mae’r Comisiwn Cydraddoldeb a Hawliau Dynol (EHRC) yn gyfrifol am orfodi Rheoliadau Hygyrchedd Cyrff y Sector Cyhoeddus (Gwefannau a Chymwysiadau Symudol) (Rhif 2) 2018 (y ‘rheoliadau hygyrchedd’). Os nad ydych yn fodlon ar sut rydyn ni’n ymateb i’ch cwyn, <a class=\"govuk-link\" href=\"https://www.equalityadvisoryservice.com/\">cysylltwch â’r Gwasanaeth Cyngor a Chymorth Cydraddoldeb (EASS)</a>."
+    enforcement_paragraph: 'Mae’r Comisiwn Cydraddoldeb a Hawliau Dynol (EHRC) yn gyfrifol am orfodi Rheoliadau Hygyrchedd Cyrff y Sector Cyhoeddus (Gwefannau a Chymwysiadau Symudol) (Rhif 2) 2018 (y ‘rheoliadau hygyrchedd’). Os nad ydych yn fodlon ar sut rydyn ni’n ymateb i’ch cwyn, <a class="govuk-link" href="https://www.equalityadvisoryservice.com/">cysylltwch â’r Gwasanaeth Cyngor a Chymorth Cydraddoldeb (EASS)</a>.'
     technical_heading: "Gwybodaeth dechnegol am hygyrchedd y wefan hon"
     technical_paragraph: "Mae’r Weinyddiaeth Dai, Cymunedau a Llywodraeth Leol wedi ymrwymo isicrhau bod ei gwefan yn hygyrch, yn unol â Rheoliadau Hygyrchedd Cyrff y Sector Cyhoeddus (Gwefannau a Chymwysiadau Symudol) (Rhif 2) 2018."
     compliance_heading: "Statws cydymffurfio"
@@ -311,7 +313,7 @@ cy:
     title: "Delete your account"
     body:
       - "This will permanently delete the account information stored by this service. This includes your email address and any saved preferences."
-      - "This will not delete your GOV.UK One Login account. To delete your One Login account, <a href=\"https://www.gov.uk/guidance/deleting-your-govuk-one-login\">follow the GOV.UK One Login guidance</a>"
+      - 'This will not delete your GOV.UK One Login account. To delete your One Login account, <a href="https://www.gov.uk/guidance/deleting-your-govuk-one-login">follow the GOV.UK One Login guidance</a>'
       - "If you delete your account, you will:"
     consequences:
       - "stop receiving email updates"
@@ -374,26 +376,26 @@ cy:
     paragraph_2: "Os ydych chi wedi defnyddio gwasanaethau eraill y llywodraeth er enghraifft, i <strong>ffeilio ffurflen dreth Hunanasesu</strong> neu <strong>wneud cais am basbort</strong>, gallwch ddefnyddio’r un manylion mewngofnodi yma."
     paragraph_3: "Os nad oes One Login gennych, gallwch greu un pan fyddwch chi’n dechrau."
 
-#  api_guidance:
-#    title: "Using energy certificate data APIs"
-#    header: "Information to help developers use energy certificate data APIs"
-#    data_available:
-#      title: "Data available"
-#      description: "Use the APIs to get data on:"
-#      domestic: "Domestic Energy Performance Certificates"
-#      non-domestic: "Non-domestic Energy Performance Certificates and recommendation reports"
-#      dec: "Display Energy Certificates and recommendation reports for public buildings"
-#    authentication:
-#      title: "Authentication"
-#      logged_out_description: "You’ll need to <a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">sign in</a> to GOV.UK One Login to get a bearer token. If you do not have a GOV.UK One Login, you can <a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">create an account</a>."
-#      logged_in_description: "<a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">View your account</a> to see your bearer token"
-#    rate_limiting:
-#      title: "Rate limiting"
-#    conditions_of_use:
-#      title: "Conditions of use"
-#    technical_documentation:
-#      title: "Technical documentation"
-#      link: "<a class=\"govuk-link\" href=\"https://api-docs.epcregisters.net/\" rel=\"license\">View technical documentation</a>"
+  #  api_guidance:
+  #    title: "Using energy certificate data APIs"
+  #    header: "Information to help developers use energy certificate data APIs"
+  #    data_available:
+  #      title: "Data available"
+  #      description: "Use the APIs to get data on:"
+  #      domestic: "Domestic Energy Performance Certificates"
+  #      non-domestic: "Non-domestic Energy Performance Certificates and recommendation reports"
+  #      dec: "Display Energy Certificates and recommendation reports for public buildings"
+  #    authentication:
+  #      title: "Authentication"
+  #      logged_out_description: "You’ll need to <a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">sign in</a> to GOV.UK One Login to get a bearer token. If you do not have a GOV.UK One Login, you can <a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">create an account</a>."
+  #      logged_in_description: "<a class=\"govuk-link\" href=\"/api/my-account\" rel=\"license\">View your account</a> to see your bearer token"
+  #    rate_limiting:
+  #      title: "Rate limiting"
+  #    conditions_of_use:
+  #      title: "Conditions of use"
+  #    technical_documentation:
+  #      title: "Technical documentation"
+  #      link: "<a class=\"govuk-link\" href=\"https://api-docs.epcregisters.net/\" rel=\"license\">View technical documentation</a>"
 
   signed_out:
     title: "Rydych chi wedi cael eich allgofnodi"
