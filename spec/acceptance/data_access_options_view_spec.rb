@@ -47,6 +47,7 @@ describe "Acceptance::DataAccessOptions", type: :feature do
         expect(response.body).to have_css("div.govuk-error-summary h2.govuk-error-summary__title", text: "There is a problem")
         expect(response.body).to have_css("div.govuk-error-summary__body ul.govuk-list li:first a", text: "Select how you would like to access the data")
         expect(response.body).to have_link("Select how you would like to access the data", href: "#data_access_options-error")
+        expect(response.body).to have_title "Error: How would you like to access the data? – GOV.UK", exact: true
       end
     end
   end

@@ -10,7 +10,7 @@
         <%= t("data_access_options.title") %>
       </h1>
     </legend>
-    <div class="govuk-form-group<% if @errors[:property_type] %> govuk-form-group--error<% end %>">
+    <div class="govuk-form-group<% if @errors[:data_access_options] %> govuk-form-group--error<% end %>">
       <input type="hidden" name="lang" value="<%= I18n.locale.to_s %>" />
       <% if @errors[:data_access_options] %>
         <p id="data_access_options-error" class="govuk-error-message">

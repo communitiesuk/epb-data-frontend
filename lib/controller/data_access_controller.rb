@@ -3,7 +3,7 @@ module Controller
     get "/data-access-options" do
       @errors = {}
       @back_link_href = "/"
-      @page_title = "#{t('data_access_options.title')} – #{t('layout.body.govuk')}"
+      @page_title = page_title
 
       erb :data_access_options
     end
@@ -19,8 +19,15 @@ module Controller
       else
         @error_form_ids << "data_access_options-error"
         @errors[:data_access_options] = t("error.invalid_data_access_selection.heading")
+        @page_title = "Error: #{page_title}"
         erb :data_access_options
       end
+    end
+
+  private
+
+    def page_title
+      "#{t('data_access_options.title')} – #{t('layout.body.govuk')}"
     end
   end
 end

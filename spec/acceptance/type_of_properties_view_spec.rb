@@ -70,9 +70,11 @@ describe "Acceptance::TypeOfProperties", type: :feature do
       end
 
       it "contains the required GDS error summary" do
+        expect(response.status).to eq(200)
         expect(response.body).to have_css("div.govuk-error-summary h2.govuk-error-summary__title", text: "There is a problem")
         expect(response.body).to have_css("div.govuk-error-summary__body ul.govuk-list li:first a", text: "Select a type of certificate")
         expect(response.body).to have_link("Select a type of certificate", href: "#property-type-error")
+        expect(response.body).to have_title "Error: What type of certificates do you want data on? – GOV.UK", exact: true
       end
     end
 

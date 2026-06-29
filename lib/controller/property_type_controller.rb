@@ -4,7 +4,7 @@ module Controller
       status 200
       @errors = {}
       @back_link_href = "/data-access-options"
-      @page_title = "#{t('property_type.title')} – #{t('layout.body.govuk')}"
+      @page_title = page_title
 
       erb :type_of_properties
     rescue StandardError => e
@@ -19,8 +19,15 @@ module Controller
       else
         @error_form_ids << "property-type-error"
         @errors[:property_type] = t("error.invalid_property_selection.heading")
+        @page_title = "Error: #{page_title}"
         erb :type_of_properties
       end
+    end
+
+  private
+
+    def page_title
+      "#{t('property_type.title')} – #{t('layout.body.govuk')}"
     end
   end
 end
