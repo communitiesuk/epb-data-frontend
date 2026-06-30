@@ -37,7 +37,7 @@ Count,Field name - highlighted terms defined,Definitions for Assessment
 36,PRIMARY_ENERGY_VALUE,Displayed on the non-domestic EPC as primary energy use (kWh/m2 per year)
 37,UPRN,"The Unique Property Reference Number is a 12-digit code that identifies the property, flat, building, or plot of land being assessed."
 38,UPRN_SOURCE,"The method of which the Unique Property Reference Number (UPRN) was added to the record. It will either say “Energy Assessor” if it was entered during the assessment, or “Address Matched” if it was added later using the government’s address-matching system. In some cases, this field may be blank or contain legacy values where UPRNs were not available or matched at the time."
-39,REPORT_TYPE,Type of assessment carried out of the building. 102: assessment using the SBEM (Simplified Building Energy Model) tool for non-domestic (non-residential) buildings.
+39,REPORT_TYPE,Type of assessment carried out of the building. 3: assessment using the SBEM (Simplified Building Energy Model) tool for non-domestic (non-residential) buildings.
 40,PAYBACK_TYPE,
 41,RECOMMENDATION_ITEM,Used to order the recommendations on the output EPC.
 42,RECOMMENDATION_CODE,Shorthand code to represent the recommendation.

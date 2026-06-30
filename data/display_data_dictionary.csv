@@ -50,7 +50,7 @@ Count,Field name - highlighted terms defined,Definitions for Assessment
 49,OCCUPANCY_LEVEL,Occupancy during the hours of operation of the building.
 50,UPRN,"The Unique Property Reference Number is a 12-digit code that identifies the property, flat, building, or plot of land being assessed."
 51,UPRN_SOURCE,"The method of which the Unique Property Reference Number (UPRN) was added to the record. It will either say “Energy Assessor” if it was entered during the assessment, or “Address Matched” if it was added later using the government’s address-matching system. In some cases, this field may be blank or contain legacy values where UPRNs were not available or matched at the time."
-52,REPORT_TYPE,Type of assessment carried out on the building. 103: Display Energy Certificate (DEC) Operational Rating assessment specifically carried out on larger properties occupied by public authorities and frequently visited by the public.
+52,REPORT_TYPE,Type of assessment carried out on the building. 1: Display Energy Certificate (DEC) Operational Rating assessment specifically carried out on larger properties occupied by public authorities and frequently visited by the public.
 53,PAYBACK_TYPE,TODO
 54,RECOMMENDATION_ITEM,Used to order the recommendations on the output EPC.
 55,RECOMMENDATION_CODE,Shorthand code to represent the recommendation.
