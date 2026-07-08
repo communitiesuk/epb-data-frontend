@@ -16,6 +16,7 @@ frontend-build-watch:
 .PHONY: test
 test:
 	@bundle exec rspec
+	@npm run test
 
 .PHONY: hosts
 hosts:
@@ -32,6 +33,7 @@ run:
 .PHONY: formatmak
 format:
 	@bundle exec rubocop --autocorrect || true
+	@npm run lint-fix || true
 
 .PHONY: journey
 journey:
