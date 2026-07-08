@@ -1,28 +1,17 @@
 shared_context "when setting up journey tests" do
-  def set_oauth_cookies
-    state = "test-state-#{SecureRandom.hex(8)}"
-    nonce = "test-nonce-#{SecureRandom.hex(8)}"
-
-    page.driver.browser.manage.add_cookie(name: "state", value: state)
-    page.driver.browser.manage.add_cookie(name: "nonce", value: nonce)
-  end
-
   def visit_type_of_properties
     visit domain
-    set_oauth_cookies
     visit "#{domain}/type-of-properties"
     find "h1", text: "What type of certificates do you want data on?"
   end
 
   def visit_filter_properties
     visit_type_of_properties
-    find("#label-domestic").click
+    within_fieldset "What type of certificates do you want data on?" do
+      choose "Domestic Energy Performance Certificates", allow_label_click: true
+    end
     click_button "Continue"
     find "h1", text: "Domestic Energy Performance Certificates"
-  end
-
-  def navigate_with_referer(path)
-    page.execute_script("window.location.href = '#{path}'")
   end
 
   def uncheck_efficiency_ratings(ratings: %w[A B C D E F G])

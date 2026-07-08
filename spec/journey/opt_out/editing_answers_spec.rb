@@ -40,7 +40,6 @@ describe "Journey::OptOut::EditingAnswers", :journey, type: :feature do
   context "when editing responses on the '/check-your-answers' page" do
     before do
       visit_login_as_owner
-      set_oauth_cookies
       visit "#{url}/name"
       set_name
       set_certificate_details
@@ -49,7 +48,7 @@ describe "Journey::OptOut::EditingAnswers", :journey, type: :feature do
     context "when editing the name" do
       it "updates to the new name on the summary page" do
         click_link "Change name"
-        fill_in "name", with: "New Tester"
+        fill_in "Full name", with: "New Tester"
         click_button "Continue"
         page.find "h1", text: "Which property would you like to opt out?"
         click_button "Continue"
@@ -64,10 +63,11 @@ describe "Journey::OptOut::EditingAnswers", :journey, type: :feature do
       end
 
       it "updates on the summary page" do
-        find("#label-occupant_yes").click
+        # TODO: NOT ACCESSIBLE
+        # within_fieldset "Are you the legal owner of the property that you want to opt out?" do
+        choose "Yes", allow_label_click: true
         click_button "Continue"
         page.find "h1", text: "Create your GOV.UK One Login or sign in"
-        set_oauth_cookies
         visit "#{url}/name"
         click_button "Continue"
         page.find "h1", text: "Which property would you like to opt out?"
@@ -77,7 +77,9 @@ describe "Journey::OptOut::EditingAnswers", :journey, type: :feature do
 
       context "when changing the relationship to be neither an occupant or owner" do
         it "sends the user to the ineligible page" do
-          find("#label-occupant_no").click
+          # TODO: NOT ACCESSIBLE
+          # within_fieldset "Are you the legal owner of the property that you want to opt out?" do
+          choose "No", allow_label_click: true
           click_button "Continue"
           expect(page).to have_current_path("/opt-out/ineligible")
         end
@@ -87,7 +89,7 @@ describe "Journey::OptOut::EditingAnswers", :journey, type: :feature do
     context "when editing the certificate number" do
       it "updates to the new certificate number on the summary page" do
         click_link "Change certificate number"
-        fill_in "certificate_number", with: "2345-2345-2345-2345-2345"
+        fill_in "Certificate number", with: "2345-2345-2345-2345-2345"
         click_button "Continue"
         expect(page).to have_css(".govuk-summary-list__row #certificate-number-value", text: "2345-2345-2345-2345-2345")
       end
@@ -96,8 +98,10 @@ describe "Journey::OptOut::EditingAnswers", :journey, type: :feature do
     context "when editing the address" do
       it "updates to the new address on the summary page" do
         click_link "Change property address"
-        fill_in "address-line1", with: "Flat 1"
-        fill_in "address-line-2", with: "1 Test Street"
+        within_fieldset "Address" do
+          fill_in "Address line 1", with: "Flat 1"
+          fill_in "Address line 2", with: "1 Test Street"
+        end
         click_button "Continue"
         expect(page).to have_css(".govuk-summary-list__value", text: "Flat 1")
         expect(page).to have_css(".govuk-summary-list__value", text: "1 Test Street")

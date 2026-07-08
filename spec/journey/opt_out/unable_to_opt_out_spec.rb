@@ -38,7 +38,9 @@ describe "Journey::OptOut::UnableToOptOut", :journey, type: :feature do
   context "when giving the reason 'advised by someone else'" do
     before do
       visit_opt_out_reason
-      find("#label-epc_advised").click
+      within_fieldset "Why would you like to opt out your EPC?" do
+        choose "I have been advised by someone else", allow_label_click: true
+      end
       click_button "Continue"
     end
 
@@ -50,7 +52,9 @@ describe "Journey::OptOut::UnableToOptOut", :journey, type: :feature do
   context "when giving the reason 'My EPC is incorrect'" do
     before do
       visit_opt_out_reason
-      find("#label-epc_incorrect").click
+      within_fieldset "Why would you like to opt out your EPC?" do
+        choose "My EPC is incorrect", allow_label_click: true
+      end
       click_button "Continue"
     end
 
@@ -66,7 +70,9 @@ describe "Journey::OptOut::UnableToOptOut", :journey, type: :feature do
 
     context "when they are not the owner" do
       before do
-        find("#label-no").click
+        # TODO: Not accessible
+        # within_fieldset "Are you the legal owner of the property that you want to opt out?" do
+        choose "No", allow_label_click: true
         click_button "Continue"
       end
 
@@ -76,7 +82,9 @@ describe "Journey::OptOut::UnableToOptOut", :journey, type: :feature do
 
       context "when they are not an occupant" do
         before do
-          find("#label-occupant_no").click
+          # TODO: Not accessible
+          # within_fieldset "Do you live in the property that you want to opt-out?"
+          choose "No", allow_label_click: true
           click_button "Continue"
         end
 

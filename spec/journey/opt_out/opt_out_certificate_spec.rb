@@ -39,7 +39,6 @@ describe "Journey::OptOut::OptOutCertificate", :journey, type: :feature do
   describe "opting out as an owner" do
     before do
       visit_login_as_owner
-      set_oauth_cookies
       visit "#{url}/name"
       set_name
       set_certificate_details
@@ -57,7 +56,9 @@ describe "Journey::OptOut::OptOutCertificate", :journey, type: :feature do
 
     context "when submitting the opt-out" do
       before do
-        find(".govuk-checkboxes__item #confirmation", visible: :all).click
+        # TODO: Inaccessible
+        # check "I confirm that these details are correct", allow_label_click: true
+        check "confirmation", visible: :all
         click_button "Submit request"
       end
 
@@ -79,10 +80,11 @@ describe "Journey::OptOut::OptOutCertificate", :journey, type: :feature do
   describe "opting out as an occupant" do
     before do
       visit_opt_out_occupant
-      find("#label-occupant_yes").click
+      # TODO: Not accessible
+      # within_fieldset "Do you live in the property that you want to opt-out?" do
+      choose "Yes", allow_label_click: true
       click_button "Continue"
       find "h1", text: "Create your GOV.UK One Login or sign in"
-      set_oauth_cookies
       visit "#{url}/name"
       set_name
       set_certificate_details
@@ -94,7 +96,9 @@ describe "Journey::OptOut::OptOutCertificate", :journey, type: :feature do
     end
 
     it "allows them to submit the request" do
-      find(".govuk-checkboxes__item #confirmation", visible: :all).click
+      # TODO: Inaccessible
+      # check "I confirm that these details are correct", allow_label_click: true
+      check "confirmation", visible: :all
       click_button "Submit request"
       expect(page).to have_css("h1", text: "Request received")
     end

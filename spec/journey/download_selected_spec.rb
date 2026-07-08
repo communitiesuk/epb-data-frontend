@@ -25,7 +25,7 @@ describe "Journey::DownloadSelected", :journey, type: :feature do
 
     context "when downloading selected data" do
       before do
-        find(".govuk-accordion__show-all").click
+        click_button "Show all sections"
         select "May", from: "from-month"
         select "2024", from: "from-year"
         select "December", from: "to-month"
@@ -34,7 +34,7 @@ describe "Journey::DownloadSelected", :journey, type: :feature do
       end
 
       it "displays correct filters on the confirmation page" do
-        click_on "Download selected"
+        click_button "Download selected"
         expect(page).to have_content("Domestic Energy Performance Certificates")
         expect(page).to have_content("May 2024 - December 2025")
         expect(page).to have_content("Energy Efficiency Rating C, D, E, F, G")
@@ -45,7 +45,7 @@ describe "Journey::DownloadSelected", :journey, type: :feature do
           la_input = find("input#local-authority")
           la_input.click
           la_input.send_keys("Adur", :enter, "Birmingham", :enter)
-          click_on "Download selected"
+          click_button "Download selected"
         end
 
         it "displays correct filter on the confirmation page" do
@@ -62,7 +62,7 @@ describe "Journey::DownloadSelected", :journey, type: :feature do
           pc_input = find("input#parliamentary-constituency")
           pc_input.click
           pc_input.send_keys("Banbury", :enter, "Mansfield", :enter)
-          click_on "Download selected"
+          click_button "Download selected"
         end
 
         it "displays correct filter on the confirmation page" do
@@ -74,7 +74,7 @@ describe "Journey::DownloadSelected", :journey, type: :feature do
         before do
           find("input#area-3.govuk-radios__input", visible: :all).click
           fill_in "postcode", with: "M4 5LA"
-          click_on "Download selected"
+          click_button "Download selected"
         end
 
         it "displays correct filter on the confirmation page" do
@@ -84,7 +84,9 @@ describe "Journey::DownloadSelected", :journey, type: :feature do
     end
 
     context "when downloading selected data without providing filters" do
-      before { click_on "Download selected" }
+      before do
+        click_button "Download selected"
+      end
 
       it "defaults to download all files" do
         expect(page).to have_current_path(%r{^/full-load/domestic-csv\.zip\?X-Amz-Algorithm=AWS4-HMAC-SHA256&.*})
@@ -94,12 +96,12 @@ describe "Journey::DownloadSelected", :journey, type: :feature do
     context "when downloading selected data with invalid filters" do
       context "when start date is after end date" do
         before do
-          find(".govuk-accordion__show-all").click
+          click_button "Show all sections"
           select "May", from: "from-month"
           select "2025", from: "from-year"
           select "December", from: "to-month"
           select "2024", from: "to-year"
-          click_on "Download selected"
+          click_button "Download selected"
         end
 
         it_behaves_like "when checking GDS error messages"
@@ -109,7 +111,7 @@ describe "Journey::DownloadSelected", :journey, type: :feature do
         before do
           find(".govuk-accordion__show-all").click
           uncheck_efficiency_ratings
-          click_on "Download selected"
+          click_button "Download selected"
         end
 
         it_behaves_like "when checking GDS error messages"

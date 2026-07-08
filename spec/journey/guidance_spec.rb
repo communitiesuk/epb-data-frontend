@@ -29,7 +29,6 @@ describe "Journey::Guidance", :journey, type: :feature do
 
   before do
     visit domain
-    set_oauth_cookies
     click_link "Visit the guidance page"
   end
 

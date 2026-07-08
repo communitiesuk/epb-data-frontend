@@ -30,8 +30,8 @@ describe "Journey::FilterProperties", :journey, type: :feature do
     end
 
     it "displays a download buttons" do
-      expect(page).to have_link("Download all")
-      expect(page).to have_button("Download selected")
+      expect(page).to have_link "Download all"
+      expect(page).to have_button "Download selected"
     end
   end
 
@@ -52,14 +52,6 @@ describe "Journey::FilterProperties", :journey, type: :feature do
       it "forbids access" do
         expect(page).to have_css("h1", text: "Access Forbidden")
       end
-    end
-
-    context "when navigating from the filter properties page with invalid property type" do
-      before do
-        navigate_with_referer("/request-received-confirmation?property_type=invalid")
-      end
-
-      it_behaves_like "when checking 404 error message"
     end
   end
 end

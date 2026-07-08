@@ -27,7 +27,9 @@ describe "Journey::SelectPropertyType", :journey, type: :feature do
   context "when selecting domestic radio button" do
     context "when selecting a property type" do
       before do
-        find("#label-domestic").click
+        within_fieldset "What type of certificates do you want data on?" do
+          choose "Domestic Energy Performance Certificates", allow_label_click: true
+        end
         click_on "Continue"
       end
 
@@ -44,7 +46,9 @@ describe "Journey::SelectPropertyType", :journey, type: :feature do
   context "when selecting non-domestic radio button" do
     context "when selecting a property type" do
       before do
-        find("#label-non-domestic").click
+        within_fieldset "What type of certificates do you want data on?" do
+          choose "Non-domestic Energy Performance Certificates", allow_label_click: true
+        end
         click_on "Continue"
       end
 
@@ -61,7 +65,9 @@ describe "Journey::SelectPropertyType", :journey, type: :feature do
   context "when selecting display" do
     context "when selecting a property type" do
       before do
-        find("#label-display").click
+        within_fieldset "What type of certificates do you want data on?" do
+          choose "Display Energy Certificates", allow_label_click: true
+        end
         click_on "Continue"
       end
 

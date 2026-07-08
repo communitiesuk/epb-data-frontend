@@ -20,8 +20,7 @@ describe "Journey::DeleteAccount", :journey, type: :feature do
   context "when visiting the '/api/my-account/delete-account' page" do
     before do
       visit domain
-      set_oauth_cookies
-      find("a.govuk-button--start", text: "Start now").click
+      click_link "Start now"
       visit "#{domain}/api/my-account/delete-account"
     end
 
@@ -30,7 +29,7 @@ describe "Journey::DeleteAccount", :journey, type: :feature do
     end
 
     it "displays the warning delete button" do
-      expect(page).to have_button("Delete account")
+      expect(page).to have_button "Delete account"
     end
 
     context "when clicking the 'Cancel' link" do

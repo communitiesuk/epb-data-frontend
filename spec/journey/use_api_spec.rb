@@ -35,12 +35,12 @@ describe "Journey::UseApi", :journey, type: :feature do
     end
 
     it "displays copy button for bearer token" do
-      expect(page).to have_selector("button", text: "Copy")
+      expect(page).to have_button "Copy"
     end
 
     it "shows 'Copied' feedback when copy button is clicked" do
       click_button "Copy"
-      expect(page).to have_button("Copied", wait: 5)
+      expect(page).to have_button "Copied"
     end
 
     context "when clicking the 'My account' link" do
