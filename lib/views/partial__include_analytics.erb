@@ -6,4 +6,7 @@
     gtag('js', new Date());
     gtag('config', '<%= google_property %>');
   </script>
+  <script nonce="<%= script_nonce %>">
+  GOOGLE_PROPERTY = '<%= google_property %>';
+  </script>
 <% end %>
