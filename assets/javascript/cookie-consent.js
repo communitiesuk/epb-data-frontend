@@ -23,9 +23,7 @@ const cookieConsent = (tagId, _, gtag, resolvers) => {
         cookies.displayCookieBanner()
       }
 
-      // If we're on the cookie page, let's present which option is selected (opt-in style)
       if (onCookiePage) {
-        document.getElementById('cookies-setting' + (cookieValue === 'true' ? '' : '-false')).checked = true
         cookies.cookieFormHandler()
       }
     },
@@ -150,18 +148,12 @@ const cookieConsent = (tagId, _, gtag, resolvers) => {
           let domain
           if (document.domain.includes('communities')) {
             domain = ' domain=' + document.domain.split('.').slice(-3).join('.') + ';'
-          } else { domain = ' domain=' + '.' + document.domain + ';' }
+          } else {
+            domain = ' domain=' + '.' + document.domain + ';'
+          }
           document.cookie = name + value + expires + path + domain
         }
       }
-    },
-
-    eraseOnPageChange: function () {
-      document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'hidden') {
-          cookies.erase()
-        }
-      })
     },
 
     cookieFormHandler: function () {

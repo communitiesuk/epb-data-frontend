@@ -43,6 +43,11 @@ describe "Journey::CookieBanner", :journey, type: :feature do
     expect(page).to have_css "h1", text: "How would you like to access the data?"
     expect(page).to have_no_text banner_title
     expect(page).to have_css %(script[src^="#{analytics_script_host}"]), visible: :all
+
+    click_link "Cookies"
+    within_fieldset "Cookies on our service" do
+      expect(page).to have_checked_field "Use cookies that measure my website use", visible: :all
+    end
   end
 
   it "shows the cookie banner, you can reject cookies and the banner no longer shows" do
@@ -61,6 +66,11 @@ describe "Journey::CookieBanner", :journey, type: :feature do
     expect(page).to have_css "h1", text: "How would you like to access the data?"
     expect(page).to have_no_text banner_title
     expect(page).to have_no_css %(script[src^="#{analytics_script_host}"]), visible: :all
+
+    click_link "Cookies"
+    within_fieldset "Cookies on our service" do
+      expect(page).to have_checked_field "Do not use cookies that measure my website use", visible: :all
+    end
   end
 
   it "shows the cookie banner, you can ignore it and the banner continues to show" do
@@ -71,6 +81,11 @@ describe "Journey::CookieBanner", :journey, type: :feature do
     expect(page).to have_css "h1", text: "How would you like to access the data?"
     expect(page).to have_text banner_title
     expect(page).to have_css %(script[src^="#{analytics_script_host}"]), visible: :all
+
+    click_link "Cookies"
+    within_fieldset "Cookies on our service" do
+      expect(page).to have_checked_field "Use cookies that measure my website use", visible: :all
+    end
   end
 
   it "does not show the cookie banner on the cookies page" do
@@ -80,5 +95,23 @@ describe "Journey::CookieBanner", :journey, type: :feature do
     click_link "View cookies"
     expect(page).to have_css "h1", text: "Cookies on our service"
     expect(page).to have_no_text banner_title
+  end
+
+  it "removes existing _ga cookies when opting out" do
+    visit url
+    page.driver.browser.manage.add_cookie(
+      name: "_ga",
+      value: "foo",
+      path: "/",
+      domain: URI(page.current_url).host,
+    )
+    ga_cookies = page.driver.browser.manage.all_cookies.filter { it[:name].start_with?("_ga") }
+    expect(ga_cookies.length).to be_positive
+
+    click_button "Reject analytics cookies"
+    expect(page).to have_no_text banner_title
+
+    ga_cookies = page.driver.browser.manage.all_cookies.filter { it[:name].start_with?("_ga") }
+    expect(ga_cookies.length).to be_zero
   end
 end
