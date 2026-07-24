@@ -14,17 +14,17 @@ shared_context "when testing the opt out process" do
 
   def visit_opt_out_occupant
     visit_opt_out_owner
-    # TODO: NOT ACCESSIBLE
-    # within_fieldset "Are you the legal owner of the property that you want to opt out?" do
-    choose "No", allow_label_click: true
+    within_fieldset "Are you the legal owner of the property that you want to opt out?" do
+      choose "No", allow_label_click: true
+    end
     click_button "Continue"
   end
 
   def visit_login_as_owner
     visit_opt_out_owner
-    # TODO: NOT ACCESSIBLE
-    # within_fieldset "Are you the legal owner of the property that you want to opt out?" do
-    choose "Yes", allow_label_click: true
+    within_fieldset "Are you the legal owner of the property that you want to opt out?" do
+      choose "Yes", allow_label_click: true
+    end
     click_button "Continue"
     find "h1", text: "Create your GOV.UK One Login or sign in"
   end

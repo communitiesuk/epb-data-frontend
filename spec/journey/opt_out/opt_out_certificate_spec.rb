@@ -80,9 +80,9 @@ describe "Journey::OptOut::OptOutCertificate", :journey, type: :feature do
   describe "opting out as an occupant" do
     before do
       visit_opt_out_occupant
-      # TODO: Not accessible
-      # within_fieldset "Do you live in the property that you want to opt-out?" do
-      choose "Yes", allow_label_click: true
+      within_fieldset "Do you live in the property that you want to opt-out?" do
+        choose "Yes", allow_label_click: true
+      end
       click_button "Continue"
       find "h1", text: "Create your GOV.UK One Login or sign in"
       visit "#{url}/name"

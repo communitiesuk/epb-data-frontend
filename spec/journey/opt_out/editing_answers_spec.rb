@@ -59,13 +59,16 @@ describe "Journey::OptOut::EditingAnswers", :journey, type: :feature do
     context "when changing the relationship to the property" do
       before do
         click_link "Change owner"
-        visit_opt_out_occupant
       end
 
       it "updates on the summary page" do
-        # TODO: NOT ACCESSIBLE
-        # within_fieldset "Are you the legal owner of the property that you want to opt out?" do
-        choose "Yes", allow_label_click: true
+        within_fieldset "Are you the legal owner of the property that you want to opt out?" do
+          choose "No", allow_label_click: true
+        end
+        click_button "Continue"
+        within_fieldset "Do you live in the property that you want to opt-out?" do
+          choose "Yes", allow_label_click: true
+        end
         click_button "Continue"
         page.find "h1", text: "Create your GOV.UK One Login or sign in"
         visit "#{url}/name"
@@ -77,11 +80,15 @@ describe "Journey::OptOut::EditingAnswers", :journey, type: :feature do
 
       context "when changing the relationship to be neither an occupant or owner" do
         it "sends the user to the ineligible page" do
-          # TODO: NOT ACCESSIBLE
-          # within_fieldset "Are you the legal owner of the property that you want to opt out?" do
-          choose "No", allow_label_click: true
+          within_fieldset "Are you the legal owner of the property that you want to opt out?" do
+            choose "No", allow_label_click: true
+          end
           click_button "Continue"
-          expect(page).to have_current_path("/opt-out/ineligible")
+          within_fieldset "Do you live in the property that you want to opt-out?" do
+            choose "No", allow_label_click: true
+          end
+          click_button "Continue"
+          expect(page).to have_css "h1", text: "You are not eligible to opt out"
         end
       end
     end
