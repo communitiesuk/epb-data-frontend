@@ -185,7 +185,7 @@ if (typeof window !== 'undefined') {
       : {
           cookieBanner: () => document.getElementsByClassName('govuk-cookie-banner')[0],
           cookieMessage: () => document.getElementsByClassName('govuk-cookie-banner__message')[0],
-          cookieConfirmation: () => document.getElementById('confirmation'),
+          cookieConfirmation: () => document.getElementById('cookie-confirmation'),
           acceptButton: () => document.getElementById('accept-button'),
           rejectButton: () => document.getElementById('reject-button'),
           hideCookieMessageButton: () => document.getElementById('hide-cookie-message'),

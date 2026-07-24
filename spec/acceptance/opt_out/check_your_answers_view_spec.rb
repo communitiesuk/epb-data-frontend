@@ -39,7 +39,7 @@ describe "Acceptance::OptOutCheckYourAnswers", type: :feature do
 
       it "shows the correct content for confirmation section" do
         expect(response.body).to have_selector("h1", text: "Confirmation")
-        expect(response.body).to have_css("input#confirmation[value=checked]")
+        expect(response.body).to have_field "I confirm that these details are correct"
       end
 
       context "when the user is not authenticated" do

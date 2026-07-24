@@ -56,9 +56,7 @@ describe "Journey::OptOut::OptOutCertificate", :journey, type: :feature do
 
     context "when submitting the opt-out" do
       before do
-        # TODO: Inaccessible
-        # check "I confirm that these details are correct", allow_label_click: true
-        check "confirmation", visible: :all
+        check "I confirm that these details are correct", allow_label_click: true
         click_button "Submit request"
       end
 
@@ -96,9 +94,7 @@ describe "Journey::OptOut::OptOutCertificate", :journey, type: :feature do
     end
 
     it "allows them to submit the request" do
-      # TODO: Inaccessible
-      # check "I confirm that these details are correct", allow_label_click: true
-      check "confirmation", visible: :all
+      check "I confirm that these details are correct", allow_label_click: true
       click_button "Submit request"
       expect(page).to have_css("h1", text: "Request received")
     end
