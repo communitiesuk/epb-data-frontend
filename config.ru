@@ -72,8 +72,6 @@ csp_options = {
   script_src: "'nonce-#{ENV['SCRIPT_NONCE']}'",
   style_src: "'nonce-#{ENV['SCRIPT_NONCE']}' 'self'",
   img_src: "'self' data:",
-  report_uri: Sentry.csp_report_uri,
-  report_ratio: 0.01,
   frame_ancestors: "'none'",
   form_action: "'self' https://#{ENV['AWS_S3_USER_DATA_BUCKET_NAME']}.s3.eu-west-2.amazonaws.com #{ENV['ONELOGIN_HOST_URL']} #{one_login_signin_url}"
 }.delete_if { |_, value| value.nil? || value == '' }
