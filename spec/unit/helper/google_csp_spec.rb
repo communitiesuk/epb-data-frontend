@@ -16,7 +16,7 @@ describe Helper::GoogleCsp do
       expected_options = {
         script_src: "'nonce-1234567' https://tagmanager.google.com https://*.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com",
         style_src: "'unsafe-inline' 'self' https://tagmanager.google.com https://fonts.googleapis.com",
-        img_src: "'self' data: https://ssl.gstatic.com https://www.gstatic.com https://*.google-analytics.com https://*.googletagmanager.com https://www.google-analytics.com",
+        img_src: "'self' data: https://ssl.gstatic.com https://www.gstatic.com",
         font_src: "'self' https://fonts.gstatic.com data:",
         connect_src: "'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.google-analytics.com",
       }

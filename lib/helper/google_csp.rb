@@ -18,12 +18,10 @@ module Helper
       },
       google_analytics_4: { # https://developers.google.com/tag-platform/tag-manager/web/csp#google_analytics_4_google_analytics
         script_src: "https://*.googletagmanager.com",
-        img_src: "https://*.google-analytics.com https://*.googletagmanager.com",
         connect_src: "https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com",
       },
       universal_analytics: { # https://developers.google.com/tag-platform/tag-manager/web/csp#universal_analytics_google_analytics
         script_src: "https://www.google-analytics.com https://ssl.google-analytics.com",
-        img_src: "https://www.google-analytics.com",
         connect_src: "https://www.google-analytics.com",
       },
     }.freeze
