@@ -16,8 +16,7 @@ shared_context "when setting up journey tests" do
 
   def uncheck_efficiency_ratings(ratings: %w[A B C D E F G])
     ratings.each do |rating|
-      checkbox = find("#ratings-#{rating}", visible: :all)
-      checkbox.click if checkbox.checked?
+      uncheck "#{rating} rating", allow_label_click: true
     end
   end
 end
