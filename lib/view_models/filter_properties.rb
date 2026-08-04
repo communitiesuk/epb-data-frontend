@@ -17,11 +17,21 @@ module ViewModels
     end
 
     def self.councils
-      CSV.new(council_csv).each.to_a.flatten
+      councils = CSV.new(council_csv).each.to_a.flatten
+
+      if Helper::Toggles.enabled?("data_warehouse_enable_NI_data")
+        councils += CSV.new(ni_council_csv).each.to_a.flatten
+      end
+      councils.sort
     end
 
     def self.parliamentary_constituencies
-      CSV.new(constituency_csv).each.to_a.flatten
+      constituencies = CSV.new(constituency_csv).each.to_a.flatten
+
+      if Helper::Toggles.enabled?("data_warehouse_enable_NI_data")
+        constituencies += CSV.new(ni_constituency_csv).each.to_a.flatten
+      end
+      constituencies.sort
     end
 
     def self.years
@@ -975,6 +985,45 @@ module ViewModels
       HEREDOC
     end
 
+    def self.ni_council_csv
+      <<~HEREDOC
+        Antrim and Newtownabbey
+        Ards and North Down
+        "Armagh City, Banbridge and Craigavon"
+        Belfast
+        Causeway Coast and Glens
+        Derry City and Strabane
+        Fermanagh and Omagh
+        Lisburn and Castlereagh
+        Mid and East Antrim
+        Mid Ulster
+        "Newry, Mourne and Down"
+      HEREDOC
+    end
+
+    def self.ni_constituency_csv
+      <<~HEREDOC
+        Belfast East
+        Belfast North
+        Belfast South and Mid Down
+        Belfast West
+        East Antrim
+        East Londonderry
+        Fermanagh and South Tyrone
+        Foyle
+        Lagan Valley
+        Mid Ulster
+        Newry and Armagh
+        North Antrim
+        North Down
+        South Antrim
+        South Down
+        Strangford
+        Upper Bann
+        West Tyrone
+      HEREDOC
+    end
+
     def self.get_full_load_file_size(property_type, use_case)
       file_name = "full-load/#{property_type}-csv.zip"
       total_bytes_estimate = use_case.execute(file_name: file_name)
@@ -982,6 +1031,8 @@ module ViewModels
     end
 
     private_class_method :council_csv
+    private_class_method :ni_council_csv
     private_class_method :constituency_csv
+    private_class_method :ni_constituency_csv
   end
 end

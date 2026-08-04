@@ -44,6 +44,9 @@ describe ViewModels::FilterProperties do
   end
 
   describe "#councils" do
+    let(:councils_count) { 318 }
+    let(:councils_count_with_ni) { councils_count + 11 }
+
     it "returns the correct list of councils" do
       expected_councils = %w[
         Adur
@@ -53,16 +56,51 @@ describe ViewModels::FilterProperties do
       expect(view_model.councils).to include(*expected_councils)
     end
 
-    it "returns 348 councils" do
-      expect(view_model.councils.length).to eq 318
+    it "returns 318 councils" do
+      expect(view_model.councils.length).to eq councils_count
     end
 
     it "has no dupes" do
-      expect(view_model.councils.uniq.length).to eq 318
+      expect(view_model.councils.uniq.length).to eq councils_count
+    end
+
+    context "when NI data toggle is enabled" do
+      before do
+        allow(Helper::Toggles).to receive(:enabled?).with("data_warehouse_enable_NI_data").and_return(true)
+      end
+
+      after do
+        allow(Helper::Toggles).to receive(:enabled?).with("data_warehouse_enable_NI_data").and_call_original
+      end
+
+      it "includes NI councils" do
+        expected_councils_including_ni = [
+          "Adur",
+          "Amber Valley",
+          "Antrim and Newtownabbey",
+          "Ards and North Down",
+          "Armagh City, Banbridge and Craigavon",
+          "Arun",
+          "Ashfield",
+        ]
+
+        expect(view_model.councils).to include(*expected_councils_including_ni)
+      end
+
+      it "returns 329 councils" do
+        expect(view_model.councils.length).to eq councils_count_with_ni
+      end
+
+      it "has no dupes" do
+        expect(view_model.councils.uniq.length).to eq councils_count_with_ni
+      end
     end
   end
 
   describe "#parliamentary_constituencies" do
+    let(:constituencies_count) { 575 }
+    let(:constituencies_count_with_ni) { constituencies_count + 18 }
+
     it "returns the correct list of parliamentary constituencies" do
       expected_parliamentary_constituencies = [
         "Bristol Central",
@@ -72,12 +110,45 @@ describe ViewModels::FilterProperties do
       expect(view_model.parliamentary_constituencies).to include(*expected_parliamentary_constituencies)
     end
 
-    it "returns 596 rows" do
-      expect(view_model.parliamentary_constituencies.length).to eq 575
+    it "returns 575 rows" do
+      expect(view_model.parliamentary_constituencies.length).to eq constituencies_count
     end
 
     it "has no dupes" do
-      expect(view_model.parliamentary_constituencies.uniq.length).to eq 575
+      expect(view_model.parliamentary_constituencies.uniq.length).to eq constituencies_count
+    end
+
+    context "when NI data toggle is enabled" do
+      before do
+        allow(Helper::Toggles).to receive(:enabled?).with("data_warehouse_enable_NI_data").and_return(true)
+      end
+
+      after do
+        allow(Helper::Toggles).to receive(:enabled?).with("data_warehouse_enable_NI_data").and_call_original
+      end
+
+      it "includes NI parliamentary constituencies" do
+        expected_parliamentary_constituencies_including_ni = [
+          "Bedford",
+          "Belfast East",
+          "Belfast North",
+          "Belfast South and Mid Down",
+          "Belfast West",
+          "Bermondsey and Old Southwark",
+          "Bethnal Green and Stepney",
+          "Beverley and Holderness",
+        ]
+
+        expect(view_model.parliamentary_constituencies).to include(*expected_parliamentary_constituencies_including_ni)
+      end
+
+      it "returns 593 rows" do
+        expect(view_model.parliamentary_constituencies.length).to eq constituencies_count_with_ni
+      end
+
+      it "has no dupes" do
+        expect(view_model.parliamentary_constituencies.uniq.length).to eq constituencies_count_with_ni
+      end
     end
   end
 
