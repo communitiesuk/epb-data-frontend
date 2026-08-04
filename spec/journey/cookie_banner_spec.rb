@@ -7,16 +7,6 @@ describe "Journey::CookieBanner", :journey, type: :feature do
   let(:banner_reject) { "You’ve rejected analytics cookies" }
   let(:analytics_script_host) { "https://www.googletagmanager.com/" }
 
-  process_id = nil
-
-  before(:all) do
-    process = IO.popen(["rackup", "config_test.ru", "-q", "-o", "127.0.0.1", "-p", "9393", { err: %i[child out] }])
-    process_id = process.pid
-    loop { break if process.readline.include?("Listening on http://127.0.0.1:9393") }
-  end
-
-  after(:all) { Process.kill("KILL", process_id) if process_id }
-
   before do
     # Clear the cookies
     Capybara.reset_sessions!

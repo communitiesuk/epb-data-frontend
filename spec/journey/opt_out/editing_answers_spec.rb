@@ -7,35 +7,10 @@ require_relative "../../shared_context/shared_journey_context"
 describe "Journey::OptOut::EditingAnswers", :journey, type: :feature do
   include_context "when setting up journey tests"
   include_context "when testing the opt out process"
+
   let(:url) do
     "http://get-energy-performance-data.epb-frontend:9393/opt-out"
   end
-
-  process_id = nil
-
-  before(:all) do
-    process =
-      IO.popen(
-        [
-          "rackup",
-          "config_test.ru",
-          "-q",
-          "-o",
-          "127.0.0.1",
-          "-p",
-          "9393",
-          { err: %i[child out] },
-        ],
-      )
-    process_id = process.pid
-
-    # Wait until the Puma server has started up before beginning tests
-    loop do
-      break if process.readline.include?("Listening on http://127.0.0.1:9393")
-    end
-  end
-
-  after(:all) { Process.kill("KILL", process_id) if process_id }
 
   context "when editing responses on the '/check-your-answers' page" do
     before do

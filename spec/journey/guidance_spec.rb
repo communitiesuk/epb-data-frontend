@@ -17,16 +17,6 @@ describe "Journey::Guidance", :journey, type: :feature do
 
   let(:domain) { "http://get-energy-performance-data.epb-frontend:9393" }
 
-  process_id = nil
-
-  before(:all) do
-    process = IO.popen(["rackup", "config_test.ru", "-q", "-o", "127.0.0.1", "-p", "9393", { err: %i[child out] }])
-    process_id = process.pid
-    loop { break if process.readline.include?("Listening on http://127.0.0.1:9393") }
-  end
-
-  after(:all) { Process.kill("KILL", process_id) if process_id }
-
   before do
     visit domain
     click_link "Visit the guidance page"
