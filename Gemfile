@@ -13,7 +13,7 @@ group :test do
   gem "capybara-lockstep"
   gem "capybara-selenium", "~> 0.0.6"
   gem "compare-xml", "~>0.66"
-  gem "rack-test", "~> 2.1.0"
+  gem "rack-test", "~> 2.2.0"
   gem "rspec", "~>3.13"
   gem "selenium-webdriver", "~> 4.27.0"
   gem "timecop", "~> 0.9.10"
