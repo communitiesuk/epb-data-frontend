@@ -20,7 +20,7 @@
     "govuk-frontend": "^6.4.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.6",
+    "@babel/core": "^8.0.1",
     "@babel/eslint-parser": "^7.26.5",
     "@babel/preset-env": "^7.26.0",
     "decomment": "^0.9.5",
