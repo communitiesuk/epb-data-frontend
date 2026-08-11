@@ -21,7 +21,7 @@ group :test do
   gem "webmock", "~> 3.23"
 end
 
-gem "aws-sdk-dynamodb", "~> 1.144"
+gem "aws-sdk-dynamodb", "~> 1.172"
 gem "aws-sdk-kms", "~> 1"
 gem "aws-sdk-s3", "~> 1"
 gem "aws-sdk-sns", "~> 1"
