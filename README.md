@@ -197,6 +197,10 @@ _Not used_
 
 The URL of the unleash feature flag service.
 
+#### `EPB_UNLEASH_AUTH_TOKEN`
+
+Authentication token for the unleash feature flag service.
+
 #### `GTM_PROPERTY_FINDING`
 
 The Google tag manager container id used to load Google Analytics.
