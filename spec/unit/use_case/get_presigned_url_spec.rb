@@ -42,5 +42,15 @@ describe UseCase::GetPresignedUrl do
         expect { use_case.execute(file_name: "folder/none.csv") }.to raise_error(Errors::FileNotFound)
       end
     end
+
+    context "when the file name is invalid" do
+      before do
+        allow(gateway).to receive(:get_presigned_url).and_raise(Errors::InvalidArgument)
+      end
+
+      it "raises an invalid argument error" do
+        expect { use_case.execute(file_name: nil) }.to raise_error(Errors::FileNotFound)
+      end
+    end
   end
 end

@@ -52,6 +52,9 @@ module Errors
   class InvalidDateArgument < RuntimeError
   end
 
+  class InvalidArgument < RuntimeError
+  end
+
   class FileNotFound < RuntimeError
   end
 

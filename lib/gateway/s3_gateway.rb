@@ -10,6 +10,8 @@ module Gateway
     def get_presigned_url(bucket:, file_name:, expires_in:)
       @s3_client.head_object(bucket:, key: file_name)
       @signer_client.presigned_url(:get_object, bucket:, key: file_name, expires_in:)
+    rescue ArgumentError
+      raise Errors::InvalidArgument
     rescue Aws::S3::Errors::NotFound
       raise Errors::FileNotFound, file_name
     end

@@ -40,6 +40,12 @@ describe Gateway::S3Gateway do
         expect { gateway.get_presigned_url(bucket: "user-data", file_name: "non-existing-file.zip", expires_in: 60) }.to raise_error(Errors::FileNotFound, "non-existing-file.zip")
       end
     end
+
+    context "when creating a presigned url with an invalid file name" do
+      it "raises an InvalidArgument error" do
+        expect { gateway.get_presigned_url(bucket: "user-data", file_name: nil, expires_in: 60) }.to raise_error(Errors::InvalidArgument)
+      end
+    end
   end
 
   describe "#get_file_size" do

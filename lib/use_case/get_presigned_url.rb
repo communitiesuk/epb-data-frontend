@@ -9,7 +9,7 @@ module UseCase
 
     def execute(file_name:, expires_in: 30)
       @gateway.get_presigned_url(bucket: @bucket_name, file_name:, expires_in:)
-    rescue Aws::S3::Errors::NoSuchKey
+    rescue Aws::S3::Errors::NoSuchKey, Errors::InvalidArgument
       raise Errors::FileNotFound
     end
   end
