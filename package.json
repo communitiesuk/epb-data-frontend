@@ -22,7 +22,7 @@
   "devDependencies": {
     "@babel/core": "^7.29.6",
     "@babel/eslint-parser": "^7.26.5",
-    "@babel/preset-env": "^7.26.0",
+    "@babel/preset-env": "^8.0.2",
     "decomment": "^0.9.5",
     "jest": "^30.4.2",
     "jest-environment-jsdom": "^30.2.0",
