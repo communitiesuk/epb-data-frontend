@@ -175,24 +175,6 @@ The URL of the auth server for connecting to the data-warehouse API.
 
 The URL of the data-warehouse API.
 
-#### `EPB_RECAPTCHA_SITE_KEY`
-
-The key for the Google Recaptcha service.
-
-_Not used_
-
-#### `EPB_RECAPTCHA_SITE_SECRET`
-
-The secret for the Google Recaptcha service.
-
-_Not used_
-
-#### `EPB_SUSPECTED_BOT_USER_AGENTS`
-
-A JSON formatted array of strings containing a list of user-agent strings that should be presented with a recaptcha.
-
-_Not used_
-
 #### `EPB_UNLEASH_URI`
 
 The URL of the unleash feature flag service.

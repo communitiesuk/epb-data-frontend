@@ -7,9 +7,6 @@ cy:
   feedback_form: https://forms.office.com/Pages/ResponsePage.aspx?id=EGg0v32c3kOociSi7zmVqHoHbhsFaRhKtJNsRmvj1SVUQ0JSSTAxMVBKQVZCODgyOUYzSTU5VUJRRS4u
   help_desk_number: "020 3829 0748"
 
-  validation_errors:
-    captcha_error: "Profwch mai rhywun dynol sydd yna a rhoi cynnig arall arni"
-
   data_missing:
     not_recorded: "Heb eu cofnodi"
     no_disclosure: "Dim datganiad asesydd wedi’i ddarparu"

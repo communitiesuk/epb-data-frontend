@@ -34,9 +34,6 @@ module Errors
   class InternalServerError < ApiError
   end
 
-  class BotDetected < RuntimeError
-  end
-
   class PostcodeNotValid < RuntimeError
   end
 

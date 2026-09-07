@@ -7,9 +7,6 @@ en:
   feedback_form: https://forms.office.com/Pages/ResponsePage.aspx?id=EGg0v32c3kOociSi7zmVqHoHbhsFaRhKtJNsRmvj1SVUQ0JSSTAxMVBKQVZCODgyOUYzSTU5VUJRRS4u
   help_desk_number: "020 3829 0748"
 
-  validation_errors:
-    captcha_error: "Please verify that you’re a human and try again."
-
   data_missing:
     not_recorded: "Not recorded"
     no_disclosure: "No assessor’s declaration provided"
