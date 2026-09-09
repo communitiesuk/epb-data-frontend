@@ -1,6 +1,6 @@
 shared_context "when testing the opt out process" do
   def visit_opt_out_reason
-    visit url
+    visit "/opt-out"
     click_link "Continue"
   end
 

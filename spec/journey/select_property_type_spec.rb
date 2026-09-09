@@ -6,10 +6,6 @@ require_relative "../shared_examples/shared_error"
 describe "Journey::SelectPropertyType", :journey, type: :feature do
   include_context "when setting up journey tests"
 
-  let(:domain) do
-    "http://get-energy-performance-data.epb-frontend:9393"
-  end
-
   before do
     visit_type_of_properties
   end

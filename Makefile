@@ -18,10 +18,6 @@ test:
 	@bundle exec rspec
 	@npm run test
 
-.PHONY: hosts
-hosts:
-	@scripts/configure-tests-hosts.sh
-
 .PHONY: assets-version
 assets-version:
 	@scripts/write-assets-version.sh
@@ -42,7 +38,6 @@ format:
 .PHONY: journey
 journey:
 	@bundle exec rspec --tag journey
-
 
 .PHONY: one-login
 one-login:

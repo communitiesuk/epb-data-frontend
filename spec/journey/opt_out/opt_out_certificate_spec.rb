@@ -7,14 +7,10 @@ describe "Journey::OptOut::OptOutCertificate", :journey, type: :feature do
   include_context "when setting up journey tests"
   include_context "when testing the opt out process"
 
-  let(:url) do
-    "http://get-energy-performance-data.epb-frontend:9393/opt-out"
-  end
-
   describe "opting out as an owner" do
     before do
       visit_login_as_owner
-      visit "#{url}/name"
+      visit "/opt-out/name"
       set_name
       set_certificate_details
     end
@@ -58,7 +54,7 @@ describe "Journey::OptOut::OptOutCertificate", :journey, type: :feature do
       end
       click_button "Continue"
       find "h1", text: "Create your GOV.UK One Login or sign in"
-      visit "#{url}/name"
+      visit "/opt-out/name"
       set_name
       set_certificate_details
     end

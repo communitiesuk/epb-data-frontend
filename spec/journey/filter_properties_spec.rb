@@ -6,8 +6,6 @@ require_relative "../shared_examples/shared_error"
 describe "Journey::FilterProperties", :journey, type: :feature do
   include_context "when setting up journey tests"
 
-  let(:domain) { "http://get-energy-performance-data.epb-frontend:9393" }
-
   before do
     visit_filter_properties
   end
@@ -27,7 +25,7 @@ describe "Journey::FilterProperties", :journey, type: :feature do
 
   context "when navigating to the filter properties page with invalid property type in the params" do
     before do
-      visit "#{domain}/filter-properties?property_type=invalid"
+      visit "/filter-properties?property_type=invalid"
     end
 
     it_behaves_like "when checking 404 error message"
@@ -36,7 +34,7 @@ describe "Journey::FilterProperties", :journey, type: :feature do
   context "when navigating to request received page after requesting data download" do
     context "when visiting directly with no valid referer" do
       before do
-        visit "#{domain}/request-received-confirmation?property_type=domestic"
+        visit "/request-received-confirmation?property_type=domestic"
       end
 
       it "forbids access" do

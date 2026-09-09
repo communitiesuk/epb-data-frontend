@@ -1,7 +1,6 @@
 shared_context "when setting up journey tests" do
   def visit_type_of_properties
-    visit domain
-    visit "#{domain}/type-of-properties"
+    visit "/type-of-properties"
     find "h1", text: "What type of certificates do you want data on?"
   end
 

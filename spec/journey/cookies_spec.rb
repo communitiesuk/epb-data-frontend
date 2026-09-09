@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 describe "Journey::CookiesOnOurService", :journey, type: :feature do
-  let(:url) { "http://get-energy-performance-data.epb-frontend:9393/cookies" }
   let(:analytics_script_host) { "https://www.googletagmanager.com/" }
   let(:banner_title) { "Cookies on Get energy performance of buildings data" }
 
@@ -11,7 +10,7 @@ describe "Journey::CookiesOnOurService", :journey, type: :feature do
   end
 
   it "shows a user as opted into cookies by default" do
-    visit url
+    visit "/cookies"
     within_fieldset "Cookies on our service" do
       expect(page).to have_checked_field "Use cookies that measure my website use", visible: :all
     end
@@ -19,7 +18,7 @@ describe "Journey::CookiesOnOurService", :journey, type: :feature do
   end
 
   it "allows a user to opt out of cookies and retains this setting" do
-    visit url
+    visit "/cookies"
     within_fieldset "Cookies on our service" do
       choose "Do not use cookies that measure my website use", allow_label_click: true
     end
@@ -39,7 +38,7 @@ describe "Journey::CookiesOnOurService", :journey, type: :feature do
   end
 
   it "allows a user to opt into cookies and retains this setting" do
-    visit url
+    visit "/cookies"
     within_fieldset "Cookies on our service" do
       choose "Use cookies that measure my website use", allow_label_click: true
     end
@@ -59,7 +58,7 @@ describe "Journey::CookiesOnOurService", :journey, type: :feature do
   end
 
   it "removes existing _ga cookies when opting out" do
-    visit url
+    visit "/cookies"
     page.driver.browser.manage.add_cookie(
       name: "_ga",
       value: "foo",

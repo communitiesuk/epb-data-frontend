@@ -22,7 +22,6 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      - run: echo "127.0.0.1 get-energy-performance-data.epb-frontend" | sudo tee -a /etc/hosts
       - name: Prepare assets
         run: bundle exec ruby ./build/compile_assets.rb
       - name: Lint

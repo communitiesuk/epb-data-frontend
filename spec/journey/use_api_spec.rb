@@ -3,11 +3,9 @@
 require_relative "../shared_context/shared_journey_context"
 
 describe "Journey::UseApi", :journey, type: :feature do
-  let(:domain) { "http://get-energy-performance-data.epb-frontend:9393" }
-
   context "when visiting the '/guidance/energy-certificate-data-apis' page" do
     before do
-      visit domain
+      visit "/"
       click_link "Start now"
       within_fieldset "How would you like to access the data?" do
         choose "Use a developer API", allow_label_click: true
@@ -39,7 +37,7 @@ describe "Journey::UseApi", :journey, type: :feature do
       end
 
       it "redirects to the account page" do
-        expect(page).to have_current_path("#{domain}/api/my-account")
+        expect(page).to have_current_path("/api/my-account")
         expect(page).to have_selector("h1", text: "My account")
       end
 

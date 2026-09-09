@@ -26,26 +26,17 @@ This short guide will use `Git`.
 
 ## Test
 
-### Prerequisites
+```bash
+# lint
+make format
+# or
+bundle exec rubocop
 
-You must add additional local hosts to your hosts file on your machine with:
-
+# test
+make test
+# or
+bundle exec rspec
 ```
-127.0.0.1	get-energy-performance-data.epb-frontend
-127.0.0.1	get-energy-performance-data.local.gov.uk
-```
-
-You can add these to your hosts file automatically by running `$ sudo make hosts`.
-You can check what hosts you already have by typing `$ cat /etc/hosts` in the
-frontend directory.
-
-Don't forget to ensure bundles are up to date
-
-### Test suites
-
-To run the respective test suites:
-
-- All tests: `$ make test`
 
 ## Usage
 

@@ -5,13 +5,11 @@ require_relative "../shared_context/shared_journey_context"
 describe "Journey::MyAccount", :journey, type: :feature do
   include_context "when setting up journey tests"
 
-  let(:domain) { "http://get-energy-performance-data.epb-frontend:9393" }
-
   context "when visiting the '/api/my-account' page" do
     before do
-      visit domain
+      visit "/"
       click_link "Start now"
-      visit "#{domain}/api/my-account"
+      visit "/api/my-account"
     end
 
     it "displays the correct content" do

@@ -9,7 +9,7 @@ describe "Acceptance::ServiceUnavailable", type: :feature do
     before { Helper::Toggles.set_feature(toggle_name, false) }
 
     let(:response) do
-      get "http://get-energy-performance-data.local.gov.uk"
+      get "/"
     end
 
     it "returns a 200 status on any existing route" do
@@ -23,7 +23,7 @@ describe "Acceptance::ServiceUnavailable", type: :feature do
     after { Helper::Toggles.set_feature(toggle_name, false) }
 
     let(:response) do
-      get "http://get-energy-performance-data.local.gov.uk"
+      get "/"
     end
 
     it "returns a 503 status on any existing route" do
