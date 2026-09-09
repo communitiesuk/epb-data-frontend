@@ -5,10 +5,6 @@ require_relative "../../shared_context/shared_opt_out_context"
 describe "Journey::OptOut::UnableToOptOut", :journey, type: :feature do
   include_context "when testing the opt out process"
 
-  let(:url) do
-    "http://get-energy-performance-data.epb-frontend:9393/opt-out"
-  end
-
   context "when giving the reason 'advised by someone else'" do
     before do
       visit_opt_out_reason

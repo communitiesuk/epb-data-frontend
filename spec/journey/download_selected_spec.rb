@@ -6,8 +6,6 @@ require_relative "../shared_examples/shared_error"
 describe "Journey::DownloadSelected", :journey, type: :feature do
   include_context "when setting up journey tests"
 
-  let(:domain) { "http://get-energy-performance-data.epb-frontend:9393" }
-
   context "when navigating to the filter properties page" do
     before do
       visit_filter_properties

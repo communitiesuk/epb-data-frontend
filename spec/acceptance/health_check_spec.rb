@@ -1,9 +1,9 @@
 describe "Acceptance::HealthCheck", type: :feature do
   include RSpecFrontendServiceMixin
 
-  describe ".get get-energy-performance-data.local.gov.uk/healthcheck" do
+  describe ".get /healthcheck" do
     let(:response) do
-      get "http://get-energy-performance-data.local.gov.uk/healthcheck"
+      get "/healthcheck"
     end
 
     it "returns status 200" do

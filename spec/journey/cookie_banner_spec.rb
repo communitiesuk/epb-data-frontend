@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 describe "Journey::CookieBanner", :journey, type: :feature do
-  let(:url) { "http://get-energy-performance-data.epb-frontend:9393/" }
   let(:banner_title) { "Cookies on Get energy performance of buildings data" }
   let(:banner_accept) { "You’ve accepted analytics cookies" }
   let(:banner_reject) { "You’ve rejected analytics cookies" }
@@ -13,12 +12,12 @@ describe "Journey::CookieBanner", :journey, type: :feature do
   end
 
   it "opts into analytics cookies by default" do
-    visit url
+    visit "/"
     expect(page).to have_css %(script[src^="#{analytics_script_host}"]), visible: :all
   end
 
   it "shows the cookie banner, you can accept cookies and the banner no longer shows" do
-    visit url
+    visit "/"
     expect(page).to have_text banner_title
     expect(page).to have_link "View cookies", href: "/cookies"
 
@@ -41,7 +40,7 @@ describe "Journey::CookieBanner", :journey, type: :feature do
   end
 
   it "shows the cookie banner, you can reject cookies and the banner no longer shows" do
-    visit url
+    visit "/"
     expect(page).to have_text banner_title
     expect(page).to have_link "View cookies", href: "/cookies"
 
@@ -64,7 +63,7 @@ describe "Journey::CookieBanner", :journey, type: :feature do
   end
 
   it "shows the cookie banner, you can ignore it and the banner continues to show" do
-    visit url
+    visit "/"
     expect(page).to have_text banner_title
 
     click_link "Start now"
@@ -79,7 +78,7 @@ describe "Journey::CookieBanner", :journey, type: :feature do
   end
 
   it "does not show the cookie banner on the cookies page" do
-    visit url
+    visit "/"
     expect(page).to have_text banner_title
 
     click_link "View cookies"
@@ -88,7 +87,7 @@ describe "Journey::CookieBanner", :journey, type: :feature do
   end
 
   it "removes existing _ga cookies when opting out" do
-    visit url
+    visit "/"
     page.driver.browser.manage.add_cookie(
       name: "_ga",
       value: "foo",

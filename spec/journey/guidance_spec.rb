@@ -15,10 +15,8 @@ GUIDANCE_PAGES = {
 describe "Journey::Guidance", :journey, type: :feature do
   include_context "when setting up journey tests"
 
-  let(:domain) { "http://get-energy-performance-data.epb-frontend:9393" }
-
   before do
-    visit domain
+    visit "/"
     click_link "Visit the guidance page"
   end
 
@@ -27,15 +25,15 @@ describe "Journey::Guidance", :journey, type: :feature do
       it "displays the correct content for #{heading} page" do
         click_link heading
         expect(page).to have_selector("h1", text: heading)
-        expect(page).to have_current_path("#{domain}#{path}")
-        expect(page).to have_link("Back", href: "#{domain}/guidance")
+        expect(page).to have_current_path(path)
+        expect(page).to have_link("Back", href: %r{/guidance$})
       end
     end
 
     it "displays the correct content API guidance page" do
       click_link "API guidance"
       expect(page).to have_selector("h1", text: "Energy certificate data APIs")
-      expect(page).to have_current_path("#{domain}/guidance/energy-certificate-data-apis")
+      expect(page).to have_current_path("/guidance/energy-certificate-data-apis")
     end
   end
 end
