@@ -14,7 +14,7 @@
   "homepage": "https://github.com/communitiesuk/epb-data-frontend#readme",
   "dependencies": {
     "accessible-autocomplete": "^3.0.1",
-    "govuk-frontend": "^6.4.0"
+    "govuk-frontend": "^6.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.29.6",
