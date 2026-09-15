@@ -4,23 +4,6 @@ ruby "3.4.9"
 
 source "https://rubygems.org"
 
-group :development do
-  # gem "sinatra-contrib"
-end
-
-group :test do
-  gem "capybara", "~> 3.40"
-  gem "capybara-lockstep"
-  gem "capybara-selenium", "~> 0.0.6"
-  gem "compare-xml", "~>1.0"
-  gem "rack-test", "~> 2.2.0"
-  gem "rspec", "~>3.13"
-  gem "selenium-webdriver", "~> 4.48.0"
-  gem "timecop", "~> 0.9.11"
-  gem "webdrivers", "~> 5.2.0"
-  gem "webmock", "~> 3.26"
-end
-
 gem "aws-sdk-dynamodb", "~> 1.172"
 gem "aws-sdk-kms", "~> 1"
 gem "aws-sdk-s3", "~> 1"
@@ -48,3 +31,16 @@ gem "sinatra", "~> 4.2"
 gem "sinatra-contrib"
 gem "unleash", "~> 6.7.1"
 gem "zeitwerk", "~> 2.8.3"
+
+group :test do
+  gem "capybara", "~> 3.40"
+  gem "capybara-lockstep"
+  gem "capybara-selenium", "~> 0.0.6"
+  gem "compare-xml", "~>1.0"
+  gem "rack-test", "~> 2.2.0"
+  gem "rspec", "~>3.13"
+  gem "selenium-webdriver", "~> 4.48.0"
+  gem "timecop", "~> 0.9.11"
+  gem "webdrivers", "~> 5.2.0"
+  gem "webmock", "~> 3.26"
+end
