@@ -182,10 +182,6 @@ The Google tag manager container id used to load Google Analytics.
 
 The API for the gov.uk notify service.
 
-#### `NOTIFY_DATA_EMAIL_RECIPIENT`
-
-_Not used_
-
 #### `NOTIFY_OPT_OUT_EMAIL_RECIPIENT`
 
 The email address opt-out requests should be sent to.
