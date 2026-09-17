@@ -75,6 +75,11 @@ Should be one of "production", "development" or "test".
 
 Sinatra will fallback to `RACK_ENV` or "development" if unset.
 
+When "test" and "development":
+
+- cookies are set to http and same-site: lax (instead of strict)
+- AWS DynamoDB and SNS calls will use stubs
+
 #### `RACK_ENV`
 
 Used by rackup to choose the [default middleware stack](https://github.com/rack/rackup/blob/f3fa1d6ada90e9e7aa1f712488ddde87ea2a2075/lib/rackup/server.rb#L273).
@@ -86,16 +91,10 @@ The EPB environment. Can be one of "test", "development", "integration", "stagin
 
 - Sets the unleash feature flag service app name to `toggles-#{stage}`
 - Selects the gov.uk one login sign-in page for CSP form action
-- When "test", configures exceptions and enabled Capybara lock-step
 - Unless "development" or "test", enables Sentry and sets its environment value
 - Unless "production", sets the tag used in the phase banner
 - When "production", replaces the phase banner with the feedback banner
 - When "production", disables the test service message in notify opt-out emails
-
-#### `LOCAL_SESSION`
-
-If set to `true` the session cookie will be set to `same-site: lax`, and not `secure`.
-This is also the case if the Sinatra environment is `development`.
 
 #### `ASSETS_VERSION`
 

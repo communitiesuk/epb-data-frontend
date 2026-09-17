@@ -19,9 +19,10 @@ module Controller
     set :public_folder, proc { File.join(root, "/../../public") }
     set :static_cache_control, [:public, { max_age: 60 * 60 * 24 * 7 }] if ENV["ASSETS_VERSION"]
 
-    if ENV["STAGE"] == "test"
+    configure :test do
       require "capybara-lockstep"
       include Capybara::Lockstep::Helper
+
       set :show_exceptions, :after_handler
     end
 

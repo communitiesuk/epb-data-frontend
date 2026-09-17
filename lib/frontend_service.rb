@@ -4,9 +4,7 @@ require "rack/protection"
 
 class FrontendService < Controller::BaseController
   configure do
-    is_test = ENV["LOCAL_SESSION"] == "true"
-    is_dev_or_test = is_test || settings.environment == :development
-
+    is_dev_or_test = %i[development test].include?(settings.environment)
     use Rack::Session::Cookie,
         key: "epb_data.session",
         secret: ENV["SESSION_SECRET"],
