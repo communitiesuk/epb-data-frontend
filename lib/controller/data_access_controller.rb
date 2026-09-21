@@ -13,7 +13,7 @@ module Controller
       @error_form_ids = []
       case params["access_type"]
       when "download"
-        redirect "/login/authorize?referer=type-of-properties"
+        redirect "/type-of-properties"
       when "api"
         redirect "/guidance/energy-certificate-data-apis"
       else

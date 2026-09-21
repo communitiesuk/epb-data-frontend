@@ -30,7 +30,7 @@ describe "Acceptance::DataAccessOptions", type: :feature do
       it "routes to the login page with a /property-types referer if Download files is selected" do
         response = post "http://get-energy-performance-data/data-access-options", { access_type: "download" }
         expect(response.status).to eq(302)
-        expect(response.location).to eq "http://get-energy-performance-data/login/authorize?referer=type-of-properties"
+        expect(response.location).to eq "http://get-energy-performance-data/type-of-properties"
       end
 
       it "routes to the api page if Use a developer API is selected" do

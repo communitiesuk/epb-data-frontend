@@ -1,6 +1,11 @@
 shared_context "when setting up journey tests" do
   def visit_type_of_properties
-    visit "/type-of-properties"
+    visit "/"
+    click_link "Start now"
+    within_fieldset "How would you like to access the data?" do
+      choose "Download files", allow_label_click: true
+    end
+    click_button "Continue"
     find "h1", text: "What type of certificates do you want data on?"
   end
 
