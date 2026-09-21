@@ -18,12 +18,21 @@ module Controller
     set :erb, escape_html: true
     set :public_folder, proc { File.join(root, "/../../public") }
     set :static_cache_control, [:public, { max_age: 60 * 60 * 24 * 7 }] if ENV["ASSETS_VERSION"]
+    set :logger, Logger.new($stdout, level: Logger::DEBUG)
+
+    configure :production do
+      logger.level = Logger::ERROR
+    end
+
+    configure :development do
+      set :show_exceptions, :after_handler
+    end
 
     configure :test do
       require "capybara-lockstep"
       include Capybara::Lockstep::Helper
 
-      set :show_exceptions, :after_handler
+      logger.level = Logger::FATAL
     end
 
     get "/" do
@@ -37,8 +46,6 @@ module Controller
       setup_locales
       @toggles = Helper::Toggles
       @container = container || Container.new
-      @logger = Logger.new($stdout)
-      @logger.level = Logger::FATAL
     end
 
     HOST_NAME = "get-energy-certificate-data".freeze
@@ -107,7 +114,7 @@ module Controller
 
       error[:backtrace] = exception.backtrace if exception.methods.include? :backtrace
 
-      @logger.error JSON.generate(error)
+      logger.error JSON.generate(error)
       @page_title =
         "#{t('error.500.heading')} – #{t('layout.body.govuk')}"
       status(was_timeout ? 504 : 500)

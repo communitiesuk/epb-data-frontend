@@ -29,7 +29,6 @@ module Controller
         logger.warn "User information from user-credentials missing: #{e.message}"
         redirect "/login/authorize?referer=api/my-account"
       else
-        logger.error "Unexpected error during /api/my-account get endpoint: #{e.message}"
         server_error(e)
       end
     end

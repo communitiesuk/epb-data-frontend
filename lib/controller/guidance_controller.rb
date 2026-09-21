@@ -86,7 +86,6 @@ module Controller
 
       erb :'guidance_pages/energy_certificate_data_apis', locals: { valid_user_info:, user_info: }
     rescue StandardError => e
-      logger.error "Unexpected error during /guidance/energy-certificate-data-apis get endpoint: #{e.message}"
       server_error(e)
     end
   end

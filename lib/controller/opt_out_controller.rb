@@ -257,7 +257,7 @@ module Controller
     rescue StandardError => e
       case e
       when Errors::MissingOptOutValues
-        @logger.warn "Session values are missing when reaching /opt-out/check-your-answers: #{e.message}"
+        logger.warn "Session values are missing when reaching /opt-out/check-your-answers: #{e.message}"
         redirect localised_url("/opt-out")
       else
         server_error(e)
@@ -282,7 +282,7 @@ module Controller
     rescue StandardError, Errors::NotifySendEmailError => e
       case e
       when Errors::MissingOptOutValues
-        @logger.warn "Session values are missing when submitting POST /opt-out/check-your-answers: #{e.message}"
+        logger.warn "Session values are missing when submitting POST /opt-out/check-your-answers: #{e.message}"
         redirect localised_url("/opt-out")
       else
         server_error(e)

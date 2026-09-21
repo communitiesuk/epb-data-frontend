@@ -96,19 +96,17 @@ module Controller
 
         error = { type: e.class.name, message: }
         error[:backtrace] = e.backtrace if e.methods.include? :backtrace
-        @logger.error JSON.generate(error)
+        logger.error JSON.generate(error)
 
         redirect_link = redirect_path == "opt-out" ? "/login?referer=opt-out" : "/login/authorize?referer=#{referer}"
 
         redirect localised_url(redirect_link)
       when Errors::TokenExchangeError, Errors::AuthenticationError, Errors::NetworkError, Errors::ValidationError
-        @logger.warn "Authentication error: #{e.message}"
         server_error(e)
       when Errors::MissingReferrerError
-        @logger.error "Missing referer in session during login callback: #{e.message}"
+        logger.error "Missing referer in session during login callback: #{e.message}"
         redirect "/"
       else
-        @logger.error "Unexpected error during login callback: #{e.message}"
         server_error(e)
       end
     end

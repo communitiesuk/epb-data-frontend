@@ -59,7 +59,6 @@ module Controller
           status 404
           erb :error_page_404
         else
-          logger.error "Unexpected error during filter_properties: #{e.message}"
           server_error(e)
         end
       end
@@ -97,7 +96,6 @@ module Controller
       when Errors::SessionEmailError
         redirect "/signed-out"
       else
-        logger.error "Unexpected error during filter_properties: #{e.message}"
         server_error(e)
       end
     end
