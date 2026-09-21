@@ -29,9 +29,6 @@ module Controller
     end
 
     configure :test do
-      require "capybara-lockstep"
-      include Capybara::Lockstep::Helper
-
       logger.level = Logger::FATAL
     end
 
