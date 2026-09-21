@@ -62,8 +62,14 @@ describe "Partial include analytics", type: :feature do
   end
 
   context "when the google_property is not set" do
+    previous_env = ENV["GTM_PROPERTY_FINDING"]
+
     before do
       ENV["GTM_PROPERTY_FINDING"] = nil
+    end
+
+    after do
+      ENV["GTM_PROPERTY_FINDING"] = previous_env
     end
 
     let(:response) do
