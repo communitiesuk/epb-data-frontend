@@ -39,7 +39,7 @@ describe Gateway::UserCredentialsGateway do
               "S": Time.utc(2025, 6, 25, 12, 32),
             },
             "BearerToken": {
-              "S": "D0RnC2oKGsoM936wKmtd4ZcoSw489rPo4FDqQ2SYQVtVnQ4PhZ33b46YZPNZXo6r",
+              "S": "D0RnC2oKGsoM936wKmtd4Z",
             },
             "OneLoginSub": {
               "S": sub_id,
@@ -59,7 +59,7 @@ describe Gateway::UserCredentialsGateway do
         Timecop.freeze(Time.utc(2025, 6, 25, 12, 32, 0))
         allow(SecureRandom).to receive_messages(
           uuid: user_id,
-          alphanumeric: "D0RnC2oKGsoM936wKmtd4ZcoSw489rPo4FDqQ2SYQVtVnQ4PhZ33b46YZPNZXo6r",
+          alphanumeric: "D0RnC2oKGsoM936wKmtd4Z",
         )
         allow(kms_gateway).to receive(:encrypt).with(email).and_return(encrypted_email)
 
