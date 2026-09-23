@@ -16,7 +16,7 @@ module Gateway
       new_user = {
         "UserId" => user_id,
         "CreatedAt" => Time.now.to_s,
-        "BearerToken" => SecureRandom.alphanumeric(64),
+        "BearerToken" => SecureRandom.alphanumeric(22),
         "OneLoginSub" => one_login_sub,
         "EmailAddress" => encrypted_email,
         "OptOut" => false,
