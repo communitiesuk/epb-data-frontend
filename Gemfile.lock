@@ -32,8 +32,8 @@ GEM
       jmespath (~> 1, >= 1.6.1)
       logger
       rexml (~> 3.4, >= 3.4.2)
-    aws-sdk-dynamodb (1.172.0)
-      aws-sdk-core (~> 3, >= 3.254.0)
+    aws-sdk-dynamodb (1.174.0)
+      aws-sdk-core (~> 3, >= 3.256.0)
       aws-sigv4 (~> 1.5)
     aws-sdk-kms (1.130.0)
       aws-sdk-core (~> 3, >= 3.254.0)
@@ -346,7 +346,7 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
-  aws-sdk-dynamodb (~> 1.172)
+  aws-sdk-dynamodb (~> 1.174)
   aws-sdk-kms (~> 1)
   aws-sdk-s3 (~> 1)
   aws-sdk-sns (~> 1)
