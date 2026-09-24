@@ -616,28 +616,97 @@ describe Gateway::UserCredentialsGateway do
   end
 
   describe "#delete_user" do
-    let(:expected_delete_body) do
+    let(:expected_delete_body_legacy) do
       {
         "Key" => {
           "UserId" => { "S" => user_id },
         },
-        "TableName" => table_name,
+        "TableName" => "test_users_table",
       }.to_json
+    end
+
+    let(:query_body_v2) do
+      {
+        "KeyConditionExpression": "UserId = :user_id",
+        "ExpressionAttributeValues": {
+          ":user_id": { "S": user_id },
+        },
+        "TableName": "test_users_v2_table",
+      }.to_json
+    end
+
+    let(:query_response_v2) do
+      {
+        "Items" => [
+          { "UserId" => { "S" => user_id }, "Type" => { "S" => "PROFILE" } },
+          { "UserId" => { "S" => user_id }, "Type" => { "S" => "TOKEN#123456" } },
+        ],
+        "Count" => 2,
+      }.to_json
+    end
+
+    let(:expected_delete_body_v2) do
+      {
+        "TransactItems": [
+          {
+            "Delete":
+            {
+              "TableName": "test_users_v2_table",
+              "Key": {
+                "UserId": { "S" => user_id },
+                "Type": { "S" => "PROFILE" },
+              },
+            },
+          },
+          {
+            "Delete":
+              {
+                "TableName": "test_users_v2_table",
+                "Key": {
+                  "UserId": { "S" => user_id },
+                  "Type": { "S" => "TOKEN#123456" },
+                },
+              },
+          },
+        ],
+      }
     end
 
     before do
       WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
-             .with(body: expected_delete_body,
+             .with(body: expected_delete_body_legacy,
                    headers: { "X-Amz-Target" => "DynamoDB_20120810.DeleteItem" })
              .to_return(status: 200, body: "{}", headers: {})
+
+      WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
+             .with(body: query_body_v2,
+                   headers: { "X-Amz-Target" => "DynamoDB_20120810.Query" })
+             .to_return(status: 200, body: query_response_v2, headers: {})
+
+      WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
+             .with(headers: { "X-Amz-Target" => "DynamoDB_20120810.TransactWriteItems" })
+        .to_return(status: 200, body: "{}", headers: {})
     end
 
-    it "deletes the user from the credentials table" do
+    it "deletes the user from the legacy credentials table" do
       gateway.delete_user(user_id)
 
       expect(WebMock).to have_requested(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
-                           .with(body: expected_delete_body,
+                           .with(body: expected_delete_body_legacy,
                                  headers: { "X-Amz-Target" => "DynamoDB_20120810.DeleteItem" })
+    end
+
+    it "deletes the user from the new credentials table" do
+      gateway.delete_user(user_id)
+
+      expect(WebMock).to have_requested(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
+                           .with(body: query_body_v2,
+                                 headers: { "X-Amz-Target" => "DynamoDB_20120810.Query" })
+
+      expect(WebMock).to have_requested(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
+                           .with(headers: { "X-Amz-Target" => "DynamoDB_20120810.TransactWriteItems" }) { |req|
+                             JSON.parse(req.body)["TransactItems"] == JSON.parse(expected_delete_body_v2.to_json)["TransactItems"]
+                           }
     end
   end
 end

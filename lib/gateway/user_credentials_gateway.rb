@@ -5,8 +5,10 @@ module Gateway
     def initialize(kms_gateway:, dynamo_db_client: nil)
       @kms_gateway = kms_gateway
       table_name = ENV["EPB_DATA_USER_CREDENTIAL_TABLE_NAME"]
+      table_name_v2 = ENV["EPB_DATA_USER_CREDENTIAL_V2_TABLE_NAME"]
       client = dynamo_db_client || get_dynamo_db_client
       @table = Aws::DynamoDB::Table.new(table_name, client:)
+      @table_v2 = Aws::DynamoDB::Table.new(table_name_v2, client:)
     end
 
     def insert_user(one_login_sub:, email:)
@@ -97,9 +99,36 @@ module Gateway
     end
 
     def delete_user(user_id)
+      # Delete from legacy table
       @table.delete_item(
         key: { "UserId" => user_id },
       )
+
+      return unless @table_v2
+
+      # Delete from new table
+      items_to_delete = @table_v2.query(
+        key_condition_expression: "UserId = :user_id",
+        expression_attribute_values: { ":user_id" => user_id },
+      ).items
+
+      items_to_delete.each_slice(25) do |slice|
+        transact_items = slice.map do |row|
+          {
+            delete: {
+              table_name: @table_v2.table_name,
+              key: {
+                "UserId" => row["UserId"],
+                "Type" => row["Type"],
+              },
+            },
+          }
+        end
+
+        @table_v2.client.transact_write_items(
+          transact_items:,
+        )
+      end
     end
 
   private
