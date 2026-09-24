@@ -187,7 +187,7 @@ module Controller
     end
 
     def validate_postcode
-      params["postcode"].strip! unless params["postcode"].nil?
+      params["postcode"] = params["postcode"].encode("UTF-8", invalid: :replace, undef: :replace, replace: "").strip unless params["postcode"].nil?
       return unless params["area-type"] == "postcode" && !(params["postcode"].nil? || params["postcode"].empty?)
 
       begin
