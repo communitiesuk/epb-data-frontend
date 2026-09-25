@@ -21,7 +21,7 @@ module Controller
     set :erb, escape_html: true
     set :public_folder, proc { File.join(root, "/../../public") }
     set :static_cache_control, [:public, { max_age: 60 * 60 * 24 * 7 }] if ENV["ASSETS_VERSION"]
-    set :logger, Logger.new($stdout)
+    set :logger, Logger.new($stdout, level: Logger::DEBUG)
 
     configure :production do
       logger.level = Logger::ERROR
