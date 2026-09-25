@@ -25,6 +25,7 @@ describe Gateway::UserCredentialsGateway do
   end
 
   let(:table_name) { ENV["EPB_DATA_USER_CREDENTIAL_TABLE_NAME"] }
+  let(:table_name_v2) { ENV["EPB_DATA_USER_CREDENTIAL_V2_TABLE_NAME"] }
 
   describe "#insert_user" do
     context "when inserting a new user" do
@@ -616,97 +617,65 @@ describe Gateway::UserCredentialsGateway do
   end
 
   describe "#delete_user" do
-    let(:expected_delete_body_legacy) do
-      {
-        "Key" => {
-          "UserId" => { "S" => user_id },
-        },
-        "TableName" => "test_users_table",
-      }.to_json
-    end
-
-    let(:query_body_v2) do
-      {
-        "KeyConditionExpression": "UserId = :user_id",
-        "ExpressionAttributeValues": {
-          ":user_id": { "S": user_id },
-        },
-        "TableName": "test_users_v2_table",
-      }.to_json
-    end
-
-    let(:query_response_v2) do
-      {
-        "Items" => [
-          { "UserId" => { "S" => user_id }, "Type" => { "S" => "PROFILE" } },
-          { "UserId" => { "S" => user_id }, "Type" => { "S" => "TOKEN#123456" } },
-        ],
-        "Count" => 2,
-      }.to_json
-    end
-
-    let(:expected_delete_body_v2) do
-      {
-        "TransactItems": [
-          {
-            "Delete":
-            {
-              "TableName": "test_users_v2_table",
-              "Key": {
-                "UserId": { "S" => user_id },
-                "Type": { "S" => "PROFILE" },
-              },
-            },
-          },
-          {
-            "Delete":
-              {
-                "TableName": "test_users_v2_table",
-                "Key": {
-                  "UserId": { "S" => user_id },
-                  "Type": { "S" => "TOKEN#123456" },
-                },
-              },
-          },
-        ],
-      }
+    let(:dynamo_db_client) do
+      Aws::DynamoDB::Client.new(
+        stub_responses: true,
+        region: "eu-west-2",
+        credentials: Aws::Credentials.new("fake_access_key_id", "fake_secret_access_key"),
+      )
     end
 
     before do
-      WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
-             .with(body: expected_delete_body_legacy,
-                   headers: { "X-Amz-Target" => "DynamoDB_20120810.DeleteItem" })
-             .to_return(status: 200, body: "{}", headers: {})
-
-      WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
-             .with(body: query_body_v2,
-                   headers: { "X-Amz-Target" => "DynamoDB_20120810.Query" })
-             .to_return(status: 200, body: query_response_v2, headers: {})
-
-      WebMock.stub_request(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
-             .with(headers: { "X-Amz-Target" => "DynamoDB_20120810.TransactWriteItems" })
-        .to_return(status: 200, body: "{}", headers: {})
+      dynamo_db_client.stub_responses(:query, {
+        items: [
+          { "UserId" => user_id, "Type" => "PROFILE" },
+          { "UserId" => user_id, "Type" => "TOKEN#01234" },
+          { "UserId" => user_id, "Type" => "TOKEN#56789" },
+        ],
+      })
     end
 
-    it "deletes the user from the legacy credentials table" do
+    it "deletes the user from the legacy and new credentials table" do
       gateway.delete_user(user_id)
 
-      expect(WebMock).to have_requested(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
-                           .with(body: expected_delete_body_legacy,
-                                 headers: { "X-Amz-Target" => "DynamoDB_20120810.DeleteItem" })
-    end
+      api_requests = dynamo_db_client.api_requests
 
-    it "deletes the user from the new credentials table" do
-      gateway.delete_user(user_id)
+      expect(api_requests.count).to eq(3)
 
-      expect(WebMock).to have_requested(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
-                           .with(body: query_body_v2,
-                                 headers: { "X-Amz-Target" => "DynamoDB_20120810.Query" })
+      delete_request = api_requests[0]
+      expect(delete_request[:params]).to eq({
+        table_name: table_name,
+        key: { "UserId" => { "s": user_id } },
+      })
 
-      expect(WebMock).to have_requested(:post, "https://dynamodb.eu-west-2.amazonaws.com/")
-                           .with(headers: { "X-Amz-Target" => "DynamoDB_20120810.TransactWriteItems" }) { |req|
-                             JSON.parse(req.body)["TransactItems"] == JSON.parse(expected_delete_body_v2.to_json)["TransactItems"]
-                           }
+      query_request = api_requests[1]
+      expect(query_request[:params]).to eq({
+        table_name: table_name_v2,
+        key_condition_expression: "UserId = :user_id",
+        expression_attribute_values: { ":user_id" => { "s": user_id } },
+      })
+
+      transact_request = api_requests[2]
+      expect(transact_request[:params][:transact_items]).to eq([
+        {
+          delete: {
+            table_name: table_name_v2,
+            key: { "UserId" => { "s": user_id }, "Type" => { "s": "PROFILE" } },
+          },
+        },
+        {
+          delete: {
+            table_name: table_name_v2,
+            key: { "UserId" => { "s": user_id }, "Type" => { "s": "TOKEN#01234" } },
+          },
+        },
+        {
+          delete: {
+            table_name: table_name_v2,
+            key: { "UserId" => { "s": user_id }, "Type" => { "s": "TOKEN#56789" } },
+          },
+        },
+      ])
     end
   end
 end
