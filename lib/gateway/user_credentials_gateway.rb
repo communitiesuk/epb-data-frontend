@@ -12,20 +12,61 @@ module Gateway
     end
 
     def insert_user(one_login_sub:, email:)
+      # Legacy insert
       user_id = SecureRandom.uuid
       encrypted_email = @kms_gateway.encrypt(email)
+      bearer_token = SecureRandom.alphanumeric(22)
+      created_at = Time.now.to_s
 
       new_user = {
         "UserId" => user_id,
-        "CreatedAt" => Time.now.to_s,
-        "BearerToken" => SecureRandom.alphanumeric(22),
+        "CreatedAt" => created_at,
+        "BearerToken" => bearer_token,
         "OneLoginSub" => one_login_sub,
         "EmailAddress" => encrypted_email,
         "OptOut" => false,
       }
 
-      @table.put_item(
-        item: new_user,
+      @table.put_item(item: new_user)
+
+      # New table insert
+      profile_row = {
+        "UserId" => user_id,
+        "Type" => "PROFILE",
+        "OneLoginSub" => one_login_sub,
+        "Attributes" => {
+          "CreatedAt" => created_at,
+          "EmailAddress" => encrypted_email,
+          "OptOut" => false,
+        },
+      }
+
+      bearer_row = {
+        "UserId" => user_id,
+        "Type" => "TOKEN##{SecureRandom.uuid}",
+        "BearerToken" => bearer_token,
+        "Attributes" => {
+          "CreatedAt" => created_at,
+        },
+      }
+
+      transact_items = [
+        {
+          put: {
+            table_name: @table_v2.name,
+            item: profile_row,
+          },
+        },
+        {
+          put: {
+            table_name: @table_v2.name,
+            item: bearer_row,
+          },
+        },
+      ]
+
+      @table_v2.client.transact_write_items(
+        transact_items:,
       )
       user_id
     end
@@ -40,6 +81,21 @@ module Gateway
 
       @table.put_item(
         item: updated_user,
+      )
+
+      profile_row = {
+        "UserId" => user_id,
+        "Type" => "PROFILE",
+        "OneLoginSub" => updated_user["OneLoginSub"],
+        "Attributes" => {
+          "CreatedAt" => updated_user["CreatedAt"],
+          "EmailAddress" => encrypted_email,
+          "OptOut" => updated_user["OptOut"],
+        },
+      }
+
+      @table_v2.put_item(
+        item: profile_row,
       )
     end
 
@@ -95,6 +151,21 @@ module Gateway
 
       @table.put_item(
         item: updated_user,
+      )
+
+      profile_row = {
+        "UserId" => user_id,
+        "Type" => "PROFILE",
+        "OneLoginSub" => updated_user["OneLoginSub"],
+        "Attributes" => {
+          "CreatedAt" => updated_user["CreatedAt"],
+          "EmailAddress" => updated_user["EmailAddress"],
+          "OptOut" => updated_user["OptOut"],
+        },
+      }
+
+      @table_v2.put_item(
+        item: profile_row
       )
     end
 
