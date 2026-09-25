@@ -3,6 +3,7 @@ require "i18n"
 require "i18n/backend/fallbacks"
 require "sinatra/base"
 require "sinatra/cookies"
+require "sinatra/custom_logger"
 require_relative "../container"
 require_relative "../helper/toggles"
 
@@ -11,14 +12,16 @@ module Controller
     RESTRICTED_PATHS = %w[/type-of-properties /api/my-account /api/my-account/delete-account /filter-properties /download /download/all /opt-out/name /opt-out/check-your-answers /opt-out/received /opt-out/certificate-details].freeze
     VALID_PROPERTY_TYPES = %w[domestic non-domestic display].freeze
 
-    helpers Helpers
     attr_reader :toggles
+
+    helpers Helpers
+    helpers Sinatra::CustomLogger
 
     set :views, "lib/views"
     set :erb, escape_html: true
     set :public_folder, proc { File.join(root, "/../../public") }
     set :static_cache_control, [:public, { max_age: 60 * 60 * 24 * 7 }] if ENV["ASSETS_VERSION"]
-    set :logger, Logger.new($stdout, level: Logger::DEBUG)
+    set :logger, Logger.new($stdout)
 
     configure :production do
       logger.level = Logger::ERROR
