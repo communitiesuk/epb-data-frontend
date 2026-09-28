@@ -11,6 +11,7 @@ module Controller
   class BaseController < Sinatra::Base
     RESTRICTED_PATHS = %w[/type-of-properties /api/my-account /api/my-account/delete-account /filter-properties /download /download/all /opt-out/name /opt-out/check-your-answers /opt-out/received /opt-out/certificate-details].freeze
     VALID_PROPERTY_TYPES = %w[domestic non-domestic display].freeze
+    HOST_NAME = "get-energy-certificate-data".freeze
 
     attr_reader :toggles
 
@@ -22,23 +23,22 @@ module Controller
     set :public_folder, proc { File.join(root, "/../../public") }
     set :static_cache_control, [:public, { max_age: 60 * 60 * 24 * 7 }] if ENV["ASSETS_VERSION"]
     set :logger, Logger.new($stdout, level: Logger::DEBUG)
+    Helper::Assets.setup_cache_control(self)
 
     configure :production do
       logger.level = Logger::ERROR
     end
 
     configure :development do
+      require "sinatra/reloader"
+      register Sinatra::Reloader
+      also_reload "lib/**/*.rb"
+      set :host_authorization, { permitted_hosts: [] }
       set :show_exceptions, :after_handler
     end
 
     configure :test do
       logger.level = Logger::FATAL
-    end
-
-    get "/" do
-      status 200
-      @allow_indexing = true
-      erb :start_page
     end
 
     def initialize(*args, container: nil)
@@ -47,9 +47,6 @@ module Controller
       @toggles = Helper::Toggles
       @container = container || Container.new
     end
-
-    HOST_NAME = "get-energy-certificate-data".freeze
-    Helper::Assets.setup_cache_control(self)
 
     before do
       set_locale
@@ -69,16 +66,10 @@ module Controller
       redirect login_url, request.post? ? 303 : 302
     end
 
-    configure :development do
-      require "sinatra/reloader"
-      register Sinatra::Reloader
-      also_reload "lib/**/*.rb"
-      set :host_authorization, { permitted_hosts: [] }
-    end
-
-    def show(template, locals, layout = :layout)
-      locals[:errors] = @errors
-      erb template, layout:, locals:
+    get "/" do
+      status 200
+      @allow_indexing = true
+      erb :start_page
     end
 
     not_found do
@@ -97,6 +88,8 @@ module Controller
         "#{t('service_unavailable.title')} – #{t('layout.body.govuk')}"
       erb :service_unavailable
     end
+
+  private
 
     def send_to_sentry(exception)
       was_timeout = exception.is_a?(Errors::RequestTimeoutError)
