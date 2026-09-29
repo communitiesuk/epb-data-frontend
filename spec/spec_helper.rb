@@ -137,6 +137,7 @@ RSpec.configure do |config|
     ],
   )
 
+  config.before { I18n.locale = I18n.default_locale }
   config.before { OauthStub.token }
   config.after { Capybara.reset_sessions! }
 end
