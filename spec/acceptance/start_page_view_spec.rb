@@ -29,6 +29,10 @@ describe "Acceptance::ServiceStartPage", type: :feature do
       it "has the correct MHCLG contact email" do
         expect(response.body).to have_content("mhclg.digital-services@communities.gov.uk")
       end
+
+      it "sets the cache-control header" do
+        expect(response.headers["cache-control"]).to eq "private, must-revalidate, max-age=0"
+      end
     end
   end
 end

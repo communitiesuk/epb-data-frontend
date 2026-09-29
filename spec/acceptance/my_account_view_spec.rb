@@ -42,6 +42,10 @@ describe "Acceptance::MyAccount", type: :feature do
         expect(response.status).to eq(200)
       end
 
+      it "has cache-control no-store" do
+        expect(response.headers["cache-control"]).to eq "no-store"
+      end
+
       it "shows a back link" do
         header "Referer", "/previous_page"
         expect(response.body).to have_link("Back", href: "/previous_page")

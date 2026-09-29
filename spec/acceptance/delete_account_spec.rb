@@ -28,6 +28,10 @@ describe "Acceptance::DeleteAccount", type: :feature do
         expect(last_response.status).to eq(200)
       end
 
+      it "has cache-control no-store" do
+        expect(last_response.headers["cache-control"]).to eq "no-store"
+      end
+
       it "has the correct header" do
         expect(last_response.body).to have_css("h1.govuk-heading-xl", text: "Delete your account")
       end

@@ -7,7 +7,9 @@ describe "Acceptance::EnergyCertificateDataApis", type: :feature do
   describe "get .get-energy-certificate-data.epb-frontend/guidance/energy-certificate-data-apis" do
     let(:response) { get "#{base_url}/guidance/energy-certificate-data-apis" }
 
-    it_behaves_like "when checking the rendering of data passed to a guidance page", path: "/guidance/energy-certificate-data-apis", title: "Energy certificate data APIs", dont_render_guidance: false
+    it_behaves_like "when checking the rendering of data passed to a guidance page", path: "/guidance/energy-certificate-data-apis", title: "Energy certificate data APIs", dont_render_guidance: false do
+      let(:cache_control) { "no-store" }
+    end
 
     context "when user is authenticated" do
       before do

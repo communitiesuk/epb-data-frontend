@@ -2,6 +2,11 @@ module Controller
   class ApiController < Controller::BaseController
     include Helper::ReferrerCheck
 
+    before "/api/*" do
+      # Prevent authenticated pages showing previous content when the back button is pressed
+      cache_control :no_store
+    end
+
     get "/api/my-account/toggle-email-notifications" do
       toggle_email_notifications_use_case = @container.get_object(:toggle_email_notifications_use_case)
       user_id = Helper::Session.get_session_value(session, :user_id)

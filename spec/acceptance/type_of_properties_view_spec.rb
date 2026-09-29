@@ -32,6 +32,10 @@ describe "Acceptance::TypeOfProperties", type: :feature do
         expect(last_response.status).to eq(200)
       end
 
+      it "sets the cache-control header" do
+        expect(last_response.headers["cache-control"]).to eq "private, must-revalidate, max-age=0"
+      end
+
       it "shows a back link" do
         expect(last_response.body).to have_link "Back", href: "/data-access-options"
       end

@@ -91,6 +91,10 @@ describe "Acceptance::FilterProperties", type: :feature do
         expect(response.status).to eq(200)
       end
 
+      it "sets the cache-control header" do
+        expect(response.headers["cache-control"]).to eq "private, must-revalidate, max-age=0"
+      end
+
       it "shows a back link" do
         expect(response.body).to have_link "Back", href: "/type-of-properties"
       end

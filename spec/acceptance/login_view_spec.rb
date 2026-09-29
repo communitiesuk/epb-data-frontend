@@ -178,7 +178,7 @@ describe "Acceptance::Login", type: :feature do
 
         it "passes the validation and redirects" do
           expect(last_response.status).to eq(302)
-          expect(last_response.location).to include "/test-redirect-path?nocache="
+          expect(last_response.location).to include "/test-redirect-path"
         end
 
         it "calls the check_one_login_errors method" do
@@ -211,7 +211,7 @@ describe "Acceptance::Login", type: :feature do
           end
 
           it "uses the query parameters in the redirect" do
-            expect(last_response.location).to include "/filter-properties?property_type=domestic&nocache="
+            expect(last_response.location).to include "/filter-properties?property_type=domestic"
           end
         end
 
@@ -220,8 +220,8 @@ describe "Acceptance::Login", type: :feature do
             get callback_url, { code: "test_code", state: "test_state" }, { "rack.session" => { nonce: "test_nonce", state: "test_state", referer: "download?file=output/323eee63-6c56-4e77-9e36-7699f4cb240.csv" } }
           end
 
-          it "redirects back to the download endpoint with the original file and nocache parameters" do
-            expect(last_response.location).to include "/download?file=output/323eee63-6c56-4e77-9e36-7699f4cb240.csv&nocache="
+          it "redirects back to the download endpoint with the original file parameter" do
+            expect(last_response.location).to include "/download?file=output/323eee63-6c56-4e77-9e36-7699f4cb240.csv"
           end
         end
 
@@ -230,8 +230,8 @@ describe "Acceptance::Login", type: :feature do
             get callback_url, { code: "test_code", state: "test_state" }, { "rack.session" => { nonce: "test_nonce", state: "test_state", referer: "download/all?property_type=domestic" } }
           end
 
-          it "redirects back to the download all endpoint with the original query and nocache parameters" do
-            expect(last_response.location).to include "/download/all?property_type=domestic&nocache="
+          it "redirects back to the download all endpoint with the original query parameter" do
+            expect(last_response.location).to include "/download/all?property_type=domestic"
           end
         end
       end
@@ -255,7 +255,6 @@ describe "Acceptance::Login", type: :feature do
         it "redirects to the type of properties page" do
           redirect_uri = URI(last_response.location)
           expect(redirect_uri.path).to eq("/type-of-properties")
-          expect(redirect_uri.query).to eq("nocache=1750852800")
         end
       end
 
@@ -267,7 +266,6 @@ describe "Acceptance::Login", type: :feature do
         it "redirects to the my account page" do
           redirect_uri = URI(last_response.location)
           expect(redirect_uri.path).to eq("/api/my-account")
-          expect(redirect_uri.query).to eq("nocache=1750852800")
         end
       end
 
@@ -279,7 +277,6 @@ describe "Acceptance::Login", type: :feature do
         it "redirects to the opt-out/name page" do
           redirect_uri = URI(last_response.location)
           expect(redirect_uri.path).to eq("/opt-out/name")
-          expect(redirect_uri.query).to eq("nocache=1750852800")
         end
 
         it "does not generate a user id from dynamo db" do
@@ -295,7 +292,6 @@ describe "Acceptance::Login", type: :feature do
         it "redirects to the guidance/energy-certificate-data-apis page" do
           redirect_uri = URI(last_response.location)
           expect(redirect_uri.path).to eq("/guidance/energy-certificate-data-apis")
-          expect(redirect_uri.query).to eq("nocache=1750852800")
         end
       end
 

@@ -50,6 +50,8 @@ module Controller
 
     before do
       set_locale
+      # This contains authenticated pages: ensure they don't cache
+      cache_control :private, :must_revalidate, max_age: 0
       if is_restricted?
         Helper::Session.is_user_authenticated?(session)
       end

@@ -85,8 +85,7 @@ module Controller
         redirect_path = "opt-out/name"
       end
 
-      query_union = redirect_path.include?("?") ? "&" : "?"
-      redirect "/#{redirect_path}#{query_union}nocache=#{Time.now.to_i}"
+      redirect "/#{redirect_path}"
     rescue StandardError => e
       case e
 

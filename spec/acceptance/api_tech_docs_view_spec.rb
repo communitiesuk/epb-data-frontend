@@ -17,6 +17,10 @@ describe "Acceptance::ApiTechnicalDocumentation", type: :feature do
         expect(response.status).to eq(200)
       end
 
+      it "sets the cache-control header" do
+        expect(response.headers["cache-control"]).to eq "private, must-revalidate, max-age=0"
+      end
+
       it "has the correct header" do
         expect(response.body).to have_css("h1", text: "Energy certificate data API documentation")
       end

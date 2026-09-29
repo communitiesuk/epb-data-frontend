@@ -1,10 +1,16 @@
 shared_examples "when checking the rendering of data passed to a guidance page" do |path:, title:, dont_render_guidance: true|
+  let(:cache_control) { "private, must-revalidate, max-age=0" }
+
   context "when rendering #{path}" do
     let(:base_url) { "http://get-energy-performance-data" }
     let(:response) { get "#{base_url}#{path}" }
 
     it "returns status 200" do
       expect(response.status).to eq(200)
+    end
+
+    it "sets the cache-control header" do
+      expect(response.headers["cache-control"]).to eq cache_control
     end
 
     it "shows a back link and redirects to previous page" do
