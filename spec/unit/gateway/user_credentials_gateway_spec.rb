@@ -76,8 +76,7 @@ describe Gateway::UserCredentialsGateway do
         expect(transact_items[1][:put][:table_name]).to eq(table_name_v2)
         expect(transact_items[1][:put][:item]).to eq({
           "UserId" => { s: user_id },
-          "Type" => { s: "TOKEN##{user_id}" }, # Evaluates to user_id due to SecureRandom mock
-          "BearerToken" => { s: bearer },
+          "Type" => { s: "TOKEN##{bearer}" },
           "Attributes" => { m: {
             "CreatedAt" => { s: "2025-06-25 12:32:00 UTC" },
           } },

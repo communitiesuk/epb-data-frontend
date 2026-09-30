@@ -43,8 +43,7 @@ module Gateway
 
       bearer_row = {
         "UserId" => user_id,
-        "Type" => "TOKEN##{SecureRandom.uuid}",
-        "BearerToken" => bearer_token,
+        "Type" => "TOKEN##{bearer_token}",
         "Attributes" => {
           "CreatedAt" => created_at,
         },
