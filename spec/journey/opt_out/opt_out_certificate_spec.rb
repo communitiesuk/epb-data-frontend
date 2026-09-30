@@ -39,8 +39,10 @@ describe "Journey::OptOut::OptOutCertificate", :journey, type: :feature do
         it "redirects back to '/opt-out' page" do
           expect(page).to have_css("h1", text: "Request received")
           page.go_back
-          click_button "Submit request"
           expect(page).to have_css("h1", text: "Opting out an EPC")
+          click_link "Continue"
+          expect(page).to have_css("h1", text: "Why would you like to opt out your EPC?")
+          expect(page).to have_no_checked_field
         end
       end
     end

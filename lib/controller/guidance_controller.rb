@@ -74,7 +74,6 @@ module Controller
 
     get "/guidance/energy-certificate-data-apis" do
       # This page shows the API key so should not be cached
-      cache_control :no_store
       status 200
       @back_link_href = request.referer || "/"
       @page_title = "#{t('energy_certificate_data_apis.title')} – #{t('layout.body.govuk')}"

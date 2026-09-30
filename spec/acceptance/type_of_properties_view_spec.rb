@@ -33,7 +33,7 @@ describe "Acceptance::TypeOfProperties", type: :feature do
       end
 
       it "sets the cache-control header" do
-        expect(last_response.headers["cache-control"]).to eq "private, must-revalidate, max-age=0"
+        expect(last_response.headers["cache-control"]).to eq "no-store"
       end
 
       it "shows a back link" do

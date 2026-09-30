@@ -18,7 +18,7 @@ describe "Acceptance::ApiTechnicalDocumentation", type: :feature do
       end
 
       it "sets the cache-control header" do
-        expect(response.headers["cache-control"]).to eq "private, must-revalidate, max-age=0"
+        expect(response.headers["cache-control"]).to eq "no-store"
       end
 
       it "has the correct header" do
