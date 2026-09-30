@@ -30,10 +30,9 @@ module Gateway
   private
 
     def get_kms_client
-      case ENV["APP_ENV"]
-      when "production"
+      if ENV["APP_ENV"] == "production"
         Aws::KMS::Client.new(region: "eu-west-2", credentials: Aws::ECSCredentials.new)
-      when "development"
+      elsif ENV.fetch("APP_ENV", "development") == "development" && ENV["AWS_KMS_ENDPOINT"]
         Aws::KMS::Client.new(
           region: "eu-west-2",
           endpoint: ENV["AWS_KMS_ENDPOINT"],

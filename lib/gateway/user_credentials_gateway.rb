@@ -215,11 +215,21 @@ module Gateway
 
     def get_dynamo_db_client
       if Aws.config.dig(:dynamodb, :client)
+        # Used to inject a stubbed client in config_test.ru
         Aws.config[:dynamodb][:client]
-      elsif ["test", "development", nil].include?(ENV["APP_ENV"])
-        Aws::DynamoDB::Client.new(stub_responses: true)
-      else
+      elsif ENV["APP_ENV"] == "production"
         Aws::DynamoDB::Client.new(region: "eu-west-2")
+      elsif ENV.fetch("APP_ENV", "development") == "development" && ENV["AWS_ENDPOINT_URL_DYNAMODB"]
+        Aws::DynamoDB::Client.new(
+          endpoint: ENV["AWS_ENDPOINT_URL_DYNAMODB"],
+          region: "eu-west-2",
+          credentials: Aws::Credentials.new(
+            ENV["AWS_ACCESS_KEY_ID"],
+            ENV["AWS_SECRET_ACCESS_KEY"],
+          ),
+        )
+      else
+        Aws::DynamoDB::Client.new(stub_responses: true)
       end
     end
   end
