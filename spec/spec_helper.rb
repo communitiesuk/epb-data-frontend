@@ -178,7 +178,15 @@ RSpec.configure do |config|
   config.before(:all, :journey) do
     process = IO.popen(["rackup", "config_test.ru", "-q", "-o", "127.0.0.1", "-p", "9393", { err: %i[child out] }])
     @process_id = process.pid
-    loop { break if process.readline.include?("Listening on http://127.0.0.1:9393") }
+    output = ""
+    loop do
+      line = process.readline
+      break if line.include?("Listening on http://127.0.0.1:9393")
+
+      output += line
+    end
+  rescue EOFError
+    raise "test server failed to start: #{output}"
   end
 
   config.after(:all, :journey) do
@@ -209,6 +217,7 @@ Capybara.default_driver = :custom_chrome_headless
 Capybara.javascript_driver = :custom_chrome_headless
 Capybara.app_host = "http://localhost:9393"
 
+# TODO: remove when next version of Capybara is released (> 3.40.0)
 # Chrome 134 can thrown
 # Selenium::WebDriver::Error::UnknownError:
 # unknown error: unhandled inspector error: {"code":-32000,"message":"Node with given id does not belong to the document"}
