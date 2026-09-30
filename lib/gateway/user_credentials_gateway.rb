@@ -33,7 +33,7 @@ module Gateway
       profile_row = {
         "UserId" => user_id,
         "Type" => "PROFILE",
-        "OneLoginSub" => one_login_sub,
+        "GSI1_PK" => "ONELOGIN##{one_login_sub}",
         "Attributes" => {
           "CreatedAt" => created_at,
           "EmailAddress" => encrypted_email,
@@ -44,6 +44,7 @@ module Gateway
       bearer_row = {
         "UserId" => user_id,
         "Type" => "TOKEN##{bearer_token}",
+        "GSI1_PK" => "TOKEN##{bearer_token}",
         "Attributes" => {
           "CreatedAt" => created_at,
         },
@@ -85,7 +86,7 @@ module Gateway
       profile_row = {
         "UserId" => user_id,
         "Type" => "PROFILE",
-        "OneLoginSub" => updated_user["OneLoginSub"],
+        "GSI1_PK" => "ONELOGIN##{updated_user['OneLoginSub']}",
         "Attributes" => {
           "CreatedAt" => updated_user["CreatedAt"],
           "EmailAddress" => encrypted_email,
@@ -155,7 +156,7 @@ module Gateway
       profile_row = {
         "UserId" => user_id,
         "Type" => "PROFILE",
-        "OneLoginSub" => updated_user["OneLoginSub"],
+        "GSI1_PK" => "ONELOGIN##{updated_user['OneLoginSub']}",
         "Attributes" => {
           "CreatedAt" => updated_user["CreatedAt"],
           "EmailAddress" => updated_user["EmailAddress"],

@@ -64,7 +64,7 @@ describe Gateway::UserCredentialsGateway do
         expect(transact_items[0][:put][:item]).to eq({
           "UserId" => { s: user_id },
           "Type" => { s: "PROFILE" },
-          "OneLoginSub" => { s: sub_id },
+          "GSI1_PK" => { s: "ONELOGIN##{sub_id}" },
           "Attributes" => { m: {
             "CreatedAt" => { s: "2025-06-25 12:32:00 UTC" },
             "EmailAddress" => { s: "encrypted-email" },
@@ -77,6 +77,7 @@ describe Gateway::UserCredentialsGateway do
         expect(transact_items[1][:put][:item]).to eq({
           "UserId" => { s: user_id },
           "Type" => { s: "TOKEN##{bearer}" },
+          "GSI1_PK" => { s: "TOKEN##{bearer}" },
           "Attributes" => { m: {
             "CreatedAt" => { s: "2025-06-25 12:32:00 UTC" },
           } },
@@ -132,7 +133,7 @@ describe Gateway::UserCredentialsGateway do
         expect(put_requests[1][:params][:item]).to eq({
           "UserId" => { s: user_id },
           "Type" => { s: "PROFILE" },
-          "OneLoginSub" => { s: sub_id },
+          "GSI1_PK" => { s: "ONELOGIN##{sub_id}" },
           "Attributes" => { m: {
             "CreatedAt" => { s: "2025-03-05T11:00:00Z" },
             "EmailAddress" => { s: "encrypted-email" },
@@ -178,7 +179,7 @@ describe Gateway::UserCredentialsGateway do
         expect(put_requests[1][:params][:item]).to eq({
           "UserId" => { s: user_id },
           "Type" => { s: "PROFILE" },
-          "OneLoginSub" => { s: sub_id },
+          "GSI1_PK" => { s: "ONELOGIN##{sub_id}" },
           "Attributes" => { m: {
             "CreatedAt" => { s: "2025-03-05T11:00:00Z" },
             "EmailAddress" => { s: "encrypted-email" },
@@ -408,7 +409,7 @@ describe Gateway::UserCredentialsGateway do
         expect(put_requests[1][:params][:item]).to eq({
           "UserId" => { s: user_id },
           "Type" => { s: "PROFILE" },
-          "OneLoginSub" => { s: sub_id },
+          "GSI1_PK" => { s: "ONELOGIN##{sub_id}" },
           "Attributes" => { m: {
             "CreatedAt" => { s: "2025-03-05T11:00:00Z" },
             "EmailAddress" => { s: "encrypted_email" },
@@ -455,7 +456,7 @@ describe Gateway::UserCredentialsGateway do
         expect(put_requests[1][:params][:item]).to eq({
           "UserId" => { s: user_id },
           "Type" => { s: "PROFILE" },
-          "OneLoginSub" => { s: sub_id },
+          "GSI1_PK" => { s: "ONELOGIN##{sub_id}" },
           "Attributes" => { m: {
             "CreatedAt" => { s: "2025-03-05T11:00:00Z" },
             "EmailAddress" => { s: "encrypted_email" },
