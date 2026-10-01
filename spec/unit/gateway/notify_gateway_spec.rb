@@ -50,14 +50,6 @@ describe Gateway::NotifyGateway do
     }
   end
 
-  let(:check_status_api_response) do
-    {
-      "email_address": email_address,
-      "type": "email",
-      "status": "delivered",
-    }
-  end
-
   before do
     WebMock.stub_request(:post, "https://api.notifications.service.gov.uk/v2/notifications/email")
            .to_return(status: 200, body: send_email_api_response.to_json, headers: {})
@@ -107,54 +99,6 @@ describe Gateway::NotifyGateway do
 
       it "raises an NotifyServerError" do
         expect { gateway.send_opt_out_email(template_id:, destination_email: email_address, **personalisation) }.to raise_error(Errors::NotifyServerError)
-      end
-    end
-  end
-
-  describe "#check_email_status" do
-    before do
-      WebMock.stub_request(:get, "https://api.notifications.service.gov.uk/v2/notifications/#{notification_id}")
-             .to_return(status: 200, body: check_status_api_response.to_json, headers: {})
-    end
-
-    let(:notification_id) do
-      gateway.send_opt_out_email(template_id:, destination_email: email_address, **personalisation)
-    end
-
-    it "confirms delivery status of the email" do
-      expect(gateway.check_email_status(notification_id)).to eq("delivered")
-      expect(WebMock).to have_requested(
-        :get,
-        "https://api.notifications.service.gov.uk/v2/notifications/#{notification_id}",
-      )
-    end
-  end
-
-  describe "#send_email" do
-    context "when Notification service responds successfully with 200" do
-      it "returns the response id" do
-        expect(gateway.send_email(template_id:, email_address:)).to eq("201b576e-c09b-467b-9dfa-9c3b689ee730")
-      end
-
-      it "a message is sent to the nofiy api" do
-        gateway.send_email(template_id:, email_address:)
-        expect(WebMock).to have_requested(
-          :post,
-          "https://api.notifications.service.gov.uk/v2/notifications/email",
-        ).with(
-          body: '{"email_address":"sender@something.com","template_id":"f5d03031-b559-4264-8503-802ee0e78f4c"}',
-        )
-      end
-    end
-
-    context "when the rate limit is reached" do
-      before do
-        WebMock.stub_request(:post, "https://api.notifications.service.gov.uk/v2/notifications/email")
-               .to_return(status: 429, body: "exceeded rate limit for key type TEAM of 10 requests per 10 seconds", headers: {})
-      end
-
-      it "re-raises the rate limit error" do
-        expect { gateway.send_email(template_id:, email_address:) }.to raise_error Errors::NotifyRateLimit
       end
     end
   end

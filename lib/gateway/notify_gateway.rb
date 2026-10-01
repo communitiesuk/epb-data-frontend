@@ -26,23 +26,5 @@ module Gateway
     rescue Notifications::Client::ServerError
       raise Errors::NotifyServerError
     end
-
-    def send_email(template_id:, email_address:)
-      response = @client.send_email(
-        email_address:,
-        template_id:,
-      )
-      response.id
-    rescue Notifications::Client::BadRequestError, Notifications::Client::AuthError => e
-      raise Errors::NotifySendEmailError, e.message
-    rescue Notifications::Client::RateLimitError
-      raise Errors::NotifyRateLimit
-    rescue Notifications::Client::ServerError
-      raise Errors::NotifyServerError
-    end
-
-    def check_email_status(notification_id)
-      @client.get_notification(notification_id).status
-    end
   end
 end
