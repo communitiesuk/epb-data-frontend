@@ -95,6 +95,8 @@ module Controller
         status 404
       when Errors::SessionEmailError
         redirect "/signed-out"
+      when Errors::MissingDownloadCount
+        redirect "/filter-properties?property_type=#{property_type}"
       else
         server_error(e)
       end

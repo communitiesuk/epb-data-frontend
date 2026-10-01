@@ -147,8 +147,9 @@ describe "Acceptance::RequestReceivedConfirmation", type: :feature do
         get "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}"
       end
 
-      it "returns status 500" do
-        expect(last_response.status).to eq(500)
+      it "redirects to /filter-properties" do
+        expect(last_response.status).to eq(302)
+        expect(last_response.headers["Location"]).to eq "http://get-energy-performance-data/filter-properties?property_type=domestic"
       end
 
       it "raises MissingDownloadCount error" do
