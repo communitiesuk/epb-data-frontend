@@ -135,17 +135,18 @@ module Controller
     end
 
     get "/sign-out" do
-      host_url = "#{ENV['ONELOGIN_HOST_URL']}/logout"
-      frontend_url = "#{request.scheme}://#{request.host_with_port}"
-      redirect_uri = "#{frontend_url}/signed-out"
+      return redirect "/signed-out" unless Helper::Session.is_logged_in?(session)
 
-      query_string = URI.encode_www_form({
-        id_token_hint: Helper::Session.get_session_value(session, :id_token),
-        post_logout_redirect_uri: redirect_uri,
-      })
+      id_token_hint = Helper::Session.get_session_value(session, :id_token)
+      host_url = URI("#{ENV['ONELOGIN_HOST_URL']}/logout")
+      post_logout_redirect_uri = uri("/signed-out")
+
+      host_url.query = URI.encode_www_form(id_token_hint:, post_logout_redirect_uri:)
       Helper::Session.clear_session(session)
-      redirect "#{host_url}?#{query_string}"
+      redirect host_url.to_s
     end
+
+  private
 
     def validate_one_login_callback
       received_state = params[:state]

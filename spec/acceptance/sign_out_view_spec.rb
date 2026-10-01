@@ -36,18 +36,18 @@ describe "Acceptance::SignOut", type: :feature do
       "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzcyI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg"
     end
 
-    before do
-      allow(Helper::Session).to receive(:get_session_value).and_return(id_token)
-      allow(Helper::Session).to receive(:clear_session)
-      get "#{local_host}/sign-out"
-    end
-
-    context "when the request is received" do
-      it "returns status 302" do
-        expect(last_response.status).to eq(302)
+    context "with a session" do
+      before do
+        get "#{local_host}/sign-out", {}, {
+          "rack.session" => {
+            id_token:,
+            email_address: "test@example.com",
+          },
+        }
       end
 
       it "redirects to the OneLogin authorization URL with the correct host and path" do
+        expect(last_response.status).to eq(302)
         uri = URI(last_response.headers["Location"])
         expect(uri.host).to eq(ENV["ONELOGIN_HOST_URL"].gsub("https://", ""))
         expect(uri.path).to eq("/logout")
@@ -61,7 +61,18 @@ describe "Acceptance::SignOut", type: :feature do
       end
 
       it "clear the session" do
-        expect(Helper::Session).to have_received(:clear_session)
+        expect(last_request.env["rack.session"]).not_to include "id_token"
+      end
+    end
+
+    context "without a session" do
+      before do
+        get "#{local_host}/sign-out"
+      end
+
+      it "redirects to the signed out page" do
+        expect(last_response.status).to eq(302)
+        expect(last_response.headers["Location"]).to eq "http://get-energy-performance-data/signed-out"
       end
     end
   end
