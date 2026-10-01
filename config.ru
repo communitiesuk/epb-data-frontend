@@ -64,7 +64,6 @@ end
 ENV['SCRIPT_NONCE'] = SecureRandom.random_number(16**10).to_s(16).rjust(10, '0') if ENV['SCRIPT_NONCE'].nil?
 ENV["GTM_PROPERTY_FINDING"] = "G-H8EVD5HY3G"
 ENV["enable-csrf"] = "true"
-ENV["ALG"] = "RS256"
 
 one_login_signin_url = ENV['STAGE'] == 'production' ? "https://signin.account.gov.uk" : "https://signin.integration.account.gov.uk"
 

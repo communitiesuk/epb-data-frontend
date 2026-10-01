@@ -33,7 +33,8 @@ module Helper
       private_key = extract_private_key(tls_keys)
       kid = extract_kid(tls_keys)
 
-      JWT.encode(jwt_body, private_key, ENV["ALG"], { kid: kid })
+      # The algorithm is set in the one login admin tool
+      JWT.encode(jwt_body, private_key, "RS256", { kid: kid })
     rescue Errors::MissingEnvVariable
       raise
     rescue StandardError => e

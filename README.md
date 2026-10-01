@@ -213,12 +213,6 @@ A JSON formatted object with the following keys:
 - private_key
 - public_key
 
-#### `ALG`
-
-The algorithm used to sign the gov.uk one login authorize requests.
-
-Either "RS256" or "ES256". Must match the setting in the One Login admin tool.
-
 #### `PUBLISHED_DWH_API_URL`
 
 The public URL of the data-warehouse API.
