@@ -6,20 +6,6 @@ require "uri"
 require "ostruct"
 
 module Helpers
-  def get_subdomain_host(subdomain)
-    current_url = request.url
-
-    return "http://#{subdomain}.local.gov.uk:9393" if settings.development?
-
-    if current_url.include?("integration")
-      "https://#{subdomain}-integration.digital.communities.gov.uk"
-    elsif current_url.include?("staging")
-      "https://#{subdomain}-staging.digital.communities.gov.uk"
-    else
-      "https://#{subdomain}.service.gov.uk"
-    end
-  end
-
   def setup_locales
     I18n.load_path = Dir[File.join(settings.root, "/../../locales", "*.yml")]
     I18n.enforce_available_locales = true
@@ -142,11 +128,6 @@ module Helpers
 
   def root_page_url
     localised_url "/"
-  end
-
-  def get_service_root_page_url
-    root_url = static_start_page_for_service is_finding_service: false
-    !root_url.nil? && !root_url.empty? ? root_url : localised_url("#{get_subdomain_host('getting-new-energy-certificate')}/")
   end
 
   def cookie_consent?
