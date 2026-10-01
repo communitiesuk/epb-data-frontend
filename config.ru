@@ -63,7 +63,6 @@ end
 # setting Content-Security-Policy header (@see https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)
 ENV['SCRIPT_NONCE'] = SecureRandom.random_number(16**10).to_s(16).rjust(10, '0') if ENV['SCRIPT_NONCE'].nil?
 ENV["GTM_PROPERTY_FINDING"] = "G-H8EVD5HY3G"
-ENV["enable-csrf"] = "true"
 
 one_login_signin_url = ENV['STAGE'] == 'production' ? "https://signin.account.gov.uk" : "https://signin.integration.account.gov.uk"
 

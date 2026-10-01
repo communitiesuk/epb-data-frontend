@@ -19,10 +19,10 @@ class FrontendService < Controller::BaseController
 
   use Controller::HomeController
 
-  if ENV["enable-csrf"]
+  unless ENV["APP_ENV"] == "test"
     use Rack::Protection::AuthenticityToken
-    use Rack::Protection::RemoteReferrer
   end
+  use Rack::Protection::RemoteReferrer
   use Controller::CookieController
   use Controller::DataAccessController
   use Controller::PropertyTypeController

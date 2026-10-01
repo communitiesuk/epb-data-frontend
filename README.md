@@ -112,11 +112,6 @@ The nonce used by the Content-Security-Policy to protect against XSS attacks.
 
 The secret uses to sign the session cookie and prevent cookie tampering.
 
-#### `enable-csrf`
-
-Enables the `Rack::Protection::RemoteReferrer` and `Rack::Protection::AuthenticityToken` modules.
-This is always enabled except in "test".
-
 #### `AWS_S3_USER_DATA_BUCKET_NAME`
 
 The AWS S3 bucket containing the generated CSVs for user download.
