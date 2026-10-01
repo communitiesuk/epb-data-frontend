@@ -34,7 +34,6 @@ module Controller
     end
 
     get "/api/my-account/delete-account" do
-      status 200
       @back_link_href = request.referer || "/api/my-account"
       @page_title = "#{t('delete_account.title')} – #{t('layout.body.govuk')}"
       erb :delete_account
@@ -43,21 +42,21 @@ module Controller
     end
 
     post "/api/my-account/delete-account" do
-      user_id = Helper::Session.get_session_value(session, :user_id)
-      unless user_id.nil?
-        use_case = @container.get_object(:delete_user_use_case)
-        use_case.execute(user_id)
-      end
-
-      Helper::Session.clear_session(session)
-      redirect "/account-deleted"
+      id_token_hint = session["id_token"]
+      @container.get_object(:delete_user_use_case).execute(id_token_hint)
+      session.clear
+      state = SecureRandom.uuid
+      session["delete_state"] = state
+      post_logout_redirect_uri = uri("/account-deleted")
+      redirect Helper::Onelogin.sign_out_url(id_token_hint:, post_logout_redirect_uri:, state:)
     rescue StandardError => e
       server_error(e)
     end
 
     get "/account-deleted" do
-      check_referral("/api/my-account/delete-account")
-      status 200
+      return redirect "/" unless params["state"] == session["delete_state"]
+
+      session.clear
       @page_title = "#{t('delete_account.account_deleted')} – #{t('layout.body.govuk')}"
       erb :account_deleted
     rescue StandardError => e

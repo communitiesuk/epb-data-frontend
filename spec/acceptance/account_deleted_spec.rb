@@ -18,10 +18,9 @@ describe "Acceptance::AccountDeleted", type: :feature do
   end
 
   describe "get /account-deleted" do
-    context "when accessed via the correct referrer" do
+    context "when accessed with a matching state" do
       before do
-        header "Referer", "#{local_host}/api/my-account/delete-account"
-        get "#{local_host}/account-deleted"
+        get "#{local_host}/account-deleted", { state: "123" }, { "rack.session" => { delete_state: "123" } }
       end
 
       it "returns status 200" do
@@ -39,15 +38,31 @@ describe "Acceptance::AccountDeleted", type: :feature do
       it "does not have a back link to the account page" do
         expect(last_response.body).not_to have_css("a.govuk-back-link")
       end
+
+      it "clears the session" do
+        expect(last_request.env["rack.session"]).to be_empty
+      end
     end
 
-    context "when accessed without a valid referrer" do
+    context "when accessed with non-matching state" do
       before do
-        get "#{local_host}/account-deleted"
+        get "#{local_host}/account-deleted", { state: "123" }, { "rack.session" => { delete_state: "xxx" } }
       end
 
-      it "returns 403 forbidden" do
-        expect(last_response.status).to eq(403)
+      it "returns a redirect to home" do
+        expect(last_response.status).to eq 302
+        expect(last_response.headers["Location"]).to eq "http://get-energy-performance-data/"
+      end
+    end
+
+    context "when accessed with no state" do
+      before do
+        get "#{local_host}/account-deleted", { state: "123" }
+      end
+
+      it "returns a redirect to home" do
+        expect(last_response.status).to eq 302
+        expect(last_response.headers["Location"]).to eq "http://get-energy-performance-data/"
       end
     end
   end
