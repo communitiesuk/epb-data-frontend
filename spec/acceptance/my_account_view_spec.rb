@@ -89,8 +89,6 @@ describe "Acceptance::MyAccount", type: :feature do
     context "when the user is not authenticated" do
       before { allow(Helper::Session).to receive(:is_user_authenticated?).and_raise(Errors::AuthenticationError, "User is not authenticated") }
 
-      after { allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true) }
-
       it "redirects to the OneLogin login page" do
         expect(response).to be_redirect
         expect(response.location).to eq("http://get-energy-performance-data/login/authorize?referer=api%2Fmy-account")
@@ -107,6 +105,15 @@ describe "Acceptance::MyAccount", type: :feature do
       it "redirects to the my-account page" do
         expect(response).to be_redirect
         expect(response.location).to eq("http://get-energy-performance-data/api/my-account")
+      end
+
+      context "when the user is not authenticated" do
+        before { allow(Helper::Session).to receive(:is_user_authenticated?).and_raise(Errors::AuthenticationError, "User is not authenticated") }
+
+        it "redirects to the OneLogin login page" do
+          expect(response).to be_redirect
+          expect(response.location).to eq("http://get-energy-performance-data/login/authorize?referer=api%2Fmy-account%2Ftoggle-email-notifications")
+        end
       end
     end
   end

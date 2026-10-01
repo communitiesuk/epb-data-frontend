@@ -9,7 +9,19 @@ require_relative "../helper/toggles"
 
 module Controller
   class BaseController < Sinatra::Base
-    RESTRICTED_PATHS = %w[/type-of-properties /api/my-account /api/my-account/delete-account /filter-properties /download /download/all /opt-out/name /opt-out/check-your-answers /opt-out/received /opt-out/certificate-details].freeze
+    RESTRICTED_PATHS = %w[
+      /api/my-account
+      /api/my-account/delete-account
+      /api/my-account/toggle-email-notifications
+      /download
+      /download/all
+      /filter-properties
+      /opt-out/certificate-details
+      /opt-out/check-your-answers
+      /opt-out/name
+      /opt-out/received
+      /type-of-properties
+    ].freeze
     VALID_PROPERTY_TYPES = %w[domestic non-domestic display].freeze
     HOST_NAME = "get-energy-certificate-data".freeze
 
