@@ -1,13 +1,7 @@
 # frozen_string_literal: true
 
 module Errors
-  class AuthTokenMissing < RuntimeError
-  end
-
   class ApiError < RuntimeError
-  end
-
-  class ConfigurationError < RuntimeError
   end
 
   class NonJsonResponseError < ApiError
@@ -17,9 +11,6 @@ module Errors
   end
 
   class MalformedErrorResponseError < ApiError
-  end
-
-  class UnknownErrorResponseError < ApiError
   end
 
   class ConnectionApiError < ApiError
@@ -58,36 +49,13 @@ module Errors
   class FilteredDataNotFound < RuntimeError
   end
 
-  class MissingEnvVariable < RuntimeError
-    def initialize(env_variable)
-      @env_variable = env_variable
-      super("Environment variable '#{env_variable}' is missing.")
-    end
-  end
-
-  class InvalidCsvKey < RuntimeError
-    def initialize(csv_key, file_name)
-      @csv_key = csv_key
-      @file_name = file_name
-      super("Invalid key: '#{csv_key}' in the the #{file_name}. Remove this key from the csv.")
-    end
-  end
-
   class OneloginSigningError < RuntimeError
   end
 
   class AuthenticationError < RuntimeError
-    def initialize(message)
-      @message = message
-      super(message)
-    end
   end
 
   class ValidationError < RuntimeError
-    def initialize(message)
-      @message = message
-      super(message)
-    end
   end
 
   class StateMismatch < AuthenticationError
@@ -129,9 +97,6 @@ module Errors
   class NotifyServerError < RuntimeError
   end
 
-  class NotifyRateLimit < RuntimeError
-  end
-
   class KmsEncryptionError < RuntimeError
   end
 
@@ -139,9 +104,6 @@ module Errors
   end
 
   class SessionEmailError < RuntimeError
-  end
-
-  class SendEmailToUsersError < RuntimeError
   end
 
   class MissingReferrerError < RuntimeError

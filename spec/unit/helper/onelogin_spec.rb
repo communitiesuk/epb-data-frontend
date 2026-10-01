@@ -55,18 +55,22 @@ describe Helper::Onelogin, type: :helper do
       expect(signature).not_to be_nil
     end
 
-    it "raises an error if ONELOGIN_TLS_KEYS is missing" do
-      env_var = ENV["ONELOGIN_TLS_KEYS"]
-      ENV.delete("ONELOGIN_TLS_KEYS")
-
-      expect { helper.sign_jwt(request) }.to raise_error(Errors::MissingEnvVariable)
-
-      ENV["ONELOGIN_TLS_KEYS"] = env_var
-    end
-
     it "raises an error if signing fails" do
       allow(OpenSSL::PKey::RSA).to receive(:new).and_raise(StandardError, "Test error")
       expect { described_class.sign_jwt(request) }.to raise_error(Errors::OneloginSigningError, /Failed to sign request: Test error/)
+    end
+
+    context "with a missing ENV" do
+      around do |scenario|
+        env_var = ENV["ONELOGIN_TLS_KEYS"]
+        ENV.delete("ONELOGIN_TLS_KEYS")
+        scenario.call
+        ENV["ONELOGIN_TLS_KEYS"] = env_var
+      end
+
+      it "raises an error" do
+        expect { helper.sign_jwt(request) }.to raise_error(KeyError)
+      end
     end
   end
 

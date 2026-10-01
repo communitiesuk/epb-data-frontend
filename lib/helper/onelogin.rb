@@ -27,15 +27,13 @@ module Helper
     end
 
     def self.sign_jwt(jwt_body)
-      raise Errors::MissingEnvVariable, "ONELOGIN_TLS_KEYS" if ENV["ONELOGIN_TLS_KEYS"].nil? || ENV["ONELOGIN_TLS_KEYS"].empty?
-
-      tls_keys = ENV["ONELOGIN_TLS_KEYS"]
+      tls_keys = ENV.fetch("ONELOGIN_TLS_KEYS")
       private_key = extract_private_key(tls_keys)
       kid = extract_kid(tls_keys)
 
       # The algorithm is set in the one login admin tool
       JWT.encode(jwt_body, private_key, "RS256", { kid: kid })
-    rescue Errors::MissingEnvVariable
+    rescue KeyError
       raise
     rescue StandardError => e
       raise Errors::OneloginSigningError, "Failed to sign request: #{e.message}"
