@@ -27,7 +27,7 @@ module Helper
     }.freeze
 
     def self.add_options_for_google_analytics(base_options)
-      return base_options unless ENV["GTM_PROPERTY_FINDING"] || ENV["GTM_PROPERTY_GETTING"]
+      return base_options unless ENV["GTM_PROPERTY_FINDING"]
 
       DIRECTIVES.each_value do |directive_group|
         directive_group.each do |directive, policy|
