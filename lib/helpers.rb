@@ -33,33 +33,6 @@ module Helpers
     ENV["SCRIPT_NONCE"]
   end
 
-  def party_disclosure(
-    code,
-    string,
-    code_prefix = "disclosure_code",
-    _certificate_prefix = "domestic_epc"
-  )
-    translation_errored = false
-    begin
-      text = t(code_prefix + ".#{code}.relation", raise: true)
-    rescue I18n::MissingTranslationData
-      translation_errored = true
-    end
-    if translation_errored
-      text = string
-      if text.nil? || text.strip.empty?
-        text =
-          if code
-            t("data_missing.disclosure_number_not_valid")
-          else
-            t("data_missing.no_disclosure")
-          end
-      end
-    end
-
-    text
-  end
-
   def localised_url(url)
     if I18n.locale != I18n.available_locales[0]
       url += (url.include?("?") ? "&" : "?")
@@ -67,24 +40,6 @@ module Helpers
     end
 
     url
-  end
-
-  def filter_query_params(url, *filtered_params)
-    begin
-      uri = URI.parse url
-    rescue URI::InvalidURIError
-      return url.split("?").first # chances are it isn't important to retain query params that we aren't choosing to filter out
-    end
-    filtered_query_params = if uri.query
-                              uri.query.split("&").each_with_object({}) do |pair, hash|
-                                key, val = pair.split("=")
-                                hash[key.to_sym] = val unless filtered_params.include?(key.to_sym)
-                              end
-                            else
-                              {}
-                            end
-    uri.query = filtered_query_params.empty? ? nil : URI.encode_www_form(filtered_query_params)
-    uri.to_s
   end
 
   def assets_path(path)
@@ -97,25 +52,6 @@ module Helpers
 
   def data_uri_svg(path)
     Helper::Assets.data_uri_svg path
-  end
-
-  def date(date)
-    parsed_date =
-      (date.is_a?(Date) ? date : Date.parse(date)).strftime "%-d %B %Y"
-
-    if I18n.locale.to_s == "cy"
-      WELSH_MONTHS.each do |english_month, welsh_month|
-        parsed_date.gsub!(english_month, welsh_month)
-      end
-    end
-
-    parsed_date
-  end
-
-  def first_word_downcase(word)
-    letter_array = word.split(" ")
-    letter_array[0] = letter_array[0].downcase
-    letter_array.join(" ")
   end
 
   def get_gov_header
