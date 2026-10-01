@@ -137,13 +137,10 @@ module Controller
     get "/sign-out" do
       return redirect "/signed-out" unless Helper::Session.is_logged_in?(session)
 
-      id_token_hint = Helper::Session.get_session_value(session, :id_token)
-      host_url = URI("#{ENV['ONELOGIN_HOST_URL']}/logout")
+      id_token_hint = session["id_token"]
       post_logout_redirect_uri = uri("/signed-out")
-
-      host_url.query = URI.encode_www_form(id_token_hint:, post_logout_redirect_uri:)
-      Helper::Session.clear_session(session)
-      redirect host_url.to_s
+      session.clear
+      redirect Helper::Onelogin.sign_out_url(id_token_hint:, post_logout_redirect_uri:)
     end
 
   private

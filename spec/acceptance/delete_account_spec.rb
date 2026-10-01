@@ -20,8 +20,12 @@ describe "Acceptance::DeleteAccount", type: :feature do
   describe "get /api/my-account/delete-account" do
     context "when the user is authenticated" do
       before do
-        allow(Helper::Session).to receive(:get_session_value).and_return("test-user-id")
-        get "#{local_host}/api/my-account/delete-account"
+        get "/api/my-account/delete-account", {}, {
+          "rack.session" => {
+            id_token: "test-user-id",
+            email_address: "test@example.com",
+          },
+        }
       end
 
       it "returns status 200" do
@@ -67,24 +71,29 @@ describe "Acceptance::DeleteAccount", type: :feature do
   describe "post /api/my-account/delete-account" do
     context "when the user is authenticated" do
       before do
-        allow(Helper::Session).to receive(:get_session_value).and_return("test-user-id")
         allow(delete_user_use_case).to receive(:execute)
-        allow(Helper::Session).to receive(:clear_session)
 
-        post "#{local_host}/api/my-account/delete-account"
+        post "/api/my-account/delete-account", {}, {
+          "rack.session" => {
+            id_token: "test-user-id",
+            email_address: "test@example.com",
+          },
+        }
       end
 
-      it "redirects to account-deleted" do
+      it "redirects to gov.uk one login sign-out" do
         expect(last_response.status).to eq(302)
-        expect(last_response.headers["Location"]).to eq("#{local_host}/account-deleted")
+        delete_state = last_request.env["rack.session"]["delete_state"]
+        expect(delete_state).not_to be_nil
+        expect(last_response.headers["Location"]).to match "https://oidc.integration.account.gov.uk/logout?id_token_hint=test-user-id&post_logout_redirect_uri=http%3A%2F%2Fexample.org%2Faccount-deleted&state=#{delete_state}"
       end
 
       it "calls the delete use case" do
         expect(delete_user_use_case).to have_received(:execute).with("test-user-id")
       end
 
-      it "clears the session" do
-        expect(Helper::Session).to have_received(:clear_session)
+      it "replaces the state" do
+        expect(last_request.env["rack.session"].keys).to eq %w[delete_state]
       end
     end
 
