@@ -4,7 +4,7 @@ ruby "3.4.9"
 
 source "https://rubygems.org"
 
-gem "aws-sdk-dynamodb", "~> 1.172"
+gem "aws-sdk-dynamodb", "~> 1.174"
 gem "aws-sdk-kms", "~> 1"
 gem "aws-sdk-s3", "~> 1"
 gem "aws-sdk-sns", "~> 1"
