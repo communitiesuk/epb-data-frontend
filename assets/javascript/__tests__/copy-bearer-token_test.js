@@ -1,13 +1,10 @@
-/* eslint-env jest */
+import { beforeAll, expect, describe, test, jest } from '@jest/globals'
+
 import { copyToClipboard } from '../copy-bearer-token.js'
 
 describe('Copy bearer token', () => {
   beforeAll(() => {
     document.body.innerHTML = '<p id="bearer-token-value">test-text</p>'
-  })
-
-  afterAll(() => {
-    document.body.innerHTML = ''
   })
 
   describe('when a browser supports copying and permissions are granted', () => {
@@ -26,7 +23,7 @@ describe('Copy bearer token', () => {
       copyToClipboard()
     })
 
-    it('should call clipboard.writeText', () => {
+    test('should call clipboard.writeText', () => {
       expect(navigator.clipboard.writeText).toHaveBeenCalled()
     })
   })
@@ -47,7 +44,7 @@ describe('Copy bearer token', () => {
       copyToClipboard()
     })
 
-    it('should call clipboard.writeText', () => {
+    test('should call clipboard.writeText', () => {
       expect(navigator.clipboard.writeText).toHaveBeenCalled()
     })
   })
@@ -67,7 +64,7 @@ describe('Copy bearer token', () => {
       copyToClipboard()
     })
 
-    it('should call document.execCommand with copy', () => {
+    test('should call document.execCommand with copy', () => {
       expect(document.execCommand).toHaveBeenCalledWith('copy')
     })
   })
@@ -87,7 +84,7 @@ describe('Copy bearer token', () => {
       copyToClipboard()
     })
 
-    it('should call document.execCommand with copy', () => {
+    test('should call document.execCommand with copy', () => {
       expect(document.execCommand).toHaveBeenCalledWith('copy')
     })
   })
