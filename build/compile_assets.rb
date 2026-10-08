@@ -29,6 +29,7 @@ def public_target(default)
   default.gsub "/public", "/public/static/#{ENV['ASSETS_VERSION']}"
 end
 
+Dir.glob("./public/*").each { FileUtils.rm_rf(it) }
 FileUtils.mkdir_p(public_target("./public")) unless File.directory?(public_target("./public"))
 
 puts "Building Application SASS files"
