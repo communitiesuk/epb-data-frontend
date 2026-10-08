@@ -44,16 +44,13 @@ FileUtils.copy_entry "./assets/images", public_target("./public/images")
 puts "Copying GOVUKFrontend images"
 FileUtils.copy_entry "./node_modules/govuk-frontend/dist/govuk/assets/images", public_target("./public/images")
 
-puts "Compiling and copying JavaScript"
-unless File.directory?(public_target("./public/javascript"))
-  FileUtils.mkdir(public_target("./public/javascript"))
-end
-
 puts "Copying GOVUKFrontend manifest"
 FileUtils.copy_entry "./node_modules/govuk-frontend/dist/govuk/assets/manifest.json",
                      public_target("./public/manifest.json")
 
-puts "  Copying and GOVUKFrontend js"
+FileUtils.mkdir(public_target("./public/javascript")) unless File.directory?(public_target("./public/javascript"))
+
+puts "Copying GOVUKFrontend js"
 FileUtils.copy(
   [
     "./node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.js",
@@ -63,7 +60,7 @@ FileUtils.copy(
 )
 
 puts "Copying javascript"
-FileUtils.copy_entry "./assets/javascript", public_target("./public/javascript")
+Dir.glob("./assets/javascript/*.{js,mjs}").each { FileUtils.cp(it, public_target("./public/javascript")) }
 
 puts "Copying robots.txt"
 FileUtils.copy_entry "./assets/robots.txt", "./public/robots.txt"
