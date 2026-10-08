@@ -17,11 +17,47 @@ describe Gateway::UserCredentialsGateway do
   let(:bearer) { "abcdefghijklmnopqrstuv" }
   let(:table_name) { ENV.fetch("EPB_DATA_USER_CREDENTIAL_TABLE_NAME", "test_users_table") }
   let(:table_name_v2) { ENV.fetch("EPB_DATA_USER_CREDENTIAL_V2_TABLE_NAME", "test_users_table_v2") }
+  let(:encrypted_email) { "encrypted-email" }
+  let(:created_at) { "2026-07-26 11:45:30 UTC" }
+
+  let(:legacy_response) do
+    {
+      "UserId" => user_id,
+      "OneLoginSub" => sub_id,
+      "BearerToken" => bearer,
+      "CreatedAt" => created_at,
+      "EmailAddress" => encrypted_email,
+      "OptOut" => false,
+    }
+  end
+
+  let(:profile_response) do
+    {
+      "UserId" => user_id,
+      "Type" => "PROFILE",
+      "Attributes" => {
+        "CreatedAt" => created_at,
+        "EmailAddress" => encrypted_email,
+        "OptOut" => false,
+      },
+      "GSI1_PK" => "ONELOGIN##{sub_id}",
+    }
+  end
+
+  let(:token_response) do
+    {
+      "UserId" => user_id,
+      "Type" => "TOKEN##{bearer}",
+      "Attributes" => {
+        "CreatedAt" => created_at,
+      },
+      "GSI1_PK" => "TOKEN##{bearer}",
+    }
+  end
 
   describe "#insert_user" do
     context "when inserting a new user" do
-      let(:encrypted_email) { "encrypted-email" }
-      let(:frozen_time) { Time.utc(2025, 6, 25, 12, 32, 0) }
+      let(:frozen_time) { Time.utc(2026, 7, 26, 11, 45, 30) }
 
       before do
         Timecop.freeze(frozen_time)
@@ -46,8 +82,8 @@ describe Gateway::UserCredentialsGateway do
         expect(put_request[:params][:table_name]).to eq(table_name)
         expect(put_request[:params][:item]).to include(
           "BearerToken" => { s: bearer },
-          "CreatedAt" => { s: "2025-06-25 12:32:00 UTC" },
-          "EmailAddress" => { s: "encrypted-email" },
+          "CreatedAt" => { s: created_at },
+          "EmailAddress" => { s: encrypted_email },
           "OneLoginSub" => { s: sub_id },
           "OptOut" => { bool: false },
           "UserId" => { s: user_id },
@@ -66,8 +102,8 @@ describe Gateway::UserCredentialsGateway do
           "Type" => { s: "PROFILE" },
           "GSI1_PK" => { s: "ONELOGIN##{sub_id}" },
           "Attributes" => { m: {
-            "CreatedAt" => { s: "2025-06-25 12:32:00 UTC" },
-            "EmailAddress" => { s: "encrypted-email" },
+            "CreatedAt" => { s: created_at },
+            "EmailAddress" => { s: encrypted_email },
             "OptOut" => { bool: false },
           } },
         })
@@ -79,7 +115,7 @@ describe Gateway::UserCredentialsGateway do
           "Type" => { s: "TOKEN##{bearer}" },
           "GSI1_PK" => { s: "TOKEN##{bearer}" },
           "Attributes" => { m: {
-            "CreatedAt" => { s: "2025-06-25 12:32:00 UTC" },
+            "CreatedAt" => { s: created_at },
           } },
         })
       end
@@ -92,25 +128,28 @@ describe Gateway::UserCredentialsGateway do
   end
 
   describe "#update_user_email" do
-    let(:encrypted_email) { "encrypted-email" }
-
     before do
       allow(kms_gateway).to receive(:encrypt).with(email).and_return(encrypted_email)
     end
 
-    context "when the user is missing the EmailAddress information" do
+    context "when the user is missing the EmailAddress and OptOut information" do
       before do
-        dynamo_db_client.stub_responses(:get_item, {
-          item: {
-            "UserId" => user_id,
-            "OneLoginSub" => sub_id,
-            "BearerToken" => bearer,
-            "CreatedAt" => "2025-03-05T11:00:00Z",
+        dynamo_db_client.stub_responses(:get_item, [
+          {
+            item: legacy_response.except("EmailAddress", "OptOut"),
           },
-        })
+          {
+            item: profile_response.merge(
+              "Attributes" => {
+                "CreatedAt" => created_at,
+              },
+            ),
+          },
+
+        ])
       end
 
-      it "updates the email in both the legacy and v2 user credentials tables" do
+      it "updates the email and optout in both the legacy and v2 user credentials tables" do
         gateway.update_user_email(user_id: user_id, email: email)
 
         put_requests = dynamo_db_client.api_requests.select { |req| req[:operation_name] == :put_item }
@@ -121,8 +160,8 @@ describe Gateway::UserCredentialsGateway do
         expect(put_requests[0][:params][:table_name]).to eq(table_name)
         expect(put_requests[0][:params][:item]).to eq({
           "BearerToken" => { s: bearer },
-          "CreatedAt" => { s: "2025-03-05T11:00:00Z" },
-          "EmailAddress" => { s: "encrypted-email" },
+          "CreatedAt" => { s: created_at },
+          "EmailAddress" => { s: encrypted_email },
           "OneLoginSub" => { s: sub_id },
           "OptOut" => { bool: false },
           "UserId" => { s: user_id },
@@ -135,54 +174,8 @@ describe Gateway::UserCredentialsGateway do
           "Type" => { s: "PROFILE" },
           "GSI1_PK" => { s: "ONELOGIN##{sub_id}" },
           "Attributes" => { m: {
-            "CreatedAt" => { s: "2025-03-05T11:00:00Z" },
-            "EmailAddress" => { s: "encrypted-email" },
-            "OptOut" => { bool: false },
-          } },
-        })
-      end
-    end
-
-    context "when the user is missing the OptOut information" do
-      before do
-        dynamo_db_client.stub_responses(:get_item, {
-          item: {
-            "UserId" => user_id,
-            "OneLoginSub" => sub_id,
-            "BearerToken" => bearer,
-            "CreatedAt" => "2025-03-05T11:00:00Z",
-            "EmailAddress" => encrypted_email,
-          },
-        })
-      end
-
-      it "updates the OptOut with the default in both user credentials tables" do
-        gateway.update_user_email(user_id: user_id, email: email)
-
-        put_requests = dynamo_db_client.api_requests.select { |req| req[:operation_name] == :put_item }
-
-        expect(put_requests.count).to eq(2)
-
-        # Old table
-        expect(put_requests[0][:params][:table_name]).to eq(table_name)
-        expect(put_requests[0][:params][:item]).to eq({
-          "BearerToken" => { s: bearer },
-          "CreatedAt" => { s: "2025-03-05T11:00:00Z" },
-          "EmailAddress" => { s: "encrypted-email" },
-          "OneLoginSub" => { s: sub_id },
-          "OptOut" => { bool: false },
-          "UserId" => { s: user_id },
-        })
-
-        # New table
-        expect(put_requests[1][:params][:table_name]).to eq(table_name_v2)
-        expect(put_requests[1][:params][:item]).to eq({
-          "UserId" => { s: user_id },
-          "Type" => { s: "PROFILE" },
-          "GSI1_PK" => { s: "ONELOGIN##{sub_id}" },
-          "Attributes" => { m: {
-            "CreatedAt" => { s: "2025-03-05T11:00:00Z" },
-            "EmailAddress" => { s: "encrypted-email" },
+            "CreatedAt" => { s: created_at },
+            "EmailAddress" => { s: encrypted_email },
             "OptOut" => { bool: false },
           } },
         })
@@ -374,16 +367,21 @@ describe Gateway::UserCredentialsGateway do
   describe "#toggle_user_opt_out" do
     context "when toggling user opt-out value for an opted-out user" do
       before do
-        dynamo_db_client.stub_responses(:get_item, {
-          item: {
-            "UserId" => user_id,
-            "OneLoginSub" => sub_id,
-            "BearerToken" => bearer,
-            "CreatedAt" => "2025-03-05T11:00:00Z",
-            "EmailAddress" => "encrypted_email",
-            "OptOut" => true,
+        dynamo_db_client.stub_responses(:get_item, [
+
+          {
+            item: legacy_response.merge({"OptOut" => true}),
           },
-        })
+          {
+            item: profile_response.merge(
+              "Attributes" => {
+                "CreatedAt" => created_at,
+                "EmailAddress" => encrypted_email,
+                "OptOut" => true,
+              },
+            ),
+          }
+        ])
       end
 
       it "updates the user opt-out value with false in both tables" do
@@ -397,8 +395,8 @@ describe Gateway::UserCredentialsGateway do
         expect(put_requests[0][:params][:table_name]).to eq(table_name)
         expect(put_requests[0][:params][:item]).to eq({
           "BearerToken" => { s: bearer },
-          "CreatedAt" => { s: "2025-03-05T11:00:00Z" },
-          "EmailAddress" => { s: "encrypted_email" },
+          "CreatedAt" => { s: created_at },
+          "EmailAddress" => { s: encrypted_email },
           "OneLoginSub" => { s: sub_id },
           "OptOut" => { bool: false },
           "UserId" => { s: user_id },
@@ -411,8 +409,8 @@ describe Gateway::UserCredentialsGateway do
           "Type" => { s: "PROFILE" },
           "GSI1_PK" => { s: "ONELOGIN##{sub_id}" },
           "Attributes" => { m: {
-            "CreatedAt" => { s: "2025-03-05T11:00:00Z" },
-            "EmailAddress" => { s: "encrypted_email" },
+            "CreatedAt" => { s: created_at },
+            "EmailAddress" => { s: encrypted_email },
             "OptOut" => { bool: false },
           } },
         })
@@ -421,16 +419,21 @@ describe Gateway::UserCredentialsGateway do
 
     context "when toggling user opt-out value for an opted-in user" do
       before do
-        dynamo_db_client.stub_responses(:get_item, {
-          item: {
-            "UserId" => user_id,
-            "OneLoginSub" => sub_id,
-            "BearerToken" => bearer,
-            "CreatedAt" => "2025-03-05T11:00:00Z",
-            "EmailAddress" => "encrypted_email",
-            "OptOut" => false,
+        dynamo_db_client.stub_responses(:get_item, [
+          {
+            item: legacy_response,
           },
-        })
+          {
+            item: profile_response.merge(
+              "Attributes" => {
+                "CreatedAt" => created_at,
+                "EmailAddress" => encrypted_email,
+                "OptOut" => false,
+              },
+            ),
+          },
+
+        ])
       end
 
       it "updates the user opt-out value with true in both tables" do
@@ -444,8 +447,8 @@ describe Gateway::UserCredentialsGateway do
         expect(put_requests[0][:params][:table_name]).to eq(table_name)
         expect(put_requests[0][:params][:item]).to eq({
           "BearerToken" => { s: bearer },
-          "CreatedAt" => { s: "2025-03-05T11:00:00Z" },
-          "EmailAddress" => { s: "encrypted_email" },
+          "CreatedAt" => { s: created_at },
+          "EmailAddress" => { s: encrypted_email },
           "OneLoginSub" => { s: sub_id },
           "OptOut" => { bool: true },
           "UserId" => { s: user_id },
@@ -458,8 +461,8 @@ describe Gateway::UserCredentialsGateway do
           "Type" => { s: "PROFILE" },
           "GSI1_PK" => { s: "ONELOGIN##{sub_id}" },
           "Attributes" => { m: {
-            "CreatedAt" => { s: "2025-03-05T11:00:00Z" },
-            "EmailAddress" => { s: "encrypted_email" },
+            "CreatedAt" => { s: created_at },
+            "EmailAddress" => { s: encrypted_email },
             "OptOut" => { bool: true },
           } },
         })

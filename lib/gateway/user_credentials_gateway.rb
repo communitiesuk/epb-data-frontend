@@ -7,8 +7,9 @@ module Gateway
       table_name = ENV["EPB_DATA_USER_CREDENTIAL_TABLE_NAME"]
       table_name_v2 = ENV["EPB_DATA_USER_CREDENTIAL_V2_TABLE_NAME"]
       client = dynamo_db_client || get_dynamo_db_client
-      @table = Aws::DynamoDB::Table.new(table_name, client:)
-      @table_v2 = Aws::DynamoDB::Table.new(table_name_v2, client:)
+      dynamo_resource = Aws::DynamoDB::Resource.new(client: client)
+      @table = dynamo_resource.table(table_name)
+      @table_v2 = dynamo_resource.table(table_name_v2)
     end
 
     def insert_user(one_login_sub:, email:)
