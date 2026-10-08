@@ -4,6 +4,20 @@ describe "Acceptance::EnergyCertificateDataApis", type: :feature do
   include RSpecFrontendServiceMixin
   let(:base_url) { "http://get-energy-performance-data" }
 
+  let(:get_user_info_use_case) do
+    instance_double(UseCase::GetUserInfo)
+  end
+
+  let(:app) do
+    fake_container = instance_double(Container)
+    allow(fake_container).to receive(:get_object).with(:get_user_info_use_case).and_return(get_user_info_use_case)
+
+    Rack::Builder.new do
+      use Rack::Session::Cookie, secret: "test" * 16
+      run Controller::GuidanceController.new(container: fake_container)
+    end
+  end
+
   describe "get .get-energy-certificate-data.epb-frontend/guidance/energy-certificate-data-apis" do
     let(:response) { get "#{base_url}/guidance/energy-certificate-data-apis" }
 
@@ -11,6 +25,7 @@ describe "Acceptance::EnergyCertificateDataApis", type: :feature do
 
     context "when user is authenticated" do
       before do
+        allow(get_user_info_use_case).to receive(:execute).and_return({ bearer_token: "mock_value", opt_out: false })
         allow(Helper::Session).to receive_messages(
           get_session_value: "user_id",
         )
@@ -19,10 +34,6 @@ describe "Acceptance::EnergyCertificateDataApis", type: :feature do
           get_bearer_token: "kfhbks750D0RnC2oKGsoM936wKmtd4ZcoSw489rPo4FDqQ2SYQVtVnQ4PhZ33b46YZPNZXo6r",
           unsubscribed?: false,
         )
-      end
-
-      after do
-        allow(Helper::Session).to receive_messages(is_logged_in?: false)
       end
 
       it "shows the bearer token" do
