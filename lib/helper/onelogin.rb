@@ -79,6 +79,12 @@ module Helper
       onelogin_keys["kid"]
     end
 
+    def self.sign_out_url(id_token_hint:, post_logout_redirect_uri:, state: nil)
+      host_url = URI("#{ENV['ONELOGIN_HOST_URL']}/logout")
+      host_url.query = URI.encode_www_form(id_token_hint:, post_logout_redirect_uri:, state:)
+      host_url.to_s
+    end
+
     private_class_method def self.extract_private_key(tls_keys)
       onelogin_keys = JSON.parse(tls_keys)
       private_key_pem = onelogin_keys["private_key"]
