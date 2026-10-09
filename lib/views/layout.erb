@@ -10,10 +10,7 @@
     <meta name="robots" content="noindex, nofollow">
   <% end %>
   <meta name="google-site-verification" content="3lgiSwUvqRfNZ-lZOvb5S6BPeZYf8uK2YT1yGZqiedE" />
-  <!--[if gt IE 8]><!-->
-  <link href="<%= assets_path('/application.css') %>" media="all" rel="stylesheet"
-        type="text/css">
-  <!--<![endif]-->
+  <link href="<%= assets_path('/application.css') %>" media="all" rel="stylesheet" type="text/css">
 
   <title><%=@page_title || "#{t('layout.head.title')} – #{t('layout.body.govuk')}"%></title>
 
@@ -192,9 +189,9 @@
     </div>
   </div>
 </footer>
-<script type="module" src="<%= assets_path('/javascript/govuk.js') %>" nonce="<%= script_nonce %>"></script>
+<script type="module" src="<%= assets_path('/javascript/govuk-frontend.min.js') %>" nonce="<%= script_nonce %>"></script>
 <script type="module" nonce="<%= script_nonce %>">
-  import { initAll } from '<%= assets_path('/javascript/govuk.js') %>'
+  import { initAll } from '<%= assets_path('/javascript/govuk-frontend.min.js') %>';
   initAll()
 </script>
 </body>
