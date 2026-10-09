@@ -136,16 +136,15 @@ describe Gateway::UserCredentialsGateway do
       before do
         dynamo_db_client.stub_responses(:get_item, [
           {
-            item: legacy_response.except("EmailAddress", "OptOut"),
-          },
-          {
             item: profile_response.merge(
               "Attributes" => {
                 "CreatedAt" => created_at,
               },
             ),
           },
-
+          {
+            item: legacy_response.except("EmailAddress", "OptOut"),
+          },
         ])
       end
 
@@ -186,13 +185,11 @@ describe Gateway::UserCredentialsGateway do
   describe "#get_user" do
     context "when getting an existing user" do
       before do
-        dynamo_db_client.stub_responses(:scan, {
+        dynamo_db_client.stub_responses(:query, {
           items: [
             {
               "UserId" => user_id,
-              "OneLoginSub" => sub_id,
-              "CreatedAt" => Time.now.to_s,
-              "BearerToken" => "the-bearer-token",
+              "GSI1_PK" => "ONELOGIN##{sub_id}",
             },
           ],
           count: 1,
@@ -202,14 +199,14 @@ describe Gateway::UserCredentialsGateway do
       it "returns the UserId" do
         expect(gateway.get_user(sub_id)).to eq(user_id)
 
-        scan_request = dynamo_db_client.api_requests.find { |req| req[:operation_name] == :scan }
-        expect(scan_request[:params][:filter_expression]).to eq("OneLoginSub = :sub")
+        query_request = dynamo_db_client.api_requests.find { |req| req[:operation_name] == :query }
+        expect(query_request[:params][:key_condition_expression]).to eq("GSI1_PK = :sub")
       end
     end
 
     context "when the user does not exist" do
       before do
-        dynamo_db_client.stub_responses(:scan, {
+        dynamo_db_client.stub_responses(:query, {
           items: [],
           count: 0,
         })
@@ -220,49 +217,17 @@ describe Gateway::UserCredentialsGateway do
       end
     end
 
-    context "when getting an existing user and the results are paginated" do
-      before do
-        dynamo_db_client.stub_responses(:scan, [
-          {
-            items: [],
-            count: 0,
-            last_evaluated_key: { "UserId" => "some-other-user-id" },
-          },
-          {
-            items: [
-              {
-                "UserId" => user_id,
-                "OneLoginSub" => sub_id,
-                "CreatedAt" => Time.now.to_s,
-                "BearerToken" => bearer,
-              },
-            ],
-            count: 1,
-          },
-        ])
-      end
-
-      it "returns the UserId from the second page" do
-        expect(gateway.get_user(sub_id)).to eq(user_id)
-      end
-    end
-
     context "when the OneLoginSub is in multiple results" do
       before do
-        dynamo_db_client.stub_responses(:scan, {
+        dynamo_db_client.stub_responses(:query, {
           items: [
-            {
-              "UserId" => user_id,
-              "OneLoginSub" => sub_id,
-              "CreatedAt" => Time.now.to_s,
-              "BearerToken" => bearer,
-            },
-            {
-              "UserId" => "another-user-id",
-              "OneLoginSub" => sub_id,
-              "CreatedAt" => Time.now.to_s,
-              "BearerToken" => "another-bearer-token",
-            },
+            profile_response,
+            profile_response.merge(
+              {
+                "UserId" => "another-user-id",
+
+              },
+            ),
           ],
           count: 2,
         })
@@ -277,13 +242,11 @@ describe Gateway::UserCredentialsGateway do
   describe "#get_user_token" do
     context "when getting a token" do
       before do
-        dynamo_db_client.stub_responses(:get_item, {
-          item: {
-            "UserId" => user_id,
-            "OneLoginSub" => sub_id,
-            "CreatedAt" => Time.now.to_s,
-            "BearerToken" => bearer,
-          },
+        dynamo_db_client.stub_responses(:query, {
+          items: [
+            token_response,
+          ],
+          count: 1,
         })
       end
 
@@ -294,8 +257,9 @@ describe Gateway::UserCredentialsGateway do
 
     context "when the token is missing" do
       before do
-        dynamo_db_client.stub_responses(:get_item, {
-          item: nil,
+        dynamo_db_client.stub_responses(:query, {
+          items: [],
+          count: 0,
         })
       end
 
@@ -310,15 +274,16 @@ describe Gateway::UserCredentialsGateway do
   describe "#get_user_info" do
     context "when getting user info for an opted-out user" do
       before do
-        dynamo_db_client.stub_responses(:get_item, {
-          item: {
-            "UserId" => user_id,
-            "OneLoginSub" => sub_id,
-            "CreatedAt" => Time.now.to_s,
-            "BearerToken" => bearer,
-            "OptOut" => true,
-          },
-        })
+        dynamo_db_client.stub_responses(:query, items: [
+          profile_response.merge(
+            "Attributes" => {
+              "CreatedAt" => created_at,
+              "EmailAddress" => encrypted_email,
+              "OptOut" => true,
+            },
+          ),
+          token_response,
+        ], count: 2)
       end
 
       it "returns the BearerToken and OptOut info" do
@@ -328,14 +293,15 @@ describe Gateway::UserCredentialsGateway do
 
     context "when getting user info for a user missing opt-out value" do
       before do
-        dynamo_db_client.stub_responses(:get_item, {
-          item: {
-            "UserId" => user_id,
-            "OneLoginSub" => sub_id,
-            "CreatedAt" => Time.now.to_s,
-            "BearerToken" => bearer,
-          },
-        })
+        dynamo_db_client.stub_responses(:query, items: [
+          profile_response.merge(
+            "Attributes" => {
+              "CreatedAt" => created_at,
+              "EmailAddress" => encrypted_email,
+            },
+          ),
+          token_response,
+        ], count: 2)
       end
 
       it "returns the BearerToken and expected OptOut info" do
@@ -345,7 +311,10 @@ describe Gateway::UserCredentialsGateway do
 
     context "when the user is missing" do
       before do
-        dynamo_db_client.stub_responses(:get_item, { item: nil })
+        dynamo_db_client.stub_responses(:query, {
+          items: [],
+          count: 0,
+        })
       end
 
       it "raises Errors::UserMissing" do
@@ -362,16 +331,24 @@ describe Gateway::UserCredentialsGateway do
         }.to raise_error(Errors::UserMissing)
       end
     end
+
+    context "when the bearer token is missing" do
+      before do
+        dynamo_db_client.stub_responses(:query, items: [profile_response], count: 1)
+      end
+
+      it "raises Errors::BearerTokenMissing" do
+        expect {
+          gateway.get_user_info(user_id)
+        }.to raise_error(Errors::BearerTokenMissing)
+      end
+    end
   end
 
   describe "#toggle_user_opt_out" do
     context "when toggling user opt-out value for an opted-out user" do
       before do
         dynamo_db_client.stub_responses(:get_item, [
-
-          {
-            item: legacy_response.merge({"OptOut" => true}),
-          },
           {
             item: profile_response.merge(
               "Attributes" => {
@@ -380,7 +357,10 @@ describe Gateway::UserCredentialsGateway do
                 "OptOut" => true,
               },
             ),
-          }
+          },
+          {
+            item: legacy_response.merge({ "OptOut" => true }),
+          },
         ])
       end
 
@@ -421,9 +401,6 @@ describe Gateway::UserCredentialsGateway do
       before do
         dynamo_db_client.stub_responses(:get_item, [
           {
-            item: legacy_response,
-          },
-          {
             item: profile_response.merge(
               "Attributes" => {
                 "CreatedAt" => created_at,
@@ -432,7 +409,9 @@ describe Gateway::UserCredentialsGateway do
               },
             ),
           },
-
+          {
+            item: legacy_response,
+          },
         ])
       end
 
@@ -496,8 +475,8 @@ describe Gateway::UserCredentialsGateway do
       query_request = api_requests[1]
       expect(query_request[:params]).to eq({
         table_name: table_name_v2,
-        key_condition_expression: "UserId = :user_id",
-        expression_attribute_values: { ":user_id" => { s: user_id } },
+        key_condition_expression: "UserId = :pk",
+        expression_attribute_values: { ":pk" => { s: user_id } },
       })
 
       transact_request = api_requests[2]

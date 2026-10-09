@@ -73,100 +73,102 @@ module Gateway
     end
 
     def update_user_email(user_id:, email:)
-      user = @table.get_item(key: { "UserId" => user_id }).item
-      updated_user = user.dup
+      user = @table_v2.get_item(key: { "UserId" => user_id, "Type" => "PROFILE" }).item
+      legacy_user = @table.get_item(key: { "UserId" => user_id }).item
+
+      raise Errors::UserMissing unless user && legacy_user
 
       encrypted_email = @kms_gateway.encrypt(email)
-      updated_user.merge!("EmailAddress" => encrypted_email)
-      updated_user.merge!("OptOut" => false) if updated_user["OptOut"].nil?
+      user["Attributes"].merge!("EmailAddress" => encrypted_email)
+      user["Attributes"].merge!("OptOut" => false) if user["Attributes"].fetch("OptOut", nil).nil?
 
       @table.put_item(
-        item: updated_user,
+        item: {
+          "UserId" => user_id,
+          "CreatedAt" => user["Attributes"]["CreatedAt"],
+          "BearerToken" => legacy_user["BearerToken"],
+          "OneLoginSub" => legacy_user["OneLoginSub"],
+          "EmailAddress" => user["Attributes"]["EmailAddress"],
+          "OptOut" => user["Attributes"]["OptOut"],
+        },
       )
 
-      profile_row = {
-        "UserId" => user_id,
-        "Type" => "PROFILE",
-        "GSI1_PK" => "ONELOGIN##{updated_user['OneLoginSub']}",
-        "Attributes" => {
-          "CreatedAt" => updated_user["CreatedAt"],
-          "EmailAddress" => encrypted_email,
-          "OptOut" => updated_user["OptOut"],
-        },
-      }
-
       @table_v2.put_item(
-        item: profile_row,
+        item: user,
       )
     end
 
     def get_user(one_login_sub)
-      items = []
       params = {
-        filter_expression: "OneLoginSub = :sub",
-        expression_attribute_values: {
-          ":sub" => one_login_sub,
-        },
+        index_name: "GSI1_PK_Index",
+        key_condition_expression: "GSI1_PK = :sub",
+        expression_attribute_values: { ":sub" => "ONELOGIN##{one_login_sub}" },
       }
-
-      scan_all_pages(params) do |page_items|
-        items.concat(page_items)
-      end
-
-      items.count.zero? ? nil : items.first["UserId"]
+      response = @table_v2.query(
+        **params,
+      )
+      response.items.count.zero? ? nil : response.items.first["UserId"]
     end
 
     def get_user_token(user_id)
-      response = @table.get_item(
-        key: {
-          "UserId" => user_id,
+      response = @table_v2.query(
+        key_condition_expression: "UserId = :pk AND begins_with(#t, :sk)",
+        expression_attribute_names: {
+          "#t" => "Type", # Alias for the reserved word
+        },
+        expression_attribute_values: {
+          ":pk" => user_id,
+          ":sk" => "TOKEN",
         },
       )
-      raise Errors::BearerTokenMissing unless response.item
+      raise Errors::BearerTokenMissing unless response.items.any?
 
-      response.item["BearerToken"]
+      response.items.first["Type"].delete_prefix("TOKEN#")
     end
 
     def get_user_info(user_id)
       raise Errors::UserMissing if user_id.nil?
 
-      response = @table.get_item(
-        key: {
-          "UserId" => user_id,
+      response = @table_v2.query(
+        key_condition_expression: "UserId = :pk",
+        expression_attribute_values: {
+          ":pk" => user_id,
         },
       )
-      raise Errors::UserMissing unless response.item
+      profile_item = response.items.find { |item| item["Type"] == "PROFILE" }
+      raise Errors::UserMissing unless profile_item
+
+      token_item = response.items.find { |item| item["Type"]&.start_with?("TOKEN") }
+      raise Errors::BearerTokenMissing unless token_item
 
       {
-        bearer_token: response.item["BearerToken"],
-        opt_out: response.item["OptOut"] || false,
+        bearer_token: token_item["Type"].delete_prefix("TOKEN#"),
+        opt_out: profile_item["Attributes"]["OptOut"] || false,
       }
     end
 
     def toggle_user_opt_out(user_id)
-      user = @table.get_item(key: { "UserId" => user_id }).item
+      user = @table_v2.get_item(key: { "UserId" => user_id, "Type" => "PROFILE" }).item
+      legacy_user = @table.get_item(key: { "UserId" => user_id }).item
 
-      updated_user = user.dup
-      current_opt_out = updated_user["OptOut"] || false
-      updated_user.merge!("OptOut" => !current_opt_out)
+      raise Errors::UserMissing unless user && legacy_user
+
+      current_opt_out = user["Attributes"].fetch("OptOut", false)
+      user["Attributes"].merge!("OptOut" => !current_opt_out)
 
       @table.put_item(
-        item: updated_user,
+        item: {
+          "UserId" => user_id,
+          "CreatedAt" => user["Attributes"]["CreatedAt"],
+          "BearerToken" => legacy_user["BearerToken"],
+          "OneLoginSub" => legacy_user["OneLoginSub"],
+          "EmailAddress" => user["Attributes"]["EmailAddress"],
+          "OptOut" => user["Attributes"]["OptOut"],
+        },
       )
 
-      profile_row = {
-        "UserId" => user_id,
-        "Type" => "PROFILE",
-        "GSI1_PK" => "ONELOGIN##{updated_user['OneLoginSub']}",
-        "Attributes" => {
-          "CreatedAt" => updated_user["CreatedAt"],
-          "EmailAddress" => updated_user["EmailAddress"],
-          "OptOut" => updated_user["OptOut"],
-        },
-      }
-
       @table_v2.put_item(
-        item: profile_row,
+        item: user,
       )
     end
 
@@ -176,19 +178,19 @@ module Gateway
         key: { "UserId" => user_id },
       )
 
-      return unless @table_v2
-
       # Delete from new table
       items_to_delete = @table_v2.query(
-        key_condition_expression: "UserId = :user_id",
-        expression_attribute_values: { ":user_id" => user_id },
+        key_condition_expression: "UserId = :pk",
+        expression_attribute_values: {
+          ":pk" => user_id,
+        },
       ).items
 
       items_to_delete.each_slice(25) do |slice|
         transact_items = slice.map do |row|
           {
             delete: {
-              table_name: @table_v2.table_name,
+              table_name: @table_v2.name,
               key: {
                 "UserId" => row["UserId"],
                 "Type" => row["Type"],
@@ -204,16 +206,6 @@ module Gateway
     end
 
   private
-
-    def scan_all_pages(params)
-      loop do
-        resp = @table.scan(params)
-        yield resp.items
-        break unless resp.last_evaluated_key
-
-        params[:exclusive_start_key] = resp.last_evaluated_key
-      end
-    end
 
     def get_dynamo_db_client
       if Aws.config.dig(:dynamodb, :client)

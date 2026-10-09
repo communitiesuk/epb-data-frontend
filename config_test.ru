@@ -38,35 +38,85 @@ CertificateCountStub.fetch(date_start: "2024-05-01", date_end: default_end_date,
 CertificateCountStub.fetch(date_start: "2012-01-01", date_end: default_end_date, postcode: "LS1 4AP", return_count: 135, property_type: "domestic")
 CertificateCountStub.fetch_any
 
-dynamodb_user = {
-  "UserId" => "user_id",
-  "OneLoginSub" => "sub_abcdef123",
-  "BearerToken" => "token123",
-  "CreatedAt" => "2025-03-05T11:00:00Z",
-  "EmailAddress" => "encrypted-email",
-  "OptOut" => false,
-}
+legacy_response =
+  {
+    "UserId" => "user_id",
+    "OneLoginSub" => "sub_abcdef123",
+    "BearerToken" => "token123",
+    "CreatedAt" => "2025-03-05T11:00:00Z",
+    "EmailAddress" => "encrypted-email",
+    "OptOut" => false,
+  }
+
+profile_response =
+  {
+    "UserId" => "user_id",
+    "Type" => "PROFILE",
+    "Attributes" => {
+      "CreatedAt" => "2025-03-05T11:00:00Z",
+      "EmailAddress" => "encrypted_email",
+      "OptOut" => false,
+    },
+    "GSI1_PK" => "ONELOGIN#sub_abcdef123",
+  }
+
+token_response =
+  {
+    "UserId" => "user_id",
+    "Type" => "TOKEN#token123",
+    "Attributes" => {
+      "CreatedAt" => "2025-03-05T11:00:00Z",
+    },
+    "GSI1_PK" => "TOKEN#token123",
+  }
 
 stubbed_dynamodb_client = Aws::DynamoDB::Client.new(stub_responses: true)
 
 stubbed_dynamodb_client.stub_responses(
   :get_item,
-  lambda { |_context| # ignore params completely
-    { item: dynamodb_user }
+  lambda { |context| # ignore params completely
+    if context.params[:key] == { "UserId" => { s: "user_id" }, "Type" => { s: "PROFILE" } }
+      { item: profile_response }
+    elsif context.params[:key] == { "UserId" => { s: "user_id" } }
+      { item: legacy_response }
+    end
   },
 )
 
+stubbed_dynamodb_client.stub_responses(
+  :query,
+  lambda { |context| # ignore params completely
+    case context.params[:key_condition_expression]
+    when "UserId = :pk"
+      { items: [
+          profile_response,
+          token_response,
+        ],
+        count: 2 }
+    when "UserId = :pk AND begins_with(#t, :sk)"
+      { items: [
+          token_response,
+        ],
+        count: 1 }
+    else
+      { items: [],
+        count: 0 }
+    end
+  },
+)
 stubbed_dynamodb_client.stub_responses(:put_item, lambda { |context|
   # Convert AttributeValue → simple Ruby values
   item = context.params[:item].transform_values do |av|
     case av
     when Hash
-      av[:s] || av[:bool] || av[:n] || (av[:null] && nil)
+      av[:s] || av[:bool] || av[:n] || av[:m] || (av[:null] && nil)
     else
       av
     end
   end
-  dynamodb_user.merge!(item)
+  if item.key?("Type")
+    profile_response.merge!(item)
+  end
   { attributes: {} }
 })
 
