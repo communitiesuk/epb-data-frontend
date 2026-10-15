@@ -26,8 +26,8 @@ describe ViewModels::FilterProperties do
     end
 
     context "when returning a list of years" do
-      it "the first will be 2012" do
-        expect(view_model.years.first).to eq "2012"
+      it "the first will be 2008" do
+        expect(view_model.years.first).to eq "2008"
       end
 
       it "the last will be the current year" do
@@ -40,6 +40,25 @@ describe ViewModels::FilterProperties do
     it "returns the correct list of months" do
       expected_months = %w[January February March April May June July August September October November December]
       expect(view_model.months).to eq(expected_months)
+    end
+  end
+
+  describe "#start_year" do
+    it "returns 2008" do
+      expect(view_model.start_year).to eq("2008")
+    end
+  end
+
+  describe "#start_month" do
+    it "returns the correct start month for each property type" do
+      expect(view_model.start_month("domestic")).to eq("September")
+      expect(view_model.start_month("non-domestic")).to eq("March")
+      expect(view_model.start_month("display")).to eq("January")
+    end
+
+    it "defaults to January when an unknown property type is passed" do
+      expect(view_model.start_month("unknown")).to eq("January")
+      expect(view_model.start_month(nil)).to eq("January")
     end
   end
 

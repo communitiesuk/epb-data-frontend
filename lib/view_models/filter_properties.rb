@@ -35,7 +35,7 @@ module ViewModels
     end
 
     def self.years
-      (2012..Time.now.year).map(&:to_s)
+      (2008..Time.now.year).map(&:to_s)
     end
 
     def self.months
@@ -43,7 +43,20 @@ module ViewModels
     end
 
     def self.start_year
-      "2012"
+      "2008"
+    end
+
+    def self.start_month(property_type)
+      case property_type
+      when "domestic"
+        "September"
+      when "non-domestic"
+        "March"
+      when "display"
+        "January"
+      else
+        "January"
+      end
     end
 
     def self.current_year

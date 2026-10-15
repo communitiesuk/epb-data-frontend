@@ -31,7 +31,7 @@
               <% end %>
               <select class="govuk-select <% if @errors[:date] %> govuk-select--error<% end %>" id="from-month" name="from-month">
                 <% ViewModels::FilterProperties.months.each do |month| %>
-                  <option value="<%= month %>" <%= 'selected' if params["from-month"] ? month == params["from-month"] : month == "January" %>>
+                  <option value="<%= month %>" <%= 'selected' if params["from-month"] ? month == params["from-month"] : month == ViewModels::FilterProperties.start_month(params["property_type"]) %>>
                     <%= month %>
                   </option>
                 <% end %>
