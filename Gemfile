@@ -41,5 +41,5 @@ group :test do
   gem "selenium-webdriver", "~> 4.50.0"
   gem "timecop", "~> 0.9.11"
   gem "webdrivers", "~> 5.2.0"
-  gem "webmock", "~> 3.26"
+  gem "webmock", "~> 3.34"
 end
