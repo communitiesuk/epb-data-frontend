@@ -121,8 +121,8 @@ describe "Acceptance::FilterProperties", type: :feature do
       end
 
       it "selects the correct default year and month in the select with id='from-year'" do
-        expect(response.body).to have_css("select#from-year option[selected]", text: "2012")
-        expect(response.body).to have_css("select#from-month option[selected]", text: "January")
+        expect(response.body).to have_css("select#from-year option[selected]", text: "2008")
+        expect(response.body).to have_css("select#from-month option[selected]", text: "September")
       end
 
       it "selects the correct default year and month in the select with id='to-year'" do
@@ -262,7 +262,7 @@ describe "Acceptance::FilterProperties", type: :feature do
       end
 
       context "when selecting default domestic filters" do
-        let(:default_dates) { "from-month=January&from-year=2012&to-month=#{(Date.today << 1).strftime('%B')}&to-year=#{Date.today.year}" }
+        let(:default_dates) { "from-month=September&from-year=2008&to-month=#{(Date.today << 1).strftime('%B')}&to-year=#{Date.today.year}" }
         let(:default_area) { "postcode=&local-authority[]=Select+all&parliamentary-constituency[]=Select+all" }
         let(:default_eff_rating) { "ratings[]=A&ratings[]=B&ratings[]=C&ratings[]=D&ratings[]=E&ratings[]=F&ratings[]=G" }
         let(:default_filters) { "#{default_dates}&#{default_area}&#{default_eff_rating}" }
@@ -275,7 +275,7 @@ describe "Acceptance::FilterProperties", type: :feature do
       end
 
       context "when selecting default non-domestic filters" do
-        let(:default_dates) { "from-month=January&from-year=2012&to-month=#{(Date.today << 1).strftime('%B')}&to-year=#{Date.today.year}" }
+        let(:default_dates) { "from-month=March&from-year=2008&to-month=#{(Date.today << 1).strftime('%B')}&to-year=#{Date.today.year}" }
         let(:default_area) { "postcode=&local-authority[]=Select+all&parliamentary-constituency[]=Select+all" }
         let(:default_filters) { "#{default_dates}&#{default_area}" }
         let(:valid_response_with_default_filters) { post "#{request_url}?property_type=non-domestic&#{default_filters}" }

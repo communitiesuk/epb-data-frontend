@@ -169,7 +169,7 @@ cy:
       visit: "This data covers England and Wales. For data in Scotland,"
       url: https://www.scottishepcregister.org.uk/
       cta: "visit the Scottish Energy Performance Certificate Register"
-    expired_replaced: "The data includes certificates registered since 2012, which may have expired or been replaced."
+    expired_replaced: "The data includes certificates registered since 2008, which may have expired or been replaced."
     how_to_use:
       heading: "How you can use this service"
       use: "You can use this service to:"
@@ -235,7 +235,7 @@ cy:
       recommendations: "and recommendations"
       property_type: "Energy Performance Certificates and recommendations"
       countries: "England and Wales"
-      date_range: "January 2012 - %{previous_month}"
+      date_range: "%{start_month} %{start_year} - %{previous_month}"
       file_size: "The download will begin immediately once requested. The estimated download size is"
       button_text: "Download all"
     filter_options:

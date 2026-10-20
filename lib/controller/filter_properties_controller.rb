@@ -157,8 +157,8 @@ module Controller
 
     def default_filters?(property_type)
       non_domestic_and_dec_default_filters = {
-        "from-month" => "January",
-        "from-year" => "2012",
+        "from-month" => ViewModels::FilterProperties.start_month(property_type),
+        "from-year" => ViewModels::FilterProperties.start_year,
         "to-month" => ViewModels::FilterProperties.previous_month,
         "to-year" => ViewModels::FilterProperties.current_year,
         "postcode" => "",
