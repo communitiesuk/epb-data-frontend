@@ -120,15 +120,11 @@ The AWS S3 bucket containing the generated CSVs for user download.
 
 AWS SNS topic for requests to generate CSV data/.
 
-#### `EPB_DATA_USER_CREDENTIAL_TABLE_NAME`
-
-The name of the dynamo db table used to store user accounts.
-
 #### `EPB_DATA_USER_CREDENTIAL_V2_TABLE_NAME`
 
 The name of the version 2 dynamo db table used to store user accounts.
 
-This will replace `EPB_DATA_USER_CREDENTIAL_TABLE_NAME`
+This replaced `EPB_DATA_USER_CREDENTIAL_TABLE_NAME`
 
 #### `KMS_KEY_ID`
 

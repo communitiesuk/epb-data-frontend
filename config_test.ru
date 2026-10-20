@@ -38,16 +38,6 @@ CertificateCountStub.fetch(date_start: "2024-05-01", date_end: default_end_date,
 CertificateCountStub.fetch(date_start: "2012-01-01", date_end: default_end_date, postcode: "LS1 4AP", return_count: 135, property_type: "domestic")
 CertificateCountStub.fetch_any
 
-legacy_response =
-  {
-    "UserId" => "user_id",
-    "OneLoginSub" => "sub_abcdef123",
-    "BearerToken" => "token123",
-    "CreatedAt" => "2025-03-05T11:00:00Z",
-    "EmailAddress" => "encrypted-email",
-    "OptOut" => false,
-  }
-
 profile_response =
   {
     "UserId" => "user_id",
@@ -74,11 +64,9 @@ stubbed_dynamodb_client = Aws::DynamoDB::Client.new(stub_responses: true)
 
 stubbed_dynamodb_client.stub_responses(
   :get_item,
-  lambda { |context| # ignore params completely
+  lambda { |context|
     if context.params[:key] == { "UserId" => { s: "user_id" }, "Type" => { s: "PROFILE" } }
       { item: profile_response }
-    elsif context.params[:key] == { "UserId" => { s: "user_id" } }
-      { item: legacy_response }
     end
   },
 )
@@ -166,7 +154,6 @@ ENV["ONELOGIN_HOST_URL"] = "http://localhost:3333"
 ENV["ONELOGIN_CLIENT_ID"] = "test.onelogin.client.id"
 ENV["ONELOGIN_TLS_KEYS"] = OneLoginStub.tls_keys
 ENV["SESSION_SECRET"] = "test_session_secret" * 4
-ENV["EPB_DATA_USER_CREDENTIAL_TABLE_NAME"] = "dynamodb_test_table_name"
 ENV["GTM_PROPERTY_FINDING"] = "G-H8EVD5HY3G"
 ENV["NOTIFY_OPT_OUT_TEMPLATE_ID"] = "f5d03031-b559-4264-8503-802ee0e78f4c"
 ENV["NOTIFY_OPT_OUT_EMAIL_RECIPIENT"] = "opt-outs@example.com"

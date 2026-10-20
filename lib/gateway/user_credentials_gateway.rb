@@ -4,33 +4,18 @@ module Gateway
   class UserCredentialsGateway
     def initialize(kms_gateway:, dynamo_db_client: nil)
       @kms_gateway = kms_gateway
-      table_name = ENV["EPB_DATA_USER_CREDENTIAL_TABLE_NAME"]
       table_name_v2 = ENV["EPB_DATA_USER_CREDENTIAL_V2_TABLE_NAME"]
       client = dynamo_db_client || get_dynamo_db_client
       dynamo_resource = Aws::DynamoDB::Resource.new(client: client)
-      @table = dynamo_resource.table(table_name)
       @table_v2 = dynamo_resource.table(table_name_v2)
     end
 
     def insert_user(one_login_sub:, email:)
-      # Legacy insert
       user_id = SecureRandom.uuid
       encrypted_email = @kms_gateway.encrypt(email)
       bearer_token = SecureRandom.alphanumeric(22)
       created_at = Time.now.to_s
 
-      new_user = {
-        "UserId" => user_id,
-        "CreatedAt" => created_at,
-        "BearerToken" => bearer_token,
-        "OneLoginSub" => one_login_sub,
-        "EmailAddress" => encrypted_email,
-        "OptOut" => false,
-      }
-
-      @table.put_item(item: new_user)
-
-      # New table insert
       profile_row = {
         "UserId" => user_id,
         "Type" => "PROFILE",
@@ -74,24 +59,12 @@ module Gateway
 
     def update_user_email(user_id:, email:)
       user = @table_v2.get_item(key: { "UserId" => user_id, "Type" => "PROFILE" }).item
-      legacy_user = @table.get_item(key: { "UserId" => user_id }).item
 
-      raise Errors::UserMissing unless user && legacy_user
+      raise Errors::UserMissing unless user
 
       encrypted_email = @kms_gateway.encrypt(email)
       user["Attributes"].merge!("EmailAddress" => encrypted_email)
       user["Attributes"].merge!("OptOut" => false) if user["Attributes"].fetch("OptOut", nil).nil?
-
-      @table.put_item(
-        item: {
-          "UserId" => user_id,
-          "CreatedAt" => user["Attributes"]["CreatedAt"],
-          "BearerToken" => legacy_user["BearerToken"],
-          "OneLoginSub" => legacy_user["OneLoginSub"],
-          "EmailAddress" => user["Attributes"]["EmailAddress"],
-          "OptOut" => user["Attributes"]["OptOut"],
-        },
-      )
 
       @table_v2.put_item(
         item: user,
@@ -149,23 +122,11 @@ module Gateway
 
     def toggle_user_opt_out(user_id)
       user = @table_v2.get_item(key: { "UserId" => user_id, "Type" => "PROFILE" }).item
-      legacy_user = @table.get_item(key: { "UserId" => user_id }).item
 
-      raise Errors::UserMissing unless user && legacy_user
+      raise Errors::UserMissing unless user
 
       current_opt_out = user["Attributes"].fetch("OptOut", false)
       user["Attributes"].merge!("OptOut" => !current_opt_out)
-
-      @table.put_item(
-        item: {
-          "UserId" => user_id,
-          "CreatedAt" => user["Attributes"]["CreatedAt"],
-          "BearerToken" => legacy_user["BearerToken"],
-          "OneLoginSub" => legacy_user["OneLoginSub"],
-          "EmailAddress" => user["Attributes"]["EmailAddress"],
-          "OptOut" => user["Attributes"]["OptOut"],
-        },
-      )
 
       @table_v2.put_item(
         item: user,
@@ -173,12 +134,6 @@ module Gateway
     end
 
     def delete_user(user_id)
-      # Delete from legacy table
-      @table.delete_item(
-        key: { "UserId" => user_id },
-      )
-
-      # Delete from new table
       items_to_delete = @table_v2.query(
         key_condition_expression: "UserId = :pk",
         expression_attribute_values: {

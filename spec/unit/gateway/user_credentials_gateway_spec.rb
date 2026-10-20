@@ -15,21 +15,9 @@ describe Gateway::UserCredentialsGateway do
   let(:sub_id) { "mock-sub-id" }
   let(:email) { "test@email.com" }
   let(:bearer) { "abcdefghijklmnopqrstuv" }
-  let(:table_name) { ENV.fetch("EPB_DATA_USER_CREDENTIAL_TABLE_NAME", "test_users_table") }
   let(:table_name_v2) { ENV.fetch("EPB_DATA_USER_CREDENTIAL_V2_TABLE_NAME", "test_users_table_v2") }
   let(:encrypted_email) { "encrypted-email" }
   let(:created_at) { "2026-07-26 11:45:30 UTC" }
-
-  let(:legacy_response) do
-    {
-      "UserId" => user_id,
-      "OneLoginSub" => sub_id,
-      "BearerToken" => bearer,
-      "CreatedAt" => created_at,
-      "EmailAddress" => encrypted_email,
-      "OptOut" => false,
-    }
-  end
 
   let(:profile_response) do
     {
@@ -72,24 +60,10 @@ describe Gateway::UserCredentialsGateway do
         Timecop.return
       end
 
-      it "inserts the user into both tables and returns the userId" do
+      it "inserts the user and returns the userId" do
         expect(gateway.insert_user(one_login_sub: sub_id, email: email)).to eq(user_id)
 
         api_requests = dynamo_db_client.api_requests
-
-        # Old table
-        put_request = api_requests.find { |req| req[:operation_name] == :put_item }
-        expect(put_request[:params][:table_name]).to eq(table_name)
-        expect(put_request[:params][:item]).to include(
-          "BearerToken" => { s: bearer },
-          "CreatedAt" => { s: created_at },
-          "EmailAddress" => { s: encrypted_email },
-          "OneLoginSub" => { s: sub_id },
-          "OptOut" => { bool: false },
-          "UserId" => { s: user_id },
-        )
-
-        # New table
         transact_request = api_requests.find { |req| req[:operation_name] == :transact_write_items }
         transact_items = transact_request[:params][:transact_items]
 
@@ -142,33 +116,18 @@ describe Gateway::UserCredentialsGateway do
               },
             ),
           },
-          {
-            item: legacy_response.except("EmailAddress", "OptOut"),
-          },
         ])
       end
 
-      it "updates the email and optout in both the legacy and v2 user credentials tables" do
+      it "updates the email and optout in the user credentials table" do
         gateway.update_user_email(user_id: user_id, email: email)
 
         put_requests = dynamo_db_client.api_requests.select { |req| req[:operation_name] == :put_item }
 
-        expect(put_requests.count).to eq(2)
+        expect(put_requests.count).to eq(1)
 
-        # Old table
-        expect(put_requests[0][:params][:table_name]).to eq(table_name)
+        expect(put_requests[0][:params][:table_name]).to eq(table_name_v2)
         expect(put_requests[0][:params][:item]).to eq({
-          "BearerToken" => { s: bearer },
-          "CreatedAt" => { s: created_at },
-          "EmailAddress" => { s: encrypted_email },
-          "OneLoginSub" => { s: sub_id },
-          "OptOut" => { bool: false },
-          "UserId" => { s: user_id },
-        })
-
-        # New table
-        expect(put_requests[1][:params][:table_name]).to eq(table_name_v2)
-        expect(put_requests[1][:params][:item]).to eq({
           "UserId" => { s: user_id },
           "Type" => { s: "PROFILE" },
           "GSI1_PK" => { s: "ONELOGIN##{sub_id}" },
@@ -358,33 +317,19 @@ describe Gateway::UserCredentialsGateway do
               },
             ),
           },
-          {
-            item: legacy_response.merge({ "OptOut" => true }),
-          },
         ])
       end
 
-      it "updates the user opt-out value with false in both tables" do
+      it "updates the user opt-out value with false" do
         gateway.toggle_user_opt_out(user_id)
 
         put_requests = dynamo_db_client.api_requests.select { |req| req[:operation_name] == :put_item }
 
-        expect(put_requests.count).to eq(2)
-
-        # Old table
-        expect(put_requests[0][:params][:table_name]).to eq(table_name)
-        expect(put_requests[0][:params][:item]).to eq({
-          "BearerToken" => { s: bearer },
-          "CreatedAt" => { s: created_at },
-          "EmailAddress" => { s: encrypted_email },
-          "OneLoginSub" => { s: sub_id },
-          "OptOut" => { bool: false },
-          "UserId" => { s: user_id },
-        })
+        expect(put_requests.count).to eq(1)
 
         # New table
-        expect(put_requests[1][:params][:table_name]).to eq(table_name_v2)
-        expect(put_requests[1][:params][:item]).to eq({
+        expect(put_requests[0][:params][:table_name]).to eq(table_name_v2)
+        expect(put_requests[0][:params][:item]).to eq({
           "UserId" => { s: user_id },
           "Type" => { s: "PROFILE" },
           "GSI1_PK" => { s: "ONELOGIN##{sub_id}" },
@@ -409,33 +354,17 @@ describe Gateway::UserCredentialsGateway do
               },
             ),
           },
-          {
-            item: legacy_response,
-          },
         ])
       end
 
-      it "updates the user opt-out value with true in both tables" do
+      it "updates the user opt-out value with true" do
         gateway.toggle_user_opt_out(user_id)
 
         put_requests = dynamo_db_client.api_requests.select { |req| req[:operation_name] == :put_item }
 
-        expect(put_requests.count).to eq(2)
-
-        # Old table
-        expect(put_requests[0][:params][:table_name]).to eq(table_name)
+        expect(put_requests.count).to eq(1)
+        expect(put_requests[0][:params][:table_name]).to eq(table_name_v2)
         expect(put_requests[0][:params][:item]).to eq({
-          "BearerToken" => { s: bearer },
-          "CreatedAt" => { s: created_at },
-          "EmailAddress" => { s: encrypted_email },
-          "OneLoginSub" => { s: sub_id },
-          "OptOut" => { bool: true },
-          "UserId" => { s: user_id },
-        })
-
-        # New table
-        expect(put_requests[1][:params][:table_name]).to eq(table_name_v2)
-        expect(put_requests[1][:params][:item]).to eq({
           "UserId" => { s: user_id },
           "Type" => { s: "PROFILE" },
           "GSI1_PK" => { s: "ONELOGIN##{sub_id}" },
@@ -460,26 +389,20 @@ describe Gateway::UserCredentialsGateway do
       })
     end
 
-    it "deletes the user from the legacy and new credentials table" do
+    it "deletes the user" do
       gateway.delete_user(user_id)
 
       api_requests = dynamo_db_client.api_requests
-      expect(api_requests.count).to eq(3)
+      expect(api_requests.count).to eq(2)
 
-      delete_request = api_requests[0]
-      expect(delete_request[:params]).to eq({
-        table_name: table_name,
-        key: { "UserId" => { s: user_id } },
-      })
-
-      query_request = api_requests[1]
+      query_request = api_requests[0]
       expect(query_request[:params]).to eq({
         table_name: table_name_v2,
         key_condition_expression: "UserId = :pk",
         expression_attribute_values: { ":pk" => { s: user_id } },
       })
 
-      transact_request = api_requests[2]
+      transact_request = api_requests[1]
       expect(transact_request[:params][:transact_items]).to eq([
         {
           delete: {

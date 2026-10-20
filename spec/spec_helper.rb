@@ -38,7 +38,6 @@ ENV["SEND_DOWNLOAD_TOPIC_ARN"] = "arn:aws:sns:us-east-1:123456789012:testTopic"
 ENV["ONELOGIN_HOST_URL"] = "https://oidc.integration.account.gov.uk"
 ENV["ONELOGIN_CLIENT_ID"] = "test.onelogin.client.id"
 ENV["ONELOGIN_TLS_KEYS"] = OneLoginStub.tls_keys
-ENV["EPB_DATA_USER_CREDENTIAL_TABLE_NAME"] = "test_users_table"
 ENV["EPB_DATA_USER_CREDENTIAL_V2_TABLE_NAME"] = "test_users_v2_table"
 ENV["GTM_PROPERTY_FINDING"] = "G-H8EVD5HY3G"
 ENV["NOTIFY_OPT_OUT_TEMPLATE_ID"] = "f5d03031-b559-4264-8503-802ee0e78f4c"
