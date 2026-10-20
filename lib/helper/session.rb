@@ -16,10 +16,6 @@ module Helper
       session.delete(key) if exists?(session, key)
     end
 
-    def self.clear_session(session)
-      session.clear
-    end
-
     def self.get_email_from_session(session)
       email = get_session_value(session, :email_address)
       raise Errors::SessionEmailError unless email

@@ -31,9 +31,8 @@ describe "Journey::DeleteAccount", :journey, type: :feature do
     context "when clicking the 'Delete account' button" do
       it "redirects to the account deleted confirmation page" do
         click_button "Delete account"
-        expect(page).to have_current_path("/account-deleted")
-        expect(page).to have_selector("h1.govuk-heading-xl", text: "Delete your account")
-        expect(page).to have_content("Your account has been deleted.")
+        # There is no GOV.UK One Login when running tests so we can only check the returned URL
+        expect(page).to have_current_path %r{^/logout\?id_token_hint&post_logout_redirect_uri=http%3A%2F%2Flocalhost%3A9393%2Faccount-deleted}
       end
     end
   end

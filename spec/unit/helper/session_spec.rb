@@ -53,14 +53,6 @@ describe Helper::Session do
     end
   end
 
-  context "when clearing the session" do
-    it "clears all values from the session" do
-      session[key] = "value"
-      described_class.clear_session(session)
-      expect(session).to be_empty
-    end
-  end
-
   describe "#get_email_from_session" do
     it "returns the email if it exists in the session" do
       email = described_class.get_email_from_session(session)
