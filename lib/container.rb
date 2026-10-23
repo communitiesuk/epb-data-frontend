@@ -35,6 +35,8 @@ class Container
     get_file_size_use_case = UseCase::GetFileSize.new(gateway: Gateway::S3Gateway.new, bucket_name: ENV["AWS_S3_USER_DATA_BUCKET_NAME"])
     send_opt_out_request_email_use_case = UseCase::SendOptOutRequestEmail.new(notify_gateway:)
     validate_id_token_use_case = UseCase::ValidateIdToken.new(onelogin_gateway:, cache: Helper::JwksDocumentCache.new)
+    add_bearer_token_use_case = UseCase::AddBearerToken.new(user_credentials_gateway:)
+    delete_bearer_token_use_case = UseCase::DeleteBearerToken.new(user_credentials_gateway:)
     @objects = {
       send_download_request_use_case:,
       get_download_size_use_case:,
@@ -49,6 +51,8 @@ class Container
       get_file_size_use_case:,
       send_opt_out_request_email_use_case:,
       validate_id_token_use_case:,
+      add_bearer_token_use_case:,
+      delete_bearer_token_use_case:,
     }
   end
 

@@ -83,7 +83,7 @@ module Gateway
       response.items.count.zero? ? nil : response.items.first["UserId"]
     end
 
-    def get_user_token(user_id)
+    def get_user_tokens(user_id)
       response = @table_v2.query(
         key_condition_expression: "UserId = :pk AND begins_with(#t, :sk)",
         expression_attribute_names: {
@@ -96,7 +96,36 @@ module Gateway
       )
       raise Errors::BearerTokenMissing unless response.items.any?
 
-      response.items.first["Type"].delete_prefix("TOKEN#")
+      response.items.map { |row| row["Type"].delete_prefix("TOKEN#") }
+    end
+
+    def add_bearer_token(user_id:)
+      created_at = Time.now.to_s
+      bearer_token = SecureRandom.alphanumeric(22)
+
+      bearer_row = {
+        "UserId" => user_id,
+        "Type" => "TOKEN##{bearer_token}",
+        "GSI1_PK" => "TOKEN##{bearer_token}",
+        "Attributes" => {
+          "CreatedAt" => created_at,
+        },
+      }
+
+      @table_v2.put_item(
+        item: bearer_row,
+      )
+
+      bearer_token
+    end
+
+    def delete_bearer_token(user_id:, bearer_token:)
+      @table_v2.delete_item(
+        key: {
+          "UserId" => user_id,
+          "Type" => "TOKEN##{bearer_token}",
+        },
+      )
     end
 
     def get_user_info(user_id)

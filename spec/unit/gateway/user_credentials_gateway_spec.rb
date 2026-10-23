@@ -198,19 +198,33 @@ describe Gateway::UserCredentialsGateway do
     end
   end
 
-  describe "#get_user_token" do
-    context "when getting a token" do
+  describe "#get_user_tokens" do
+    context "when getting tokens" do
       before do
         dynamo_db_client.stub_responses(:query, {
           items: [
             token_response,
+            token_response.merge(
+              {
+                "UserId" => user_id,
+                "Type" => "TOKEN#token2",
+                "Attributes" => {
+                  "CreatedAt" => created_at,
+                },
+                "GSI1_PK" => "TOKEN#token2",
+              },
+            ),
           ],
           count: 1,
         })
       end
 
       it "returns the BearerToken" do
-        expect(gateway.get_user_token(user_id)).to eq(bearer)
+        result = gateway.get_user_tokens(user_id)
+        expect(result.count).to eq(2)
+
+        expect(result[0]).to eq(bearer)
+        expect(result[1]).to eq("token2")
       end
     end
 
@@ -224,9 +238,55 @@ describe Gateway::UserCredentialsGateway do
 
       it "raises Errors::BearerTokenMissing if the token is missing" do
         expect {
-          gateway.get_user_token(user_id)
+          gateway.get_user_tokens(user_id)
         }.to raise_error(Errors::BearerTokenMissing)
       end
+    end
+  end
+
+  describe "#add_bearer_token" do
+    let(:frozen_time) { Time.utc(2026, 7, 26, 11, 45, 30) }
+
+    before do
+      Timecop.freeze(frozen_time)
+      allow(SecureRandom).to receive(:alphanumeric).with(22).and_return(bearer)
+    end
+
+    after do
+      Timecop.return
+    end
+
+    it "adds a new bearer token row and returns the token" do
+      result = gateway.add_bearer_token(user_id: user_id)
+      expect(result).to eq(bearer)
+
+      put_requests = dynamo_db_client.api_requests.select { |req| req[:operation_name] == :put_item }
+      expect(put_requests.count).to eq(1)
+
+      expect(put_requests[0][:params][:table_name]).to eq(table_name_v2)
+      expect(put_requests[0][:params][:item]).to eq({
+        "UserId" => { s: user_id },
+        "Type" => { s: "TOKEN##{bearer}" },
+        "GSI1_PK" => { s: "TOKEN##{bearer}" },
+        "Attributes" => { m: {
+          "CreatedAt" => { s: created_at },
+        } },
+      })
+    end
+  end
+
+  describe "#delete_bearer_token" do
+    it "deletes the token row from DynamoDB" do
+      gateway.delete_bearer_token(user_id: user_id, bearer_token: bearer)
+
+      delete_requests = dynamo_db_client.api_requests.select { |req| req[:operation_name] == :delete_item }
+      expect(delete_requests.count).to eq(1)
+
+      expect(delete_requests[0][:params][:table_name]).to eq(table_name_v2)
+      expect(delete_requests[0][:params][:key]).to eq({
+        "UserId" => { s: user_id },
+        "Type" => { s: "TOKEN##{bearer}" },
+      })
     end
   end
 

@@ -82,6 +82,15 @@ module Errors
   class BearerTokenMissing < RuntimeError
   end
 
+  class BearerTokenNotFound < BearerTokenMissing
+  end
+
+  class BearerTokenLimitExceeded < RuntimeError
+  end
+
+  class CannotDeleteLastBearerToken < BearerTokenLimitExceeded
+  end
+
   class UserMissing < RuntimeError
   end
 
