@@ -1,0 +1,12 @@
+<script type="module" src="<%= assets_path('/javascript/copy-to-clipboard.js') %>" nonce="<%= script_nonce %>"></script>
+<epb-copy-to-clipboard target="<%= copy_id %>">
+  <button type="button" class="govuk-link epb-copy-button <%= defined?(class_name) && class_name %>">
+    <slot name="action-message" class="epb-copy-button__label">
+      <%= inline_svg('/images/copy-link.svg') %>
+      <%= copy_label %>
+    </slot>
+    <slot name="success-message" class="epb-copy-button__label" hidden>
+      <%= copied_label %>
+    </slot>
+   </button>
+</epb-copy-to-clipboard>

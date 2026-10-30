@@ -1,0 +1,43 @@
+epb-copy-to-clipboard {
+  display: none;
+
+  &:defined:not([hidden]) {
+    display: contents;
+  }
+}
+
+.epb-copy-button {
+  @include govuk-font($size: 19);
+
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: $govuk-link-colour;
+  text-decoration-line: underline;
+  text-underline-offset: 0.1578em;
+  cursor: pointer;
+
+  &:hover {
+    color: $govuk-link-hover-colour;
+    text-decoration-thickness: max(3px, 0.1875rem);
+  }
+
+  &:focus {
+    @include govuk-focused-text;
+  }
+}
+
+.epb-copy-button__label {
+  display: flex;
+  align-items: center;
+  gap: govuk-spacing(1);
+  justify-content: center;
+  white-space: nowrap;
+
+  &[hidden] {
+    visibility: hidden;
+    height: 0;
+  }
+}

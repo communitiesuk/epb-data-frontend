@@ -3,6 +3,7 @@ require "i18n/backend/fallbacks"
 require "sinatra/base"
 require "sinatra/cookies"
 require "sinatra/custom_logger"
+require "sinatra/capture"
 require_relative "../container"
 require_relative "../helper/toggles"
 
@@ -28,6 +29,7 @@ module Controller
 
     helpers Helpers
     helpers Sinatra::CustomLogger
+    helpers Sinatra::Capture
 
     set :views, "lib/views"
     set :erb, escape_html: true
@@ -52,8 +54,8 @@ module Controller
       logger.level = Logger::FATAL
     end
 
-    def initialize(*args, container: nil)
-      super
+    def initialize(*, container: nil, **)
+      super(*)
       setup_locales
       @toggles = Helper::Toggles
       @container = container || Container.new

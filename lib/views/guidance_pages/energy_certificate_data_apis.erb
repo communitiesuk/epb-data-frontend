@@ -56,7 +56,15 @@
               <%= ViewModels::MyAccount.get_bearer_token(locals[:user_info]) %>
             </dd>
             <dd class="govuk-summary-list__actions">
-              <%= erb :component__copy_bearer_token %>
+              <% copy_label = capture do %>
+                <%= t("account_details.copy")%>
+                <span class="govuk-visually-hidden"><%= t("account_details.bearer_token")%></span>
+              <% end %>
+              <% copied_label = capture do %>
+                <%= t("account_details.copied")%>
+                <span class="govuk-visually-hidden"><%= t("account_details.bearer_token")%></span>
+              <% end %>
+              <%= erb :component__copy_to_clipboard, locals: { class_name: "epb-ml-auto", copy_label:, copied_label:, copy_id: "bearer-token-value" } %>
             </dd>
           </div>
         </dl>
