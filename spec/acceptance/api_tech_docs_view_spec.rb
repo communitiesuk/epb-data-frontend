@@ -133,5 +133,29 @@ describe "Acceptance::ApiTechnicalDocumentation", type: :feature do
         expect(response.body).to have_link("Download codes", href: "/download/codes")
       end
     end
+
+    context "when requesting the deltas page" do
+      let(:response) { get "#{base_url}#{path}/deltas" }
+
+      it "returns status 200" do
+        expect(response.status).to eq(200)
+      end
+
+      it "displays the download link header" do
+        expect(response.body).to have_css("h1", text: "Search for certificates that have changed")
+      end
+    end
+
+    context "when requesting the fetch certificate data page" do
+      let(:response) { get "#{base_url}#{path}/fetch-certificate-data" }
+
+      it "returns status 200" do
+        expect(response.status).to eq(200)
+      end
+
+      it "displays the download link header" do
+        expect(response.body).to have_css("h1", text: "Fetch certificate data")
+      end
+    end
   end
 end

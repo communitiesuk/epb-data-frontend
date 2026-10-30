@@ -24,6 +24,7 @@ describe "Acceptance::AccountDeleted", type: :feature do
   describe "get /account-deleted" do
     context "when accessed with a matching state" do
       before do
+        allow(Helper::Toggles).to receive(:enabled?).with("log_out_after_account_delete").and_return(true)
         get "#{local_host}/account-deleted", { state: "123" }, { "rack.session" => { delete_state: "123" } }
       end
 

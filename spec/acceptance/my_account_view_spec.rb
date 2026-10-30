@@ -84,6 +84,12 @@ describe "Acceptance::MyAccount", type: :feature do
         expect(response).to be_redirect
         expect(response.location).to include("/login/authorize?referer=api/my-account")
       end
+
+      it "redirects to /login/authorize when the user is missing" do
+        allow(ViewModels::MyAccount).to receive(:get_bearer_token).and_raise(Errors::UserMissing)
+        expect(response).to be_redirect
+        expect(response.location).to include("/login/authorize?referer=api/my-account")
+      end
     end
 
     context "when the user is not authenticated" do

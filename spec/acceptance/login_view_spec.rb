@@ -8,8 +8,6 @@ describe "Acceptance::Login", type: :feature do
     "http://get-energy-performance-data/login/callback"
   end
 
-  let(:response) { get login_url }
-
   let(:onelogin_gateway) do
     instance_double(Gateway::OneloginGateway)
   end
@@ -76,31 +74,68 @@ describe "Acceptance::Login", type: :feature do
     ENV["STAGE"] = original_stage
   end
 
-  describe "get .get-energy-certificate-data.epb-frontend/login" do
-    before do
-      get "#{login_url}?referer=opt-out"
+  describe "get /login" do
+    context "without starting the opt out journey" do
+      it "redirects to the opt out page" do
+        get "#{login_url}?referer=opt-out"
+        expect(last_response.status).to eq 302
+        expect(last_response.location).to eq "http://get-energy-performance-data/opt-out"
+      end
     end
 
-    context "when the login page is rendered only for opt-out" do
-      it "returns status 200" do
-        expect(response.status).to eq(200)
-      end
+    context "with the user selecting they are not the owner" do
+      it "redirects to the ineligible page" do
+        get "#{login_url}?referer=opt-out", {}, { "rack.session" => { opt_out_owner: "no" } }
 
-      it "shows the correct header and body text" do
-        expect(response.body).to have_selector("h1", text: "Create your GOV.UK One Login or sign in")
+        expect(last_response.status).to eq 302
+        expect(last_response.location).to eq "http://get-energy-performance-data/opt-out/ineligible"
       end
+    end
 
-      it "displays the title the same as the main header value" do
-        expect(response.body).to have_title "Create your GOV.UK One Login or sign in – GOV.UK"
+    context "with the user selecting they are not the occupier or owner" do
+      it "redirects to the ineligible page" do
+        get "#{login_url}?referer=opt-out", {}, { "rack.session" => { opt_out_owner: "no", opt_out_occupant: "no" } }
+
+        expect(last_response.status).to eq 302
+        expect(last_response.location).to eq "http://get-energy-performance-data/opt-out/ineligible"
       end
+    end
 
-      it "has the correct Start now button" do
-        expect(response.body).to have_link("Start now", href: "/login/authorize?referer=opt-out")
+    context "with the user selecting they are the owner" do
+      it "shows the login page" do
+        get "#{login_url}?referer=opt-out", {}, { "rack.session" => { opt_out_owner: "yes" } }
+
+        expect(last_response.status).to eq 200
+        expect(last_response.body).to have_selector("h1", text: "Create your GOV.UK One Login or sign in")
+        expect(last_response.body).to have_title "Create your GOV.UK One Login or sign in – GOV.UK"
+        expect(last_response.body).to have_link("Start now", href: "/login/authorize?referer=opt-out")
+      end
+    end
+
+    context "with the user selecting they are the occupier" do
+      it "shows the login page" do
+        get "#{login_url}?referer=opt-out", {}, { "rack.session" => { opt_out_owner: "no", opt_out_occupant: "yes" } }
+
+        expect(last_response.status).to eq 200
+        expect(last_response.body).to have_selector("h1", text: "Create your GOV.UK One Login or sign in")
+        expect(last_response.body).to have_title "Create your GOV.UK One Login or sign in – GOV.UK"
+        expect(last_response.body).to have_link("Start now", href: "/login/authorize?referer=opt-out")
+      end
+    end
+
+    context "without a refer param of opt-out" do
+      it "shows the login page" do
+        get login_url
+
+        expect(last_response.status).to eq 200
+        expect(last_response.body).to have_selector("h1", text: "Create your GOV.UK One Login or sign in")
+        expect(last_response.body).to have_title "Create your GOV.UK One Login or sign in – GOV.UK"
+        expect(last_response.body).to have_link("Start now", href: "/login/authorize?referer=opt-out")
       end
     end
   end
 
-  describe "get .get-energy-certificate-data.epb-frontend/login/authorize" do
+  describe "get /login/authorize" do
     context "when the request is received" do
       before do
         allow(sign_onelogin_request_test_use_case).to receive(:execute).and_return("test_signed_request")
@@ -147,7 +182,7 @@ describe "Acceptance::Login", type: :feature do
     end
   end
 
-  describe "get .get-energy-certificate-data.epb-frontend/login/callback" do
+  describe "get /login/callback" do
     before do
       allow(request_onelogin_token_use_case).to receive(:execute).and_return(token_response_hash)
       allow(get_onelogin_user_info_use_case).to receive(:execute).and_return(user_info_response)
