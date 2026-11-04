@@ -216,3 +216,7 @@ A JSON formatted object with the following keys:
 #### `PUBLISHED_DWH_API_URL`
 
 The public URL of the data-warehouse API.
+
+#### `COVERAGE`
+
+If "true", a coverage report will be generated when the rspec tests are run.
