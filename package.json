@@ -36,5 +36,8 @@
       "HTMLElement",
       "MouseEvent"
     ]
+  },
+  "overrides": {
+    "jsdom": "30.1.3"
   }
 }
