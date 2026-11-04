@@ -188,15 +188,24 @@ The id of the gov.uk notify service template for opt-out emails.
 
 #### `ONELOGIN_CLIENT_ID`
 
-The client id for the gov.uk One Login service.
+The client id for the GOV.UK One Login service.
 
 #### `ONELOGIN_HOST_URL`
 
-The URL of the gov.uk One Login service.
+The URL of the GOV.UK One Login service.
+
+#### `ONELOGIN_SERVER_HOST_URL`
+
+The URL of the GOV.UK One Login service for api requests. 
+
+This will default to `ONELOGIN_HOST_URL` if not provided.
+
+For production this is the always the same as the `ONELOGIN_HOST_URL` and this does not need to be set.
+This setting is for a developer environment where the internal and user facing One Login hosts are different.
 
 #### `ONELOGIN_TLS_KEYS`
 
-The cryptographic key used to sign authorization requests to the gov.uk One Login service.
+The cryptographic key used to sign authorization requests to the GOV.UK One Login service.
 
 A JSON formatted object with the following keys:
 

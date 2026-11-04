@@ -1,7 +1,7 @@
 module Gateway
   class OneloginGateway
     def initialize
-      @host_url = ENV["ONELOGIN_HOST_URL"]
+      @host_url = ENV.fetch("ONELOGIN_SERVER_HOST_URL", ENV["ONELOGIN_HOST_URL"])
       @token_endpoint = "#{@host_url}/token"
       @user_info_endpoint = "#{@host_url}/userinfo"
     end
@@ -60,7 +60,7 @@ module Gateway
     end
 
     def fetch_jwks_document
-      jwks_uri = "#{ENV['ONELOGIN_HOST_URL']}/.well-known/jwks.json"
+      jwks_uri = "#{ENV.fetch('ONELOGIN_SERVER_HOST_URL', ENV['ONELOGIN_HOST_URL'])}/.well-known/jwks.json"
       conn = faraday_connection(url: jwks_uri)
       response = conn.get
 
