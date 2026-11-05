@@ -6,12 +6,41 @@
     <h1 class="govuk-heading-l"><%= t('api-technical-documentation.search_certificates.title') %></h1>
 
     <p>
-      Search for a set of EPCs using a combination of geographic and/or time-based parameters.
-      All parameters are optional, but at least one must be provided in the request query string for the search to succeed.
-      If more than 5000 results are returned from the query then the results will be paginated and the current_page and page_size parameters can be used to iterate through the full set of results.
+      There are three search endpoints: one each for domestic, non-domestic and display certificates.
+      You can search each of these using location and/or date parameters.
+      All parameters are optional, but you must include at least one.
+      Below are the three endpoints, followed by details of each parameter you can use.
     </p>
+
+    <% @search_types.each do |type| %>
+      <div class="govuk-!-margin-bottom-7" id="<%= type %>">
+        <h2 class="govuk-heading-m"><%= ViewModels::ApiTechDocs.title_label(type).capitalize %> search endpoint</h2>
+
+        <h3 class="govuk-heading-s">Method</h3>
+        <pre><code>GET /api/<%= type %>/search</code></pre>
+
+        <h3 class="govuk-heading-s">Response</h3>
+        <p>If the request is successful, the response body is json with a status code of 200: </p>
+        <pre><code class="javascript"><%= ViewModels::ApiTechDocs.search_response(type) %></code></pre>
+
+        <h3 class="govuk-heading-s">Example</h3>
+        <pre><code class="javascript"><%= ViewModels::ApiTechDocs.curl_example "/api/#{type}/search?date_start=2021-07-10&date_end=2021-08-10&council[]=Manchester&efficiency_rating[]=A&efficiency_rating[]=B&efficiency_rating[]=C&current_page=1&page_size=5000" %></code></pre>
+      </div>
+    <% end %>
+
+    <div class="govuk-!-margin-bottom-7">
+      <h2 class="govuk-heading-m">Error codes</h2>
+
+      <p>If the request is not successful, an HTTP error code will be returned:</p>
+      <ul>
+        <li>400 – one or more of the required parameters was missing or one of the parameters was not in the right format.  The response body will include a json error message that explains the specific error.</li>
+        <li>404 – no certificates exist that match the parameters of the query </li>
+      </ul>
+    </div>
+
     <p>
-      The same parameters apply whether you are searching domestic, non-domestic or display certificates – only the method path, and the shape of the data returned, differs between them.
+      The same parameters work for all three certificate types. Only the endpoint path and the response data differ between them.
+      If a search returns more than 5000 results, the response is split into pages. Use current_page and page_size to move through the pages.
     </p>
 
     <h2 class="govuk-heading-m">Parameters</h2>
@@ -27,7 +56,7 @@
     <div class="govuk-!-margin-bottom-7">
       <h3 class="govuk-heading-s">uprn (optional)  </h3>
 
-      <p> The 12-digit unique property reference number for the property.  This should be left-padded with zeroes to be 12 digits. =.</p>
+      <p> The 12-digit unique property reference number for the property.  This should be left-padded with zeroes to make it 12 digits long.</p>
       <p>For example: </p>
 
       <pre><code>?uprn=000001234567</code></pre>
@@ -96,32 +125,6 @@
 
       <p>The maximum number of certificates to return in each page of query results.  The page_size can be between 1 and 5000.   </p>
       <p>The page size can be found in the pagination object of the response. </p>
-    </div>
-
-    <% @search_types.each do |type| %>
-      <div class="govuk-!-margin-bottom-7" id="<%= type %>">
-        <h2 class="govuk-heading-m"><%= ViewModels::ApiTechDocs.title_label(type).capitalize %> certificates</h2>
-
-        <h3 class="govuk-heading-s">Method</h3>
-        <pre><code>GET /api/<%= type %>/search</code></pre>
-
-        <h3 class="govuk-heading-s">Response</h3>
-        <p>If the request is successful, the response body is json with a status code of 200: </p>
-        <pre><code class="javascript"><%= ViewModels::ApiTechDocs.search_response(type) %></code></pre>
-
-        <h3 class="govuk-heading-s">Example</h3>
-        <pre><code class="javascript"><%= ViewModels::ApiTechDocs.curl_example "/api/#{type}/search?date_start=2021-07-10&date_end=2021-08-10&council[]=Manchester&efficiency_rating[]=A&efficiency_rating[]=B&efficiency_rating[]=C&current_page=1&page_size=5000" %></code></pre>
-      </div>
-    <% end %>
-
-    <div class="govuk-!-margin-bottom-7">
-      <h2 class="govuk-heading-m">Error codes</h2>
-
-      <p>If the request is not successful, an HTTP error code will be returned:</p>
-      <ul>
-        <li>400 – one or more of the required parameters was missing or one of the parameters was not in the right format.  The response body will include a json error message that explains the specific error.</li>
-        <li>404 – no certificates exist that match the parameters of the query </li>
-      </ul>
     </div>
 
     <div class="govuk-!-margin-bottom-7" id="councils">
