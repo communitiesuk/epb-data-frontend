@@ -33,8 +33,7 @@
   "standard": {
     "globals": [
       "customElements",
-      "HTMLElement",
-      "MouseEvent"
+      "HTMLElement"
     ]
   },
   "overrides": {
