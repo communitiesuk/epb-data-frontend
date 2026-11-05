@@ -27,7 +27,7 @@
   "scripts": {
     "fmt": "npx @biomejs/biome format --write",
     "lint": "npx @biomejs/biome check",
-    "lint-fmt-fix": "npx @biomejs/biome check --write",
+    "lint-fix": "npx @biomejs/biome check --write",
     "test": "NODE_OPTIONS='--experimental-vm-modules' NODE_NO_WARNINGS=1 jest"
   },
   "overrides": {

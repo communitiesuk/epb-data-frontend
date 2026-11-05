@@ -1,79 +1,77 @@
 class CopyToClipboardElement extends HTMLElement {
-  #timeout
+  #timeout;
 
-  connectedCallback () {
+  connectedCallback() {
     if (!navigator.clipboard) {
-      this.hidden = true
-      return
+      this.hidden = true;
+      return;
     }
-    this.#button?.addEventListener('click', this.#onClick)
+    this.#button?.addEventListener('click', this.#onClick);
   }
 
-  disconnectedCallback () {
-    clearTimeout(this.#timeout)
-    this.#button?.removeEventListener('click', this.#onClick)
-    this.#button?.removeEventListener('blur', this.#onBlur)
+  disconnectedCallback() {
+    clearTimeout(this.#timeout);
+    this.#button?.removeEventListener('click', this.#onClick);
+    this.#button?.removeEventListener('blur', this.#onBlur);
   }
 
-  get target () {
-    const element = this.ownerDocument.getElementById(
-      this.getAttribute('target')
-    )
+  get target() {
+    const element = this.ownerDocument.getElementById(this.getAttribute('target'));
     if (!element) {
-      console.warn('missing target element for', this)
+      console.warn('missing target element for', this);
     }
-    return element
+    return element;
   }
 
-  get #button () {
-    return this.querySelector('button')
+  get #button() {
+    return this.querySelector('button');
   }
 
   #onClick = async (e) => {
     if (e.defaultPrevented) {
-      return
+      return;
     }
-    clearTimeout(this.#timeout)
-    this.#button.removeEventListener('blur', this.#onBlur)
+    clearTimeout(this.#timeout);
+    this.#button.removeEventListener('blur', this.#onBlur);
     try {
-      await navigator.clipboard.writeText(this.target?.textContent?.trim())
+      await navigator.clipboard.writeText(this.target?.textContent?.trim());
     } catch (e) {
-      console.error(e)
-      return
+      console.error(e);
+      return;
     }
-    this.#markCopied()
-    this.#timeout = setTimeout(() => this.#reset(), 5000)
-  }
+    this.#markCopied();
+    this.#timeout = setTimeout(() => this.#reset(), 5000);
+  };
 
   #onBlur = () => {
-    clearTimeout(this.#timeout)
-    this.#timeout = setTimeout(() => this.#reset(), 0)
+    clearTimeout(this.#timeout);
+    this.#timeout = setTimeout(() => this.#reset(), 0);
+  };
+
+  #markCopied() {
+    this.#button.setAttribute('aria-live', 'polite');
+    this.#setSlotHidden('action-message', true);
+    this.#setSlotHidden('success-message', false);
   }
 
-  #markCopied () {
-    this.#button.setAttribute('aria-live', 'polite')
-    this.#setSlotHidden('action-message', true)
-    this.#setSlotHidden('success-message', false)
-  }
-
-  #reset () {
+  #reset() {
     if (document.activeElement === this.#button) {
-      this.#button.addEventListener('blur', this.#onBlur, { once: true })
-      return
+      this.#button.addEventListener('blur', this.#onBlur, { once: true });
+      return;
     }
-    this.#button.removeAttribute('aria-live')
-    this.#setSlotHidden('action-message', false)
-    this.#setSlotHidden('success-message', true)
+    this.#button.removeAttribute('aria-live');
+    this.#setSlotHidden('action-message', false);
+    this.#setSlotHidden('success-message', true);
   }
 
-  #setSlotHidden (name, state) {
-    const element = this.querySelector(`slot[name="${name}"]`)
+  #setSlotHidden(name, state) {
+    const element = this.querySelector(`slot[name="${name}"]`);
     if (!element) {
-      console.warn(`missing slot ${name}`, this)
-      return
+      console.warn(`missing slot ${name}`, this);
+      return;
     }
-    element.hidden = state
+    element.hidden = state;
   }
 }
 
-customElements.define('epb-copy-to-clipboard', CopyToClipboardElement)
+customElements.define('epb-copy-to-clipboard', CopyToClipboardElement);

@@ -1,11 +1,11 @@
-import { beforeEach, expect, test, jest } from '@jest/globals'
-import { screen } from '@testing-library/dom'
-import '@testing-library/jest-dom/jest-globals'
-import userEvent from '@testing-library/user-event'
+import { beforeEach, expect, jest, test } from '@jest/globals';
+import { screen } from '@testing-library/dom';
+import '@testing-library/jest-dom/jest-globals';
+import userEvent from '@testing-library/user-event';
 
-import '../copy-to-clipboard.js'
+import '../copy-to-clipboard.js';
 
-function createButton () {
+function createButton() {
   document.body.innerHTML = `
     <span id="copy-id">123</span>
     <epb-copy-to-clipboard target="copy-id">
@@ -18,75 +18,75 @@ function createButton () {
         </slot>
        </button>
     </epb-copy-to-clipboard>
-  `
+  `;
 }
 
 beforeEach(() => {
-  const writeText = jest.fn(async () => true)
+  const writeText = jest.fn(async () => true);
   Object.defineProperty(navigator, 'clipboard', {
     configurable: true,
-    value: { writeText }
-  })
-})
+    value: { writeText },
+  });
+});
 
 test('copies the target text', async () => {
-  createButton()
+  createButton();
 
-  const button = screen.getByRole('button', { name: 'Copy' })
-  await userEvent.click(button)
-  expect(button).toHaveAccessibleName('Copied')
-  expect(button).toHaveAttribute('aria-live', 'polite')
-  expect(navigator.clipboard.writeText).toHaveBeenCalledWith('123')
-})
+  const button = screen.getByRole('button', { name: 'Copy' });
+  await userEvent.click(button);
+  expect(button).toHaveAccessibleName('Copied');
+  expect(button).toHaveAttribute('aria-live', 'polite');
+  expect(navigator.clipboard.writeText).toHaveBeenCalledWith('123');
+});
 
 test('flips the label back to copy after 5 seconds', async () => {
-  jest.useFakeTimers()
-  const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime })
-  createButton()
+  jest.useFakeTimers();
+  const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+  createButton();
 
-  const button = screen.getByRole('button', { name: 'Copy' })
-  await user.click(button)
-  await user.tab()
-  jest.advanceTimersByTime(4000)
-  expect(button).toHaveAccessibleName('Copied')
-  jest.advanceTimersByTime(1000)
-  expect(button).toHaveAccessibleName('Copy')
-  expect(button).not.toHaveAttribute('aria-live')
-})
+  const button = screen.getByRole('button', { name: 'Copy' });
+  await user.click(button);
+  await user.tab();
+  jest.advanceTimersByTime(4000);
+  expect(button).toHaveAccessibleName('Copied');
+  jest.advanceTimersByTime(1000);
+  expect(button).toHaveAccessibleName('Copy');
+  expect(button).not.toHaveAttribute('aria-live');
+});
 
 test('does not flip the label back to copy if the button is focused', async () => {
-  jest.useFakeTimers()
-  const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime })
-  createButton()
+  jest.useFakeTimers();
+  const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+  createButton();
 
-  const button = screen.getByRole('button', { name: 'Copy' })
-  await user.click(button)
-  jest.advanceTimersByTime(6000)
-  expect(button).toHaveAccessibleName('Copied')
-  await user.tab()
-  expect(button).toHaveAccessibleName('Copy')
-})
+  const button = screen.getByRole('button', { name: 'Copy' });
+  await user.click(button);
+  jest.advanceTimersByTime(6000);
+  expect(button).toHaveAccessibleName('Copied');
+  await user.tab();
+  expect(button).toHaveAccessibleName('Copy');
+});
 
 test('waits 5 seconds from when the last copy action', async () => {
-  jest.useFakeTimers()
-  const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime })
-  createButton()
+  jest.useFakeTimers();
+  const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+  createButton();
 
-  const button = screen.getByRole('button', { name: 'Copy' })
-  await user.click(button)
-  jest.advanceTimersByTime(4000)
-  expect(button).toHaveAccessibleName('Copied')
-  await user.click(button)
-  await user.tab()
-  jest.advanceTimersByTime(4000)
-  expect(button).toHaveAccessibleName('Copied')
-  jest.advanceTimersByTime(1000)
-  expect(button).toHaveAccessibleName('Copy')
-})
+  const button = screen.getByRole('button', { name: 'Copy' });
+  await user.click(button);
+  jest.advanceTimersByTime(4000);
+  expect(button).toHaveAccessibleName('Copied');
+  await user.click(button);
+  await user.tab();
+  jest.advanceTimersByTime(4000);
+  expect(button).toHaveAccessibleName('Copied');
+  jest.advanceTimersByTime(1000);
+  expect(button).toHaveAccessibleName('Copy');
+});
 
 test('is hidden if navigator clipboard is not available', async () => {
-  delete navigator.clipboard
-  createButton()
+  delete navigator.clipboard;
+  createButton();
 
-  expect(screen.queryByRole('button', { name: 'Copy' })).not.toBeInTheDocument()
-})
+  expect(screen.queryByRole('button', { name: 'Copy' })).not.toBeInTheDocument();
+});
