@@ -3,19 +3,16 @@
     <%= erb :'api_tech_docs/component__navigation' %>
   </div>
   <div class="govuk-grid-column-two-thirds">
-    <h1 class="govuk-heading-l"><%= t('api-technical-documentation.search_certificates.title', assessment_type: @assessment_type_title) %></h1>
+    <h1 class="govuk-heading-l"><%= t('api-technical-documentation.search_certificates.title') %></h1>
 
     <p>
       Search for a set of EPCs using a combination of geographic and/or time-based parameters.
       All parameters are optional, but at least one must be provided in the request query string for the search to succeed.
       If more than 5000 results are returned from the query then the results will be paginated and the current_page and page_size parameters can be used to iterate through the full set of results.
     </p>
-
-    <div class="govuk-!-margin-bottom-7">
-      <h2 class="govuk-heading-m">Method</h2>
-
-      <pre><code>GET /api/<%= @assessment_type %>/search</code></pre>
-    </div>
+    <p>
+      The same parameters apply whether you are searching domestic, non-domestic or display certificates – only the method path, and the shape of the data returned, differs between them.
+    </p>
 
     <h2 class="govuk-heading-m">Parameters</h2>
 
@@ -101,12 +98,21 @@
       <p>The page size can be found in the pagination object of the response. </p>
     </div>
 
-    <div class="govuk-!-margin-bottom-7">
-      <h2 class="govuk-heading-m">Response</h2>
-      <p>If the request is successful, the response body is json with a status code of 200: </p>
+    <% @search_types.each do |type| %>
+      <div class="govuk-!-margin-bottom-7" id="<%= type %>">
+        <h2 class="govuk-heading-m"><%= ViewModels::ApiTechDocs.title_label(type).capitalize %> certificates</h2>
 
-      <pre><code class="javascript"><%=  ViewModels::ApiTechDocs.search_response(@assessment_type) %></code></pre>
-    </div>
+        <h3 class="govuk-heading-s">Method</h3>
+        <pre><code>GET /api/<%= type %>/search</code></pre>
+
+        <h3 class="govuk-heading-s">Response</h3>
+        <p>If the request is successful, the response body is json with a status code of 200: </p>
+        <pre><code class="javascript"><%= ViewModels::ApiTechDocs.search_response(type) %></code></pre>
+
+        <h3 class="govuk-heading-s">Example</h3>
+        <pre><code class="javascript"><%= ViewModels::ApiTechDocs.curl_example "/api/#{type}/search?date_start=2021-07-10&date_end=2021-08-10&council[]=Manchester&efficiency_rating[]=A&efficiency_rating[]=B&efficiency_rating[]=C&current_page=1&page_size=5000" %></code></pre>
+      </div>
+    <% end %>
 
     <div class="govuk-!-margin-bottom-7">
       <h2 class="govuk-heading-m">Error codes</h2>
@@ -116,12 +122,6 @@
         <li>400 – one or more of the required parameters was missing or one of the parameters was not in the right format.  The response body will include a json error message that explains the specific error.</li>
         <li>404 – no certificates exist that match the parameters of the query </li>
       </ul>
-    </div>
-
-    <div class="govuk-!-margin-bottom-7">
-      <h2 class="govuk-heading-m">Example</h2>
-
-      <pre><code class="javascript"><%= ViewModels::ApiTechDocs.curl_example "/api/#{@assessment_type}/search?date_start=2021-07-10&date_end=2021-08-10&council[]=Manchester&efficiency_rating[]=A&efficiency_rating[]=B&efficiency_rating[]=C&current_page=1&page_size=5000" %></code></pre>
     </div>
 
     <div class="govuk-!-margin-bottom-7" id="councils">

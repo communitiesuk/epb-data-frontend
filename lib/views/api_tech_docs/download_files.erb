@@ -1,0 +1,62 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-one-third">
+    <%= erb :'api_tech_docs/component__navigation' %>
+  </div>
+  <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-!-margin-bottom-7">
+      <h1 class="govuk-heading-l"><%= t('api-technical-documentation.download_files.title', assessment_type: @title_label) %></h1>
+
+      <p>
+        Download a zip file of the full data set of <%= @title_label %> EPCs as a series of files by year, or fetch information
+        about a file (its size and when it was last updated) without downloading it.
+      </p>
+      <p>
+        These files are re-generated on the 1st of every month.
+      </p>
+    </div>
+
+    <% @file_types.each do |file_type| %>
+      <div class="govuk-!-margin-bottom-7">
+        <h2 class="govuk-heading-m govuk-!-padding-top-4"><%= file_type.upcase %> format</h2>
+
+        <div class="govuk-!-margin-bottom-7" id="<%= file_type %>-download">
+          <h3 class="govuk-heading-s">Download the file</h3>
+
+          <h4 class="govuk-heading-s">Method</h4>
+          <pre><code>GET /api/files/<%= @title %>/<%= file_type %></code></pre>
+
+          <h4 class="govuk-heading-s">Response</h4>
+          <p>If the request is successful, the response will return a status of 302.</p>
+          <p>The response header will include the location of the file to be downloaded. </p>
+          <p>The URL of the file will be generated at run time.   </p>
+          <pre><code class="javascript"><%= ViewModels::ApiTechDocs.file_download_response(@title, file_type) %></code></pre>
+
+          <h4 class="govuk-heading-s">Example</h4>
+          <pre><code class="javascript"><%= ViewModels::ApiTechDocs.download_file_example "/api/files/#{@title}/#{file_type}", @title %></code></pre>
+        </div>
+
+        <div class="govuk-!-margin-bottom-7" id="<%= file_type %>-info">
+          <h3 class="govuk-heading-s">Fetch information about the file</h3>
+
+          <h4 class="govuk-heading-s">Method</h4>
+          <pre><code>GET /api/files/<%= @title %>/<%= file_type %>/info</code></pre>
+
+          <h4 class="govuk-heading-s">Response</h4>
+          <pre><code class="javascript"><%= ViewModels::ApiTechDocs.file_info_response %></code></pre>
+
+          <h4 class="govuk-heading-s">Example</h4>
+          <pre><code class="javascript"><%= ViewModels::ApiTechDocs.curl_example "/api/files/#{@title}/#{file_type}/info" %></code></pre>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="govuk-!-margin-bottom-7">
+      <h2 class="govuk-heading-m">Error codes</h2>
+
+      <p>If the request is not successful, an HTTP error code will be returned:</p>
+      <ul>
+        <li>404 – no file is found</li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -13,6 +13,27 @@ module ViewModels
       markdown(str)
     end
 
+    SEARCH_TYPES = %w[domestic non-domestic display].freeze
+
+    DOWNLOAD_TITLES = %w[domestic non-domestic non-domestic-recommendations display display-recommendations].freeze
+
+    CANONICAL_DOWNLOAD_TITLES = {
+      "non-domestic-recommendation" => "non-domestic-recommendations",
+      "display-recommendation" => "display-recommendations",
+    }.freeze
+
+    def self.canonical_download_title(title)
+      CANONICAL_DOWNLOAD_TITLES.fetch(title, title)
+    end
+
+    def self.download_file_types(title)
+      title.end_with?("recommendations") ? %w[json] : %w[csv json]
+    end
+
+    def self.title_label(title)
+      title.tr("-", " ")
+    end
+
     def self.delta_response
       str = <<~CODE
               {
@@ -119,7 +140,7 @@ module ViewModels
     end
 
     def self.base_url
-      ENV["PUBLISHED_DWH_API_URL"]
+      ENV["PUBLISHED_DWH_API_URL"] || "https://api.get-energy-performance-data.communities.gov.uk"
     end
 
     private_class_method def self.domestic_search_response

@@ -363,13 +363,11 @@ cy:
     fetch_epc_codes_information:
       title: "Fetch EPC codes information"
     search_certificates:
-      title: "Search for %{assessment_type} certificates"
+      title: "Search certificates"
     deltas:
       title: "Search for certificates that have changed"
-    download_file:
-      title: "Download %{assessment_type} full load %{file_type}"
-    download_info:
-      title: "Fetch information about %{assessment_type} full load %{file_type}"
+    download_files:
+      title: "Download %{assessment_type} files"
 
   login:
     title: "Creu eich GOV.UK One Login neu fewngofnodi"

@@ -21,6 +21,19 @@ module Controller
       erb :'api_tech_docs/fetch_certificate_data'
     end
 
+    get "/api-technical-documentation/search-certificates" do
+      set_headers
+      @search_types = ViewModels::ApiTechDocs::SEARCH_TYPES
+      @page_title = "#{t('api-technical-documentation.search_certificates.title')} – #{t('layout.body.govuk')}"
+
+      erb :'api_tech_docs/search_certificates'
+    end
+
+    # Old per-assessment-type search pages have been consolidated into a single page.
+    get "/api-technical-documentation/search-certificates/:type" do
+      redirect "/api-technical-documentation/search-certificates##{params['type']}", 301
+    end
+
     get "/api-technical-documentation/search-certificates-changed" do
       set_headers
       @page_title = "#{t('api-technical-documentation.deltas.title')} – #{t('layout.body.govuk')}"
@@ -28,33 +41,35 @@ module Controller
       erb :'api_tech_docs/deltas'
     end
 
-    get "/api-technical-documentation/search-certificates/:type" do
-      set_headers
-      @assessment_type_title = params["type"].gsub("-", " ")
-      @assessment_type = params["type"]
-      @page_title = "#{t('api-technical-documentation.search_certificates.title', assessment_type: @assessment_type_title)} – #{t('layout.body.govuk')}"
-
-      erb :'api_tech_docs/search_certificates'
+    # Superseded by /search-certificates-changed, kept as a redirect for old links.
+    get "/api-technical-documentation/deltas" do
+      redirect "/api-technical-documentation/search-certificates-changed", 301
     end
 
-    get "/api-technical-documentation/download/:title/:file_type" do
-      set_headers
-      @assessment_type_title = params["title"].gsub("-", " ")
-      @assessment_type = params["title"]
-      @file_type = params["file_type"]
-      @page_title = "#{t('api-technical-documentation.download_file.title', assessment_type: @assessment_type_title, file_type: @file_type)} – #{t('layout.body.govuk')}"
+    get "/api-technical-documentation/download/:title" do
+      halt 404 unless ViewModels::ApiTechDocs::DOWNLOAD_TITLES.include?(params["title"])
 
-      erb :'api_tech_docs/download_file'
+      set_headers
+      @title = params["title"]
+      @title_label = ViewModels::ApiTechDocs.title_label(@title)
+      @file_types = ViewModels::ApiTechDocs.download_file_types(@title)
+      @page_title = "#{t('api-technical-documentation.download_files.title', assessment_type: @title_label)} – #{t('layout.body.govuk')}"
+
+      erb :'api_tech_docs/download_files'
+    end
+
+    # Old per-file-type download and download-info pages have been consolidated into
+    # a single page per asset type, with the file type shown as a section on that page.
+    get "/api-technical-documentation/download/:title/:file_type" do
+      canonical_title = ViewModels::ApiTechDocs.canonical_download_title(params["title"])
+
+      redirect "/api-technical-documentation/download/#{canonical_title}##{params['file_type']}-download", 301
     end
 
     get "/api-technical-documentation/download-info/:title/:file_type" do
-      set_headers
-      @assessment_type_title = params["title"].gsub("-", " ")
-      @assessment_type = params["title"]
-      @file_type = params["file_type"]
-      @page_title = "#{t('api-technical-documentation.download_info.title', assessment_type: @assessment_type_title, file_type: @file_type)} – #{t('layout.body.govuk')}"
+      canonical_title = ViewModels::ApiTechDocs.canonical_download_title(params["title"])
 
-      erb :'api_tech_docs/file_info'
+      redirect "/api-technical-documentation/download/#{canonical_title}##{params['file_type']}-info", 301
     end
 
     get "/api-technical-documentation/codes" do
@@ -69,13 +84,6 @@ module Controller
       @page_title = "#{t('api-technical-documentation.fetch_epc_codes_information.title')} – #{t('layout.body.govuk')}"
 
       erb :'api_tech_docs/codes_info'
-    end
-
-    get "/api-technical-documentation/deltas" do
-      set_headers
-      @page_title = "#{t('api-technical-documentation.fetch_epc_codes_information.title')} – #{t('layout.body.govuk')}"
-
-      erb :'api_tech_docs/deltas'
     end
 
   private
