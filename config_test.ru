@@ -39,7 +39,7 @@ WebMock.stub_request(:post, "https://api.notifications.service.gov.uk/v2/notific
                   }.to_json,
                   headers: {})
 
-TogglesStub.enable(nil)
+TogglesStub.enable("log_out_after_account_delete": true)
 OauthStub.token
 
 default_end_date = Date.new(Date.today.year.to_i, Date::MONTHNAMES.index((Date.today << 1).strftime("%B")) || 0, -1).to_s

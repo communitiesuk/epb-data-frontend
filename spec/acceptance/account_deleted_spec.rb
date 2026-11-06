@@ -17,6 +17,10 @@ describe "Acceptance::AccountDeleted", type: :feature do
     end
   end
 
+  before do
+    allow(Helper::Toggles).to receive(:enabled?).and_call_original
+  end
+
   describe "get /account-deleted" do
     context "when accessed with a matching state" do
       before do
@@ -45,24 +49,83 @@ describe "Acceptance::AccountDeleted", type: :feature do
     end
 
     context "when accessed with non-matching state" do
-      before do
-        get "#{local_host}/account-deleted", { state: "123" }, { "rack.session" => { delete_state: "xxx" } }
+      context "with log_out_after_account_delete toggle" do
+        it "returns a redirect to home" do
+          allow(Helper::Toggles).to receive(:enabled?).with("log_out_after_account_delete").and_return(true)
+
+          get "#{local_host}/account-deleted", { state: "123" }, { "rack.session" => { delete_state: "xxx" } }
+          expect(last_response.status).to eq 302
+          expect(last_response.headers["Location"]).to eq "http://get-energy-performance-data/"
+        end
       end
 
-      it "returns a redirect to home" do
-        expect(last_response.status).to eq 302
-        expect(last_response.headers["Location"]).to eq "http://get-energy-performance-data/"
+      context "without log_out_after_account_delete toggle" do
+        it "returns 200" do
+          get "#{local_host}/account-deleted", { state: "123" }, { "rack.session" => { delete_state: "xxx" } }
+
+          expect(last_response.status).to eq 200
+        end
+      end
+    end
+
+    context "when accessed with no server-side state" do
+      context "with log_out_after_account_delete toggle" do
+        it "returns a redirect to home" do
+          allow(Helper::Toggles).to receive(:enabled?).with("log_out_after_account_delete").and_return(true)
+          get "#{local_host}/account-deleted", { state: "123" }
+
+          expect(last_response.status).to eq 302
+          expect(last_response.headers["Location"]).to eq "http://get-energy-performance-data/"
+        end
+      end
+
+      context "without log_out_after_account_delete toggle" do
+        it "returns forbidden for direct access" do
+          get "#{local_host}/account-deleted", { state: "123" }
+
+          expect(last_response.status).to eq 200
+        end
+
+        it "returns 200 if the referrer is the account delete page" do
+          header "Referer", "http://localhost/api/my-account/delete-account"
+          get "#{local_host}/account-deleted", { state: "123" }
+
+          expect(last_response.status).to eq 200
+        end
       end
     end
 
     context "when accessed with no state" do
-      before do
-        get "#{local_host}/account-deleted", { state: "123" }
+      context "with log_out_after_account_delete toggle" do
+        it "returns forbidden" do
+          allow(Helper::Toggles).to receive(:enabled?).with("log_out_after_account_delete").and_return(true)
+          get "#{local_host}/account-deleted"
+
+          expect(last_response.status).to eq 403
+        end
+
+        # Swap to this test when the feature flag is removed
+        # it "returns a redirect to home" do
+        #   get "#{local_host}/account-deleted"
+
+        #   expect(last_response.status).to eq 302
+        #   expect(last_response.headers["Location"]).to eq "http://get-energy-performance-data/"
+        # end
       end
 
-      it "returns a redirect to home" do
-        expect(last_response.status).to eq 302
-        expect(last_response.headers["Location"]).to eq "http://get-energy-performance-data/"
+      context "without log_out_after_account_delete toggle" do
+        it "returns forbidden for direct access" do
+          get "#{local_host}/account-deleted"
+
+          expect(last_response.status).to eq 403
+        end
+
+        it "returns 200 if the referrer is the account delete page" do
+          header "Referer", "#{local_host}/api/my-account/delete-account"
+          get "#{local_host}/account-deleted"
+
+          expect(last_response.status).to eq 200
+        end
       end
     end
   end
