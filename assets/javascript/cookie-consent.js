@@ -1,15 +1,8 @@
 function cookieConsent (tagId, _, gtag, resolvers) {
   _.dataLayer = _.dataLayer || []
-  let initialised = false
 
   const cookies = {
     initialize: function () {
-      if (initialised) {
-        return true
-      }
-
-      initialised = true
-
       if (!tagId) return
 
       const location = window.location
@@ -168,7 +161,7 @@ function cookieConsent (tagId, _, gtag, resolvers) {
     }
   }
 
-  document.addEventListener('DOMContentLoaded', cookies.initialize)
+  cookies.initialize()
 }
 
 cookieConsent(

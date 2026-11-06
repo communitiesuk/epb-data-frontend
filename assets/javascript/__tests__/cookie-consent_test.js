@@ -51,13 +51,6 @@ async function initialize () {
   await jest.isolateModulesAsync(async () => {
     await import('../cookie-consent')
   })
-  if (document.readyState !== 'complete') {
-    await new Promise(resolve => {
-      document.addEventListener('DOMContentLoaded', resolve, { once: true })
-    })
-  } else {
-    document.dispatchEvent(new Event('DOMContentLoaded'))
-  }
 }
 
 function expectedDatalayer ({ granted }) {
