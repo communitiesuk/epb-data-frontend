@@ -6,7 +6,7 @@
     "useIgnoreFile": true
   },
   "files": {
-    "includes": ["**/*.js", "!assets/javascript/**/*.min.js"]
+    "includes": ["**/*.js", "!assets/javascript/**/*.min.js", "!vendor"]
   },
   "formatter": {
     "enabled": true,
