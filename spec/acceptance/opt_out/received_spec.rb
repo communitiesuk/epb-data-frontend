@@ -45,13 +45,26 @@ describe "Acceptance::OptOutReceived", type: :feature do
       end
     end
 
-    context "when the user is not authenticated" do
-      it "returns status 302" do
-        expect(response.status).to eq(302)
+    context "when visited without first submitting the data" do
+      before do
+        allow(Helper::Session).to receive_messages(
+          is_user_authenticated?: true,
+          get_email_from_session: "test@email.com",
+          delete_session_key: nil,
+        )
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_submitted).and_return(nil)
       end
 
+      it "redirects to the check your answers page" do
+        expect(response.status).to eq 302
+        expect(response.location).to eq "#{base_url}/opt-out/check-your-answers"
+      end
+    end
+
+    context "when the user is not authenticated" do
       it "redirects to the login page" do
-        expect(response.headers["Location"]).to eq("#{base_url}/login?referer=opt-out")
+        expect(response.status).to eq 302
+        expect(response.location).to eq "#{base_url}/login?referer=opt-out"
       end
     end
   end

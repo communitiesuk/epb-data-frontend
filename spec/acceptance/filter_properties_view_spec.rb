@@ -458,7 +458,7 @@ describe "Acceptance::FilterProperties", type: :feature do
 
       context "when no data is found for the selected filters" do
         before do
-          allow(get_download_size_use_case).to receive(:execute).and_raise(Errors::FilteredDataNotFound)
+          allow(get_download_size_use_case).to receive(:execute).and_return(0)
         end
 
         it "returns status 400" do
@@ -469,6 +469,84 @@ describe "Acceptance::FilterProperties", type: :feature do
           expect(valid_response.body).to have_css("div.govuk-error-summary h2.govuk-error-summary__title", text: "There is a problem")
           expect(valid_response.body).to have_css("div.govuk-error-summary__body ul.govuk-list li:first a", text: "No certificates were found. Try different filters.")
           expect(valid_response.body).to have_link("No certificates were found. Try different filters.", href: "#filter-properties-header")
+        end
+      end
+
+      context "with a council filter" do
+        let(:valid_response) { post "#{request_url}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}", { "local-authority[]" => "xxx", "area-type" => "local-authority" } }
+
+        before do
+          allow(get_download_size_use_case).to receive(:execute).and_return(0)
+          allow(send_sns_use_case).to receive(:execute)
+        end
+
+        it "returns status 400" do
+          expect(valid_response.status).to eq(400)
+        end
+
+        it "requests the download size with the council filter" do
+          valid_response
+          expect(get_download_size_use_case).to have_received(:execute).with({
+            constituency: nil,
+            council: %w[xxx],
+            date_end: "2025-02-28",
+            date_start: "2023-01-01",
+            eff_rating: %w[A B],
+            postcode: nil,
+            property_type: "domestic",
+          })
+        end
+      end
+
+      context "with a select all council filter" do
+        let(:valid_response) { post "#{request_url}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}", { "local-authority[]" => "Select all", "area-type" => "local-authority" } }
+
+        before do
+          allow(get_download_size_use_case).to receive(:execute).and_return(0)
+          allow(send_sns_use_case).to receive(:execute)
+        end
+
+        it "returns status 400" do
+          expect(valid_response.status).to eq(400)
+        end
+
+        it "requests the download size with the council filter" do
+          valid_response
+          expect(get_download_size_use_case).to have_received(:execute).with({
+            constituency: nil,
+            council: nil,
+            date_end: "2025-02-28",
+            date_start: "2023-01-01",
+            eff_rating: %w[A B],
+            postcode: nil,
+            property_type: "domestic",
+          })
+        end
+      end
+
+      context "with a constituency filter" do
+        let(:valid_response) { post "#{request_url}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}", { "parliamentary-constituency[]" => "xxx", "area-type" => "parliamentary-constituency" } }
+
+        before do
+          allow(get_download_size_use_case).to receive(:execute).and_return(0)
+          allow(send_sns_use_case).to receive(:execute)
+        end
+
+        it "returns status 400" do
+          expect(valid_response.status).to eq(400)
+        end
+
+        it "requests the download size with the council filter" do
+          valid_response
+          expect(get_download_size_use_case).to have_received(:execute).with({
+            constituency: %w[xxx],
+            council: nil,
+            date_end: "2025-02-28",
+            date_start: "2023-01-01",
+            eff_rating: %w[A B],
+            postcode: nil,
+            property_type: "domestic",
+          })
         end
       end
     end

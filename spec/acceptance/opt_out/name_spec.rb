@@ -14,6 +14,7 @@ describe "Acceptance::OptOutOwner", type: :feature do
           get_email_from_session: "test@email.com",
         )
         allow(Helper::Session).to receive(:get_session_value).with(anything, anything).and_call_original
+        allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return("no")
         allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return("yes")
       end
 
@@ -57,6 +58,38 @@ describe "Acceptance::OptOutOwner", type: :feature do
 
         it "redirects to the /opt-out page" do
           expect(response.location).to eq("#{base_url}/opt-out")
+        end
+      end
+
+      context "when owner is no" do
+        before do
+          allow(Helper::Session).to receive_messages(
+            is_user_authenticated?: true,
+            get_email_from_session: "test@email.com",
+          )
+          allow(Helper::Session).to receive(:get_session_value).with(anything, anything).and_call_original
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return("no")
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_occupant).and_return(nil)
+        end
+
+        it "redirects to the /opt-out/ineligible page" do
+          expect(response.location).to eq("#{base_url}/opt-out/ineligible")
+        end
+      end
+
+      context "when owner is no and occutant is no" do
+        before do
+          allow(Helper::Session).to receive_messages(
+            is_user_authenticated?: true,
+            get_email_from_session: "test@email.com",
+          )
+          allow(Helper::Session).to receive(:get_session_value).with(anything, anything).and_call_original
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_owner).and_return("no")
+          allow(Helper::Session).to receive(:get_session_value).with(anything, :opt_out_occupant).and_return("no")
+        end
+
+        it "redirects to the /opt-out/ineligible page" do
+          expect(response.location).to eq("#{base_url}/opt-out/ineligible")
         end
       end
     end

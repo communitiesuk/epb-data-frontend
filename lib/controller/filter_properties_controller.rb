@@ -47,9 +47,6 @@ module Controller
           erb :filter_properties, locals: { use_case: @container.get_object(:get_file_size_use_case) }
         when Errors::SessionEmailError
           redirect "/signed-out"
-        when Errors::UserEmailNotVerified, Errors::AuthenticationError, Errors::NetworkError
-          logger.warn "Authentication error: #{e.message}"
-          redirect "/login/authorize?referer=filter-properties"
         when Errors::InvalidPropertyType
           @page_title = "#{t('error.error')}#{
             t('error.download_file.heading')
