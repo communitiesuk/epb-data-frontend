@@ -36,6 +36,8 @@ module Controller
     set :public_folder, proc { File.join(root, "/../../public") }
     set :static_cache_control, [:public, { max_age: 60 * 60 * 24 * 7 }] if ENV["ASSETS_VERSION"]
     set :logger, Logger.new($stdout, level: Logger::DEBUG)
+    set :dump_errors, false
+
     Helper::Assets.setup_cache_control(self)
 
     configure :production do
@@ -48,6 +50,7 @@ module Controller
       also_reload "lib/**/*.rb"
       set :host_authorization, { permitted_hosts: [] }
       set :show_exceptions, :after_handler
+      set :dump_errors, true
     end
 
     configure :test do
@@ -89,7 +92,6 @@ module Controller
     end
 
     not_found do
-      @page_title = "#{t('error.404.heading')} – #{t('layout.body.govuk')}"
       status 404
       erb :error_page_404 unless @errors
     end
@@ -105,27 +107,16 @@ module Controller
       erb :service_unavailable
     end
 
-  private
-
-    def send_to_sentry(exception)
-      was_timeout = exception.is_a?(Errors::RequestTimeoutError)
-      Sentry.capture_exception(exception) if defined?(Sentry) && !was_timeout
+    error do |exception|
+      server_error(exception)
     end
+
+  private
 
     def server_error(exception)
       was_timeout = exception.is_a?(Errors::RequestTimeoutError)
       Sentry.capture_exception(exception) if defined?(Sentry) && !was_timeout
-
-      message =
-        exception.methods.include?(:message) ? exception.message : exception
-
-      error = { type: exception.class.name, message: }
-
-      error[:backtrace] = exception.backtrace if exception.methods.include? :backtrace
-
-      logger.error JSON.generate(error)
-      @page_title =
-        "#{t('error.500.heading')} – #{t('layout.body.govuk')}"
+      logger.error JSON.generate(error_details(exception))
       status(was_timeout ? 504 : 500)
       erb :error_page_500
     end
@@ -136,6 +127,15 @@ module Controller
 
     def property_type_valid?(property_type)
       VALID_PROPERTY_TYPES.include?(property_type)
+    end
+
+    def error_details(exception)
+      {
+        type: exception.class.name,
+        message: exception.message,
+        backtrace: exception&.backtrace&.select { it.start_with?(File.expand_path("..", __dir__)) },
+        cause: exception.cause && error_details(exception.cause),
+      }.compact
     end
   end
 end
