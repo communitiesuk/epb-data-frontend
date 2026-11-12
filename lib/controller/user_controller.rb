@@ -22,8 +22,6 @@ module Controller
 
       authorize_url = "/login/authorize?referer=opt-out"
       erb :login, locals: { authorize_url: }
-    rescue StandardError => e
-      server_error(e)
     end
 
     get "/login/authorize" do
@@ -86,28 +84,13 @@ module Controller
       end
 
       redirect "/#{redirect_path}"
-    rescue StandardError => e
-      case e
-
-      when Errors::StateMismatch, Errors::AccessDeniedError, Errors::LoginRequiredError, Errors::InvalidGrantError
-        message =
-          e.methods.include?(:message) ? e.message : e
-
-        error = { type: e.class.name, message: }
-        error[:backtrace] = e.backtrace if e.methods.include? :backtrace
-        logger.error JSON.generate(error)
-
-        redirect_link = redirect_path == "opt-out" ? "/login?referer=opt-out" : "/login/authorize?referer=#{referer}"
-
-        redirect localised_url(redirect_link)
-      when Errors::TokenExchangeError, Errors::AuthenticationError, Errors::NetworkError, Errors::ValidationError
-        server_error(e)
-      when Errors::MissingReferrerError
-        logger.error "Missing referer in session during login callback: #{e.message}"
-        redirect "/"
-      else
-        server_error(e)
-      end
+    rescue Errors::StateMismatch, Errors::AccessDeniedError, Errors::LoginRequiredError, Errors::InvalidGrantError => e
+      logger.error JSON.generate(error_details(e))
+      redirect_link = redirect_path == "opt-out" ? "/login?referer=opt-out" : "/login/authorize?referer=#{referer}"
+      redirect localised_url(redirect_link)
+    rescue Errors::MissingReferrerError => e
+      logger.error "Missing referer in session during login callback: #{e.message}"
+      redirect "/"
     end
 
     get "/jwks" do
@@ -123,8 +106,6 @@ module Controller
       jwks_hash[:use] = "sig"
 
       { keys: [jwks_hash] }.to_json
-    rescue StandardError => e
-      server_error(e)
     end
 
     get "/signed-out" do

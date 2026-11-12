@@ -9,8 +9,6 @@ module Controller
       set_default
 
       erb :'opt_out/start'
-    rescue StandardError => e
-      server_error(e)
     end
 
     get "/opt-out/reason" do
@@ -19,8 +17,6 @@ module Controller
       @page_title = "#{t('opt_out.reason.title')} – #{t('layout.body.govuk')}"
 
       erb :'opt_out/reason'
-    rescue StandardError => e
-      server_error(e)
     end
 
     post "/opt-out/reason" do
@@ -40,8 +36,6 @@ module Controller
         @errors[:reason] = t("opt_out.reason.error.invalid_reason_selection.heading")
         erb :'opt_out/reason'
       end
-    rescue StandardError => e
-      server_error(e)
     end
 
     get "/opt-out/incorrect-epc" do
@@ -56,8 +50,6 @@ module Controller
 
       @back_link_href = localised_url("/opt-out/reason")
       erb :'opt_out/incorrect_epc'
-    rescue StandardError => e
-      server_error(e)
     end
 
     get "/opt-out/advised-by-third-party" do
@@ -72,8 +64,6 @@ module Controller
 
       @back_link_href = localised_url("/opt-out/reason")
       erb :'opt_out/advised_by_third_party'
-    rescue StandardError => e
-      server_error(e)
     end
 
     get "/opt-out/owner" do
@@ -90,8 +80,6 @@ module Controller
       Helper::Session.delete_session_key(session, :opt_out_owner)
       Helper::Session.delete_session_key(session, :opt_out_occupant)
       erb :'opt_out/owner'
-    rescue StandardError => e
-      server_error(e)
     end
 
     post "/opt-out/owner" do
@@ -108,8 +96,6 @@ module Controller
         @errors[:owner] = t("opt_out.owner.error")
         erb :'opt_out/owner'
       end
-    rescue StandardError => e
-      server_error(e)
     end
 
     get "/opt-out/ineligible" do
@@ -124,8 +110,6 @@ module Controller
       end
 
       erb :'opt_out/ineligible'
-    rescue StandardError => e
-      server_error(e)
     end
 
     get "/opt-out/occupant" do
@@ -140,8 +124,6 @@ module Controller
 
       @errors = {}
       erb :'opt_out/occupant'
-    rescue StandardError => e
-      server_error(e)
     end
 
     post "/opt-out/occupant" do
@@ -158,8 +140,6 @@ module Controller
         @errors[:occupant] = t("opt_out.occupant.error.invalid_occupant_selection.heading")
         erb :'opt_out/occupant'
       end
-    rescue StandardError => e
-      server_error(e)
     end
 
     get "/opt-out/name" do
@@ -200,8 +180,6 @@ module Controller
       else
         erb :'opt_out/name'
       end
-    rescue StandardError => e
-      server_error(e)
     end
 
     get "/opt-out/certificate-details" do
@@ -243,8 +221,6 @@ module Controller
       else
         erb :'opt_out/certificate_details'
       end
-    rescue StandardError => e
-      server_error(e)
     end
 
     get "/opt-out/check-your-answers" do
@@ -254,14 +230,9 @@ module Controller
       @page_title = "#{t('opt_out.check_your_answers.title')} – #{t('layout.body.govuk')}"
 
       erb :'opt_out/check_your_answers'
-    rescue StandardError => e
-      case e
-      when Errors::MissingOptOutValues
-        logger.warn "Session values are missing when reaching /opt-out/check-your-answers: #{e.message}"
-        redirect localised_url("/opt-out")
-      else
-        server_error(e)
-      end
+    rescue Errors::MissingOptOutValues => e
+      logger.warn "Session values are missing when reaching /opt-out/check-your-answers: #{e.message}"
+      redirect localised_url("/opt-out")
     end
 
     post "/opt-out/check-your-answers" do
@@ -279,14 +250,9 @@ module Controller
         @errors[:confirmation] = t("opt_out.check_your_answers.confirmation.error")
         erb :'opt_out/check_your_answers'
       end
-    rescue StandardError, Errors::NotifySendEmailError => e
-      case e
-      when Errors::MissingOptOutValues
-        logger.warn "Session values are missing when submitting POST /opt-out/check-your-answers: #{e.message}"
-        redirect localised_url("/opt-out")
-      else
-        server_error(e)
-      end
+    rescue Errors::MissingOptOutValues => e
+      logger.warn "Session values are missing when submitting POST /opt-out/check-your-answers: #{e.message}"
+      redirect localised_url("/opt-out")
     end
 
     get "/opt-out/received" do
@@ -305,8 +271,6 @@ module Controller
       end
 
       erb :'opt_out/received'
-    rescue StandardError => e
-      server_error(e)
     end
 
     def set_default

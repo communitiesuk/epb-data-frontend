@@ -38,26 +38,17 @@ module Controller
         else
           erb :filter_properties, locals: { use_case: @container.get_object(:get_file_size_use_case) }
         end
-      rescue StandardError => e
-        case e
-        when Errors::FilteredDataNotFound
-          status 400
-          @errors[:data_not_found] = t("error.data_not_found")
-          @error_form_ids << "filter-properties-header"
-          erb :filter_properties, locals: { use_case: @container.get_object(:get_file_size_use_case) }
-        when Errors::SessionEmailError
-          redirect "/signed-out"
-        when Errors::InvalidPropertyType
-          @page_title = "#{t('error.error')}#{
-            t('error.download_file.heading')
-          } – #{t('error.download_file.invalid_property_type')} – #{
-            t('layout.body.govuk')
-          }"
-          status 404
-          erb :error_page_404
-        else
-          server_error(e)
-        end
+      rescue Errors::FilteredDataNotFound
+        status 400
+        @errors[:data_not_found] = t("error.data_not_found")
+        @error_form_ids << "filter-properties-header"
+        erb :filter_properties, locals: { use_case: @container.get_object(:get_file_size_use_case) }
+      rescue Errors::SessionEmailError
+        redirect "/signed-out"
+      rescue Errors::InvalidPropertyType
+        @page_title = "#{t('error.error')}#{t('error.download_file.heading')} – #{t('error.download_file.invalid_property_type')} – #{t('layout.body.govuk')}"
+        status 404
+        erb :error_page_404
       end
 
     get "/filter-properties",
@@ -81,22 +72,13 @@ module Controller
       status 200
 
       erb :request_received_confirmation, locals: { email:, download_count: }
-    rescue StandardError => e
-      case e
-      when Errors::InvalidPropertyType
-        @page_title = "#{t('error.error')}#{
-          t('error.download_file.heading')
-        } – #{t('error.download_file.invalid_property_type')} – #{
-          t('layout.body.govuk')
-        }"
-        status 404
-      when Errors::SessionEmailError
-        redirect "/signed-out"
-      when Errors::MissingDownloadCount
-        redirect "/filter-properties?property_type=#{property_type}"
-      else
-        server_error(e)
-      end
+    rescue Errors::InvalidPropertyType
+      @page_title = "#{t('error.error')}#{t('error.download_file.heading')} – #{t('error.download_file.invalid_property_type')} – #{t('layout.body.govuk')}"
+      status 404
+    rescue Errors::SessionEmailError
+      redirect "/signed-out"
+    rescue Errors::MissingDownloadCount
+      redirect "/filter-properties?property_type=#{property_type}"
     end
 
   private
@@ -189,23 +171,19 @@ module Controller
       params["postcode"].strip! unless params["postcode"].nil?
       return unless params["area-type"] == "postcode" && !(params["postcode"].nil? || params["postcode"].empty?)
 
-      begin
-        postcode_check = Helper::PostcodeValidator.validate(params.fetch("postcode", ""))
-      rescue Errors::PostcodeIncomplete
-        status 400
-        @error_form_ids << "area-type-section"
-        @errors[:postcode] = t("error.invalid_filter_option.postcode_incomplete")
-      rescue Errors::PostcodeWrongFormat
-        status 400
-        @error_form_ids << "area-type-section"
-        @errors[:postcode] = t("error.invalid_filter_option.postcode_wrong_format")
-      rescue Errors::PostcodeNotValid
-        status 400
-        @error_form_ids << "area-type-section"
-        @errors[:postcode] = t("error.invalid_filter_option.postcode_invalid")
-      else
-        params["postcode"] = postcode_check
-      end
+      params["postcode"] = Helper::PostcodeValidator.validate(params.fetch("postcode", ""))
+    rescue Errors::PostcodeIncomplete
+      status 400
+      @error_form_ids << "area-type-section"
+      @errors[:postcode] = t("error.invalid_filter_option.postcode_incomplete")
+    rescue Errors::PostcodeWrongFormat
+      status 400
+      @error_form_ids << "area-type-section"
+      @errors[:postcode] = t("error.invalid_filter_option.postcode_wrong_format")
+    rescue Errors::PostcodeNotValid
+      status 400
+      @error_form_ids << "area-type-section"
+      @errors[:postcode] = t("error.invalid_filter_option.postcode_invalid")
     end
 
     def validate_ratings

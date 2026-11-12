@@ -86,8 +86,6 @@ module Controller
       valid_user_info = user_info != {}
 
       erb :'guidance_pages/energy_certificate_data_apis', locals: { valid_user_info:, user_info: }
-    rescue StandardError => e
-      server_error(e)
     end
   end
 end

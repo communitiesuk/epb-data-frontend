@@ -274,11 +274,12 @@ describe "Acceptance::Login", type: :feature do
       context "when id token is invalid" do
         before do
           allow(validate_id_token_use_case).to receive(:execute).and_return(false)
-          get callback_url, { code: "test_code", state: "test_state" }, { "rack.session" => { nonce: "test_nonce", state: "test_state", referer: "not_empty" } }
         end
 
         it "raises 500" do
-          expect(last_response.status).to eq(500)
+          expect {
+            get callback_url, { code: "test_code", state: "test_state" }, { "rack.session" => { nonce: "test_nonce", state: "test_state", referer: "not_empty" } }
+          }.to raise_error Errors::ValidationError
         end
       end
 
@@ -402,11 +403,12 @@ describe "Acceptance::Login", type: :feature do
     context "when user email fails to be encrypted and request raises KmsEncryptionError" do
       before do
         allow(Helper::Onelogin).to receive(:set_user_one_login_info).and_raise(Errors::KmsEncryptionError, "Failed to encrypt the email")
-        get callback_url, { code: "test_code", state: "test_state" }, { "rack.session" => { nonce: "test_nonce", state: "test_state", referer: "test-redirect-path" } }
       end
 
       it "raises 500 error" do
-        expect(last_response.status).to eq(500)
+        expect {
+          get callback_url, { code: "test_code", state: "test_state" }, { "rack.session" => { nonce: "test_nonce", state: "test_state", referer: "test-redirect-path" } }
+        }.to raise_error Errors::KmsEncryptionError
       end
     end
   end

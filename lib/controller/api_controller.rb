@@ -20,25 +20,18 @@ module Controller
       user_info = get_user_info_use_case.execute(user_id)
 
       erb :my_account, locals: { user_info: }
-    rescue StandardError => e
-      case e
-      when Errors::BearerTokenMissing
-        logger.warn "Bearer token missing: #{e.message}"
-        redirect "/login/authorize?referer=api/my-account"
-      when Errors::UserMissing
-        logger.warn "User information from user-credentials missing: #{e.message}"
-        redirect "/login/authorize?referer=api/my-account"
-      else
-        server_error(e)
-      end
+    rescue Errors::BearerTokenMissing => e
+      logger.warn "Bearer token missing: #{e.message}"
+      redirect "/login/authorize?referer=api/my-account"
+    rescue Errors::UserMissing => e
+      logger.warn "User information from user-credentials missing: #{e.message}"
+      redirect "/login/authorize?referer=api/my-account"
     end
 
     get "/api/my-account/delete-account" do
       @back_link_href = request.referer || "/api/my-account"
       @page_title = "#{t('delete_account.title')} – #{t('layout.body.govuk')}"
       erb :delete_account
-    rescue StandardError => e
-      server_error(e)
     end
 
     post "/api/my-account/delete-account" do
@@ -49,8 +42,6 @@ module Controller
       session["delete_state"] = state
       post_logout_redirect_uri = uri("/account-deleted")
       redirect Helper::Onelogin.sign_out_url(id_token_hint:, post_logout_redirect_uri:, state:)
-    rescue StandardError => e
-      server_error(e)
     end
 
     get "/account-deleted" do
@@ -59,8 +50,6 @@ module Controller
       session.clear
       @page_title = "#{t('delete_account.account_deleted')} – #{t('layout.body.govuk')}"
       erb :account_deleted
-    rescue StandardError => e
-      server_error(e)
     end
   end
 end

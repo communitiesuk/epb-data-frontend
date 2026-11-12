@@ -196,11 +196,12 @@ describe "Acceptance::OptOutCheckYourAnswers", type: :feature do
     context "when the use case raises a NotifySendEmailError" do
       before do
         allow(use_case).to receive(:execute).and_raise(Errors::NotifySendEmailError)
-        post "#{base_url}/opt-out/check-your-answers", { confirmation: "checked" }
       end
 
       it "fails with 500 error code" do
-        expect(last_response.status).to eq(500)
+        expect {
+          post "#{base_url}/opt-out/check-your-answers", { confirmation: "checked" }
+        }.to raise_error Errors::NotifySendEmailError
       end
     end
 

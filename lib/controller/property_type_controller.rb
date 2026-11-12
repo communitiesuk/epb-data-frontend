@@ -7,8 +7,6 @@ module Controller
       @page_title = page_title
 
       erb :type_of_properties
-    rescue StandardError => e
-      server_error(e)
     end
 
     post "/type-of-properties" do

@@ -41,7 +41,7 @@ module Controller
     Helper::Assets.setup_cache_control(self)
 
     configure :production do
-      logger.level = Logger::ERROR
+      logger.level = Logger::WARN
     end
 
     configure :development do
@@ -107,19 +107,20 @@ module Controller
       erb :service_unavailable
     end
 
+    error Errors::RequestTimeoutError do |exception|
+      logger.error JSON.generate(error_details(exception))
+      status 504
+      erb :error_page_500
+    end
+
     error do |exception|
-      server_error(exception)
+      Sentry.capture_exception(exception) if defined?(Sentry)
+      logger.error JSON.generate(error_details(exception))
+      status 500
+      erb :error_page_500
     end
 
   private
-
-    def server_error(exception)
-      was_timeout = exception.is_a?(Errors::RequestTimeoutError)
-      Sentry.capture_exception(exception) if defined?(Sentry) && !was_timeout
-      logger.error JSON.generate(error_details(exception))
-      status(was_timeout ? 504 : 500)
-      erb :error_page_500
-    end
 
     def is_restricted?
       RESTRICTED_PATHS.include?(request.path) || false
