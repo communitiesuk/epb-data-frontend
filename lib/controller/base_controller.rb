@@ -67,8 +67,8 @@ module Controller
     before do
       set_locale
       cache_control :no_store
-      Helper::Session.is_user_authenticated?(session) if is_restricted?
       halt 503, erb(:service_unavailable) if request.path != "/healthcheck" && Helper::Toggles.enabled?("ebp-data-frontend-maintenance-mode")
+      Helper::Session.is_user_authenticated?(session) if is_restricted?
     rescue Errors::AuthenticationError
       login_url = if request.path.start_with?("/opt-out")
                     "/login?referer=opt-out"
