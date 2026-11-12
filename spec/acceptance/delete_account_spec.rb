@@ -75,6 +75,7 @@ describe "Acceptance::DeleteAccount", type: :feature do
 
         post "/api/my-account/delete-account", {}, {
           "rack.session" => {
+            user_id: "user-id",
             id_token: "test-user-id",
             email_address: "test@example.com",
           },
@@ -89,7 +90,7 @@ describe "Acceptance::DeleteAccount", type: :feature do
       end
 
       it "calls the delete use case" do
-        expect(delete_user_use_case).to have_received(:execute).with("test-user-id")
+        expect(delete_user_use_case).to have_received(:execute).with("user-id")
       end
 
       it "replaces the state" do

@@ -43,7 +43,7 @@ module Controller
 
     post "/api/my-account/delete-account" do
       id_token_hint = session["id_token"]
-      @container.get_object(:delete_user_use_case).execute(id_token_hint)
+      @container.get_object(:delete_user_use_case).execute(session["user_id"])
       session.clear
       state = SecureRandom.uuid
       session["delete_state"] = state
