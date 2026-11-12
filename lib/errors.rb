@@ -117,7 +117,4 @@ module Errors
 
   class MissingReferrerError < RuntimeError
   end
-
-  module DoNotReport
-  end
 end

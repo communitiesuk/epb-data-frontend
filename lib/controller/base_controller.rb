@@ -66,23 +66,9 @@ module Controller
 
     before do
       set_locale
-      # This site contains authenticated pages
-      # Ensure they don't cache when the user uses the back button
       cache_control :no_store
-      if is_restricted?
-        Helper::Session.is_user_authenticated?(session)
-      end
-      raise MaintenanceMode if request.path != "/healthcheck" && Helper::Toggles.enabled?("ebp-data-frontend-maintenance-mode")
-    rescue Errors::AuthenticationError
-      login_url = if request.path.start_with?("/opt-out")
-                    "/login?referer=opt-out"
-                  else
-                    referrer = request.fullpath.delete_prefix("/")
-                    encoded_referrer = CGI.escape(referrer)
-                    "/login/authorize?referer=#{encoded_referrer}"
-                  end
-
-      redirect login_url, request.post? ? 303 : 302
+      Helper::Session.is_user_authenticated?(session) if is_restricted?
+      halt 503, erb(:service_unavailable) if request.path != "/healthcheck" && Helper::Toggles.enabled?("ebp-data-frontend-maintenance-mode")
     end
 
     get "/" do
@@ -96,15 +82,16 @@ module Controller
       erb :error_page_404
     end
 
-    class MaintenanceMode < RuntimeError
-      include Errors::DoNotReport
-    end
+    error Errors::AuthenticationError do
+      login_url = if request.path.start_with?("/opt-out")
+                    "/login?referer=opt-out"
+                  else
+                    referrer = request.fullpath.delete_prefix("/")
+                    encoded_referrer = CGI.escape(referrer)
+                    "/login/authorize?referer=#{encoded_referrer}"
+                  end
 
-    error MaintenanceMode do
-      status 503
-      @page_title =
-        "#{t('service_unavailable.title')} – #{t('layout.body.govuk')}"
-      erb :service_unavailable
+      redirect login_url, request.post? ? 303 : 302
     end
 
     error Errors::RequestTimeoutError do |exception|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe "Acceptance::ServiceUnavailable", type: :feature do
   include RSpecFrontendServiceMixin
 
@@ -19,25 +21,60 @@ describe "Acceptance::ServiceUnavailable", type: :feature do
 
   context "when service unavailable is on" do
     before { Helper::Toggles.set_feature(toggle_name, true) }
-
     after { Helper::Toggles.set_feature(toggle_name, false) }
 
-    let(:response) do
-      get "/"
+    context "when visiting the home page" do
+      let(:response) do
+        get "/"
+      end
+
+      it "returns a 503 status" do
+        expect(response.status).to eq 503
+        expect(response.body).to have_title "Sorry, the service is unavailable"
+      end
     end
 
-    it "returns a 503 status on any existing route" do
-      expect(response.status).to eq(503)
+    context "when visiting a deep link" do
+      let(:response) do
+        get "/api/my-account/"
+      end
+
+      it "returns a 503 status" do
+        expect(response.status).to eq 503
+        expect(response.body).to have_title "Sorry, the service is unavailable"
+      end
     end
 
-    it "allows request to the /healthcheck endpoint" do
-      response = get "/healthcheck"
+    context "when visiting the healthcheck page" do
+      let(:response) do
+        get "/healthcheck"
+      end
 
-      expect(response.status).to be 200
+      it "returns a 200 status" do
+        expect(response.status).to be 200
+      end
     end
 
-    it "returns a service unavailable page on any existing route" do
-      expect(Capybara.string(response.body).title).to include("Sorry, the service is unavailable")
+    context "when visiting in welsh" do
+      let(:response) do
+        get "/accessibility-statement?lang=cy"
+      end
+
+      it "returns the service unavailable page in Welsh" do
+        expect(response.status).to eq 503
+        expect(response.body).to have_title "Ymddiheuriadau. Nid yw’r gwasanaeth ar gael. – GOV.UK"
+      end
+    end
+
+    context "when visiting a page that doesn't exist" do
+      let(:response) do
+        get "/xxxx"
+      end
+
+      it "returns the service unavailable page" do
+        expect(response.status).to eq 503
+        expect(response.body).to have_title "Sorry, the service is unavailable"
+      end
     end
   end
 end
