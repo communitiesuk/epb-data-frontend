@@ -48,23 +48,13 @@ module Controller
       state = SecureRandom.uuid
       session["delete_state"] = state
       post_logout_redirect_uri = uri("/account-deleted")
-      if Helper::Toggles.enabled?("log_out_after_account_delete")
-        redirect Helper::Onelogin.sign_out_url(id_token_hint:, post_logout_redirect_uri:, state:)
-      else
-        redirect post_logout_redirect_uri
-      end
+      redirect Helper::Onelogin.sign_out_url(id_token_hint:, post_logout_redirect_uri:, state:)
     rescue StandardError => e
       server_error(e)
     end
 
     get "/account-deleted" do
-      if Helper::Toggles.enabled?("log_out_after_account_delete") && params["state"]
-        return redirect "/" unless params["state"] == session["delete_state"]
-      elsif !params["state"]
-        check_referral("/api/my-account/delete-account")
-      end
-      # When the toggle is removed we only need the following
-      # return redirect "/" unless params["state"] == session["delete_state"]
+      return redirect "/" unless params["state"] && params["state"] == session["delete_state"]
 
       session.clear
       @page_title = "#{t('delete_account.account_deleted')} – #{t('layout.body.govuk')}"

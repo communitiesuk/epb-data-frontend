@@ -17,10 +17,6 @@ describe "Acceptance::DeleteAccount", type: :feature do
     end
   end
 
-  before do
-    allow(Helper::Toggles).to receive(:enabled?).and_call_original
-  end
-
   describe "get /api/my-account/delete-account" do
     context "when the user is authenticated" do
       before do
@@ -74,10 +70,7 @@ describe "Acceptance::DeleteAccount", type: :feature do
 
   describe "post /api/my-account/delete-account" do
     context "when the user is authenticated" do
-      let(:toggle) { false }
-
       before do
-        allow(Helper::Toggles).to receive(:enabled?).with("log_out_after_account_delete").and_return(toggle)
         allow(delete_user_use_case).to receive(:execute)
 
         post "/api/my-account/delete-account", {}, {
@@ -88,24 +81,11 @@ describe "Acceptance::DeleteAccount", type: :feature do
         }
       end
 
-      context "with log_out_after_account_delete toggle" do
-        let(:toggle) { true }
-
-        it "redirects to gov.uk one login sign-out" do
-          expect(last_response.status).to eq(302)
-          delete_state = last_request.env["rack.session"]["delete_state"]
-          expect(delete_state).not_to be_nil
-          expect(last_response.headers["Location"]).to match "https://oidc.integration.account.gov.uk/logout?id_token_hint=test-user-id&post_logout_redirect_uri=http%3A%2F%2Fexample.org%2Faccount-deleted&state=#{delete_state}"
-        end
-      end
-
-      context "without log_out_after_account_delete toggle" do
-        let(:toggle) { false }
-
-        it "redirects to gov.uk one login sign-out" do
-          expect(last_response.status).to eq(302)
-          expect(last_response.headers["Location"]).to match "http://example.org/account-deleted"
-        end
+      it "redirects to gov.uk one login sign-out" do
+        expect(last_response.status).to eq(302)
+        delete_state = last_request.env["rack.session"]["delete_state"]
+        expect(delete_state).not_to be_nil
+        expect(last_response.headers["Location"]).to match "https://oidc.integration.account.gov.uk/logout?id_token_hint=test-user-id&post_logout_redirect_uri=http%3A%2F%2Fexample.org%2Faccount-deleted&state=#{delete_state}"
       end
 
       it "calls the delete use case" do
