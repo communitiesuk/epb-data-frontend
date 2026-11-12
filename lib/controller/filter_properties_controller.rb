@@ -46,9 +46,7 @@ module Controller
       rescue Errors::SessionEmailError
         redirect "/signed-out"
       rescue Errors::InvalidPropertyType
-        @page_title = "#{t('error.error')}#{t('error.download_file.heading')} – #{t('error.download_file.invalid_property_type')} – #{t('layout.body.govuk')}"
-        status 404
-        erb :error_page_404
+        not_found
       end
 
     get "/filter-properties",
@@ -73,8 +71,7 @@ module Controller
 
       erb :request_received_confirmation, locals: { email:, download_count: }
     rescue Errors::InvalidPropertyType
-      @page_title = "#{t('error.error')}#{t('error.download_file.heading')} – #{t('error.download_file.invalid_property_type')} – #{t('layout.body.govuk')}"
-      status 404
+      not_found
     rescue Errors::SessionEmailError
       redirect "/signed-out"
     rescue Errors::MissingDownloadCount

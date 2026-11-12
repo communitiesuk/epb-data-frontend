@@ -93,7 +93,7 @@ module Controller
 
     not_found do
       status 404
-      erb :error_page_404 unless @errors
+      erb :error_page_404
     end
 
     class MaintenanceMode < RuntimeError
