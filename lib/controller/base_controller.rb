@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "i18n"
 require "i18n/backend/fallbacks"
 require "sinatra/base"
@@ -23,13 +25,12 @@ module Controller
       /type-of-properties
     ].freeze
     VALID_PROPERTY_TYPES = %w[domestic non-domestic display].freeze
-    HOST_NAME = "get-energy-certificate-data".freeze
-
-    attr_reader :toggles
+    HOST_NAME = "get-energy-certificate-data"
 
     helpers Helpers
     helpers Sinatra::CustomLogger
     helpers Sinatra::Capture
+    Helper::Assets.setup_cache_control(self)
 
     set :views, "lib/views"
     set :erb, escape_html: true
@@ -37,8 +38,6 @@ module Controller
     set :static_cache_control, [:public, { max_age: 60 * 60 * 24 * 7 }] if ENV["ASSETS_VERSION"]
     set :logger, Logger.new($stdout, level: Logger::DEBUG)
     set :dump_errors, false
-
-    Helper::Assets.setup_cache_control(self)
 
     configure :production do
       logger.level = Logger::WARN
@@ -78,12 +77,6 @@ module Controller
                     "/login/authorize?referer=#{encoded_referrer}"
                   end
       redirect login_url, request.post? ? 303 : 302
-    end
-
-    get "/" do
-      status 200
-      @allow_indexing = true
-      erb :start_page
     end
 
     not_found do

@@ -1,5 +1,11 @@
 module Controller
   class HomeController < Controller::BaseController
+    get "/" do
+      status 200
+      @allow_indexing = true
+      erb :start_page
+    end
+
     get "/healthcheck" do
       status 200
     end
