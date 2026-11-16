@@ -28,7 +28,6 @@ require "active_support/notifications"
 require "rake"
 require "timecop"
 require "rack/session/cookie"
-require "sentry-ruby"
 
 AUTH_URL = "http://test-auth-server.gov.uk"
 
