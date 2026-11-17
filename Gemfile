@@ -35,7 +35,7 @@ group :test do
   gem "capybara", "~> 3.40"
   gem "capybara-selenium", "~> 0.0.6"
   gem "compare-xml", "~>1.0"
-  gem "rack-test", "~> 2.2.0"
+  gem "rack-test", "~> 2.3.0"
   gem "rspec", "~>3.13"
   gem "selenium-webdriver", "~> 4.52.0"
   gem "simplecov", "~>1.3.2"
