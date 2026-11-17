@@ -89,7 +89,7 @@ GEM
     ffi (1.17.4-x86_64-darwin)
     ffi (1.17.4-x86_64-linux-gnu)
     ffi (1.17.4-x86_64-linux-musl)
-    ffi-compiler (1.4.2)
+    ffi-compiler (1.4.3)
       ffi (>= 1.15.5)
       rake
     google-protobuf (4.36.2)
