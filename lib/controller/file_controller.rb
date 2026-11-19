@@ -16,7 +16,7 @@ module Controller
 
       s3_url = @container.get_object(:get_presigned_url_use_case).execute(file_name: "full-load/#{property_type}-csv.zip")
       redirect s3_url
-    rescue Errors::InvalidPropertyType, TypeErrors::FileNotFound
+    rescue Errors::InvalidPropertyType, Errors::FileNotFound
       not_found
     end
 
