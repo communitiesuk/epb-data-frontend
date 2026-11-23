@@ -86,7 +86,6 @@ GEM
       logger
     faraday-net_http (3.5.0)
       net-http (~> 0.5)
-    ffi (1.17.4)
     ffi (1.17.4-aarch64-linux-gnu)
     ffi (1.17.4-aarch64-linux-musl)
     ffi (1.17.4-arm64-darwin)
@@ -96,9 +95,6 @@ GEM
     ffi-compiler (1.4.3)
       ffi (>= 1.15.5)
       rake
-    google-protobuf (4.36.2)
-      bigdecimal
-      rake (~> 13.3)
     google-protobuf (4.36.2-aarch64-linux-gnu)
       bigdecimal
       rake (~> 13.3)
@@ -283,9 +279,6 @@ GEM
       rubocop (~> 1.81)
     ruby-progressbar (1.13.0)
     rubyzip (3.7.0)
-    sass-embedded (1.108.2)
-      google-protobuf (~> 4.31)
-      rake (~> 13.3)
     sass-embedded (1.108.2-aarch64-linux-gnu)
       google-protobuf (~> 4.31)
     sass-embedded (1.108.2-aarch64-linux-musl)
@@ -402,7 +395,7 @@ DEPENDENCIES
   rack-test (~> 2.3.0)
   rackup (~> 2.1)
   rake (~> 13.4.2)
-  rexml (~> 3)
+  rexml (~> 3.4)
   rouge (~> 5.1)
   rspec (~> 3.13)
   rubocop-govuk (~> 5.0)
