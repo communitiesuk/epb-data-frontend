@@ -13,10 +13,10 @@ describe "Journey::MyAccount", :journey, type: :feature do
     end
 
     it "displays the correct content" do
-      expect(page).to have_selector("h1", text: "My account")
-      expect(page).to have_selector("#email-address dt", text: "Email address")
-      expect(page).to have_selector("#bearer-token dt", text: "Bearer token (for developers)")
-      expect(page).to have_selector("#opt-out dt", text: "Email notifications")
+      expect(page).to have_css("h1", text: "My account")
+      expect(page).to have_css("#email-address dt", text: "Email address")
+      expect(page).to have_css("#bearer-token dt", text: "Bearer token (for developers)")
+      expect(page).to have_css("#opt-out dt", text: "Email notifications")
     end
 
     it "displays copy button for bearer token" do
@@ -33,14 +33,14 @@ describe "Journey::MyAccount", :journey, type: :feature do
     end
 
     it "displays the email notifications status description" do
-      expect(page).to have_selector("#subscription-value", text: "You will get emails about changes to the service.")
+      expect(page).to have_css("#subscription-value", text: "You will get emails about changes to the service.")
     end
 
     context "when clicking the 'Unsubscribe' link" do
       it "updates email notifications status and link" do
         click_link "Unsubscribe"
         expect(page).to have_link "Resubscribe"
-        expect(page).to have_selector("#subscription-value", text: "You have unsubscribed from emails about changes to the service.")
+        expect(page).to have_css("#subscription-value", text: "You have unsubscribed from emails about changes to the service.")
       end
     end
   end

@@ -23,16 +23,16 @@ describe "Acceptance::OptOutOwner", type: :feature do
       end
 
       it "contains the correct h1 header" do
-        expect(response.body).to have_selector("h1", text: "What is your full name?")
+        expect(response.body).to have_css("h1", text: "What is your full name?")
       end
 
       it "has the label and input for the name" do
         expect(response.body).to have_css("label#label_name", text: "Full name")
-        expect(response.body).to have_css("input#name[type='text']", count: 1)
+        expect(response.body).to have_field("name", type: "text", count: 1)
       end
 
       it "has the correct Continue button" do
-        expect(response.body).to have_css("button[type='submit']", text: "Continue")
+        expect(response.body).to have_button("Continue", type: "submit")
       end
 
       context "when there is already a session" do

@@ -14,12 +14,12 @@ describe "Journey::UseApi", :journey, type: :feature do
     end
 
     it "displays the correct content" do
-      expect(page).to have_selector("h1", text: "Energy certificate data APIs")
-      expect(page).to have_selector("h2", text: "Data available")
-      expect(page).to have_selector("h2", text: "Technical documentation")
-      expect(page).to have_selector("h2", text: "My Bearer token")
-      expect(page).to have_selector("h2", text: "Open API specification")
-      expect(page).to have_selector("h2", text: "Conditions of use")
+      expect(page).to have_css("h1", text: "Energy certificate data APIs")
+      expect(page).to have_css("h2", text: "Data available")
+      expect(page).to have_css("h2", text: "Technical documentation")
+      expect(page).to have_css("h2", text: "My Bearer token")
+      expect(page).to have_css("h2", text: "Open API specification")
+      expect(page).to have_css("h2", text: "Conditions of use")
     end
 
     it "displays copy button for bearer token" do
@@ -38,7 +38,7 @@ describe "Journey::UseApi", :journey, type: :feature do
 
       it "redirects to the account page" do
         expect(page).to have_current_path("/api/my-account")
-        expect(page).to have_selector("h1", text: "My account")
+        expect(page).to have_css("h1", text: "My account")
       end
 
       it "displays copy and sign out buttons" do

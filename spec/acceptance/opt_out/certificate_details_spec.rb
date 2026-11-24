@@ -29,11 +29,11 @@ describe "Acceptance::OptOutCertificateDetails", type: :feature do
 
       it "has the label and input for the name" do
         expect(response.body).to have_css("label#certificate-number-label", text: "Certificate number")
-        expect(response.body).to have_css("input#certificate-number[type='text']", count: 1)
+        expect(response.body).to have_field("certificate-number", type: "text", count: 1)
       end
 
       it "has the correct Continue button" do
-        expect(response.body).to have_css("button[type='submit']", text: "Continue")
+        expect(response.body).to have_button("Continue", type: "submit")
       end
 
       it_behaves_like "when checking an authorisation for opt-out restricted endpoints", end_point: "certificate-details"

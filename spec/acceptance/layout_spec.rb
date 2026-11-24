@@ -26,7 +26,7 @@ describe "Acceptance::Layout", type: :feature do
       end
 
       it "does not display the sign out button" do
-        expect(response.body).not_to have_link("My account", href: "/api/my-account")
+        expect(response.body).to have_no_link("My account", href: "/api/my-account")
       end
 
       it "has a link in the footer for the accessibility statement" do
@@ -100,7 +100,7 @@ describe "Acceptance::Layout", type: :feature do
         end
 
         it "does not display the my account button" do
-          expect(response.body).not_to have_link("My account", href: "/api/my-account")
+          expect(response.body).to have_no_link("My account", href: "/api/my-account")
         end
       end
 
@@ -108,7 +108,7 @@ describe "Acceptance::Layout", type: :feature do
         let(:response) { get "#{local_host}/opt-out" }
 
         it "does not show 'gov header' banner text" do
-          expect(response.body).not_to have_link "Get energy performance of buildings data"
+          expect(response.body).to have_no_link "Get energy performance of buildings data"
         end
 
         it "does not allow indexing or following by crawlers" do

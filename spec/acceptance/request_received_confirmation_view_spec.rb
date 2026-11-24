@@ -72,7 +72,7 @@ describe "Acceptance::RequestReceivedConfirmation", type: :feature do
       end
 
       it "has correct header" do
-        expect(last_response.body).to have_selector("h2", text: "Request received")
+        expect(last_response.body).to have_css("h2", text: "Request received")
       end
 
       it "displays the title the same as the main header value" do

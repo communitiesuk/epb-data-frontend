@@ -27,7 +27,7 @@ describe "Acceptance::ServiceStartPage", type: :feature do
       end
 
       it "has the correct MHCLG contact email" do
-        expect(response.body).to have_content("mhclg.digital-services@communities.gov.uk")
+        expect(response.body).to have_text("mhclg.digital-services@communities.gov.uk")
       end
 
       it "sets the cache-control header" do

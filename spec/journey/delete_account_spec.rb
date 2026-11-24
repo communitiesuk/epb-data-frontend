@@ -13,7 +13,7 @@ describe "Journey::DeleteAccount", :journey, type: :feature do
     end
 
     it "displays the correct heading" do
-      expect(page).to have_selector("h1.govuk-heading-xl", text: "Delete your account")
+      expect(page).to have_css("h1.govuk-heading-xl", text: "Delete your account")
     end
 
     it "displays the warning delete button" do
@@ -24,7 +24,7 @@ describe "Journey::DeleteAccount", :journey, type: :feature do
       it "returns to the my account page" do
         click_link "Cancel"
         expect(page).to have_current_path("/api/my-account")
-        expect(page).to have_selector("h1", text: "My account")
+        expect(page).to have_css("h1", text: "My account")
       end
     end
 

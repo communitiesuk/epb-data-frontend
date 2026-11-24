@@ -23,9 +23,9 @@ describe "Journey::DownloadSelected", :journey, type: :feature do
 
       it "displays correct filters on the confirmation page" do
         click_button "Download selected"
-        expect(page).to have_content("Domestic Energy Performance Certificates")
-        expect(page).to have_content("May 2024 - December 2025")
-        expect(page).to have_content("Energy Efficiency Rating C, D, E, F, G")
+        expect(page).to have_text("Domestic Energy Performance Certificates")
+        expect(page).to have_text("May 2024 - December 2025")
+        expect(page).to have_text("Energy Efficiency Rating C, D, E, F, G")
       end
 
       context "when filtering by local authority" do
@@ -37,10 +37,10 @@ describe "Journey::DownloadSelected", :journey, type: :feature do
         end
 
         it "displays correct filter on the confirmation page" do
-          expect(page).to have_content("Domestic Energy Performance Certificates")
-          expect(page).to have_content("May 2024 - December 2025")
-          expect(page).to have_content("Adur, Birmingham")
-          expect(page).to have_content("Energy Efficiency Rating C, D, E, F, G")
+          expect(page).to have_text("Domestic Energy Performance Certificates")
+          expect(page).to have_text("May 2024 - December 2025")
+          expect(page).to have_text("Adur, Birmingham")
+          expect(page).to have_text("Energy Efficiency Rating C, D, E, F, G")
         end
       end
 
@@ -54,7 +54,7 @@ describe "Journey::DownloadSelected", :journey, type: :feature do
         end
 
         it "displays correct filter on the confirmation page" do
-          expect(page).to have_content("Banbury, Mansfield")
+          expect(page).to have_text("Banbury, Mansfield")
         end
       end
 
@@ -66,7 +66,7 @@ describe "Journey::DownloadSelected", :journey, type: :feature do
         end
 
         it "displays correct filter on the confirmation page" do
-          expect(page).to have_content("M4 5LA")
+          expect(page).to have_text("M4 5LA")
         end
       end
     end

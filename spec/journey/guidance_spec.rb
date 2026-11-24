@@ -24,7 +24,7 @@ describe "Journey::Guidance", :journey, type: :feature do
     GUIDANCE_PAGES.each do |heading, path|
       it "displays the correct content for #{heading} page" do
         click_link heading
-        expect(page).to have_selector("h1", text: heading)
+        expect(page).to have_css("h1", text: heading)
         expect(page).to have_current_path(path)
         expect(page).to have_link("Back", href: %r{/guidance$})
       end
@@ -32,7 +32,7 @@ describe "Journey::Guidance", :journey, type: :feature do
 
     it "displays the correct content API guidance page" do
       click_link "API guidance"
-      expect(page).to have_selector("h1", text: "Energy certificate data APIs")
+      expect(page).to have_css("h1", text: "Energy certificate data APIs")
       expect(page).to have_current_path("/guidance/energy-certificate-data-apis")
     end
   end

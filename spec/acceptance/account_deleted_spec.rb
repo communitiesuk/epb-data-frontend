@@ -36,7 +36,7 @@ describe "Acceptance::AccountDeleted", type: :feature do
       end
 
       it "does not have a back link to the account page" do
-        expect(last_response.body).not_to have_css("a.govuk-back-link")
+        expect(last_response.body).to have_no_css("a.govuk-back-link")
       end
 
       it "clears the session" do

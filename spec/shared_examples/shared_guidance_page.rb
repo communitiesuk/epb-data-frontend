@@ -34,7 +34,7 @@ shared_examples "when checking the rendering of data passed to a guidance page" 
 
     if dont_render_guidance
       it "does not render content for guidance under the Get Help section" do
-        expect(response.body).not_to have_content("Visit the guidance page for information on:")
+        expect(response.body).to have_no_text("Visit the guidance page for information on:")
       end
     end
   end

@@ -17,21 +17,21 @@ describe "Acceptance::OptOutOwner", type: :feature do
       end
 
       it "contains the correct h1 header" do
-        expect(response.body).to have_selector("h1", text: "Are you the legal owner of the property that you want to opt out?")
+        expect(response.body).to have_css("h1", text: "Are you the legal owner of the property that you want to opt out?")
       end
 
       it "has the Yes radio button" do
         expect(response.body).to have_css("label#label-yes", text: "Yes")
-        expect(response.body).to have_css("input#owner_yes[type='radio']", count: 1)
+        expect(response.body).to have_field("owner_yes", type: "radio", count: 1)
       end
 
       it "has the No radio button" do
         expect(response.body).to have_css("label#label-no", text: "No")
-        expect(response.body).to have_css("input#owner_no[type='radio']", count: 1)
+        expect(response.body).to have_field("owner_no", type: "radio", count: 1)
       end
 
       it "has the correct Continue button" do
-        expect(response.body).to have_css("button[type='submit']", text: "Continue")
+        expect(response.body).to have_button("Continue", type: "submit")
       end
 
       it "shows a back link and redirects to previous page" do
