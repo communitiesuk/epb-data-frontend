@@ -47,12 +47,12 @@ describe "Acceptance::DeleteAccount", type: :feature do
 
       it "shows a form that posts to /api/delete-account and a warning button" do
         expect(last_response.body).to include('form action="/api/my-account/delete-account" method="post"')
-        expect(last_response.body).to have_css("input[name='authenticity_token']", visible: :hidden)
+        expect(last_response.body).to have_field("authenticity_token", type: "hidden", visible: :hidden)
         expect(last_response.body).to have_button("Delete account", id: "confirm-delete-account", class: "govuk-button--warning")
       end
 
       it "has a back link to the account page" do
-        expect(last_response.body).to have_css("a.govuk-back-link[href='/api/my-account']")
+        expect(last_response.body).to have_link("Back", href: "/api/my-account")
       end
     end
 

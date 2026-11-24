@@ -69,8 +69,6 @@ describe "Journey::OptOut::UnableToOptOut", :journey, type: :feature do
     %w[owner occupant name certificate-details check-your-answers received].each do |endpoint|
       it "redirects to '/opt-out' page when visiting /opt-out/#{endpoint} without session data" do
         visit "/opt-out/#{endpoint}"
-        expect(page).not_to have_current_path("/opt-out/#{endpoint}")
-
         expect(page).to have_current_path("/opt-out")
         expect(page).to have_css("h1", text: "Opting out an EPC")
       end

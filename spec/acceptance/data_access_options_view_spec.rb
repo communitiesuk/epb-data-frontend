@@ -18,7 +18,7 @@ describe "Acceptance::DataAccessOptions", type: :feature do
       end
 
       it "shows the correct header" do
-        expect(response.body).to have_selector("h1", text: "How would you like to access the data?")
+        expect(response.body).to have_css("h1", text: "How would you like to access the data?")
       end
 
       it "displays the title the same as the main header value" do

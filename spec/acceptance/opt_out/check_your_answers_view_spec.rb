@@ -30,15 +30,15 @@ describe "Acceptance::OptOutCheckYourAnswers", type: :feature do
       end
 
       it "contains the correct page title" do
-        expect(response.body).to have_selector("h1", text: "Check your answers before submitting your request")
+        expect(response.body).to have_css("h1", text: "Check your answers before submitting your request")
       end
 
       it "does not show a back link" do
-        expect(response.body).not_to have_link("Back")
+        expect(response.body).to have_no_link("Back")
       end
 
       it "shows the correct content for confirmation section" do
-        expect(response.body).to have_selector("h1", text: "Confirmation")
+        expect(response.body).to have_css("h1", text: "Confirmation")
         expect(response.body).to have_field "I confirm that these details are correct"
       end
 

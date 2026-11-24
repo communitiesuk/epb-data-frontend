@@ -12,7 +12,7 @@ describe "Acceptance::SignOut", type: :feature do
   end
 
   it "has correct header" do
-    expect(response.body).to have_selector("h1", text: "You have been signed out")
+    expect(response.body).to have_css("h1", text: "You have been signed out")
   end
 
   it "displays the title the same as the main header value" do
@@ -24,11 +24,11 @@ describe "Acceptance::SignOut", type: :feature do
   end
 
   it "includes the link text" do
-    expect(response.body).to have_selector("p", text: "To go back, sign in to our service using")
+    expect(response.body).to have_css("p", text: "To go back, sign in to our service using")
   end
 
   it "the page does not include the sign out link" do
-    expect(response.body).not_to have_selector("button", text: "Sign out")
+    expect(response.body).to have_no_button("Sign out")
   end
 
   describe "get .get-energy-certificate-data.epb-frontend/sign-out" do

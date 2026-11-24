@@ -100,7 +100,7 @@ describe "Acceptance::FilterProperties", type: :feature do
       end
 
       it "shows the correct header for domestic" do
-        expect(response.body).to have_selector("h1", text: "Energy Performance Certificates")
+        expect(response.body).to have_css("h1", text: "Energy Performance Certificates")
       end
 
       it "displays the title the same as the main header value" do
@@ -112,7 +112,7 @@ describe "Acceptance::FilterProperties", type: :feature do
 
         property_types.each do |property_type|
           response = get "#{request_url}?property_type=#{property_type}"
-          expect(response.body).not_to have_css("#eff-rating-section.govuk-accordion__section")
+          expect(response.body).to have_no_css("#eff-rating-section.govuk-accordion__section")
         end
       end
 
@@ -229,8 +229,8 @@ describe "Acceptance::FilterProperties", type: :feature do
         end
 
         it "does not display an error message" do
-          expect(valid_response.body).not_to have_text "govuk-form-group--error"
-          expect(valid_response.body).not_to have_text "govuk-error-message"
+          expect(valid_response.body).to have_no_text "govuk-form-group--error"
+          expect(valid_response.body).to have_no_text "govuk-error-message"
         end
       end
 

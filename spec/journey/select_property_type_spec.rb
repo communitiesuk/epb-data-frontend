@@ -20,7 +20,7 @@ describe "Journey::SelectPropertyType", :journey, type: :feature do
       end
 
       it "shows the correct header for the filter property page" do
-        expect(page).to have_selector("h1", text: "Domestic Energy Performance Certificates")
+        expect(page).to have_css("h1", text: "Domestic Energy Performance Certificates")
       end
 
       it "passes the property type in the query string" do
@@ -39,7 +39,7 @@ describe "Journey::SelectPropertyType", :journey, type: :feature do
       end
 
       it "shows the correct header for the filter property page" do
-        expect(page).to have_selector("h1", text: "Non-domestic Energy Performance Certificates")
+        expect(page).to have_css("h1", text: "Non-domestic Energy Performance Certificates")
       end
 
       it "passes the property type in the query string" do
@@ -58,7 +58,7 @@ describe "Journey::SelectPropertyType", :journey, type: :feature do
       end
 
       it "shows the correct header for the filter property page" do
-        expect(page).to have_selector("h1", text: "Display Energy Certificates")
+        expect(page).to have_css("h1", text: "Display Energy Certificates")
       end
 
       it "passes the property type in the query string" do

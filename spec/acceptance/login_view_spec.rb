@@ -106,7 +106,7 @@ describe "Acceptance::Login", type: :feature do
         get "#{login_url}?referer=opt-out", {}, { "rack.session" => { opt_out_owner: "yes" } }
 
         expect(last_response.status).to eq 200
-        expect(last_response.body).to have_selector("h1", text: "Create your GOV.UK One Login or sign in")
+        expect(last_response.body).to have_css("h1", text: "Create your GOV.UK One Login or sign in")
         expect(last_response.body).to have_title "Create your GOV.UK One Login or sign in – GOV.UK"
         expect(last_response.body).to have_link("Start now", href: "/login/authorize?referer=opt-out")
       end
@@ -117,7 +117,7 @@ describe "Acceptance::Login", type: :feature do
         get "#{login_url}?referer=opt-out", {}, { "rack.session" => { opt_out_owner: "no", opt_out_occupant: "yes" } }
 
         expect(last_response.status).to eq 200
-        expect(last_response.body).to have_selector("h1", text: "Create your GOV.UK One Login or sign in")
+        expect(last_response.body).to have_css("h1", text: "Create your GOV.UK One Login or sign in")
         expect(last_response.body).to have_title "Create your GOV.UK One Login or sign in – GOV.UK"
         expect(last_response.body).to have_link("Start now", href: "/login/authorize?referer=opt-out")
       end
@@ -128,7 +128,7 @@ describe "Acceptance::Login", type: :feature do
         get login_url
 
         expect(last_response.status).to eq 200
-        expect(last_response.body).to have_selector("h1", text: "Create your GOV.UK One Login or sign in")
+        expect(last_response.body).to have_css("h1", text: "Create your GOV.UK One Login or sign in")
         expect(last_response.body).to have_title "Create your GOV.UK One Login or sign in – GOV.UK"
         expect(last_response.body).to have_link("Start now", href: "/login/authorize?referer=opt-out")
       end

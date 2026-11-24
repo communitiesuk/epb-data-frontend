@@ -100,7 +100,7 @@ describe Domain::OneloginIdToken do
 
     context "when the token has an iat in the future" do
       before do
-        future_iat_payload = payload.merge(iat: Time.now.to_i + 300, exp: Time.now.to_i + 600)
+        future_iat_payload = payload.merge("iat" => Time.now.to_i + 300, "exp" => Time.now.to_i + 600)
         token_response_hash[:id_token] = JWT.encode(future_iat_payload, private_key, algorithm, { kid: kid })
         domain.fetch_matching_key
       end

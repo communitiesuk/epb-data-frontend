@@ -12,9 +12,9 @@ describe "Journey::FilterProperties", :journey, type: :feature do
 
   context "when navigating to the filter properties page" do
     it "displays correct content" do
-      expect(page).to have_content("Domestic Energy Performance Certificates")
-      expect(page).to have_content("Filter certificates (optional)")
-      expect(page).to have_content("Use the filters to select the data you need.")
+      expect(page).to have_text("Domestic Energy Performance Certificates")
+      expect(page).to have_text("Filter certificates (optional)")
+      expect(page).to have_text("Use the filters to select the data you need.")
     end
 
     it "displays a download buttons" do
