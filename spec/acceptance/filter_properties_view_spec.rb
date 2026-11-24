@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+require_relative "../shared_examples/shared_api_authentication"
+
 describe "Acceptance::FilterProperties", type: :feature do
   include RSpecFrontendServiceMixin
 
@@ -56,6 +60,9 @@ describe "Acceptance::FilterProperties", type: :feature do
     example.run
     ENV["STAGE"] = original_stage
   end
+
+  it_behaves_like "an api restricted path", "/filter-properties"
+  it_behaves_like "an api restricted path", "/filter-properties", method: :post
 
   describe "post .get-energy-certificate-data.epb-frontend/filter-properties" do
     let(:response) { post "#{request_url}?property_type=domestic" }

@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+require_relative "../shared_examples/shared_api_authentication"
+
 describe "Acceptance::DeleteAccount", type: :feature do
   include RSpecFrontendServiceMixin
 
@@ -16,6 +20,9 @@ describe "Acceptance::DeleteAccount", type: :feature do
       run Controller::ApiController.new(container: fake_container)
     end
   end
+
+  it_behaves_like "an api restricted path", "/api/my-account/delete-account"
+  it_behaves_like "an api restricted path", "/api/my-account/delete-account", method: :post
 
   describe "get /api/my-account/delete-account" do
     context "when the user is authenticated" do

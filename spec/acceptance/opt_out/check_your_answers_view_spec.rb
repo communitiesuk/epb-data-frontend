@@ -1,7 +1,14 @@
+# frozen_string_literal: true
+
+require_relative "../../shared_examples/shared_opt_out_authentication"
+
 describe "Acceptance::OptOutCheckYourAnswers", type: :feature do
   include RSpecFrontendServiceMixin
 
   let(:base_url) { "http://get-energy-performance-data" }
+
+  it_behaves_like "an opt-out restricted path", "/opt-out/check-your-answers"
+  it_behaves_like "an opt-out restricted path", "/opt-out/check-your-answers", method: :post
 
   describe "get .get-energy-certificate-data.epb-frontend/opt-out/check-your-answers" do
     let(:response) { get "#{base_url}/opt-out/check-your-answers" }

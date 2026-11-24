@@ -1,8 +1,14 @@
+# frozen_string_literal: true
+
 require_relative "../../shared_examples/shared_opt_out_authentication"
+
 describe "Acceptance::OptOutOwner", type: :feature do
   include RSpecFrontendServiceMixin
 
   let(:base_url) { "http://get-energy-performance-data" }
+
+  it_behaves_like "an opt-out restricted path", "/opt-out/name"
+  it_behaves_like "an opt-out restricted path", "/opt-out/name", method: :post
 
   describe "get .get-energy-certificate-data.epb-frontend/opt-out/name" do
     let(:response) { get "#{base_url}/opt-out/name" }
@@ -93,8 +99,6 @@ describe "Acceptance::OptOutOwner", type: :feature do
         end
       end
     end
-
-    it_behaves_like "when checking an authorisation for opt-out restricted endpoints", end_point: "name"
   end
 
   describe "post .get-energy-certificate-data.epb-frontend/opt-out/name" do

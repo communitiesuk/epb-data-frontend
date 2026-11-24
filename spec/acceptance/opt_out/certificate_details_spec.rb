@@ -1,8 +1,14 @@
+# frozen_string_literal: true
+
 require_relative "../../shared_examples/shared_opt_out_authentication"
+
 describe "Acceptance::OptOutCertificateDetails", type: :feature do
   include RSpecFrontendServiceMixin
 
   let(:base_url) { "http://get-energy-performance-data" }
+
+  it_behaves_like "an opt-out restricted path", "/opt-out/certificate-details"
+  it_behaves_like "an opt-out restricted path", "/opt-out/certificate-details", method: :post
 
   describe "get .get-energy-certificate-data.epb-frontend/opt-out/certificate-details" do
     let(:response) { get "#{base_url}/opt-out/certificate-details" }
@@ -35,8 +41,6 @@ describe "Acceptance::OptOutCertificateDetails", type: :feature do
       it "has the correct Continue button" do
         expect(response.body).to have_button("Continue", type: "submit")
       end
-
-      it_behaves_like "when checking an authorisation for opt-out restricted endpoints", end_point: "certificate-details"
 
       context "when the user skipped over the eligibility questions" do
         before do

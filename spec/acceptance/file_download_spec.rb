@@ -1,11 +1,18 @@
+# frozen_string_literal: true
+
+require_relative "../shared_examples/shared_api_authentication"
+
 describe "Acceptance::FileDownload", type: :feature do
   include RSpecFrontendServiceMixin
 
-  before do
-    allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true)
-  end
+  it_behaves_like "an api restricted path", "/download"
+  it_behaves_like "an api restricted path", "/download/all"
 
   describe "get .get-energy-certificate-data.epb-frontend/download" do
+    before do
+      allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true)
+    end
+
     let(:local_host) do
       "http://get-energy-performance-data/download"
     end
@@ -77,6 +84,10 @@ describe "Acceptance::FileDownload", type: :feature do
   end
 
   describe "get .get-energy-certificate-data.epb-frontend/download/all" do
+    before do
+      allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true)
+    end
+
     let(:local_host) do
       "http://get-energy-performance-data/download/all"
     end

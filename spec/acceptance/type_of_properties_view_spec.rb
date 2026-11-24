@@ -1,8 +1,15 @@
+# frozen_string_literal: true
+
+require_relative "../shared_examples/shared_api_authentication"
+
 describe "Acceptance::TypeOfProperties", type: :feature do
   include RSpecFrontendServiceMixin
   let(:local_host) do
     "http://get-energy-performance-data/type-of-properties"
   end
+
+  it_behaves_like "an api restricted path", "/type-of-properties"
+  it_behaves_like "an api restricted path", "/type-of-properties", method: :post
 
   describe "post .get-energy-certificate-data.epb-frontend/type-of-properties" do
     context "when the user is not authenticated" do
