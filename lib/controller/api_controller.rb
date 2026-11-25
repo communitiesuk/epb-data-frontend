@@ -2,14 +2,14 @@ module Controller
   class ApiController < Controller::BaseController
     include Helper::ReferrerCheck
 
-    get "/api/my-account/toggle-email-notifications" do
+    get "/api/my-account/toggle-email-notifications", api_authentication: true do
       toggle_email_notifications_use_case = @container.get_object(:toggle_email_notifications_use_case)
       user_id = Helper::Session.get_session_value(session, :user_id)
       toggle_email_notifications_use_case.execute(user_id)
       redirect "/api/my-account"
     end
 
-    get "/api/my-account" do
+    get "/api/my-account", api_authentication: true do
       status 200
       @back_link_href = request.referer || "/"
       @page_title = "#{t('my_account.title')} – #{t('layout.body.govuk')}"
@@ -28,13 +28,13 @@ module Controller
       redirect "/login/authorize?referer=api/my-account"
     end
 
-    get "/api/my-account/delete-account" do
+    get "/api/my-account/delete-account", api_authentication: true do
       @back_link_href = request.referer || "/api/my-account"
       @page_title = "#{t('delete_account.title')} – #{t('layout.body.govuk')}"
       erb :delete_account
     end
 
-    post "/api/my-account/delete-account" do
+    post "/api/my-account/delete-account", api_authentication: true do
       id_token_hint = session["id_token"]
       @container.get_object(:delete_user_use_case).execute(session["user_id"])
       session.clear

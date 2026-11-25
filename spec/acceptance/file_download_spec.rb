@@ -10,7 +10,7 @@ describe "Acceptance::FileDownload", type: :feature do
 
   describe "get .get-energy-certificate-data.epb-frontend/download" do
     before do
-      allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true)
+      allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true).once
     end
 
     let(:local_host) do
@@ -36,7 +36,7 @@ describe "Acceptance::FileDownload", type: :feature do
     end
 
     context "when user is not authenticated" do
-      before { allow(Helper::Session).to receive(:is_user_authenticated?).and_raise(Errors::AuthenticationError, "User is not authenticated") }
+      before { allow(Helper::Session).to receive(:is_user_authenticated?).and_raise(Errors::AuthenticationError, "User is not authenticated").once }
 
       it "redirects to the OneLogin login page with the original download referer" do
         expect(response).to be_redirect
@@ -85,7 +85,7 @@ describe "Acceptance::FileDownload", type: :feature do
 
   describe "get .get-energy-certificate-data.epb-frontend/download/all" do
     before do
-      allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true)
+      allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true).once
     end
 
     let(:local_host) do
@@ -105,7 +105,7 @@ describe "Acceptance::FileDownload", type: :feature do
     end
 
     context "when user is authenticated" do
-      before { allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true) }
+      before { allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true).once }
 
       it "returns the redirect status" do
         expect(response.status).to eq(302)

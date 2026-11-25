@@ -164,8 +164,6 @@ describe "Acceptance::FilterProperties", type: :feature do
       context "when the user is not authenticated" do
         before { allow(Helper::Session).to receive(:is_user_authenticated?).and_raise(Errors::AuthenticationError, "User is not authenticated") }
 
-        after { allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true) }
-
         it "redirects to the login page" do
           expect(response.status).to eq(302)
           expect(response.location).to eq("http://get-energy-performance-data/login/authorize?referer=filter-properties%3Fproperty_type%3Ddomestic")
