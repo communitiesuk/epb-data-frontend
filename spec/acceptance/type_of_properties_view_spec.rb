@@ -27,7 +27,7 @@ describe "Acceptance::TypeOfProperties", type: :feature do
 
   describe "get .get-energy-certificate-data.epb-frontend/type-of-properties" do
     before do
-      allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true)
+      allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true).once
     end
 
     context "when the type of properties page is rendered" do
@@ -101,7 +101,7 @@ describe "Acceptance::TypeOfProperties", type: :feature do
     end
 
     context "when the user is authenticated" do
-      before { allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true) }
+      before { allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true).once }
 
       it "allows access to the type of properties page" do
         get local_host

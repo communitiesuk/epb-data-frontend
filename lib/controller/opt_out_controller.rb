@@ -142,7 +142,7 @@ module Controller
       end
     end
 
-    get "/opt-out/name" do
+    get "/opt-out/name", opt_out_authentication: true do
       status 200
       set_default
       owner = Helper::Session.get_session_value(session, :opt_out_owner)
@@ -160,7 +160,7 @@ module Controller
       erb :'opt_out/name'
     end
 
-    post "/opt-out/name" do
+    post "/opt-out/name", opt_out_authentication: true do
       set_default
       name = params["name"].strip
       if name.empty?
@@ -182,7 +182,7 @@ module Controller
       end
     end
 
-    get "/opt-out/certificate-details" do
+    get "/opt-out/certificate-details", opt_out_authentication: true do
       owner = Helper::Session.get_session_value(session, :opt_out_owner)
       occupant = Helper::Session.get_session_value(session, :opt_out_occupant)
       name = Helper::Session.get_session_value(session, :opt_out_name)
@@ -205,7 +205,7 @@ module Controller
       erb :'opt_out/certificate_details'
     end
 
-    post "/opt-out/certificate-details" do
+    post "/opt-out/certificate-details", opt_out_authentication: true do
       set_default
       extract_certificate_params
 
@@ -223,7 +223,7 @@ module Controller
       end
     end
 
-    get "/opt-out/check-your-answers" do
+    get "/opt-out/check-your-answers", opt_out_authentication: true do
       status 200
       set_default
       Helper::ValidateSession.new(session).validate_missing_opt_out_session
@@ -235,7 +235,7 @@ module Controller
       redirect localised_url("/opt-out")
     end
 
-    post "/opt-out/check-your-answers" do
+    post "/opt-out/check-your-answers", opt_out_authentication: true do
       set_default
 
       if params["confirmation"] == "checked"
@@ -255,7 +255,7 @@ module Controller
       redirect localised_url("/opt-out")
     end
 
-    get "/opt-out/received" do
+    get "/opt-out/received", opt_out_authentication: true do
       status 200
       set_default
       submitted = Helper::Session.get_session_value(session, :opt_out_submitted)

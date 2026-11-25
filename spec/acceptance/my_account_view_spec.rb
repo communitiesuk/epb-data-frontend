@@ -36,7 +36,8 @@ describe "Acceptance::MyAccount", type: :feature do
   describe "get .get-energy-certificate-data.epb-frontend/api/my-account" do
     before do
       allow(get_user_info_use_case).to receive(:execute).and_return({ bearer_token: "mock_value", opt_out: false })
-      allow(Helper::Session).to receive_messages(is_user_authenticated?: true, get_email_from_session: "test@email.com")
+      allow(Helper::Session).to receive_messages(get_email_from_session: "test@email.com")
+      allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true).once
       allow(ViewModels::MyAccount).to receive_messages(
         get_bearer_token: "kfhbks750D0RnC2oKGsoM936wKmtd4ZcoSw489rPo4FDqQ2SYQVtVnQ4PhZ33b46YZPNZXo6r",
         unsubscribed?: false,

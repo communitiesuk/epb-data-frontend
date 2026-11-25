@@ -49,11 +49,9 @@ module Controller
         not_found
       end
 
-    get "/filter-properties",
-        &filter_properties
+    get "/filter-properties", api_authentication: true, &filter_properties
 
-    post "/filter-properties",
-         &filter_properties
+    post "/filter-properties", api_authentication: true, &filter_properties
 
     get "/request-received-confirmation" do
       check_referral("/filter-properties")

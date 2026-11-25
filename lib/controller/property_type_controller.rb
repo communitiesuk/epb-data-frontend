@@ -1,6 +1,6 @@
 module Controller
   class PropertyTypeController < Controller::BaseController
-    get "/type-of-properties" do
+    get "/type-of-properties", api_authentication: true do
       status 200
       @errors = {}
       @back_link_href = "/data-access-options"
@@ -9,7 +9,7 @@ module Controller
       erb :type_of_properties
     end
 
-    post "/type-of-properties" do
+    post "/type-of-properties", api_authentication: true do
       @errors = {}
       @error_form_ids = []
       if property_type_valid?(params["property_type"])

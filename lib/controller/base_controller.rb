@@ -11,19 +11,6 @@ require_relative "../helper/toggles"
 
 module Controller
   class BaseController < Sinatra::Base
-    RESTRICTED_PATHS = %w[
-      /api/my-account
-      /api/my-account/delete-account
-      /api/my-account/toggle-email-notifications
-      /download
-      /download/all
-      /filter-properties
-      /opt-out/certificate-details
-      /opt-out/check-your-answers
-      /opt-out/name
-      /opt-out/received
-      /type-of-properties
-    ].freeze
     VALID_PROPERTY_TYPES = %w[domestic non-domestic display].freeze
     HOST_NAME = "get-energy-certificate-data"
 
@@ -63,20 +50,28 @@ module Controller
       @container = container || Container.new
     end
 
+    set(:api_authentication) do |_|
+      condition do
+        Helper::Session.is_user_authenticated?(session)
+      rescue Errors::AuthenticationError
+        referrer = request.fullpath.delete_prefix("/")
+        encoded_referrer = CGI.escape(referrer)
+        redirect "/login/authorize?referer=#{encoded_referrer}", request.post? ? 303 : 302
+      end
+    end
+
+    set(:opt_out_authentication) do |_|
+      condition do
+        Helper::Session.is_user_authenticated?(session)
+      rescue Errors::AuthenticationError
+        redirect "/login?referer=opt-out", request.post? ? 303 : 302
+      end
+    end
+
     before do
       set_locale
       cache_control :no_store
       halt 503, erb(:service_unavailable) if request.path != "/healthcheck" && Helper::Toggles.enabled?("ebp-data-frontend-maintenance-mode")
-      Helper::Session.is_user_authenticated?(session) if is_restricted?
-    rescue Errors::AuthenticationError
-      login_url = if request.path.start_with?("/opt-out")
-                    "/login?referer=opt-out"
-                  else
-                    referrer = request.fullpath.delete_prefix("/")
-                    encoded_referrer = CGI.escape(referrer)
-                    "/login/authorize?referer=#{encoded_referrer}"
-                  end
-      redirect login_url, request.post? ? 303 : 302
     end
 
     not_found do
@@ -97,10 +92,6 @@ module Controller
     end
 
   private
-
-    def is_restricted?
-      RESTRICTED_PATHS.include?(request.path) || false
-    end
 
     def property_type_valid?(property_type)
       VALID_PROPERTY_TYPES.include?(property_type)

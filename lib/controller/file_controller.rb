@@ -2,7 +2,7 @@ module Controller
   class FileController < BaseController
     include Helper::DataDictionary
 
-    get "/download" do
+    get "/download", api_authentication: true do
       file_name = params["file"]
       s3_url = @container.get_object(:get_presigned_url_use_case).execute(file_name:)
       redirect s3_url
@@ -10,7 +10,7 @@ module Controller
       not_found
     end
 
-    get "/download/all" do
+    get "/download/all", api_authentication: true do
       property_type = params["property_type"]
       raise Errors::InvalidPropertyType unless property_type_valid?(property_type)
 
