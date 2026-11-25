@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+require_relative "../shared_examples/shared_api_authentication"
+
 describe "Acceptance::RequestReceivedConfirmation", type: :feature do
   include RSpecFrontendServiceMixin
   let(:domain) do
@@ -14,20 +18,22 @@ describe "Acceptance::RequestReceivedConfirmation", type: :feature do
     "ratings[]=A&ratings[]=B"
   end
 
-  before do
-    allow(Helper::Session).to receive(:get_email_from_session).and_return("placeholder@email.com")
-    allow(Helper::Session).to receive(:get_session_value).and_call_original
-    allow(Helper::Session).to receive(:get_session_value).with(anything, :download_count).and_return(123_456)
-  end
+  it_behaves_like "an api restricted path", "/request-received-confirmation"
 
   describe "get .get-energy-certificate-data.epb-frontend/request-received-confirmation" do
+    before do
+      allow(Helper::Session).to receive(:is_user_authenticated?).and_return(true).once
+      allow(Helper::Session).to receive(:get_email_from_session).and_return("placeholder@email.com")
+      allow(Helper::Session).to receive(:get_session_value).and_call_original
+      allow(Helper::Session).to receive(:get_session_value).with(anything, :download_count).and_return(123_456)
+    end
+
     context "when the referer is missing" do
       before do
         get "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}"
       end
 
       it "returns 403 Forbidden" do
-        get "#{local_host}?property_type=domestic&#{valid_dates}&#{valid_eff_rating}"
         expect(last_response.status).to eq(403)
         expect(last_response.body).to include("Access Forbidden")
       end

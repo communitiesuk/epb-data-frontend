@@ -53,7 +53,7 @@ module Controller
 
     post "/filter-properties", api_authentication: true, &filter_properties
 
-    get "/request-received-confirmation" do
+    get "/request-received-confirmation", api_authentication: true do
       check_referral("/filter-properties")
       @page_title = "#{t('request_received.title')} – #{t('layout.body.govuk')}"
 
