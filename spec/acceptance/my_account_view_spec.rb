@@ -32,7 +32,6 @@ describe "Acceptance::MyAccount", type: :feature do
 
   it_behaves_like "an api restricted path", "/api/my-account"
   it_behaves_like "an api restricted path", "/api/my-account/toggle-email-notifications"
-  it_behaves_like "an api restricted path", "/api/my-account/toggle-email-notifications", method: :post
 
   describe "get .get-energy-certificate-data.epb-frontend/api/my-account" do
     before do

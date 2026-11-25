@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-shared_examples "an opt-out restricted path" do |path, method: :post|
+shared_examples "an opt-out restricted path" do |path, method: :get|
   before do
     allow(Helper::Session).to receive(:is_user_authenticated?).and_raise(Errors::AuthenticationError, "User is not authenticated")
   end
