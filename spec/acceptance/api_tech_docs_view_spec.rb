@@ -34,7 +34,7 @@ describe "Acceptance::ApiTechnicalDocumentation", type: :feature do
       end
 
       it "the navigation has a link to each page" do
-        expect(response.body).to have_css("ul.app-subnav__section li", count: 12)
+        expect(response.body).to have_css("ul.app-subnav__section li", count: 9)
       end
 
       it "the navigation has 3 sections" do
@@ -91,7 +91,7 @@ describe "Acceptance::ApiTechnicalDocumentation", type: :feature do
 
       context "when calling the pages that document endpoints" do
         it "each page has the expected sections" do
-          (end_points - %w[search-certificates download/domestic download/non-domestic download/non-domestic-recommendations download/display download/display-recommendations]).each do |link|
+          (end_points - %w[search-certificates download/domestic download/non-domestic-recommendations download/display-recommendations]).each do |link|
             response = get "#{base_url}#{path}/#{link}"
             expect(response.body).to have_css("h2", text: "Method")
             expect(response.body).to have_css("h2", text: "Response")
@@ -100,18 +100,40 @@ describe "Acceptance::ApiTechnicalDocumentation", type: :feature do
           end
         end
 
-        it "each consolidated download page has a section per file type" do
+        it "the combined domestic, non-domestic and display download page has a section per action and file type" do
           response = get "#{base_url}#{path}/download/domestic"
-          expect(response.body).to have_css("h2", text: "CSV format")
-          expect(response.body).to have_css("h2", text: "JSON format")
-          expect(response.body).to have_css("h4", text: "Method")
-          expect(response.body).to have_css("h4", text: "Response")
-          expect(response.body).to have_css("h4", text: "Example")
+          expect(response.body).to have_css("h2", text: "Download the CSV file")
+          expect(response.body).to have_css("h2", text: "Fetch information about the CSV file")
+          expect(response.body).to have_css("h2", text: "Download the JSON file")
+          expect(response.body).to have_css("h2", text: "Fetch information about the JSON file")
+          expect(response.body).to have_css("h3", text: "Method")
+          expect(response.body).to have_css("h3", text: "Response")
+          expect(response.body).to have_css("h3", text: "Example")
           expect(response.body).to include('curl <span class="s2">"http://api.get-energy-performance-data/api/')
 
+          csv_download_section = response.body[response.body.index('id="csv-download"')...response.body.index('id="csv-info"')]
+          expect(csv_download_section).to include("GET /api/files/domestic/csv")
+          expect(csv_download_section).to include("GET /api/files/non-domestic/csv")
+          expect(csv_download_section).to include("GET /api/files/display/csv")
+          expect(csv_download_section.scan("<h3 class=\"govuk-heading-s\">Response</h3>").count).to eq(1)
+          expect(csv_download_section.scan("<h3 class=\"govuk-heading-s\">Example</h3>").count).to eq(1)
+        end
+
+        it "the combined non-domestic and display recommendations download page has a section per action" do
           response = get "#{base_url}#{path}/download/non-domestic-recommendations"
-          expect(response.body).to have_css("h2", text: "JSON format")
-          expect(response.body).not_to have_css("h2", text: "CSV format")
+          expect(response.body).to have_css("h2", text: "Download the JSON file")
+          expect(response.body).to have_css("h2", text: "Fetch information about the JSON file")
+          expect(response.body).not_to have_css("h2", text: "Download the CSV file")
+          expect(response.body).to have_css("h3", text: "Method")
+          expect(response.body).to have_css("h3", text: "Response")
+          expect(response.body).to have_css("h3", text: "Example")
+          expect(response.body).to include('curl <span class="s2">"http://api.get-energy-performance-data/api/')
+
+          json_download_section = response.body[response.body.index('id="json-download"')...response.body.index('id="json-info"')]
+          expect(json_download_section).to include("GET /api/files/non-domestic-recommendations/json")
+          expect(json_download_section).to include("GET /api/files/display-recommendations/json")
+          expect(json_download_section.scan("<h3 class=\"govuk-heading-s\">Response</h3>").count).to eq(1)
+          expect(json_download_section.scan("<h3 class=\"govuk-heading-s\">Example</h3>").count).to eq(1)
         end
 
         it "the consolidated search certificates page has a section per assessment type" do
@@ -169,6 +191,21 @@ describe "Acceptance::ApiTechnicalDocumentation", type: :feature do
       it "only shows the council and constituency lists once" do
         expect(response.body.scan("List of council names recognised by the API").count).to eq(1)
         expect(response.body.scan("List of parliamentary constituencies recognised by the API").count).to eq(1)
+      end
+    end
+
+    context "when requesting the combined domestic, non-domestic and display download page" do
+      let(:response) { get "#{base_url}#{path}/download/domestic" }
+
+      it "has a section for each action and file type" do
+        expect(response.body).to include('id="csv-download"')
+        expect(response.body).to include('id="csv-info"')
+        expect(response.body).to include('id="json-download"')
+        expect(response.body).to include('id="json-info"')
+      end
+
+      it "only shows the error codes section once" do
+        expect(response.body.scan("<h2 class=\"govuk-heading-m\">Error codes</h2>").count).to eq(1)
       end
     end
 

@@ -1,0 +1,55 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-one-third">
+    <%= erb :'api_tech_docs/component__navigation' %>
+  </div>
+  <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-!-margin-bottom-7">
+      <h1 class="govuk-heading-l"><%= t('api-technical-documentation.download_files.title', assessment_type: @title_label) %></h1>
+
+      <p>
+        Download a zip file of the full data set of <%= @title_label %> EPCs as a series of files by year, or fetch
+        information about a file's size when it was last updated without downloading it.
+      </p>
+      <p>
+        There are separate endpoints for <%= @title_label %> files, but the response and example are the same for all of them.
+      </p>
+      <p>
+        These files are re-generated on the 1st of every month.
+      </p>
+    </div>
+
+    <% ViewModels::ApiTechDocs.download_file_types(@combined_titles.first).each do |file_type| %>
+      <% endpoints = @combined_titles.map { |title| [title.capitalize, "/api/files/#{title}/#{file_type}"] } %>
+      <% example_title = @combined_titles.first %>
+      <% example_path = "/api/files/#{example_title}/#{file_type}" %>
+
+      <%= erb :'api_tech_docs/component__combined_endpoint_detail', locals: {
+        id: "#{file_type}-download",
+        title: "Download the #{file_type.upcase} file",
+        endpoints: endpoints,
+        response_note: "<p>If the request is successful, the response will return a status of 302.</p>
+          <p>The response header will include the location of the file to be downloaded. </p>
+          <p>The URL of the file will be generated at run time.   </p>",
+        response_html: ViewModels::ApiTechDocs.file_download_response(example_title, file_type),
+        example_html: ViewModels::ApiTechDocs.download_file_example(example_path, example_title),
+      } %>
+
+      <%= erb :'api_tech_docs/component__combined_endpoint_detail', locals: {
+        id: "#{file_type}-info",
+        title: "Fetch information about the #{file_type.upcase} file",
+        endpoints: endpoints.map { |label, path| [label, "#{path}/info"] },
+        response_html: ViewModels::ApiTechDocs.file_info_response,
+        example_html: ViewModels::ApiTechDocs.curl_example("#{example_path}/info"),
+      } %>
+    <% end %>
+
+    <div class="govuk-!-margin-bottom-7">
+      <h2 class="govuk-heading-m">Error codes</h2>
+
+      <p>If the request is not successful, an HTTP error code will be returned:</p>
+      <ul>
+        <li>404 – no file is found</li>
+      </ul>
+    </div>
+  </div>
+</div>

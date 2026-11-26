@@ -1,0 +1,18 @@
+<div class="govuk-!-margin-bottom-7" id="<%= id %>">
+  <h2 class="govuk-heading-m govuk-!-padding-top-4"><%= title %></h2>
+
+  <h3 class="govuk-heading-s">Method</h3>
+  <% endpoints.each do |label, path| %>
+    <p>For <%= label %> files:</p>
+    <pre><code>GET <%= path %></code></pre>
+  <% end %>
+
+  <h3 class="govuk-heading-s">Response</h3>
+  <% if defined?(response_note) && response_note %>
+    <%= response_note %>
+  <% end %>
+  <pre><code class="javascript"><%= response_html %></code></pre>
+
+  <h3 class="govuk-heading-s">Example</h3>
+  <pre><code class="javascript"><%= example_html %></code></pre>
+</div>

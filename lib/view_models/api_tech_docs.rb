@@ -15,7 +15,12 @@ module ViewModels
 
     SEARCH_TYPES = %w[domestic non-domestic display].freeze
 
-    DOWNLOAD_TITLES = %w[domestic non-domestic non-domestic-recommendations display display-recommendations].freeze
+    # Download titles that share near-identical endpoints are documented together on a single
+    # page per group, keyed by the canonical URL slug used for that page.
+    DOWNLOAD_GROUPS = {
+      "domestic" => %w[domestic non-domestic display],
+      "non-domestic-recommendations" => %w[non-domestic-recommendations display-recommendations],
+    }.freeze
 
     CANONICAL_DOWNLOAD_TITLES = {
       "non-domestic-recommendation" => "non-domestic-recommendations",
@@ -28,6 +33,14 @@ module ViewModels
 
     def self.download_file_types(title)
       title.end_with?("recommendations") ? %w[json] : %w[csv json]
+    end
+
+    def self.download_group_titles(page_title)
+      DOWNLOAD_GROUPS.fetch(page_title)
+    end
+
+    def self.combined_download_page_title(title)
+      DOWNLOAD_GROUPS.find { |_page_title, titles| titles.include?(title) }&.first || title
     end
 
     def self.title_label(title)

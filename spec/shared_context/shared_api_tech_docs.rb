@@ -5,10 +5,7 @@ shared_context "when viewing api tech docs" do
         search-certificates
         search-certificates-changed
         download/domestic
-        download/non-domestic
         download/non-domestic-recommendations
-        download/display
-        download/display-recommendations
         codes
         codes-info]
   end
@@ -18,11 +15,8 @@ shared_context "when viewing api tech docs" do
     "Fetch certificate data",
     "Search certificates",
     "Search for certificates that have changed",
-    "Download domestic files",
-    "Download non domestic files",
-    "Download non domestic recommendations files",
-    "Download display files",
-    "Download display recommendations files",
+    "Download domestic, non-domestic and display files",
+    "Download non-domestic and display recommendations files",
     "Fetch EPC codes",
     "Fetch EPC codes information",
   ]
@@ -41,10 +35,16 @@ shared_context "when viewing api tech docs" do
       "search-certificates/non-domestic" => "/api-technical-documentation/search-certificates#non-domestic",
       "search-certificates/display" => "/api-technical-documentation/search-certificates#display",
       "deltas" => "/api-technical-documentation/search-certificates-changed",
+      "download/non-domestic" => "/api-technical-documentation/download/domestic",
+      "download/display" => "/api-technical-documentation/download/domestic",
+      "download/display-recommendations" => "/api-technical-documentation/download/non-domestic-recommendations",
       "download/domestic/csv" => "/api-technical-documentation/download/domestic#csv-download",
       "download-info/domestic/csv" => "/api-technical-documentation/download/domestic#csv-info",
+      "download/non-domestic/json" => "/api-technical-documentation/download/domestic#json-download",
+      "download/display/json" => "/api-technical-documentation/download/domestic#json-download",
       "download/non-domestic-recommendation/json" => "/api-technical-documentation/download/non-domestic-recommendations#json-download",
-      "download-info/display-recommendations/json" => "/api-technical-documentation/download/display-recommendations#json-info",
+      "download-info/display-recommendations/json" => "/api-technical-documentation/download/non-domestic-recommendations#json-info",
     }
   end
 end
+

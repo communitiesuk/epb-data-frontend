@@ -10,16 +10,13 @@
     <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Fetch certificate data", link: "/fetch-certificate-data" } %>
     <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Search certificates", link: "/search-certificates" } %>
     <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Search certificates that have changed", link: "/search-certificates-changed" } %>
-    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Fetch EPC codes", link: "/codes" } %>
-    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Fetch EPC codes info", link: "/codes-info" } %>
+    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Fetch list of fields which return codes", link: "/codes" } %>
+    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Fetch code values", link: "/codes-info" } %>
   </ul>
 
   <h3 class="app-subnav__theme">Downloading full data files</h3>
   <ul class="app-subnav__section">
-    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Download domestic files", link: "/download/domestic" } %>
-    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Download non-domestic files", link: "/download/non-domestic" } %>
-    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Download non-domestic recommendations files", link: "/download/non-domestic-recommendations" } %>
-    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Download display files", link: "/download/display" } %>
-    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Download display recommendations files", link: "/download/display-recommendations" } %>
+    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Download domestic, non-domestic and display files", link: "/download/domestic" } %>
+    <%= erb :'api_tech_docs/component__navigation_item', locals: { text: "Download non-domestic and display recommendations files", link: "/download/non-domestic-recommendations" } %>
   </ul>
 </nav>
