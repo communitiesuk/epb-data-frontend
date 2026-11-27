@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "../shared_context/shared_journey_context"
-
 describe "Journey::UseApi", :journey, type: :feature do
   context "when visiting the '/guidance/energy-certificate-data-apis' page" do
     before do

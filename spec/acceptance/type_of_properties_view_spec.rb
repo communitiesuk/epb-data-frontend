@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "../shared_examples/shared_api_authentication"
-
 describe "Acceptance::TypeOfProperties", type: :feature do
   include RSpecFrontendServiceMixin
   let(:local_host) do

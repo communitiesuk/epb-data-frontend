@@ -1,5 +1,3 @@
-require_relative "../../shared_context/shared_id_token_validation"
-
 describe UseCase::ValidateIdToken do
   include_context "when validating id token"
 

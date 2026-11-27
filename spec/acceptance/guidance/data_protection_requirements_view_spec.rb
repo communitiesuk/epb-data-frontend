@@ -1,5 +1,3 @@
-require_relative "../../shared_examples/shared_guidance_page"
-
 describe "Acceptance::DataProtectionRequirements", type: :feature do
   include RSpecFrontendServiceMixin
 

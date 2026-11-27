@@ -1,5 +1,3 @@
-require_relative "../../shared_examples/shared_guidance_page"
-
 describe "Acceptance::DataLimitations", type: :feature do
   include RSpecFrontendServiceMixin
 

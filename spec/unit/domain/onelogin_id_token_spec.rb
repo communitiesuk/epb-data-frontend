@@ -1,5 +1,3 @@
-require_relative "../../shared_context/shared_id_token_validation"
-
 describe Domain::OneloginIdToken do
   subject(:domain) { described_class.new(response:, token_response_hash:, nonce:, vtr:) }
 

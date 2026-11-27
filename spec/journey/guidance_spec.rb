@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "../shared_context/shared_journey_context"
-
 GUIDANCE_PAGES = {
   "Data dictionary" => "/guidance/data-dictionary",
   "Linking certificates to recommendations" => "/guidance/linking-certificates-to-recommendations",

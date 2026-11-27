@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "../../shared_context/shared_opt_out_context"
-
 describe "Journey::OptOut::UnableToOptOut", :journey, type: :feature do
   include_context "when testing the opt out process"
 

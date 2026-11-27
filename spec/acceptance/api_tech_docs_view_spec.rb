@@ -1,5 +1,3 @@
-require_relative "../shared_context/shared_api_tech_docs"
-
 describe "Acceptance::ApiTechnicalDocumentation", type: :feature do
   include RSpecFrontendServiceMixin
 

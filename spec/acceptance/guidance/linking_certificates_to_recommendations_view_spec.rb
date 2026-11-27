@@ -1,5 +1,3 @@
-require_relative "../../shared_examples/shared_guidance_page"
-
 describe "Acceptance::LinkingCertificatesToRecommendations", type: :feature do
   include RSpecFrontendServiceMixin
   let(:base_url) { "http://get-energy-performance-data" }

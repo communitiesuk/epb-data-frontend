@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "../../shared_examples/shared_opt_out_authentication"
-
 describe "Acceptance::OptOutReceived", type: :feature do
   include RSpecFrontendServiceMixin
 

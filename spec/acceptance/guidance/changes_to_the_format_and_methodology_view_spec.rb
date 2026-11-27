@@ -1,4 +1,3 @@
-require_relative "../../shared_examples/shared_guidance_page"
 describe "Acceptance::ChangesToTheMethodAndMethodology", type: :feature do
   include RSpecFrontendServiceMixin
 

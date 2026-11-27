@@ -205,3 +205,5 @@ RSpec.configure do |config|
     end
   end
 end
+
+Dir[File.join(__dir__, "{shared_examples,shared_context}/**/*.rb")].each { require it }

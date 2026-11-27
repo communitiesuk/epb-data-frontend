@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "../../shared_context/shared_opt_out_context"
-require_relative "../../shared_context/shared_journey_context"
-
 describe "Journey::OptOut::OptOutCertificate", :journey, type: :feature do
   include_context "when setting up journey tests"
   include_context "when testing the opt out process"
